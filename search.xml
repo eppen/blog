@@ -92,6 +92,9 @@
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">url: https://用户名.github.io/仓库的短名称</span><br></pre></td></tr></table></figure>
 
 <p>这个地方也需要配置，不然最后的网页样式路径不正确</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">post_asset_folder: false</span><br></pre></td></tr></table></figure>
+
+<p>上面的false需要改成true不然资源文件的图片等无法上传到github</p>
 <h2 id="发布到github"><a href="#发布到github" class="headerlink" title="发布到github"></a>发布到github</h2><p><code>hexo d</code></p>
 <h2 id="配置github仓库的pages"><a href="#配置github仓库的pages" class="headerlink" title="配置github仓库的pages"></a>配置github仓库的pages</h2><p><img src="/blog/image/my-first-blog/1724523181554.png" alt="1724523181554"></p>
 <p><img src="/blog/image/my-first-blog/1724523209458.png" alt="1724523209458"></p>
