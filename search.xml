@@ -23,6 +23,8 @@
     <url>/blog/2024/08/24/my-first-blog/</url>
     <content><![CDATA[<p>看了别人写的使用github和hexo构建个人博客门户的说明后，发现有些跟现在2024的情况有些不同，并且有些没有介绍到的情况，导致架设过程中遇到的些问题也一起记录一下。</p>
 <p>之前看到很多博客是github.io结尾的，今天想了一下，肯定是github提供了这种博客服务，于是就去搜了一下。果然是这样。</p>
+<span id="more"></span>
+
 <h1 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a><strong>环境准备</strong></h1><p>在搭建Github博客之前，先准备一下环境</p>
 <h2 id="安装git客户端"><a href="#安装git客户端" class="headerlink" title="安装git客户端"></a><strong>安装git客户端</strong></h2><p><a href="https://git-scm.com/downloads">git下载地址https://git-scm.com/downloads</a></p>
 <p><img src="/blog/image/my-first-blog/1724518767732.png" alt="1724518767732"></p>
