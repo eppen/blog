@@ -47,6 +47,7 @@
 <p><code>hexo -v</code></p>
 <p>安装hexo发布插件hexo-deployer-git，这个在发布到github的使用再安装也可以</p>
 <p><code>npm install hexo-deployer-git --save</code></p>
+<p><code>npm install hexo-asset-img --save</code></p>
 <p>具体参考 hexo网站</p>
 <p><a href="https://hexo.io/zh-cn/docs/one-command-deployment">hexo网站https://hexo.io/zh-cn/docs/one-command-deployment</a></p>
 <h1 id="git配置SSH-key"><a href="#git配置SSH-key" class="headerlink" title="git配置SSH key"></a>git配置SSH key</h1><p>先看本地是否配置好SSH key（命令：cd ~&#x2F;.ssh）</p>
