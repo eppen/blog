@@ -75,6 +75,157 @@
       </tags>
   </entry>
   <entry>
+    <title>classical chinese translation</title>
+    <url>/2025/06/23/classical-chinese-translation/</url>
+    <content><![CDATA[<h1 id="文言文现代翻译助手-内容说明"><a href="#文言文现代翻译助手-内容说明" class="headerlink" title="文言文现代翻译助手 - 内容说明"></a>文言文现代翻译助手 - 内容说明</h1><h2 id="📖-插件简介"><a href="#📖-插件简介" class="headerlink" title="📖 插件简介"></a>📖 插件简介</h2><p>文言文现代翻译助手是一款专为古典文学爱好者和学习者设计的Chrome浏览器插件。它能够智能识别网页中的文言文内容，并通过先进的AI技术将其翻译为现代汉语，帮助用户更好地理解古典文献。</p>
+<h2 id="🎯-目标用户"><a href="#🎯-目标用户" class="headerlink" title="🎯 目标用户"></a>🎯 目标用户</h2><h3 id="主要用户群体"><a href="#主要用户群体" class="headerlink" title="主要用户群体"></a>主要用户群体</h3><p>-<strong>学生群体</strong>：学习古代汉语、古典文学的中学生和大学生</p>
+<p>-<strong>教育工作者</strong>：语文教师、古典文学研究者</p>
+<p>-<strong>文学爱好者</strong>：对古诗词、文言文感兴趣的普通用户</p>
+<p>-<strong>研究人员</strong>：从事历史、文学、哲学研究的学者</p>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
+<li>阅读古典文学网站时需要理解文言文内容</li>
+<li>学习古诗词时需要快速了解含义</li>
+<li>研究历史文献时需要翻译参考</li>
+<li>日常浏览遇到文言文内容时的即时翻译需求</li>
+</ul>
+<h2 id="✨-核心功能详解"><a href="#✨-核心功能详解" class="headerlink" title="✨ 核心功能详解"></a>✨ 核心功能详解</h2><h3 id="1-智能文言文识别"><a href="#1-智能文言文识别" class="headerlink" title="1. 智能文言文识别"></a>1. 智能文言文识别</h3><h4 id="识别原理"><a href="#识别原理" class="headerlink" title="识别原理"></a>识别原理</h4><p>插件采用多层次识别算法：</p>
+<p><strong>词汇匹配层</strong>：</p>
+<ul>
+<li>检测常见文言虚词：之、乎、者、也、焉、哉、矣、耳等</li>
+<li>识别文言实词：曰、云、谓、谓之、是以、故等</li>
+<li>匹配古代人名、地名、官职名称</li>
+</ul>
+<p><strong>语法模式层</strong>：</p>
+<ul>
+<li>识别倒装句式：宾语前置、定语后置等</li>
+<li>检测省略句式：主语省略、谓语省略等</li>
+<li>判断特殊句式：判断句、被动句、疑问句等</li>
+</ul>
+<p><strong>统计分析层</strong>：</p>
+<ul>
+<li>计算文言词汇密度（文言词汇数&#x2F;总词汇数）</li>
+<li>分析句子长度和结构复杂度</li>
+<li>评估整体文本的文言文特征</li>
+</ul>
+<h4 id="识别精度"><a href="#识别精度" class="headerlink" title="识别精度"></a>识别精度</h4><p>-<strong>高精度场景</strong>：古诗词、经典文言文片段（准确率&gt;90%）</p>
+<p>-<strong>中等精度场景</strong>：现代文中夹杂的文言词汇（准确率&gt;80%）</p>
+<p>-<strong>低精度场景</strong>：口语化表达中的文言元素（准确率&gt;70%）</p>
+<h3 id="2-AI翻译技术"><a href="#2-AI翻译技术" class="headerlink" title="2. AI翻译技术"></a>2. AI翻译技术</h3><h4 id="翻译引擎"><a href="#翻译引擎" class="headerlink" title="翻译引擎"></a>翻译引擎</h4><p>采用DeepSeek大语言模型，具备：</p>
+<p>-<strong>上下文理解</strong>：能够理解文言文的语境和背景</p>
+<p>-<strong>文化内涵保持</strong>：保留原文的文化内涵和意境</p>
+<p>-<strong>现代表达</strong>：用现代汉语准确表达古文含义</p>
+<h4 id="翻译质量"><a href="#翻译质量" class="headerlink" title="翻译质量"></a>翻译质量</h4><p>-<strong>词汇翻译</strong>：准确翻译古今异义词、通假字</p>
+<p>-<strong>语法转换</strong>：将文言语法转换为现代汉语语法</p>
+<p>-<strong>语气保持</strong>：尽量保持原文的语气和感情色彩</p>
+<h3 id="3-沉浸式显示"><a href="#3-沉浸式显示" class="headerlink" title="3. 沉浸式显示"></a>3. 沉浸式显示</h3><h4 id="显示方式"><a href="#显示方式" class="headerlink" title="显示方式"></a>显示方式</h4><p>-<strong>原文保留</strong>：原始文言文内容保持不变</p>
+<p>-<strong>下方显示</strong>：翻译结果显示在原文正下方</p>
+<p>-<strong>视觉区分</strong>：通过背景色、边框等视觉元素区分原文和译文</p>
+<h4 id="样式设计"><a href="#样式设计" class="headerlink" title="样式设计"></a>样式设计</h4><p>-<strong>渐变背景</strong>：使用柔和的渐变色突出翻译内容</p>
+<p>-<strong>圆角边框</strong>：现代化的圆角设计，提升视觉体验</p>
+<p>-<strong>阴影效果</strong>：轻微的阴影增加层次感</p>
+<p>-<strong>响应式布局</strong>：适配不同屏幕尺寸</p>
+<h3 id="4-用户交互"><a href="#4-用户交互" class="headerlink" title="4. 用户交互"></a>4. 用户交互</h3><h4 id="自动翻译"><a href="#自动翻译" class="headerlink" title="自动翻译"></a>自动翻译</h4><p>-<strong>页面扫描</strong>：加载页面时自动扫描文言文内容</p>
+<p>-<strong>动态监听</strong>：监听页面内容变化，翻译新增的文言文</p>
+<p>-<strong>智能过滤</strong>：避免翻译过短或明显不是文言文的内容</p>
+<h4 id="手动翻译"><a href="#手动翻译" class="headerlink" title="手动翻译"></a>手动翻译</h4><p>-<strong>右键菜单</strong>：选中文本后右键选择翻译</p>
+<p>-<strong>快捷操作</strong>：通过插件图标快速开启&#x2F;关闭功能</p>
+<p>-<strong>设置管理</strong>：详细的设置界面管理各项功能</p>
+<h2 id="🔧-技术架构"><a href="#🔧-技术架构" class="headerlink" title="🔧 技术架构"></a>🔧 技术架构</h2><h3 id="前端技术栈"><a href="#前端技术栈" class="headerlink" title="前端技术栈"></a>前端技术栈</h3><p>-<strong>HTML5</strong>：现代化的页面结构</p>
+<p>-<strong>CSS3</strong>：使用Grid、Flexbox等现代布局技术</p>
+<p>-**JavaScript ES6+**：使用现代JavaScript特性</p>
+<p>-<strong>Chrome Extension API</strong>：Manifest V3规范</p>
+<h3 id="核心模块"><a href="#核心模块" class="headerlink" title="核心模块"></a>核心模块</h3><h4 id="Content-Script（内容脚本）"><a href="#Content-Script（内容脚本）" class="headerlink" title="Content Script（内容脚本）"></a>Content Script（内容脚本）</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 主要功能：</span></span><br><span class="line"></span><br><span class="line">- <span class="variable constant_">DOM</span>监听和文本识别</span><br><span class="line"></span><br><span class="line">- 翻译结果插入和显示</span><br><span class="line"></span><br><span class="line">- 用户交互事件处理</span><br><span class="line"></span><br><span class="line">- 页面样式动态调整</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="Background-Script（后台脚本）"><a href="#Background-Script（后台脚本）" class="headerlink" title="Background Script（后台脚本）"></a>Background Script（后台脚本）</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 主要功能：</span></span><br><span class="line"></span><br><span class="line">- <span class="variable constant_">API</span>请求处理</span><br><span class="line"></span><br><span class="line">- 右键菜单管理</span><br><span class="line"></span><br><span class="line">- 存储数据管理</span><br><span class="line"></span><br><span class="line">- 跨页面通信</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="Popup-Interface（弹窗界面）"><a href="#Popup-Interface（弹窗界面）" class="headerlink" title="Popup Interface（弹窗界面）"></a>Popup Interface（弹窗界面）</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 主要功能：</span></span><br><span class="line"></span><br><span class="line">- 用户设置管理</span><br><span class="line"></span><br><span class="line">- <span class="variable constant_">API</span>密钥配置</span><br><span class="line"></span><br><span class="line">- 功能开关控制</span><br><span class="line"></span><br><span class="line">- 状态显示和反馈</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="数据流程"><a href="#数据流程" class="headerlink" title="数据流程"></a>数据流程</h3><p>1.<strong>识别阶段</strong>：Content Script扫描页面文本</p>
+<p>2.<strong>判断阶段</strong>：使用识别算法判断是否为文言文</p>
+<p>3.<strong>请求阶段</strong>：Background Script调用DeepSeek API</p>
+<p>4.<strong>翻译阶段</strong>：AI模型处理并返回翻译结果</p>
+<p>5.<strong>显示阶段</strong>：Content Script将结果插入页面</p>
+<h2 id="🎨-用户界面设计"><a href="#🎨-用户界面设计" class="headerlink" title="🎨 用户界面设计"></a>🎨 用户界面设计</h2><h3 id="设计理念"><a href="#设计理念" class="headerlink" title="设计理念"></a>设计理念</h3><p>-<strong>简洁现代</strong>：采用现代化的设计语言</p>
+<p>-<strong>文化融合</strong>：融入中国传统文化元素</p>
+<p>-<strong>用户友好</strong>：操作简单，学习成本低</p>
+<p>-<strong>视觉舒适</strong>：配色柔和，减少视觉疲劳</p>
+<h3 id="色彩方案"><a href="#色彩方案" class="headerlink" title="色彩方案"></a>色彩方案</h3><p>-<strong>主色调</strong>：蓝紫渐变（#667eea - #764ba2）</p>
+<p>-<strong>辅助色</strong>：清新蓝绿（#4facfe - #00f2fe）</p>
+<p>-<strong>强调色</strong>：温暖橙黄（#fbbf24）</p>
+<p>-<strong>文本色</strong>：深灰色（#2c3e50）</p>
+<h3 id="图标设计"><a href="#图标设计" class="headerlink" title="图标设计"></a>图标设计</h3><p>-<strong>主图标</strong>：📜 卷轴，象征古典文献</p>
+<p>-<strong>备选图标</strong>：✒️ 毛笔、📖 书本、🎋 竹子</p>
+<p>-<strong>尺寸规格</strong>：16x16、48x48、128x128像素</p>
+<h2 id="📊-使用数据分析"><a href="#📊-使用数据分析" class="headerlink" title="📊 使用数据分析"></a>📊 使用数据分析</h2><h3 id="适用网站类型"><a href="#适用网站类型" class="headerlink" title="适用网站类型"></a>适用网站类型</h3><p>1.<strong>古典文学网站</strong>（使用频率最高）</p>
+<ul>
+<li>古诗文网、诗词名句网等</li>
+<li>国学经典网站</li>
+<li>文言文学习平台</li>
+</ul>
+<p>2.<strong>教育学习网站</strong>（使用频率较高）</p>
+<ul>
+<li>在线课程平台</li>
+<li>学术论文网站</li>
+<li>教育资源网站</li>
+</ul>
+<p>3.<strong>新闻资讯网站</strong>（偶尔使用）</p>
+<ul>
+<li>文化类新闻报道</li>
+<li>历史类文章</li>
+<li>书评和文学评论</li>
+</ul>
+<h3 id="用户行为模式"><a href="#用户行为模式" class="headerlink" title="用户行为模式"></a>用户行为模式</h3><p>-<strong>学习型用户</strong>：经常使用，关注翻译准确性</p>
+<p>-<strong>浏览型用户</strong>：偶尔使用，追求便捷性</p>
+<p>-<strong>研究型用户</strong>：深度使用，需要详细功能</p>
+<h2 id="🔒-隐私和安全"><a href="#🔒-隐私和安全" class="headerlink" title="🔒 隐私和安全"></a>🔒 隐私和安全</h2><h3 id="数据处理原则"><a href="#数据处理原则" class="headerlink" title="数据处理原则"></a>数据处理原则</h3><p>-<strong>最小化收集</strong>：只收集必要的翻译文本</p>
+<p>-<strong>本地存储</strong>：API密钥等敏感信息仅本地存储</p>
+<p>-<strong>透明处理</strong>：明确告知用户数据使用方式</p>
+<p>-<strong>用户控制</strong>：用户可随时删除存储的数据</p>
+<h3 id="安全措施"><a href="#安全措施" class="headerlink" title="安全措施"></a>安全措施</h3><p>-<strong>HTTPS传输</strong>：所有API请求使用HTTPS加密</p>
+<p>-<strong>输入验证</strong>：对用户输入进行安全验证</p>
+<p>-<strong>权限最小化</strong>：只申请必要的浏览器权限</p>
+<p>-<strong>定期更新</strong>：及时修复安全漏洞</p>
+<h2 id="📈-性能优化"><a href="#📈-性能优化" class="headerlink" title="📈 性能优化"></a>📈 性能优化</h2><h3 id="识别性能"><a href="#识别性能" class="headerlink" title="识别性能"></a>识别性能</h3><p>-<strong>延迟加载</strong>：避免阻塞页面渲染</p>
+<p>-<strong>缓存机制</strong>：缓存已翻译的内容</p>
+<p>-<strong>批量处理</strong>：将多个翻译请求合并处理</p>
+<p>-<strong>智能节流</strong>：控制API请求频率</p>
+<h3 id="显示性能"><a href="#显示性能" class="headerlink" title="显示性能"></a>显示性能</h3><p>-<strong>CSS优化</strong>：使用硬件加速的CSS属性</p>
+<p>-<strong>DOM操作优化</strong>：减少不必要的DOM操作</p>
+<p>-<strong>内存管理</strong>：及时清理不需要的数据</p>
+<p>-<strong>响应式设计</strong>：适配不同设备性能</p>
+<h2 id="🚀-未来发展规划"><a href="#🚀-未来发展规划" class="headerlink" title="🚀 未来发展规划"></a>🚀 未来发展规划</h2><h3 id="短期目标（1-3个月）"><a href="#短期目标（1-3个月）" class="headerlink" title="短期目标（1-3个月）"></a>短期目标（1-3个月）</h3><p>-<strong>功能完善</strong>：修复已知bug，优化用户体验</p>
+<p>-<strong>兼容性提升</strong>：支持更多网站和浏览器</p>
+<p>-<strong>翻译质量</strong>：提升识别准确率和翻译质量</p>
+<p>-<strong>用户反馈</strong>：收集用户意见，持续改进</p>
+<h3 id="中期目标（3-6个月）"><a href="#中期目标（3-6个月）" class="headerlink" title="中期目标（3-6个月）"></a>中期目标（3-6个月）</h3><p>-<strong>多语言支持</strong>：支持翻译为英文、日文等</p>
+<p>-<strong>离线功能</strong>：提供基础的离线翻译能力</p>
+<p>-<strong>学习模式</strong>：添加文言文学习辅助功能</p>
+<p>-<strong>社区功能</strong>：用户可分享翻译和学习心得</p>
+<h3 id="长期目标（6-12个月）"><a href="#长期目标（6-12个月）" class="headerlink" title="长期目标（6-12个月）"></a>长期目标（6-12个月）</h3><p>-<strong>移动端适配</strong>：开发移动浏览器版本</p>
+<p>-<strong>AI优化</strong>：训练专门的文言文翻译模型</p>
+<p>-<strong>教育合作</strong>：与教育机构合作推广</p>
+<p>-<strong>生态建设</strong>：构建完整的文言文学习生态</p>
+<h2 id="💡-使用建议"><a href="#💡-使用建议" class="headerlink" title="💡 使用建议"></a>💡 使用建议</h2><h3 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h3><p>1.<strong>合理设置</strong>：根据需要调整翻译敏感度</p>
+<p>2.<strong>网络环境</strong>：确保网络连接稳定</p>
+<p>3.<strong>API使用</strong>：合理使用API避免超额费用</p>
+<p>4.<strong>学习结合</strong>：将翻译作为学习辅助工具</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>1.<strong>翻译准确性</strong>：AI翻译仅供参考，重要场合需人工校验</p>
+<p>2.<strong>版权问题</strong>：注意翻译内容的版权和使用范围</p>
+<p>3.<strong>隐私保护</strong>：不要翻译包含敏感信息的内容</p>
+<p>4.<strong>网站兼容</strong>：某些网站可能存在兼容性问题</p>
+<h2 id="📞-支持与反馈"><a href="#📞-支持与反馈" class="headerlink" title="📞 支持与反馈"></a>📞 支持与反馈</h2><h3 id="获取帮助"><a href="#获取帮助" class="headerlink" title="获取帮助"></a>获取帮助</h3><p>-<strong>使用说明</strong>：查看README.md和发布指南</p>
+<p>-<strong>常见问题</strong>：查看FAQ部分</p>
+<p>-<strong>社区讨论</strong>：GitHub Issues讨论区</p>
+<p>-<strong>开发者联系</strong>：通过GitHub联系开发者</p>
+<h3 id="反馈渠道"><a href="#反馈渠道" class="headerlink" title="反馈渠道"></a>反馈渠道</h3><p>-<strong>Bug报告</strong>：通过GitHub Issues报告问题</p>
+<p>-<strong>功能建议</strong>：提交Feature Request</p>
+<p>-<strong>使用体验</strong>：在Chrome Web Store评价</p>
+<p>-<strong>直接联系</strong>：通过邮件联系开发团队</p>
+<hr>
+<p><em>本文档将持续更新，反映插件的最新功能和改进。感谢您使用文言文现代翻译助手！</em></p>
+]]></content>
+  </entry>
+  <entry>
     <title>2026 work calendar</title>
     <url>/2025/12/10/2026-work-calendar/</url>
     <content><![CDATA[<p>介绍一个非常实用的开源项目：<a href="https://github.com/eppen/2026-work-calendar">2026-work-calendar</a>。</p>
@@ -269,6 +420,70 @@
 ]]></content>
   </entry>
   <entry>
+    <title>health</title>
+    <url>/2025/06/12/health/</url>
+    <content><![CDATA[<table>
+<thead>
+<tr>
+<th>Habit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Regular Physical Activity: Engage in 150 min&#x2F;week of moderate aerobic exercise or 75 min&#x2F;week of vigorous exercise, plus strength training twice weekly.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Balanced Diet: Consume fruits, vegetables, whole grains, lean proteins, and healthy fats; limit processed foods, sugar, and salt.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Regular Health Screenings: Monitor blood pressure, cholesterol, and blood sugar; follow age-appropriate check-up schedules.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Prostate Health: Be aware of prostate issues; consider screening from age 50 or earlier if at risk.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Avoid Tobacco, Limit Alcohol: Quit smoking; limit alcohol to two drinks&#x2F;day.</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>习惯</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>定期体育锻炼：每周进行 150 分钟的中等强度有氧运动或 75 分钟&#x2F;周的剧烈运动，外加每周两次的力量训练。</td>
+</tr>
+<tr>
+<td>2</td>
+<td>均衡饮食：食用水果、蔬菜、全谷物、瘦肉蛋白和健康脂肪;限制加工食品、糖和盐。</td>
+</tr>
+<tr>
+<td>3</td>
+<td>定期健康检查：监测血压、胆固醇和血糖;遵循适合年龄的体检时间表。</td>
+</tr>
+<tr>
+<td>4</td>
+<td>前列腺健康：注意前列腺问题;如果有风险，考虑从 50 岁或更早开始进行筛查。</td>
+</tr>
+<tr>
+<td>5</td>
+<td>避免吸烟，限制饮酒：戒烟;将酒精限制在每天两杯。</td>
+</tr>
+</tbody></table>
+]]></content>
+      <tags>
+        <tag>health</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Cursor Agent CLI 报错 No version directories found 的排查与修复</title>
     <url>/2026/06/19/cursor-agent-no-version-directories-fix/</url>
     <content><![CDATA[<p>在 Windows 终端执行 <code>agent</code> 或 <code>cursor-agent</code> 时，可能遇到如下错误：</p>
@@ -358,221 +573,6 @@
         <tag>Agent</tag>
         <tag>Windows</tag>
         <tag>PowerShell</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>classical chinese translation</title>
-    <url>/2025/06/23/classical-chinese-translation/</url>
-    <content><![CDATA[<h1 id="文言文现代翻译助手-内容说明"><a href="#文言文现代翻译助手-内容说明" class="headerlink" title="文言文现代翻译助手 - 内容说明"></a>文言文现代翻译助手 - 内容说明</h1><h2 id="📖-插件简介"><a href="#📖-插件简介" class="headerlink" title="📖 插件简介"></a>📖 插件简介</h2><p>文言文现代翻译助手是一款专为古典文学爱好者和学习者设计的Chrome浏览器插件。它能够智能识别网页中的文言文内容，并通过先进的AI技术将其翻译为现代汉语，帮助用户更好地理解古典文献。</p>
-<h2 id="🎯-目标用户"><a href="#🎯-目标用户" class="headerlink" title="🎯 目标用户"></a>🎯 目标用户</h2><h3 id="主要用户群体"><a href="#主要用户群体" class="headerlink" title="主要用户群体"></a>主要用户群体</h3><p>-<strong>学生群体</strong>：学习古代汉语、古典文学的中学生和大学生</p>
-<p>-<strong>教育工作者</strong>：语文教师、古典文学研究者</p>
-<p>-<strong>文学爱好者</strong>：对古诗词、文言文感兴趣的普通用户</p>
-<p>-<strong>研究人员</strong>：从事历史、文学、哲学研究的学者</p>
-<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
-<li>阅读古典文学网站时需要理解文言文内容</li>
-<li>学习古诗词时需要快速了解含义</li>
-<li>研究历史文献时需要翻译参考</li>
-<li>日常浏览遇到文言文内容时的即时翻译需求</li>
-</ul>
-<h2 id="✨-核心功能详解"><a href="#✨-核心功能详解" class="headerlink" title="✨ 核心功能详解"></a>✨ 核心功能详解</h2><h3 id="1-智能文言文识别"><a href="#1-智能文言文识别" class="headerlink" title="1. 智能文言文识别"></a>1. 智能文言文识别</h3><h4 id="识别原理"><a href="#识别原理" class="headerlink" title="识别原理"></a>识别原理</h4><p>插件采用多层次识别算法：</p>
-<p><strong>词汇匹配层</strong>：</p>
-<ul>
-<li>检测常见文言虚词：之、乎、者、也、焉、哉、矣、耳等</li>
-<li>识别文言实词：曰、云、谓、谓之、是以、故等</li>
-<li>匹配古代人名、地名、官职名称</li>
-</ul>
-<p><strong>语法模式层</strong>：</p>
-<ul>
-<li>识别倒装句式：宾语前置、定语后置等</li>
-<li>检测省略句式：主语省略、谓语省略等</li>
-<li>判断特殊句式：判断句、被动句、疑问句等</li>
-</ul>
-<p><strong>统计分析层</strong>：</p>
-<ul>
-<li>计算文言词汇密度（文言词汇数&#x2F;总词汇数）</li>
-<li>分析句子长度和结构复杂度</li>
-<li>评估整体文本的文言文特征</li>
-</ul>
-<h4 id="识别精度"><a href="#识别精度" class="headerlink" title="识别精度"></a>识别精度</h4><p>-<strong>高精度场景</strong>：古诗词、经典文言文片段（准确率&gt;90%）</p>
-<p>-<strong>中等精度场景</strong>：现代文中夹杂的文言词汇（准确率&gt;80%）</p>
-<p>-<strong>低精度场景</strong>：口语化表达中的文言元素（准确率&gt;70%）</p>
-<h3 id="2-AI翻译技术"><a href="#2-AI翻译技术" class="headerlink" title="2. AI翻译技术"></a>2. AI翻译技术</h3><h4 id="翻译引擎"><a href="#翻译引擎" class="headerlink" title="翻译引擎"></a>翻译引擎</h4><p>采用DeepSeek大语言模型，具备：</p>
-<p>-<strong>上下文理解</strong>：能够理解文言文的语境和背景</p>
-<p>-<strong>文化内涵保持</strong>：保留原文的文化内涵和意境</p>
-<p>-<strong>现代表达</strong>：用现代汉语准确表达古文含义</p>
-<h4 id="翻译质量"><a href="#翻译质量" class="headerlink" title="翻译质量"></a>翻译质量</h4><p>-<strong>词汇翻译</strong>：准确翻译古今异义词、通假字</p>
-<p>-<strong>语法转换</strong>：将文言语法转换为现代汉语语法</p>
-<p>-<strong>语气保持</strong>：尽量保持原文的语气和感情色彩</p>
-<h3 id="3-沉浸式显示"><a href="#3-沉浸式显示" class="headerlink" title="3. 沉浸式显示"></a>3. 沉浸式显示</h3><h4 id="显示方式"><a href="#显示方式" class="headerlink" title="显示方式"></a>显示方式</h4><p>-<strong>原文保留</strong>：原始文言文内容保持不变</p>
-<p>-<strong>下方显示</strong>：翻译结果显示在原文正下方</p>
-<p>-<strong>视觉区分</strong>：通过背景色、边框等视觉元素区分原文和译文</p>
-<h4 id="样式设计"><a href="#样式设计" class="headerlink" title="样式设计"></a>样式设计</h4><p>-<strong>渐变背景</strong>：使用柔和的渐变色突出翻译内容</p>
-<p>-<strong>圆角边框</strong>：现代化的圆角设计，提升视觉体验</p>
-<p>-<strong>阴影效果</strong>：轻微的阴影增加层次感</p>
-<p>-<strong>响应式布局</strong>：适配不同屏幕尺寸</p>
-<h3 id="4-用户交互"><a href="#4-用户交互" class="headerlink" title="4. 用户交互"></a>4. 用户交互</h3><h4 id="自动翻译"><a href="#自动翻译" class="headerlink" title="自动翻译"></a>自动翻译</h4><p>-<strong>页面扫描</strong>：加载页面时自动扫描文言文内容</p>
-<p>-<strong>动态监听</strong>：监听页面内容变化，翻译新增的文言文</p>
-<p>-<strong>智能过滤</strong>：避免翻译过短或明显不是文言文的内容</p>
-<h4 id="手动翻译"><a href="#手动翻译" class="headerlink" title="手动翻译"></a>手动翻译</h4><p>-<strong>右键菜单</strong>：选中文本后右键选择翻译</p>
-<p>-<strong>快捷操作</strong>：通过插件图标快速开启&#x2F;关闭功能</p>
-<p>-<strong>设置管理</strong>：详细的设置界面管理各项功能</p>
-<h2 id="🔧-技术架构"><a href="#🔧-技术架构" class="headerlink" title="🔧 技术架构"></a>🔧 技术架构</h2><h3 id="前端技术栈"><a href="#前端技术栈" class="headerlink" title="前端技术栈"></a>前端技术栈</h3><p>-<strong>HTML5</strong>：现代化的页面结构</p>
-<p>-<strong>CSS3</strong>：使用Grid、Flexbox等现代布局技术</p>
-<p>-**JavaScript ES6+**：使用现代JavaScript特性</p>
-<p>-<strong>Chrome Extension API</strong>：Manifest V3规范</p>
-<h3 id="核心模块"><a href="#核心模块" class="headerlink" title="核心模块"></a>核心模块</h3><h4 id="Content-Script（内容脚本）"><a href="#Content-Script（内容脚本）" class="headerlink" title="Content Script（内容脚本）"></a>Content Script（内容脚本）</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 主要功能：</span></span><br><span class="line"></span><br><span class="line">- <span class="variable constant_">DOM</span>监听和文本识别</span><br><span class="line"></span><br><span class="line">- 翻译结果插入和显示</span><br><span class="line"></span><br><span class="line">- 用户交互事件处理</span><br><span class="line"></span><br><span class="line">- 页面样式动态调整</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="Background-Script（后台脚本）"><a href="#Background-Script（后台脚本）" class="headerlink" title="Background Script（后台脚本）"></a>Background Script（后台脚本）</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 主要功能：</span></span><br><span class="line"></span><br><span class="line">- <span class="variable constant_">API</span>请求处理</span><br><span class="line"></span><br><span class="line">- 右键菜单管理</span><br><span class="line"></span><br><span class="line">- 存储数据管理</span><br><span class="line"></span><br><span class="line">- 跨页面通信</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="Popup-Interface（弹窗界面）"><a href="#Popup-Interface（弹窗界面）" class="headerlink" title="Popup Interface（弹窗界面）"></a>Popup Interface（弹窗界面）</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 主要功能：</span></span><br><span class="line"></span><br><span class="line">- 用户设置管理</span><br><span class="line"></span><br><span class="line">- <span class="variable constant_">API</span>密钥配置</span><br><span class="line"></span><br><span class="line">- 功能开关控制</span><br><span class="line"></span><br><span class="line">- 状态显示和反馈</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="数据流程"><a href="#数据流程" class="headerlink" title="数据流程"></a>数据流程</h3><p>1.<strong>识别阶段</strong>：Content Script扫描页面文本</p>
-<p>2.<strong>判断阶段</strong>：使用识别算法判断是否为文言文</p>
-<p>3.<strong>请求阶段</strong>：Background Script调用DeepSeek API</p>
-<p>4.<strong>翻译阶段</strong>：AI模型处理并返回翻译结果</p>
-<p>5.<strong>显示阶段</strong>：Content Script将结果插入页面</p>
-<h2 id="🎨-用户界面设计"><a href="#🎨-用户界面设计" class="headerlink" title="🎨 用户界面设计"></a>🎨 用户界面设计</h2><h3 id="设计理念"><a href="#设计理念" class="headerlink" title="设计理念"></a>设计理念</h3><p>-<strong>简洁现代</strong>：采用现代化的设计语言</p>
-<p>-<strong>文化融合</strong>：融入中国传统文化元素</p>
-<p>-<strong>用户友好</strong>：操作简单，学习成本低</p>
-<p>-<strong>视觉舒适</strong>：配色柔和，减少视觉疲劳</p>
-<h3 id="色彩方案"><a href="#色彩方案" class="headerlink" title="色彩方案"></a>色彩方案</h3><p>-<strong>主色调</strong>：蓝紫渐变（#667eea - #764ba2）</p>
-<p>-<strong>辅助色</strong>：清新蓝绿（#4facfe - #00f2fe）</p>
-<p>-<strong>强调色</strong>：温暖橙黄（#fbbf24）</p>
-<p>-<strong>文本色</strong>：深灰色（#2c3e50）</p>
-<h3 id="图标设计"><a href="#图标设计" class="headerlink" title="图标设计"></a>图标设计</h3><p>-<strong>主图标</strong>：📜 卷轴，象征古典文献</p>
-<p>-<strong>备选图标</strong>：✒️ 毛笔、📖 书本、🎋 竹子</p>
-<p>-<strong>尺寸规格</strong>：16x16、48x48、128x128像素</p>
-<h2 id="📊-使用数据分析"><a href="#📊-使用数据分析" class="headerlink" title="📊 使用数据分析"></a>📊 使用数据分析</h2><h3 id="适用网站类型"><a href="#适用网站类型" class="headerlink" title="适用网站类型"></a>适用网站类型</h3><p>1.<strong>古典文学网站</strong>（使用频率最高）</p>
-<ul>
-<li>古诗文网、诗词名句网等</li>
-<li>国学经典网站</li>
-<li>文言文学习平台</li>
-</ul>
-<p>2.<strong>教育学习网站</strong>（使用频率较高）</p>
-<ul>
-<li>在线课程平台</li>
-<li>学术论文网站</li>
-<li>教育资源网站</li>
-</ul>
-<p>3.<strong>新闻资讯网站</strong>（偶尔使用）</p>
-<ul>
-<li>文化类新闻报道</li>
-<li>历史类文章</li>
-<li>书评和文学评论</li>
-</ul>
-<h3 id="用户行为模式"><a href="#用户行为模式" class="headerlink" title="用户行为模式"></a>用户行为模式</h3><p>-<strong>学习型用户</strong>：经常使用，关注翻译准确性</p>
-<p>-<strong>浏览型用户</strong>：偶尔使用，追求便捷性</p>
-<p>-<strong>研究型用户</strong>：深度使用，需要详细功能</p>
-<h2 id="🔒-隐私和安全"><a href="#🔒-隐私和安全" class="headerlink" title="🔒 隐私和安全"></a>🔒 隐私和安全</h2><h3 id="数据处理原则"><a href="#数据处理原则" class="headerlink" title="数据处理原则"></a>数据处理原则</h3><p>-<strong>最小化收集</strong>：只收集必要的翻译文本</p>
-<p>-<strong>本地存储</strong>：API密钥等敏感信息仅本地存储</p>
-<p>-<strong>透明处理</strong>：明确告知用户数据使用方式</p>
-<p>-<strong>用户控制</strong>：用户可随时删除存储的数据</p>
-<h3 id="安全措施"><a href="#安全措施" class="headerlink" title="安全措施"></a>安全措施</h3><p>-<strong>HTTPS传输</strong>：所有API请求使用HTTPS加密</p>
-<p>-<strong>输入验证</strong>：对用户输入进行安全验证</p>
-<p>-<strong>权限最小化</strong>：只申请必要的浏览器权限</p>
-<p>-<strong>定期更新</strong>：及时修复安全漏洞</p>
-<h2 id="📈-性能优化"><a href="#📈-性能优化" class="headerlink" title="📈 性能优化"></a>📈 性能优化</h2><h3 id="识别性能"><a href="#识别性能" class="headerlink" title="识别性能"></a>识别性能</h3><p>-<strong>延迟加载</strong>：避免阻塞页面渲染</p>
-<p>-<strong>缓存机制</strong>：缓存已翻译的内容</p>
-<p>-<strong>批量处理</strong>：将多个翻译请求合并处理</p>
-<p>-<strong>智能节流</strong>：控制API请求频率</p>
-<h3 id="显示性能"><a href="#显示性能" class="headerlink" title="显示性能"></a>显示性能</h3><p>-<strong>CSS优化</strong>：使用硬件加速的CSS属性</p>
-<p>-<strong>DOM操作优化</strong>：减少不必要的DOM操作</p>
-<p>-<strong>内存管理</strong>：及时清理不需要的数据</p>
-<p>-<strong>响应式设计</strong>：适配不同设备性能</p>
-<h2 id="🚀-未来发展规划"><a href="#🚀-未来发展规划" class="headerlink" title="🚀 未来发展规划"></a>🚀 未来发展规划</h2><h3 id="短期目标（1-3个月）"><a href="#短期目标（1-3个月）" class="headerlink" title="短期目标（1-3个月）"></a>短期目标（1-3个月）</h3><p>-<strong>功能完善</strong>：修复已知bug，优化用户体验</p>
-<p>-<strong>兼容性提升</strong>：支持更多网站和浏览器</p>
-<p>-<strong>翻译质量</strong>：提升识别准确率和翻译质量</p>
-<p>-<strong>用户反馈</strong>：收集用户意见，持续改进</p>
-<h3 id="中期目标（3-6个月）"><a href="#中期目标（3-6个月）" class="headerlink" title="中期目标（3-6个月）"></a>中期目标（3-6个月）</h3><p>-<strong>多语言支持</strong>：支持翻译为英文、日文等</p>
-<p>-<strong>离线功能</strong>：提供基础的离线翻译能力</p>
-<p>-<strong>学习模式</strong>：添加文言文学习辅助功能</p>
-<p>-<strong>社区功能</strong>：用户可分享翻译和学习心得</p>
-<h3 id="长期目标（6-12个月）"><a href="#长期目标（6-12个月）" class="headerlink" title="长期目标（6-12个月）"></a>长期目标（6-12个月）</h3><p>-<strong>移动端适配</strong>：开发移动浏览器版本</p>
-<p>-<strong>AI优化</strong>：训练专门的文言文翻译模型</p>
-<p>-<strong>教育合作</strong>：与教育机构合作推广</p>
-<p>-<strong>生态建设</strong>：构建完整的文言文学习生态</p>
-<h2 id="💡-使用建议"><a href="#💡-使用建议" class="headerlink" title="💡 使用建议"></a>💡 使用建议</h2><h3 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h3><p>1.<strong>合理设置</strong>：根据需要调整翻译敏感度</p>
-<p>2.<strong>网络环境</strong>：确保网络连接稳定</p>
-<p>3.<strong>API使用</strong>：合理使用API避免超额费用</p>
-<p>4.<strong>学习结合</strong>：将翻译作为学习辅助工具</p>
-<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>1.<strong>翻译准确性</strong>：AI翻译仅供参考，重要场合需人工校验</p>
-<p>2.<strong>版权问题</strong>：注意翻译内容的版权和使用范围</p>
-<p>3.<strong>隐私保护</strong>：不要翻译包含敏感信息的内容</p>
-<p>4.<strong>网站兼容</strong>：某些网站可能存在兼容性问题</p>
-<h2 id="📞-支持与反馈"><a href="#📞-支持与反馈" class="headerlink" title="📞 支持与反馈"></a>📞 支持与反馈</h2><h3 id="获取帮助"><a href="#获取帮助" class="headerlink" title="获取帮助"></a>获取帮助</h3><p>-<strong>使用说明</strong>：查看README.md和发布指南</p>
-<p>-<strong>常见问题</strong>：查看FAQ部分</p>
-<p>-<strong>社区讨论</strong>：GitHub Issues讨论区</p>
-<p>-<strong>开发者联系</strong>：通过GitHub联系开发者</p>
-<h3 id="反馈渠道"><a href="#反馈渠道" class="headerlink" title="反馈渠道"></a>反馈渠道</h3><p>-<strong>Bug报告</strong>：通过GitHub Issues报告问题</p>
-<p>-<strong>功能建议</strong>：提交Feature Request</p>
-<p>-<strong>使用体验</strong>：在Chrome Web Store评价</p>
-<p>-<strong>直接联系</strong>：通过邮件联系开发团队</p>
-<hr>
-<p><em>本文档将持续更新，反映插件的最新功能和改进。感谢您使用文言文现代翻译助手！</em></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>health</title>
-    <url>/2025/06/12/health/</url>
-    <content><![CDATA[<table>
-<thead>
-<tr>
-<th>Habit</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>Regular Physical Activity: Engage in 150 min&#x2F;week of moderate aerobic exercise or 75 min&#x2F;week of vigorous exercise, plus strength training twice weekly.</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Balanced Diet: Consume fruits, vegetables, whole grains, lean proteins, and healthy fats; limit processed foods, sugar, and salt.</td>
-</tr>
-<tr>
-<td>3</td>
-<td>Regular Health Screenings: Monitor blood pressure, cholesterol, and blood sugar; follow age-appropriate check-up schedules.</td>
-</tr>
-<tr>
-<td>4</td>
-<td>Prostate Health: Be aware of prostate issues; consider screening from age 50 or earlier if at risk.</td>
-</tr>
-<tr>
-<td>5</td>
-<td>Avoid Tobacco, Limit Alcohol: Quit smoking; limit alcohol to two drinks&#x2F;day.</td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th>习惯</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>定期体育锻炼：每周进行 150 分钟的中等强度有氧运动或 75 分钟&#x2F;周的剧烈运动，外加每周两次的力量训练。</td>
-</tr>
-<tr>
-<td>2</td>
-<td>均衡饮食：食用水果、蔬菜、全谷物、瘦肉蛋白和健康脂肪;限制加工食品、糖和盐。</td>
-</tr>
-<tr>
-<td>3</td>
-<td>定期健康检查：监测血压、胆固醇和血糖;遵循适合年龄的体检时间表。</td>
-</tr>
-<tr>
-<td>4</td>
-<td>前列腺健康：注意前列腺问题;如果有风险，考虑从 50 岁或更早开始进行筛查。</td>
-</tr>
-<tr>
-<td>5</td>
-<td>避免吸烟，限制饮酒：戒烟;将酒精限制在每天两杯。</td>
-</tr>
-</tbody></table>
-]]></content>
-      <tags>
-        <tag>health</tag>
       </tags>
   </entry>
   <entry>
@@ -711,6 +711,32 @@
 ]]></content>
   </entry>
   <entry>
+    <title>使用tailscale组网 使用家里打印机</title>
+    <url>/2026/03/15/%E4%BD%BF%E7%94%A8tailscale%E7%BB%84%E7%BD%91-%E4%BD%BF%E7%94%A8%E5%AE%B6%E9%87%8C%E6%89%93%E5%8D%B0%E6%9C%BA/</url>
+    <content><![CDATA[<p>在 Ubuntu 上开启子网广播</p>
+<h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p><strong>确定家里的网段：</strong> 通常是 <code>192.168.1.0/24</code> 或 <code>192.168.0.0/24</code></p>
+<p><strong>开启 IP 转发（内核层面）：</strong><br>运行以下命令：</p>
+<p><strong>Bash</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;net.ipv4.ip_forward = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">echo &#x27;net.ipv6.conf.all.forwarding = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">sudo sysctl -p /etc/sysctl.d/99-tailscale.conf</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>启动子网路由：</strong><br>运行以下命令（将 <code>192.168.1.0/24</code> 替换为你家里的实际网段）：</p>
+<p><strong>Bash</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo tailscale up --advertise-routes=192.168.1.0/24</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="第二步：在-Tailscale-控制面板允许路由"><a href="#第二步：在-Tailscale-控制面板允许路由" class="headerlink" title="第二步：在 Tailscale 控制面板允许路由"></a>第二步：在 Tailscale 控制面板允许路由</h3><p>为了安全，Tailscale 默认不会自动启用路由，需要你手动点一下：</p>
+<ol>
+<li>打开 <a href="https://login.tailscale.com/admin/machines">Tailscale Admin Console</a>。</li>
+<li>找到你的 <strong>Ubuntu</strong> 设备。</li>
+<li>点击右侧的三个点 <code>...</code> -&gt;  <strong>Edit route settings</strong> 。</li>
+<li>在 <strong>Subnet routes</strong> 下，勾选你刚才添加的网段，点击确认。</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
     <title>在 Claude Code CLI 中使用 DeepSeek 作为模型</title>
     <url>/2026/03/15/use-deepseek-as-model-in-claude-code-cli/</url>
     <content><![CDATA[<p>Claude Code 是 Anthropic 的 AI 编程助手，默认只使用 Anthropic 的模型。通过环境变量 <code>ANTHROPIC_BASE_URL</code> 可以切换 API 端点，DeepSeek 官方提供了 <strong>Anthropic API 兼容</strong> 的接口，因此可以直接把 Claude Code CLI 接到 DeepSeek，无需代理或第三方路由。</p>
@@ -799,54 +825,15 @@
       </tags>
   </entry>
   <entry>
-    <title>使用tailscale组网 使用家里打印机</title>
-    <url>/2026/03/15/%E4%BD%BF%E7%94%A8tailscale%E7%BB%84%E7%BD%91-%E4%BD%BF%E7%94%A8%E5%AE%B6%E9%87%8C%E6%89%93%E5%8D%B0%E6%9C%BA/</url>
-    <content><![CDATA[<p>在 Ubuntu 上开启子网广播</p>
-<h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p><strong>确定家里的网段：</strong> 通常是 <code>192.168.1.0/24</code> 或 <code>192.168.0.0/24</code></p>
-<p><strong>开启 IP 转发（内核层面）：</strong><br>运行以下命令：</p>
-<p><strong>Bash</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;net.ipv4.ip_forward = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">echo &#x27;net.ipv6.conf.all.forwarding = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">sudo sysctl -p /etc/sysctl.d/99-tailscale.conf</span><br></pre></td></tr></table></figure>
-
-
-<p><strong>启动子网路由：</strong><br>运行以下命令（将 <code>192.168.1.0/24</code> 替换为你家里的实际网段）：</p>
-<p><strong>Bash</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo tailscale up --advertise-routes=192.168.1.0/24</span><br></pre></td></tr></table></figure>
-
-
-
-
-<h3 id="第二步：在-Tailscale-控制面板允许路由"><a href="#第二步：在-Tailscale-控制面板允许路由" class="headerlink" title="第二步：在 Tailscale 控制面板允许路由"></a>第二步：在 Tailscale 控制面板允许路由</h3><p>为了安全，Tailscale 默认不会自动启用路由，需要你手动点一下：</p>
-<ol>
-<li>打开 <a href="https://login.tailscale.com/admin/machines">Tailscale Admin Console</a>。</li>
-<li>找到你的 <strong>Ubuntu</strong> 设备。</li>
-<li>点击右侧的三个点 <code>...</code> -&gt;  <strong>Edit route settings</strong> 。</li>
-<li>在 <strong>Subnet routes</strong> 下，勾选你刚才添加的网段，点击确认。</li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
-    <title>查看电脑的电池状态</title>
-    <url>/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/</url>
-    <content><![CDATA[<p>没有特殊软件的情况下，使用powershell命令生成电池使用情况报告</p>
-<p>在 PowerShell（管理员模式）输入 powercfg &#x2F;batteryreport，系统会生成一个 HTML 报告，包含电池设计容量、当前满电容量、充放电历史等信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">powercfg /batteryreport</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>运行后生成一个html文件 batteryreport.html</p>
-<p>使用浏览器打开这个html文件  </p>
-<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070792534.png" class="" width="1748070792534">
-
-
-<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070821322.png" class="" width="1748070821322">
-
+    <title>浙石化序</title>
+    <url>/2025/07/07/%E6%B5%99%E7%9F%B3%E5%8C%96%E5%BA%8F/</url>
+    <content><![CDATA[<p>浙东形胜，三衢古郡，舟山新府。襟东海而带杭湾，控岛链而引巨舶。物华天宝，原油映碧海之光;人杰地灵，工匠聚寰宇之智。雄州雾列，塔器参天;货积云屯，管道织地。时维仲夏，序属清和，掌舵人邀宾朋于鱼山，展宏图于海隅。群贤毕至，少长成集，观此化工新城，敢竭鄙诚，恭疏短引。<br>若夫巨浸茫茫，沧波浩荡。昔者荒礁寂寥，渔火零星;今朝钢构峥，银灯璀璨。削峰填壑，六载功成;跨海连洲，百里势就。银罐如林，贮寰球之黑金;铁轨似弦，奏工业之强音。裂解装置耸若剑阁，催化高塔峻比雷峰。火炬凌雪，夜燃不灭之<br>炬;码头枕浪，朝发万吨之舟。<br>至若生产之盛，则见管道蟠空，银蛇舞壑;仪表星罗，明眸察微。中央控室，决胜千里之外;智能系统，运筹方寸之间。<br>原油分馏，轻质化而为汽柴;分子重构，烯烃聚而成塑胶。芳烃织锦衣之梦，PX解化纤之渴。硫黄变废为宝，尾气点石成金。<br>节能减排，树绿色标杆;循环利用，开生态新篇。若乃创新之道，院十工作站藏龙卧虎，博十后基地起凤腾蛟。专利千项，破外邦之垄断;标准百家，立行业之丰泉。纳米催化，巧夺造化;智能炼厂，智领未来。校企联姻，产学研一体;中外合作，技贸融三通。斯诚东海之硅谷，实乃化工之殿<br>早:嗟乎!石化兴衰，关乎国运。昔闻大庆精神，铁人泣血;今见浙石气象，海匠呕心。老牌炼厂，困陈规而式微;新兴基地，乘东风而崛起。屈子求索，路漫漫其修远;愚公移山，志巍巍而不改。岂效守成之辈，坐享其成?敢为天下先，方兄英雄色。<br>掌舵人，精神抖擞，壮志凌云。掌千亿之资，立百年之业。创新驱动，布新局如弈棋;安全为本，守红线若履冰。绿色低碳，岂止合规达标?数字智能，更求行业引领。呜呯!碧海蓝天，岂与黑烟共存?金山银山，终须绿水相伴。所赖转型及时，未雨绸缪。<br>敢竭鄙怀，恭疏短引。一言均赋，四韵俱成:鱼山螺岛起宏图，钢构连云海气殊。裂解千钧轻似羽，合成万象妙如珠。智能已破重洋术，绿色新开双碳途。莫道化工皆浊物，今看白舞银炉。</p>
 ]]></content>
   </entry>
   <entry>
     <title>瘦身密码（一）：中国式发福图鉴——14亿人的体重失控现场</title>
     <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B8%AD%E5%9B%BD%E5%BC%8F%E5%8F%91%E7%A6%8F%E5%9B%BE%E9%89%B4/</url>
-    <content><![CDATA[<blockquote>
-<p>本文系列整理自孙贵香主编《瘦身密码：九体医学视角下的体重管理》（科学出版社，2025），主审王琦院士。</p>
-</blockquote>
-<h2 id="从「吃不饱」到「瘦不了」"><a href="#从「吃不饱」到「瘦不了」" class="headerlink" title="从「吃不饱」到「瘦不了」"></a>从「吃不饱」到「瘦不了」</h2><p>近三十年，中国人以惊人速度「胖」了起来。据《中国居民营养与慢性病状况报告（2020）》，成年居民超重率 34.3%、肥胖率 16.4%——<strong>每 2 个成年人就有 1 人面临超重&#x2F;肥胖威胁</strong>。</p>
+    <content><![CDATA[<p>近三十年，中国人以惊人速度「胖」了起来。据《中国居民营养与慢性病状况报告（2020）》，成年居民超重率 34.3%、肥胖率 16.4%——<strong>每 2 个成年人就有 1 人面临超重&#x2F;肥胖威胁</strong>。</p>
 <p>更令人警醒的是增速：1989 年中国超重人口约 1.67 亿，2009 年增至 5.29 亿，20 年间每天约增加 4.9 万人，年均增长率 10.8%，超过同期 GDP 增速。《柳叶刀》估算，2021 年全球超重&#x2F;肥胖成年人 21.1 亿，中国以 4.02 亿居首；预计到 2050 年，全球将有超过一半成年人超重&#x2F;肥胖。</p>
 <p>若以腰围衡量腹型肥胖，2009 年中国腹型肥胖人口约 6.7 亿，超过欧美总和。李新华等团队在《柳叶刀》发表的研究显示，2004～2018 年间，18～69 岁人群标准化平均 BMI 从 22.7 升至 24.4 kg&#x2F;m²，肥胖患病率（BMI≥30）从 3.1% 升至 8.1%。2018 年肥胖人数约 8500 万，是 2004 年的三倍。</p>
 <h2 id="谁更容易发胖？"><a href="#谁更容易发胖？" class="headerlink" title="谁更容易发胖？"></a>谁更容易发胖？</h2><p>肥胖增长并非均匀分布，城乡、性别、年龄各有特点：</p>
@@ -903,9 +890,6 @@
 <p><strong>建议：</strong> 除定期测 BMI 外，务必关注腰围和腰臀比（亚洲男性上限 0.9，女性 0.8）。</p>
 <h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>肥胖威胁的不只是外形，更是心血管、代谢、呼吸、骨骼乃至心理的全方位健康。2024 年「体重管理年」与「九体医学健康中国计划」的推进，标志着体重管理正从「一刀切节食」走向<strong>个体化、科学化、中西医协同</strong>的新阶段。</p>
 <p>下一篇，我们将拆解「脂肪工厂」——脂肪从何而来，以及什么才是科学的减肥马拉松。</p>
-<hr>
-<p><strong>参考文献</strong></p>
-<p>孙贵香主编. 瘦身密码：九体医学视角下的体重管理[M]. 北京: 科学出版社, 2025.</p>
 ]]></content>
       <tags>
         <tag>健康</tag>
@@ -914,127 +898,25 @@
       </tags>
   </entry>
   <entry>
-    <title>浙石化序</title>
-    <url>/2025/07/07/%E6%B5%99%E7%9F%B3%E5%8C%96%E5%BA%8F/</url>
-    <content><![CDATA[<p>浙东形胜，三衢古郡，舟山新府。襟东海而带杭湾，控岛链而引巨舶。物华天宝，原油映碧海之光;人杰地灵，工匠聚寰宇之智。雄州雾列，塔器参天;货积云屯，管道织地。时维仲夏，序属清和，掌舵人邀宾朋于鱼山，展宏图于海隅。群贤毕至，少长成集，观此化工新城，敢竭鄙诚，恭疏短引。<br>若夫巨浸茫茫，沧波浩荡。昔者荒礁寂寥，渔火零星;今朝钢构峥，银灯璀璨。削峰填壑，六载功成;跨海连洲，百里势就。银罐如林，贮寰球之黑金;铁轨似弦，奏工业之强音。裂解装置耸若剑阁，催化高塔峻比雷峰。火炬凌雪，夜燃不灭之<br>炬;码头枕浪，朝发万吨之舟。<br>至若生产之盛，则见管道蟠空，银蛇舞壑;仪表星罗，明眸察微。中央控室，决胜千里之外;智能系统，运筹方寸之间。<br>原油分馏，轻质化而为汽柴;分子重构，烯烃聚而成塑胶。芳烃织锦衣之梦，PX解化纤之渴。硫黄变废为宝，尾气点石成金。<br>节能减排，树绿色标杆;循环利用，开生态新篇。若乃创新之道，院十工作站藏龙卧虎，博十后基地起凤腾蛟。专利千项，破外邦之垄断;标准百家，立行业之丰泉。纳米催化，巧夺造化;智能炼厂，智领未来。校企联姻，产学研一体;中外合作，技贸融三通。斯诚东海之硅谷，实乃化工之殿<br>早:嗟乎!石化兴衰，关乎国运。昔闻大庆精神，铁人泣血;今见浙石气象，海匠呕心。老牌炼厂，困陈规而式微;新兴基地，乘东风而崛起。屈子求索，路漫漫其修远;愚公移山，志巍巍而不改。岂效守成之辈，坐享其成?敢为天下先，方兄英雄色。<br>掌舵人，精神抖擞，壮志凌云。掌千亿之资，立百年之业。创新驱动，布新局如弈棋;安全为本，守红线若履冰。绿色低碳，岂止合规达标?数字智能，更求行业引领。呜呯!碧海蓝天，岂与黑烟共存?金山银山，终须绿水相伴。所赖转型及时，未雨绸缪。<br>敢竭鄙怀，恭疏短引。一言均赋，四韵俱成:鱼山螺岛起宏图，钢构连云海气殊。裂解千钧轻似羽，合成万象妙如珠。智能已破重洋术，绿色新开双碳途。莫道化工皆浊物，今看白舞银炉。</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>瘦身密码（三）：九体医学入门——解锁你的体质密码</title>
-    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6%E4%BD%93%E8%B4%A8%E5%AF%86%E7%A0%81%E5%85%A5%E9%97%A8/</url>
-    <content><![CDATA[<blockquote>
-<p>本文系列整理自孙贵香主编《瘦身密码：九体医学视角下的体重管理》（科学出版社，2025），理论源自国医大师王琦院士团队。</p>
-</blockquote>
-<h2 id="世界上没有两片相同的树叶"><a href="#世界上没有两片相同的树叶" class="headerlink" title="世界上没有两片相同的树叶"></a>世界上没有两片相同的树叶</h2><p>九体医学以九种体质分类为指导，研究体质特征与疾病的相关性，从而指导预防、治疗与养生康复。王琦院士将人群科学分为九种类型：</p>
-<table>
-<thead>
-<tr>
-<th>体质</th>
-<th>形象比喻</th>
-<th>典型特征（口诀）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>平和质</strong></td>
-<td>小太阳</td>
-<td>气血匀，面红润，目光炯，元气振</td>
-</tr>
-<tr>
-<td><strong>气虚质</strong></td>
-<td>小懒猫</td>
-<td>常气短，虚汗浸，懒言语，易疲晕</td>
-</tr>
-<tr>
-<td><strong>阳虚质</strong></td>
-<td>小冰块</td>
-<td>手足冰，腰膝冷，舌淡胖，夜尿频</td>
-</tr>
-<tr>
-<td><strong>阴虚质</strong></td>
-<td>小火苗</td>
-<td>颧潮红，五心热，口咽干，便秘困</td>
-</tr>
-<tr>
-<td><strong>痰湿质</strong></td>
-<td>小水库</td>
-<td>体臃肿，大肚腩，鼾声大，腹胀闷</td>
-</tr>
-<tr>
-<td><strong>湿热质</strong></td>
-<td>小蒸笼</td>
-<td>面油腻，痤疮丛，常口臭，便黏滞</td>
-</tr>
-<tr>
-<td><strong>血瘀质</strong></td>
-<td>小堵车</td>
-<td>唇舌黯，黑眼圈，痛如刺，易长斑</td>
-</tr>
-<tr>
-<td><strong>气郁质</strong></td>
-<td>小气球</td>
-<td>眉紧蹙，多善感，常郁闷，结节生</td>
-</tr>
-<tr>
-<td><strong>特禀质</strong></td>
-<td>小敏感</td>
-<td>易过敏，风团起，喷嚏疾，泪涟涕</td>
-</tr>
-</tbody></table>
-<p><strong>平和质</strong>是健康基准；其余八种为偏颇体质，如同八条通往特定疾病的道路——早发现、早调体，就能掉头往回走。</p>
-<h2 id="九体医学与精准医学"><a href="#九体医学与精准医学" class="headerlink" title="九体医学与精准医学"></a>九体医学与精准医学</h2><p>2015 年，王琦院士团队提出「九体医学健康计划」，被视为中国版「精准医学」：与奥巴马「精准医学」计划同年亮相，却更强调中医「治未病」「同病异治」思想。</p>
-<ul>
-<li>体质辨识已纳入《国家基本公共卫生服务标准》</li>
-<li>《中医体质分类与判定》量表已翻译成英、日、韩等多国语言</li>
-<li>覆盖全国 31 个省区，应用于健康管理、亚健康调理、慢病防控</li>
-</ul>
-<p>古籍早有端倪：「肥人多痰湿」（朱丹溪）、「阴阳匀平……命曰平人」（《素问》）。王琦院士用 40 余年研究，将零散珍珠串成体系。</p>
-<h2 id="四大原理"><a href="#四大原理" class="headerlink" title="四大原理"></a>四大原理</h2><ol>
-<li><strong>体质过程论</strong>：体质随年龄阶段演变，养生应因时而异</li>
-<li><strong>形神构成论</strong>：躯体与心理一体，痰湿质者情绪稳定型居多</li>
-<li><strong>环境制约论</strong>：饮食、气候、地理塑造体质——嗜肥甘生痰湿，过逸成痰瘀</li>
-<li><strong>禀赋遗传论</strong>：先天禀赋决定体质底色，后天仍可调节</li>
-</ol>
-<h2 id="三大核心"><a href="#三大核心" class="headerlink" title="三大核心"></a>三大核心</h2><ul>
-<li><strong>体质可分论</strong>：个体差异与群体趋同性并存</li>
-<li><strong>体病相关论</strong>：痰湿质易患肥胖、三高；气虚质易感冒、内脏下垂；血瘀质易患肿瘤、痛证</li>
-<li><strong>体质可调论</strong>：偏颇体质可通过饮食、起居、运动、情志干预改善</li>
-</ul>
-<h2 id="与肥胖的关系"><a href="#与肥胖的关系" class="headerlink" title="与肥胖的关系"></a>与肥胖的关系</h2><p>肥胖与体质密切相关：</p>
-<ul>
-<li><strong>痰湿质</strong>：中心性肥胖、高血脂、高血糖、高血压高发——「祛湿排浊才是真抽脂」</li>
-<li><strong>气虚质</strong>：肉松垮、动则气短，减肥效率低</li>
-<li><strong>阳虚质</strong>：怕冷，脂肪像「穿羽绒服」保温</li>
-<li><strong>气郁质</strong>：压力肥，焦虑时暴食，肉易堆腰腹</li>
-<li><strong>湿热质</strong>：脸油肚凸，「油胖子」需清火除湿</li>
-<li><strong>血瘀质</strong>：肉硬、循环差，减肥像挤牙膏</li>
-</ul>
-<p>国家 2024 年「体重管理年」方案明确发挥中医药技术优势；王琦院士「九体医学健康中国计划」正是体重个体化管理的理论基础。</p>
-<h2 id="如何判定自己的体质？"><a href="#如何判定自己的体质？" class="headerlink" title="如何判定自己的体质？"></a>如何判定自己的体质？</h2><p>依据《中医体质分类与判定》标准：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">原始分 = 各条目分值相加</span><br><span class="line">转化分 = [(原始分 − 条目数) / (条目数 × 4)] × 100</span><br></pre></td></tr></table></figure>
+    <title>查看电脑的电池状态</title>
+    <url>/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/</url>
+    <content><![CDATA[<p>没有特殊软件的情况下，使用powershell命令生成电池使用情况报告</p>
+<p>在 PowerShell（管理员模式）输入 powercfg &#x2F;batteryreport，系统会生成一个 HTML 报告，包含电池设计容量、当前满电容量、充放电历史等信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">powercfg /batteryreport</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p><strong>平和质</strong>：转化分 ≥60，且其余 8 种均 &lt;30（或均 &lt;40 为「基本是」）</p>
-<p><strong>偏颇质</strong>：转化分 ≥40 为「是」；30～39 为「倾向是」</p>
-<p>建议通过正规医疗机构或社区卫生中心的体质辨识服务获取准确结果，勿仅凭网络测试下定论。</p>
-<h2 id="体质不是终身标签"><a href="#体质不是终身标签" class="headerlink" title="体质不是终身标签"></a>体质不是终身标签</h2><p>体质会随环境、饮食、情绪变化而调整。一方水土养一方人，养生需<strong>因人制宜、因时制宜</strong>——读懂身体密码，才能把健康主动权握在自己手里。</p>
-<p>下一篇将进入实战：<strong>九大体质的科学甩肉指南</strong>，痰湿、湿热、阳虚……各有什么吃法、练法和穴位？</p>
-<hr>
-<p><strong>参考文献</strong></p>
-<p>孙贵香主编. 瘦身密码：九体医学视角下的体重管理[M]. 北京: 科学出版社, 2025.</p>
-<p>王琦. 中医体质学[M]. 北京: 人民卫生出版社.</p>
+<p>运行后生成一个html文件 batteryreport.html</p>
+<p>使用浏览器打开这个html文件  </p>
+<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070792534.png" class="" width="1748070792534">
+
+
+<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070821322.png" class="" width="1748070821322">
+
 ]]></content>
-      <tags>
-        <tag>健康</tag>
-        <tag>九体医学</tag>
-        <tag>中医体质</tag>
-      </tags>
   </entry>
   <entry>
     <title>瘦身密码（五）：甜蜜陷阱——肥胖引爆的八大健康地雷</title>
     <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%82%A5%E8%83%96%E5%85%AB%E5%A4%A7%E5%81%A5%E5%BA%B7%E5%9C%B0%E9%9B%B7/</url>
-    <content><![CDATA[<blockquote>
-<p>本文系列整理自孙贵香主编《瘦身密码：九体医学视角下的体重管理》（科学出版社，2025）。</p>
-</blockquote>
-<p>肥胖是健康的「隐形杀手」——影响的不只是外形，而是心血管、代谢、内分泌、呼吸、骨骼、生殖乃至心理的全系统连锁反应。以下梳理书中重点阐述的<strong>八大健康地雷</strong>及应对思路。</p>
+    <content><![CDATA[<p>肥胖是健康的「隐形杀手」——影响的不只是外形，而是心血管、代谢、内分泌、呼吸、骨骼、生殖乃至心理的全系统连锁反应。以下梳理书中重点阐述的<strong>八大健康地雷</strong>及应对思路。</p>
 <hr>
 <h2 id="1-糖尿病：胰岛素遇上甜甜圈"><a href="#1-糖尿病：胰岛素遇上甜甜圈" class="headerlink" title="1. 糖尿病：胰岛素遇上甜甜圈"></a>1. 糖尿病：胰岛素遇上甜甜圈</h2><p>中国 20～79 岁人群糖尿病患病率约 10.6%，患病人数约 1.41 亿。肥胖与糖尿病如影随形：</p>
 <ul>
@@ -1129,9 +1011,6 @@
 <li><strong>九体医学提供个体化路径</strong>——先识体质，再管体重，方能健康瘦身不反弹</li>
 </ol>
 <p>2024 年国家「体重管理年」已经启程。愿我们都不再以「换大码裤子」为常态，而是在读懂自己身体密码的基础上，走出属于自己的健康之路。</p>
-<hr>
-<p><strong>参考文献</strong></p>
-<p>孙贵香主编. 瘦身密码：九体医学视角下的体重管理[M]. 北京: 科学出版社, 2025.</p>
 ]]></content>
       <tags>
         <tag>健康</tag>
@@ -1140,132 +1019,215 @@
       </tags>
   </entry>
   <entry>
-    <title>瘦身密码（二）：脂肪工厂的运作密码——科学减肥是场马拉松</title>
-    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%84%82%E8%82%AA%E5%B7%A5%E5%8E%82%E4%B8%8E%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/</url>
-    <content><![CDATA[<blockquote>
-<p>本文系列整理自孙贵香主编《瘦身密码：九体医学视角下的体重管理》（科学出版社，2025）。</p>
-</blockquote>
-<h2 id="你真的需要减肥吗？"><a href="#你真的需要减肥吗？" class="headerlink" title="你真的需要减肥吗？"></a>你真的需要减肥吗？</h2><h3 id="BMI：有用，但不万能"><a href="#BMI：有用，但不万能" class="headerlink" title="BMI：有用，但不万能"></a>BMI：有用，但不万能</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">BMI = 体重(kg) ÷ 身高²(m²)</span><br></pre></td></tr></table></figure>
-
-<p>中国成人标准：</p>
+    <title>瘦身密码（三）：九体医学入门——解锁你的体质密码</title>
+    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6%E4%BD%93%E8%B4%A8%E5%AF%86%E7%A0%81%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<h2 id="世界上没有两片相同的树叶"><a href="#世界上没有两片相同的树叶" class="headerlink" title="世界上没有两片相同的树叶"></a>世界上没有两片相同的树叶</h2><p>九体医学以九种体质分类为指导，研究体质特征与疾病的相关性，从而指导预防、治疗与养生康复。王琦院士将人群科学分为九种类型：</p>
 <table>
 <thead>
 <tr>
-<th>分类</th>
-<th>BMI</th>
+<th>体质</th>
+<th>形象比喻</th>
+<th>典型特征（口诀）</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>体重过低</td>
-<td>&lt;18.5</td>
+<td><strong>平和质</strong></td>
+<td>小太阳</td>
+<td>气血匀，面红润，目光炯，元气振</td>
 </tr>
 <tr>
-<td>正常</td>
-<td>18.5～24</td>
+<td><strong>气虚质</strong></td>
+<td>小懒猫</td>
+<td>常气短，虚汗浸，懒言语，易疲晕</td>
 </tr>
 <tr>
-<td>超重</td>
-<td>24～28</td>
+<td><strong>阳虚质</strong></td>
+<td>小冰块</td>
+<td>手足冰，腰膝冷，舌淡胖，夜尿频</td>
 </tr>
 <tr>
-<td>肥胖</td>
-<td>≥28</td>
+<td><strong>阴虚质</strong></td>
+<td>小火苗</td>
+<td>颧潮红，五心热，口咽干，便秘困</td>
+</tr>
+<tr>
+<td><strong>痰湿质</strong></td>
+<td>小水库</td>
+<td>体臃肿，大肚腩，鼾声大，腹胀闷</td>
+</tr>
+<tr>
+<td><strong>湿热质</strong></td>
+<td>小蒸笼</td>
+<td>面油腻，痤疮丛，常口臭，便黏滞</td>
+</tr>
+<tr>
+<td><strong>血瘀质</strong></td>
+<td>小堵车</td>
+<td>唇舌黯，黑眼圈，痛如刺，易长斑</td>
+</tr>
+<tr>
+<td><strong>气郁质</strong></td>
+<td>小气球</td>
+<td>眉紧蹙，多善感，常郁闷，结节生</td>
+</tr>
+<tr>
+<td><strong>特禀质</strong></td>
+<td>小敏感</td>
+<td>易过敏，风团起，喷嚏疾，泪涟涕</td>
 </tr>
 </tbody></table>
-<p>BMI 对普通成年人实用，但对运动员等肌肉发达者可能误判；对孕妇、儿童、老年人参考价值有限。<strong>更关键的是脂肪分布</strong>，而非单一数字。</p>
-<h3 id="肥胖三级预警"><a href="#肥胖三级预警" class="headerlink" title="肥胖三级预警"></a>肥胖三级预警</h3><ul>
-<li><strong>轻度</strong>（28～32.5）：糖尿病、高血压风险上升，关节负担加重</li>
-<li><strong>中度</strong>（32.5～37.5）：心血管风险加剧，易出现睡眠呼吸暂停</li>
-<li><strong>重度</strong>（≥37.5）：心衰、脑卒中风险极高，代谢综合征与多种癌症风险显著上升</li>
+<p><strong>平和质</strong>是健康基准；其余八种为偏颇体质，如同八条通往特定疾病的道路——早发现、早调体，就能掉头往回走。</p>
+<h2 id="九体医学与精准医学"><a href="#九体医学与精准医学" class="headerlink" title="九体医学与精准医学"></a>九体医学与精准医学</h2><p>2015 年，王琦院士团队提出「九体医学健康计划」，被视为中国版「精准医学」：与奥巴马「精准医学」计划同年亮相，却更强调中医「治未病」「同病异治」思想。</p>
+<ul>
+<li>体质辨识已纳入《国家基本公共卫生服务标准》</li>
+<li>《中医体质分类与判定》量表已翻译成英、日、韩等多国语言</li>
+<li>覆盖全国 31 个省区，应用于健康管理、亚健康调理、慢病防控</li>
 </ul>
-<h3 id="体脂率与腰臀比"><a href="#体脂率与腰臀比" class="headerlink" title="体脂率与腰臀比"></a>体脂率与腰臀比</h3><p>健康体脂率：男性约 15%～20%，女性约 20%～25%。腰臀比反映脂肪分布——苹果型（腹型）远比梨型危险。</p>
-<h2 id="脂肪从哪来？"><a href="#脂肪从哪来？" class="headerlink" title="脂肪从哪来？"></a>脂肪从哪来？</h2><h3 id="中医视角：易胖体质的「培育土壤」"><a href="#中医视角：易胖体质的「培育土壤」" class="headerlink" title="中医视角：易胖体质的「培育土壤」"></a>中医视角：易胖体质的「培育土壤」</h3><ol>
-<li><strong>饮食不节</strong>：肥甘厚味、暴饮暴食，脾胃运化不及，聚为膏脂痰浊</li>
-<li><strong>缺乏运动</strong>：久坐少动，气血不畅，痰湿内生</li>
-<li><strong>情志失调</strong>：肝郁气滞、思虑伤脾，水湿代谢失常</li>
-<li><strong>脏腑失调</strong>：脾虚运化失司、肾阳虚水湿不化</li>
+<p>古籍早有端倪：「肥人多痰湿」（朱丹溪）、「阴阳匀平……命曰平人」（《素问》）。王琦院士用 40 余年研究，将零散珍珠串成体系。</p>
+<h2 id="四大原理"><a href="#四大原理" class="headerlink" title="四大原理"></a>四大原理</h2><ol>
+<li><strong>体质过程论</strong>：体质随年龄阶段演变，养生应因时而异</li>
+<li><strong>形神构成论</strong>：躯体与心理一体，痰湿质者情绪稳定型居多</li>
+<li><strong>环境制约论</strong>：饮食、气候、地理塑造体质——嗜肥甘生痰湿，过逸成痰瘀</li>
+<li><strong>禀赋遗传论</strong>：先天禀赋决定体质底色，后天仍可调节</li>
 </ol>
-<h3 id="西医视角：代谢失衡"><a href="#西医视角：代谢失衡" class="headerlink" title="西医视角：代谢失衡"></a>西医视角：代谢失衡</h3><p>遗传、高热量饮食、运动不足、内分泌疾病（甲减、库欣综合征）、肠道菌群失衡等，共同导致能量摄入大于消耗，多余能量以脂肪储存。</p>
-<h2 id="快速瘦身的陷阱"><a href="#快速瘦身的陷阱" class="headerlink" title="快速瘦身的陷阱"></a>快速瘦身的陷阱</h2><h3 id="过度节食：得不偿失"><a href="#过度节食：得不偿失" class="headerlink" title="过度节食：得不偿失"></a>过度节食：得不偿失</h3><p>节食初期体重下降，但身体会降低基础代谢率（BMR）进入「平台期」。恢复正常饮食后极易反弹，并可能带来：</p>
+<h2 id="三大核心"><a href="#三大核心" class="headerlink" title="三大核心"></a>三大核心</h2><ul>
+<li><strong>体质可分论</strong>：个体差异与群体趋同性并存</li>
+<li><strong>体病相关论</strong>：痰湿质易患肥胖、三高；气虚质易感冒、内脏下垂；血瘀质易患肿瘤、痛证</li>
+<li><strong>体质可调论</strong>：偏颇体质可通过饮食、起居、运动、情志干预改善</li>
+</ul>
+<h2 id="与肥胖的关系"><a href="#与肥胖的关系" class="headerlink" title="与肥胖的关系"></a>与肥胖的关系</h2><p>肥胖与体质密切相关：</p>
 <ul>
-<li>免疫力下降、肝肾功能失调</li>
-<li>女性月经紊乱甚至闭经</li>
-<li>脱发、抑郁焦虑</li>
-<li>反复节食形成恶性循环</li>
+<li><strong>痰湿质</strong>：中心性肥胖、高血脂、高血糖、高血压高发——「祛湿排浊才是真抽脂」</li>
+<li><strong>气虚质</strong>：肉松垮、动则气短，减肥效率低</li>
+<li><strong>阳虚质</strong>：怕冷，脂肪像「穿羽绒服」保温</li>
+<li><strong>气郁质</strong>：压力肥，焦虑时暴食，肉易堆腰腹</li>
+<li><strong>湿热质</strong>：脸油肚凸，「油胖子」需清火除湿</li>
+<li><strong>血瘀质</strong>：肉硬、循环差，减肥像挤牙膏</li>
 </ul>
-<p><strong>BMR 估算公式（Mifflin-St Jeor）：</strong></p>
-<ul>
-<li>男性：10×体重(kg) + 6.25×身高(cm) − 5×年龄 + 5</li>
-<li>女性：10×体重(kg) + 6.25×身高(cm) − 5×年龄 − 161</li>
-</ul>
-<h3 id="代餐、排毒、极端断食"><a href="#代餐、排毒、极端断食" class="headerlink" title="代餐、排毒、极端断食"></a>代餐、排毒、极端断食</h3><ul>
-<li><strong>代餐</strong>：短期降重，但代谢减慢，恢复饮食后易反弹，长期可能影响消化与免疫</li>
-<li><strong>排毒</strong>：人体有自净能力；情志调节、均衡饮食、规律运动才是正道</li>
-<li><strong>轻断食</strong>：间歇性禁食有一定研究支持，但长时间不吃饭可能导致低血糖、电解质紊乱，糖尿病患者尤其危险</li>
-</ul>
-<h2 id="什么才是科学减肥？"><a href="#什么才是科学减肥？" class="headerlink" title="什么才是科学减肥？"></a>什么才是科学减肥？</h2><p>核心原则：<strong>减肥是马拉松，不是百米冲刺。</strong></p>
-<h3 id="能量平衡"><a href="#能量平衡" class="headerlink" title="能量平衡"></a>能量平衡</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">每日摄入（减重）= TDEE − 500 千卡</span><br><span class="line">TDEE = BMR × 活动因子</span><br></pre></td></tr></table></figure>
+<p>国家 2024 年「体重管理年」方案明确发挥中医药技术优势；王琦院士「九体医学健康中国计划」正是体重个体化管理的理论基础。</p>
+<h2 id="如何判定自己的体质？"><a href="#如何判定自己的体质？" class="headerlink" title="如何判定自己的体质？"></a>如何判定自己的体质？</h2><p>依据《中医体质分类与判定》标准：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">原始分 = 各条目分值相加</span><br><span class="line">转化分 = [(原始分 − 条目数) / (条目数 × 4)] × 100</span><br></pre></td></tr></table></figure>
 
-<p>活动因子：久坐 1.2，轻度活动 1.375，中度 1.55，高度 1.725，极高 1.9。</p>
-<h3 id="三大营养素分配"><a href="#三大营养素分配" class="headerlink" title="三大营养素分配"></a>三大营养素分配</h3><ul>
-<li>碳水化合物：45%～65%（优选全谷物、薯类、豆类）</li>
-<li>蛋白质：10%～35%（瘦肉、鱼、蛋、奶、豆制品）</li>
-<li>脂肪：20%～30%（植物油、坚果，少饱和脂肪与反式脂肪）</li>
-</ul>
-<h3 id="饮食习惯"><a href="#饮食习惯" class="headerlink" title="饮食习惯"></a>饮食习惯</h3><ul>
-<li>定时进食，细嚼慢咽，七八分饱</li>
-<li>进食顺序：清汤 → 蔬菜 → 肉类 → 主食</li>
-<li>烹调以蒸、炖、煮为主，少油炸</li>
-<li>看懂营养成分表，警惕「低脂」但高热量的食品</li>
-</ul>
-<h3 id="运动：每天-6000-步起步"><a href="#运动：每天-6000-步起步" class="headerlink" title="运动：每天 6000 步起步"></a>运动：每天 6000 步起步</h3><ul>
-<li>每周至少 150 分钟中等强度有氧运动</li>
-<li>结合力量训练，提高基础代谢</li>
-<li>碎片化运动也有价值：通勤多走、爬楼梯、工间拉伸</li>
-</ul>
-<h3 id="情绪管理"><a href="#情绪管理" class="headerlink" title="情绪管理"></a>情绪管理</h3><p>压力肥、深夜暴食常与情绪相关。好心情是最佳「燃脂剂」——学会与焦虑和解，比盲目节食更重要。</p>
-<h2 id="懒人减肥武器库速览"><a href="#懒人减肥武器库速览" class="headerlink" title="懒人减肥武器库速览"></a>懒人减肥武器库速览</h2><table>
-<thead>
-<tr>
-<th>维度</th>
-<th>要点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>饮食</strong></td>
-<td>能量赤字 + 营养充足；外卖少点高糖高油；麻辣烫不加麻酱也是多样饮食的好选择</td>
-</tr>
-<tr>
-<td><strong>运动</strong></td>
-<td>每天 10 分钟碎片化运动也有累积效应；选自己喜欢的项目才能坚持</td>
-</tr>
-<tr>
-<td><strong>情绪</strong></td>
-<td>识别压力性进食；用运动、社交替代零食快感</td>
-</tr>
-<tr>
-<td><strong>中医适宜技术</strong></td>
-<td>针灸、埋线、拔罐、穴位按摩等可作为辅助，需在专业医师指导下进行</td>
-</tr>
-</tbody></table>
-<h2 id="管体-管重-不反弹"><a href="#管体-管重-不反弹" class="headerlink" title="管体 + 管重 &#x3D; 不反弹"></a>管体 + 管重 &#x3D; 不反弹</h2><p>单纯减重而不调体质，往往陷入「减—反弹—再减」循环。下一篇将介绍王琦院士创立的<strong>九体医学</strong>——先认清自己是哪种体质，再对症瘦身。</p>
-<hr>
-<p><strong>参考文献</strong></p>
-<p>孙贵香主编. 瘦身密码：九体医学视角下的体重管理[M]. 北京: 科学出版社, 2025.</p>
+<p><strong>平和质</strong>：转化分 ≥60，且其余 8 种均 &lt;30（或均 &lt;40 为「基本是」）</p>
+<p><strong>偏颇质</strong>：转化分 ≥40 为「是」；30～39 为「倾向是」</p>
+<p>建议通过正规医疗机构或社区卫生中心的体质辨识服务获取准确结果，勿仅凭网络测试下定论。</p>
+<h2 id="体质不是终身标签"><a href="#体质不是终身标签" class="headerlink" title="体质不是终身标签"></a>体质不是终身标签</h2><p>体质会随环境、饮食、情绪变化而调整。一方水土养一方人，养生需<strong>因人制宜、因时制宜</strong>——读懂身体密码，才能把健康主动权握在自己手里。</p>
+<p>下一篇将进入实战：<strong>九大体质的科学甩肉指南</strong>，痰湿、湿热、阳虚……各有什么吃法、练法和穴位？</p>
 ]]></content>
       <tags>
         <tag>健康</tag>
-        <tag>体重管理</tag>
-        <tag>科学减肥</tag>
+        <tag>九体医学</tag>
+        <tag>中医体质</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>队列监控页面使用指南</title>
+    <url>/2025/06/12/%E9%98%9F%E5%88%97%E7%9B%91%E6%8E%A7%E9%A1%B5%E9%9D%A2%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</url>
+    <content><![CDATA[<h1 id="队列监控页面使用指南"><a href="#队列监控页面使用指南" class="headerlink" title="队列监控页面使用指南"></a>队列监控页面使用指南</h1><h2 id="页面访问"><a href="#页面访问" class="headerlink" title="页面访问"></a>页面访问</h2><p>队列监控页面位于：<code>/views/modules/mm/queue.html</code></p>
+<h2 id="页面功能"><a href="#页面功能" class="headerlink" title="页面功能"></a>页面功能</h2><h3 id="1-概览统计"><a href="#1-概览统计" class="headerlink" title="1. 概览统计"></a>1. 概览统计</h3><p>页面顶部显示四个关键指标：</p>
+<p>-<strong>活跃队列总数</strong>：当前有请求等待的队列数量</p>
+<p>-<strong>等待请求总数</strong>：所有队列中等待执行的请求总数</p>
+<p>-<strong>执行中请求</strong>：当前正在执行的请求数量</p>
+<p>-<strong>最大队列长度</strong>：所有队列中最长的队列长度</p>
+<h3 id="2-自动刷新功能"><a href="#2-自动刷新功能" class="headerlink" title="2. 自动刷新功能"></a>2. 自动刷新功能</h3><ul>
+<li>点击”开启自动刷新”按钮启用自动刷新（每5秒刷新一次）</li>
+<li>点击”停止自动刷新”按钮关闭自动刷新</li>
+<li>可随时点击”手动刷新”按钮立即更新数据</li>
+</ul>
+<h3 id="3-队列列表"><a href="#3-队列列表" class="headerlink" title="3. 队列列表"></a>3. 队列列表</h3><p>显示所有租户的队列状态，包括：</p>
+<p>-<strong>租户ID</strong>：队列所属的租户标识</p>
+<p>-<strong>队列长度</strong>：当前队列中的请求数量</p>
+<p>-<strong>当前执行请求</strong>：正在执行的请求UUID（显示前16位）</p>
+<p>-<strong>状态</strong>：队列当前状态</p>
+<ul>
+<li>🟢 空闲：队列为空</li>
+<li>🟡 执行中：有请求正在执行</li>
+<li>🔴 异常：队列有请求但没有执行中的请求</li>
+</ul>
+<p>-<strong>操作</strong>：可执行的操作按钮</p>
+<h3 id="4-状态说明"><a href="#4-状态说明" class="headerlink" title="4. 状态说明"></a>4. 状态说明</h3><h4 id="队列状态图标说明"><a href="#队列状态图标说明" class="headerlink" title="队列状态图标说明"></a>队列状态图标说明</h4><p>-**绿色标签 (0)**：队列为空，无等待请求</p>
+<p>-**黄色标签 (数字)**：队列中有等待的请求</p>
+<p>-<strong>蓝色标签</strong>：当前执行的请求ID</p>
+<p>-<strong>灰色文字</strong>：无执行请求</p>
+<h4 id="状态类型"><a href="#状态类型" class="headerlink" title="状态类型"></a>状态类型</h4><p>-<strong>空闲</strong>：队列无任何请求</p>
+<p>-<strong>执行中</strong>：有请求正在执行，可能还有其他请求在等待</p>
+<p>-<strong>异常</strong>：队列中有请求但没有正在执行的请求（可能需要清理）</p>
+<h3 id="5-操作功能"><a href="#5-操作功能" class="headerlink" title="5. 操作功能"></a>5. 操作功能</h3><h4 id="查看详情"><a href="#查看详情" class="headerlink" title="查看详情"></a>查看详情</h4><ul>
+<li><p>点击操作列的”详情”按钮或选中行后点击”查看详情”</p>
+</li>
+<li><p>弹出详情窗口显示：</p>
+<ul>
+<li>租户ID和队列长度</li>
+<li>当前执行请求的完整UUID</li>
+<li>队列中所有请求的列表（按执行顺序排列）</li>
+<li>第一个请求标记为”执行中”，其余为”等待中”</li>
+</ul>
+</li>
+</ul>
+<h4 id="清空队列"><a href="#清空队列" class="headerlink" title="清空队列"></a>清空队列</h4><ul>
+<li>只有当队列长度大于0时才显示”清空”按钮</li>
+<li>点击后会弹出确认对话框</li>
+<li>确认后将清除队列中所有等待的请求</li>
+<li>⚠️ <strong>注意</strong>：此操作会中断所有等待的请求，请谨慎使用</li>
+</ul>
+<h3 id="6-搜索和筛选"><a href="#6-搜索和筛选" class="headerlink" title="6. 搜索和筛选"></a>6. 搜索和筛选</h3><ul>
+<li>可以通过租户ID搜索特定的队列</li>
+<li>点击”重置”按钮清空搜索条件并显示所有队列</li>
+</ul>
+<h2 id="权限说明"><a href="#权限说明" class="headerlink" title="权限说明"></a>权限说明</h2><p>页面需要以下权限：</p>
+<p>-<code>queueManagement:view</code> - 查看队列状态</p>
+<p>-<code>queueManagement:clear</code> - 清空队列</p>
+<p>没有相应权限的用户将无法看到对应的操作按钮。</p>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><h3 id="1-日常监控"><a href="#1-日常监控" class="headerlink" title="1. 日常监控"></a>1. 日常监控</h3><ul>
+<li>开启自动刷新功能，实时监控队列状态</li>
+<li>关注”等待请求总数”和”最大队列长度”指标</li>
+<li>当看到红色异常状态时及时处理</li>
+</ul>
+<h3 id="2-问题排查"><a href="#2-问题排查" class="headerlink" title="2. 问题排查"></a>2. 问题排查</h3><ul>
+<li>当业务反馈操作缓慢时，查看对应租户的队列长度</li>
+<li>通过队列详情查看具体的请求排队情况</li>
+<li>分析队列积压的原因</li>
+</ul>
+<h3 id="3-紧急处理"><a href="#3-紧急处理" class="headerlink" title="3. 紧急处理"></a>3. 紧急处理</h3><ul>
+<li>当队列出现异常积压时，可以使用清空功能</li>
+<li>清空前建议先查看详情了解具体情况</li>
+<li>清空后通知相关用户重新提交请求</li>
+</ul>
+<h2 id="技术说明"><a href="#技术说明" class="headerlink" title="技术说明"></a>技术说明</h2><h3 id="数据刷新机制"><a href="#数据刷新机制" class="headerlink" title="数据刷新机制"></a>数据刷新机制</h3><ul>
+<li>手动刷新：立即获取最新数据</li>
+<li>自动刷新：每5秒钟自动获取最新数据</li>
+<li>页面加载时自动执行一次查询</li>
+</ul>
+<h3 id="统计计算规则"><a href="#统计计算规则" class="headerlink" title="统计计算规则"></a>统计计算规则</h3><p>-<strong>活跃队列</strong>：队列长度 &gt; 0 的队列数量</p>
+<p>-<strong>等待请求</strong>：所有队列长度之和 - 执行中请求数</p>
+<p>-<strong>执行中请求</strong>：有 currentExecutingRequest 的队列数量</p>
+<p>-<strong>最大队列长度</strong>：所有队列中长度的最大值</p>
+<h3 id="前端技术栈"><a href="#前端技术栈" class="headerlink" title="前端技术栈"></a>前端技术栈</h3><ul>
+<li>Vue.js：数据绑定和组件化</li>
+<li>jQuery jqGrid：表格展示</li>
+<li>Bootstrap：UI框架</li>
+<li>自定义CSS：样式美化</li>
+</ul>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>1.<strong>性能考虑</strong>：队列监控会频繁访问Redis，大量租户时注意性能影响</p>
+<p>2.<strong>权限控制</strong>：确保只有授权用户才能访问监控页面</p>
+<p>3.<strong>操作审计</strong>：清空队列等关键操作会记录系统日志</p>
+<p>4.<strong>浏览器兼容</strong>：建议使用现代浏览器以获得最佳体验</p>
+<p>5.<strong>移动端适配</strong>：页面已优化移动端显示效果</p>
+<h2 id="故障处理"><a href="#故障处理" class="headerlink" title="故障处理"></a>故障处理</h2><h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><p><strong>Q: 页面显示”获取队列状态失败”</strong></p>
+<p>A: 检查Redis连接状态和后端服务是否正常</p>
+<p><strong>Q: 自动刷新不工作</strong></p>
+<p>A: 检查浏览器是否阻止了定时器，或刷新页面重试</p>
+<p><strong>Q: 清空队列后仍显示有请求</strong></p>
+<p>A: 可能有新请求进入，手动刷新查看最新状态</p>
+<p><strong>Q: 队列状态显示异常</strong></p>
+<p>A: 可能是Redis数据不一致，可以尝试清空队列解决</p>
+<h3 id="联系支持"><a href="#联系支持" class="headerlink" title="联系支持"></a>联系支持</h3><p>如遇到技术问题，请联系系统管理员或查看系统日志获取详细错误信息。</p>
+]]></content>
   </entry>
   <entry>
     <title>瘦身密码（四）：九大体质科学甩肉指南——管体加管重</title>
     <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E5%A4%A7%E4%BD%93%E8%B4%A8%E7%A7%91%E5%AD%A6%E7%94%A9%E8%82%89%E6%8C%87%E5%8D%97/</url>
-    <content><![CDATA[<blockquote>
-<p>本文系列整理自孙贵香主编《瘦身密码：九体医学视角下的体重管理》（科学出版社，2025）。具体用药、食疗请在医师指导下进行。</p>
-</blockquote>
-<h2 id="核心理念：管体-管重"><a href="#核心理念：管体-管重" class="headerlink" title="核心理念：管体 + 管重"></a>核心理念：管体 + 管重</h2><ul>
+    <content><![CDATA[<h2 id="核心理念：管体-管重"><a href="#核心理念：管体-管重" class="headerlink" title="核心理念：管体 + 管重"></a>核心理念：管体 + 管重</h2><ul>
 <li><strong>管体</strong>：辨识体质、纠正偏颇——体质调好了，赘肉才不容易反弹</li>
 <li><strong>管重</strong>：吃对食物比盲目少吃更重要；体重是体质的一面镜子，但不是唯一指标</li>
 </ul>
@@ -1387,9 +1349,6 @@
 </tbody></table>
 <h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>九体医学告诉我们：<strong>没有放之四海而皆准的减肥法</strong>。痰湿要祛湿，阳虚要温阳，气郁要疏肝，气虚要补气——先调体，再管重，才能瘦得健康、瘦得长久。</p>
 <p>下一篇将聚焦肥胖引爆的<strong>八大健康地雷</strong>：糖尿病、冠心病、脂肪肝……早知早防。</p>
-<hr>
-<p><strong>参考文献</strong></p>
-<p>孙贵香主编. 瘦身密码：九体医学视角下的体重管理[M]. 北京: 科学出版社, 2025.</p>
 ]]></content>
       <tags>
         <tag>健康</tag>
@@ -1398,108 +1357,118 @@
       </tags>
   </entry>
   <entry>
-    <title>队列监控页面使用指南</title>
-    <url>/2025/06/12/%E9%98%9F%E5%88%97%E7%9B%91%E6%8E%A7%E9%A1%B5%E9%9D%A2%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</url>
-    <content><![CDATA[<h1 id="队列监控页面使用指南"><a href="#队列监控页面使用指南" class="headerlink" title="队列监控页面使用指南"></a>队列监控页面使用指南</h1><h2 id="页面访问"><a href="#页面访问" class="headerlink" title="页面访问"></a>页面访问</h2><p>队列监控页面位于：<code>/views/modules/mm/queue.html</code></p>
-<h2 id="页面功能"><a href="#页面功能" class="headerlink" title="页面功能"></a>页面功能</h2><h3 id="1-概览统计"><a href="#1-概览统计" class="headerlink" title="1. 概览统计"></a>1. 概览统计</h3><p>页面顶部显示四个关键指标：</p>
-<p>-<strong>活跃队列总数</strong>：当前有请求等待的队列数量</p>
-<p>-<strong>等待请求总数</strong>：所有队列中等待执行的请求总数</p>
-<p>-<strong>执行中请求</strong>：当前正在执行的请求数量</p>
-<p>-<strong>最大队列长度</strong>：所有队列中最长的队列长度</p>
-<h3 id="2-自动刷新功能"><a href="#2-自动刷新功能" class="headerlink" title="2. 自动刷新功能"></a>2. 自动刷新功能</h3><ul>
-<li>点击”开启自动刷新”按钮启用自动刷新（每5秒刷新一次）</li>
-<li>点击”停止自动刷新”按钮关闭自动刷新</li>
-<li>可随时点击”手动刷新”按钮立即更新数据</li>
+    <title>瘦身密码（二）：脂肪工厂的运作密码——科学减肥是场马拉松</title>
+    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%84%82%E8%82%AA%E5%B7%A5%E5%8E%82%E4%B8%8E%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/</url>
+    <content><![CDATA[<h2 id="你真的需要减肥吗？"><a href="#你真的需要减肥吗？" class="headerlink" title="你真的需要减肥吗？"></a>你真的需要减肥吗？</h2><h3 id="BMI：有用，但不万能"><a href="#BMI：有用，但不万能" class="headerlink" title="BMI：有用，但不万能"></a>BMI：有用，但不万能</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">BMI = 体重(kg) ÷ 身高²(m²)</span><br></pre></td></tr></table></figure>
+
+<p>中国成人标准：</p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>BMI</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>体重过低</td>
+<td>&lt;18.5</td>
+</tr>
+<tr>
+<td>正常</td>
+<td>18.5～24</td>
+</tr>
+<tr>
+<td>超重</td>
+<td>24～28</td>
+</tr>
+<tr>
+<td>肥胖</td>
+<td>≥28</td>
+</tr>
+</tbody></table>
+<p>BMI 对普通成年人实用，但对运动员等肌肉发达者可能误判；对孕妇、儿童、老年人参考价值有限。<strong>更关键的是脂肪分布</strong>，而非单一数字。</p>
+<h3 id="肥胖三级预警"><a href="#肥胖三级预警" class="headerlink" title="肥胖三级预警"></a>肥胖三级预警</h3><ul>
+<li><strong>轻度</strong>（28～32.5）：糖尿病、高血压风险上升，关节负担加重</li>
+<li><strong>中度</strong>（32.5～37.5）：心血管风险加剧，易出现睡眠呼吸暂停</li>
+<li><strong>重度</strong>（≥37.5）：心衰、脑卒中风险极高，代谢综合征与多种癌症风险显著上升</li>
 </ul>
-<h3 id="3-队列列表"><a href="#3-队列列表" class="headerlink" title="3. 队列列表"></a>3. 队列列表</h3><p>显示所有租户的队列状态，包括：</p>
-<p>-<strong>租户ID</strong>：队列所属的租户标识</p>
-<p>-<strong>队列长度</strong>：当前队列中的请求数量</p>
-<p>-<strong>当前执行请求</strong>：正在执行的请求UUID（显示前16位）</p>
-<p>-<strong>状态</strong>：队列当前状态</p>
+<h3 id="体脂率与腰臀比"><a href="#体脂率与腰臀比" class="headerlink" title="体脂率与腰臀比"></a>体脂率与腰臀比</h3><p>健康体脂率：男性约 15%～20%，女性约 20%～25%。腰臀比反映脂肪分布——苹果型（腹型）远比梨型危险。</p>
+<h2 id="脂肪从哪来？"><a href="#脂肪从哪来？" class="headerlink" title="脂肪从哪来？"></a>脂肪从哪来？</h2><h3 id="中医视角：易胖体质的「培育土壤」"><a href="#中医视角：易胖体质的「培育土壤」" class="headerlink" title="中医视角：易胖体质的「培育土壤」"></a>中医视角：易胖体质的「培育土壤」</h3><ol>
+<li><strong>饮食不节</strong>：肥甘厚味、暴饮暴食，脾胃运化不及，聚为膏脂痰浊</li>
+<li><strong>缺乏运动</strong>：久坐少动，气血不畅，痰湿内生</li>
+<li><strong>情志失调</strong>：肝郁气滞、思虑伤脾，水湿代谢失常</li>
+<li><strong>脏腑失调</strong>：脾虚运化失司、肾阳虚水湿不化</li>
+</ol>
+<h3 id="西医视角：代谢失衡"><a href="#西医视角：代谢失衡" class="headerlink" title="西医视角：代谢失衡"></a>西医视角：代谢失衡</h3><p>遗传、高热量饮食、运动不足、内分泌疾病（甲减、库欣综合征）、肠道菌群失衡等，共同导致能量摄入大于消耗，多余能量以脂肪储存。</p>
+<h2 id="快速瘦身的陷阱"><a href="#快速瘦身的陷阱" class="headerlink" title="快速瘦身的陷阱"></a>快速瘦身的陷阱</h2><h3 id="过度节食：得不偿失"><a href="#过度节食：得不偿失" class="headerlink" title="过度节食：得不偿失"></a>过度节食：得不偿失</h3><p>节食初期体重下降，但身体会降低基础代谢率（BMR）进入「平台期」。恢复正常饮食后极易反弹，并可能带来：</p>
 <ul>
-<li>🟢 空闲：队列为空</li>
-<li>🟡 执行中：有请求正在执行</li>
-<li>🔴 异常：队列有请求但没有执行中的请求</li>
+<li>免疫力下降、肝肾功能失调</li>
+<li>女性月经紊乱甚至闭经</li>
+<li>脱发、抑郁焦虑</li>
+<li>反复节食形成恶性循环</li>
 </ul>
-<p>-<strong>操作</strong>：可执行的操作按钮</p>
-<h3 id="4-状态说明"><a href="#4-状态说明" class="headerlink" title="4. 状态说明"></a>4. 状态说明</h3><h4 id="队列状态图标说明"><a href="#队列状态图标说明" class="headerlink" title="队列状态图标说明"></a>队列状态图标说明</h4><p>-**绿色标签 (0)**：队列为空，无等待请求</p>
-<p>-**黄色标签 (数字)**：队列中有等待的请求</p>
-<p>-<strong>蓝色标签</strong>：当前执行的请求ID</p>
-<p>-<strong>灰色文字</strong>：无执行请求</p>
-<h4 id="状态类型"><a href="#状态类型" class="headerlink" title="状态类型"></a>状态类型</h4><p>-<strong>空闲</strong>：队列无任何请求</p>
-<p>-<strong>执行中</strong>：有请求正在执行，可能还有其他请求在等待</p>
-<p>-<strong>异常</strong>：队列中有请求但没有正在执行的请求（可能需要清理）</p>
-<h3 id="5-操作功能"><a href="#5-操作功能" class="headerlink" title="5. 操作功能"></a>5. 操作功能</h3><h4 id="查看详情"><a href="#查看详情" class="headerlink" title="查看详情"></a>查看详情</h4><ul>
-<li><p>点击操作列的”详情”按钮或选中行后点击”查看详情”</p>
-</li>
-<li><p>弹出详情窗口显示：</p>
+<p><strong>BMR 估算公式（Mifflin-St Jeor）：</strong></p>
 <ul>
-<li>租户ID和队列长度</li>
-<li>当前执行请求的完整UUID</li>
-<li>队列中所有请求的列表（按执行顺序排列）</li>
-<li>第一个请求标记为”执行中”，其余为”等待中”</li>
+<li>男性：10×体重(kg) + 6.25×身高(cm) − 5×年龄 + 5</li>
+<li>女性：10×体重(kg) + 6.25×身高(cm) − 5×年龄 − 161</li>
 </ul>
-</li>
+<h3 id="代餐、排毒、极端断食"><a href="#代餐、排毒、极端断食" class="headerlink" title="代餐、排毒、极端断食"></a>代餐、排毒、极端断食</h3><ul>
+<li><strong>代餐</strong>：短期降重，但代谢减慢，恢复饮食后易反弹，长期可能影响消化与免疫</li>
+<li><strong>排毒</strong>：人体有自净能力；情志调节、均衡饮食、规律运动才是正道</li>
+<li><strong>轻断食</strong>：间歇性禁食有一定研究支持，但长时间不吃饭可能导致低血糖、电解质紊乱，糖尿病患者尤其危险</li>
 </ul>
-<h4 id="清空队列"><a href="#清空队列" class="headerlink" title="清空队列"></a>清空队列</h4><ul>
-<li>只有当队列长度大于0时才显示”清空”按钮</li>
-<li>点击后会弹出确认对话框</li>
-<li>确认后将清除队列中所有等待的请求</li>
-<li>⚠️ <strong>注意</strong>：此操作会中断所有等待的请求，请谨慎使用</li>
+<h2 id="什么才是科学减肥？"><a href="#什么才是科学减肥？" class="headerlink" title="什么才是科学减肥？"></a>什么才是科学减肥？</h2><p>核心原则：<strong>减肥是马拉松，不是百米冲刺。</strong></p>
+<h3 id="能量平衡"><a href="#能量平衡" class="headerlink" title="能量平衡"></a>能量平衡</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">每日摄入（减重）= TDEE − 500 千卡</span><br><span class="line">TDEE = BMR × 活动因子</span><br></pre></td></tr></table></figure>
+
+<p>活动因子：久坐 1.2，轻度活动 1.375，中度 1.55，高度 1.725，极高 1.9。</p>
+<h3 id="三大营养素分配"><a href="#三大营养素分配" class="headerlink" title="三大营养素分配"></a>三大营养素分配</h3><ul>
+<li>碳水化合物：45%～65%（优选全谷物、薯类、豆类）</li>
+<li>蛋白质：10%～35%（瘦肉、鱼、蛋、奶、豆制品）</li>
+<li>脂肪：20%～30%（植物油、坚果，少饱和脂肪与反式脂肪）</li>
 </ul>
-<h3 id="6-搜索和筛选"><a href="#6-搜索和筛选" class="headerlink" title="6. 搜索和筛选"></a>6. 搜索和筛选</h3><ul>
-<li>可以通过租户ID搜索特定的队列</li>
-<li>点击”重置”按钮清空搜索条件并显示所有队列</li>
+<h3 id="饮食习惯"><a href="#饮食习惯" class="headerlink" title="饮食习惯"></a>饮食习惯</h3><ul>
+<li>定时进食，细嚼慢咽，七八分饱</li>
+<li>进食顺序：清汤 → 蔬菜 → 肉类 → 主食</li>
+<li>烹调以蒸、炖、煮为主，少油炸</li>
+<li>看懂营养成分表，警惕「低脂」但高热量的食品</li>
 </ul>
-<h2 id="权限说明"><a href="#权限说明" class="headerlink" title="权限说明"></a>权限说明</h2><p>页面需要以下权限：</p>
-<p>-<code>queueManagement:view</code> - 查看队列状态</p>
-<p>-<code>queueManagement:clear</code> - 清空队列</p>
-<p>没有相应权限的用户将无法看到对应的操作按钮。</p>
-<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><h3 id="1-日常监控"><a href="#1-日常监控" class="headerlink" title="1. 日常监控"></a>1. 日常监控</h3><ul>
-<li>开启自动刷新功能，实时监控队列状态</li>
-<li>关注”等待请求总数”和”最大队列长度”指标</li>
-<li>当看到红色异常状态时及时处理</li>
+<h3 id="运动：每天-6000-步起步"><a href="#运动：每天-6000-步起步" class="headerlink" title="运动：每天 6000 步起步"></a>运动：每天 6000 步起步</h3><ul>
+<li>每周至少 150 分钟中等强度有氧运动</li>
+<li>结合力量训练，提高基础代谢</li>
+<li>碎片化运动也有价值：通勤多走、爬楼梯、工间拉伸</li>
 </ul>
-<h3 id="2-问题排查"><a href="#2-问题排查" class="headerlink" title="2. 问题排查"></a>2. 问题排查</h3><ul>
-<li>当业务反馈操作缓慢时，查看对应租户的队列长度</li>
-<li>通过队列详情查看具体的请求排队情况</li>
-<li>分析队列积压的原因</li>
-</ul>
-<h3 id="3-紧急处理"><a href="#3-紧急处理" class="headerlink" title="3. 紧急处理"></a>3. 紧急处理</h3><ul>
-<li>当队列出现异常积压时，可以使用清空功能</li>
-<li>清空前建议先查看详情了解具体情况</li>
-<li>清空后通知相关用户重新提交请求</li>
-</ul>
-<h2 id="技术说明"><a href="#技术说明" class="headerlink" title="技术说明"></a>技术说明</h2><h3 id="数据刷新机制"><a href="#数据刷新机制" class="headerlink" title="数据刷新机制"></a>数据刷新机制</h3><ul>
-<li>手动刷新：立即获取最新数据</li>
-<li>自动刷新：每5秒钟自动获取最新数据</li>
-<li>页面加载时自动执行一次查询</li>
-</ul>
-<h3 id="统计计算规则"><a href="#统计计算规则" class="headerlink" title="统计计算规则"></a>统计计算规则</h3><p>-<strong>活跃队列</strong>：队列长度 &gt; 0 的队列数量</p>
-<p>-<strong>等待请求</strong>：所有队列长度之和 - 执行中请求数</p>
-<p>-<strong>执行中请求</strong>：有 currentExecutingRequest 的队列数量</p>
-<p>-<strong>最大队列长度</strong>：所有队列中长度的最大值</p>
-<h3 id="前端技术栈"><a href="#前端技术栈" class="headerlink" title="前端技术栈"></a>前端技术栈</h3><ul>
-<li>Vue.js：数据绑定和组件化</li>
-<li>jQuery jqGrid：表格展示</li>
-<li>Bootstrap：UI框架</li>
-<li>自定义CSS：样式美化</li>
-</ul>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>1.<strong>性能考虑</strong>：队列监控会频繁访问Redis，大量租户时注意性能影响</p>
-<p>2.<strong>权限控制</strong>：确保只有授权用户才能访问监控页面</p>
-<p>3.<strong>操作审计</strong>：清空队列等关键操作会记录系统日志</p>
-<p>4.<strong>浏览器兼容</strong>：建议使用现代浏览器以获得最佳体验</p>
-<p>5.<strong>移动端适配</strong>：页面已优化移动端显示效果</p>
-<h2 id="故障处理"><a href="#故障处理" class="headerlink" title="故障处理"></a>故障处理</h2><h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><p><strong>Q: 页面显示”获取队列状态失败”</strong></p>
-<p>A: 检查Redis连接状态和后端服务是否正常</p>
-<p><strong>Q: 自动刷新不工作</strong></p>
-<p>A: 检查浏览器是否阻止了定时器，或刷新页面重试</p>
-<p><strong>Q: 清空队列后仍显示有请求</strong></p>
-<p>A: 可能有新请求进入，手动刷新查看最新状态</p>
-<p><strong>Q: 队列状态显示异常</strong></p>
-<p>A: 可能是Redis数据不一致，可以尝试清空队列解决</p>
-<h3 id="联系支持"><a href="#联系支持" class="headerlink" title="联系支持"></a>联系支持</h3><p>如遇到技术问题，请联系系统管理员或查看系统日志获取详细错误信息。</p>
+<h3 id="情绪管理"><a href="#情绪管理" class="headerlink" title="情绪管理"></a>情绪管理</h3><p>压力肥、深夜暴食常与情绪相关。好心情是最佳「燃脂剂」——学会与焦虑和解，比盲目节食更重要。</p>
+<h2 id="懒人减肥武器库速览"><a href="#懒人减肥武器库速览" class="headerlink" title="懒人减肥武器库速览"></a>懒人减肥武器库速览</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>要点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>饮食</strong></td>
+<td>能量赤字 + 营养充足；外卖少点高糖高油；麻辣烫不加麻酱也是多样饮食的好选择</td>
+</tr>
+<tr>
+<td><strong>运动</strong></td>
+<td>每天 10 分钟碎片化运动也有累积效应；选自己喜欢的项目才能坚持</td>
+</tr>
+<tr>
+<td><strong>情绪</strong></td>
+<td>识别压力性进食；用运动、社交替代零食快感</td>
+</tr>
+<tr>
+<td><strong>中医适宜技术</strong></td>
+<td>针灸、埋线、拔罐、穴位按摩等可作为辅助，需在专业医师指导下进行</td>
+</tr>
+</tbody></table>
+<h2 id="管体-管重-不反弹"><a href="#管体-管重-不反弹" class="headerlink" title="管体 + 管重 &#x3D; 不反弹"></a>管体 + 管重 &#x3D; 不反弹</h2><p>单纯减重而不调体质，往往陷入「减—反弹—再减」循环。下一篇将介绍王琦院士创立的<strong>九体医学</strong>——先认清自己是哪种体质，再对症瘦身。</p>
 ]]></content>
+      <tags>
+        <tag>健康</tag>
+        <tag>体重管理</tag>
+        <tag>科学减肥</tag>
+      </tags>
   </entry>
   <entry>
     <title>魔方</title>
