@@ -96,6 +96,7 @@
         <p>本文档说明 eosrole 页面「配置 EOS 菜单权限」树节点中 <strong>NodeID</strong>（前端 zTree 的 <code>id</code>）与 <strong>ObjectID</strong>（前端 <code>objectId</code>）的含义、数据库来源、后端组装与前端使用方式。</p>
 <blockquote>
 <p>关联文档：<a href="/2026/07/31/eos-role-menu-relationship/">EOS 菜单与角色关联关系说明</a></p>
+<p><strong>2026-07-31 更新</strong>：权限树接口额外返回 <code>menuType</code> &#x2F; <code>sysMenuId</code>；保存 body 含 MES 按钮与 ERP 操作扩展字段。</p>
 </blockquote>
 <h2 id="结论摘要"><a href="#结论摘要" class="headerlink" title="结论摘要"></a>结论摘要</h2><table>
 <thead>
@@ -110,20 +111,32 @@
 <td>zTree <code>id</code></td>
 <td>菜单节点 ID</td>
 <td><code>messys.Tree.NodeID</code></td>
-<td>树结构、父子关系（<code>pId</code>）</td>
+<td>树结构、父子关系（<code>pId</code>）；前端勾选态缓存键</td>
 </tr>
 <tr>
 <td>zTree <code>objectId</code></td>
 <td>EOS 权限对象 ID</td>
 <td><code>messys.Tree.ObjectID</code> &#x3D; <code>messys.ObjectRegister.ObjectID</code></td>
-<td>角色菜单授权（<code>STPermission.ObjectID</code>）</td>
+<td>角色菜单授权（<code>STPermission.ObjectID</code>，「执行」）</td>
+</tr>
+<tr>
+<td>zTree <code>menuType</code></td>
+<td>菜单类型</td>
+<td><code>EosMenuTypeHelper.resolveMenuType</code></td>
+<td><code>mes</code> &#x2F; <code>erp</code> &#x2F; <code>folder</code>，决定右侧详情面板</td>
+</tr>
+<tr>
+<td>zTree <code>sysMenuId</code></td>
+<td>MES 菜单 ID</td>
+<td>优先 <code>sys_menu_eos_node</code>，否则 <code>NodeDesc=MES_MENU:</code></td>
+<td>MES 菜单&#x2F;按钮写入 <code>sys_role_menu</code></td>
 </tr>
 </tbody></table>
-<p><strong>NodeID 与 ObjectID 是两套独立编号体系</strong>，不可混用。角色授权必须使用 <strong>ObjectID</strong>；NodeID 仅用于描述菜单树层级关系。</p>
+<p><strong>NodeID 与 ObjectID 是两套独立编号体系</strong>，不可混用。角色菜单「执行」授权必须使用 <strong>ObjectID</strong>；NodeID 用于树层级与 detail 查询参数。</p>
 <hr>
 <h2 id="1-NodeID-是什么"><a href="#1-NodeID-是什么" class="headerlink" title="1. NodeID 是什么"></a>1. NodeID 是什么</h2><p><code>NodeID</code> 是 EOS 菜单树 <code>messys.dbo.Tree</code> 的主键，标识一个菜单&#x2F;目录节点在树中的位置。</p>
-<p>在 MES 前端 zTree 中，NodeID 映射为节点的 **<code>id</code>**（<code>idKey: &quot;id&quot;</code>），<code>ParentID</code> 映射为 **<code>pId</code>**，用于渲染树形结构与展开&#x2F;折叠。</p>
-<p><strong>NodeID 不写入 STPermission</strong>。权限表引用的是 ObjectID。</p>
+<p>在 MES 前端 zTree 中，NodeID 映射为节点的 **<code>id</code>**（<code>idKey: &quot;id&quot;</code>），<code>ParentID</code> 映射为 **<code>pId</code>**，用于渲染树形结构与展开&#x2F;折叠。前端勾选态 <code>permissionCheckedNodeIds</code> 也按 NodeID 缓存。</p>
+<p><strong>NodeID 不写入 STPermission</strong>。权限表引用的是 ObjectID。detail 接口用 <code>nodeId</code> 定位节点后再解析业务 ObjectID。</p>
 <hr>
 <h2 id="2-NodeID-从哪来"><a href="#2-NodeID-从哪来" class="headerlink" title="2. NodeID 从哪来"></a>2. NodeID 从哪来</h2><h3 id="2-1-数据库表"><a href="#2-1-数据库表" class="headerlink" title="2.1 数据库表"></a>2.1 数据库表</h3><table>
 <thead>
@@ -204,7 +217,7 @@
 <hr>
 <h2 id="3-ObjectID-是什么"><a href="#3-ObjectID-是什么" class="headerlink" title="3. ObjectID 是什么"></a>3. ObjectID 是什么</h2><p><code>ObjectID</code> 是 EOS 对象注册表 <code>messys.dbo.ObjectRegister</code> 的主键。每个可授权对象在 <code>ObjectRegister</code> 中注册一条记录；菜单&#x2F;目录节点对应 <strong>TypeID &#x3D; 7</strong>，并通过 <strong>OwnerID &#x3D; Tree.NodeID</strong> 与菜单树关联。</p>
 <p>MES 维护菜单时会将 ObjectID <strong>冗余写入</strong> <code>Tree.ObjectID</code>，便于权限树接口一次查询带出。</p>
-<p>在角色菜单授权场景下，前端勾选菜单后提交的是 <strong>objectId 列表</strong>，写入 <code>mesdata.dbo.STPermission.ObjectID</code>（配合 <code>UserID</code>&#x3D;角色 OID、<code>Oprate</code>&#x3D;「执行」）。</p>
+<p>在角色菜单授权场景下，前端勾选菜单后提交的是 <strong>objectId 列表</strong>，写入 <code>mesdata.dbo.STPermission.ObjectID</code>（配合 <code>UserID</code>&#x3D;角色 OID、<code>Oprate</code>&#x3D;「执行」、<code>Permission</code>&#x3D;1）。</p>
 <hr>
 <h2 id="4-ObjectID-从哪来"><a href="#4-ObjectID-从哪来" class="headerlink" title="4. ObjectID 从哪来"></a>4. ObjectID 从哪来</h2><h3 id="4-1-数据库表"><a href="#4-1-数据库表" class="headerlink" title="4.1 数据库表"></a>4.1 数据库表</h3><table>
 <thead>
@@ -286,7 +299,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">  A[分配 NodeID] --&gt; B[插入 ObjectRegister&lt;br/&gt;ObjectID=MAX+1]</span><br><span class="line">  B --&gt; C[Tree.ObjectID = ObjectID]</span><br><span class="line">  C --&gt; D[listTreeForPermission&lt;br/&gt;返回 objectId]</span><br><span class="line">  D --&gt; E[前端勾选提交 objectIds]</span><br><span class="line">  E --&gt; F[STPermission 写入]</span><br></pre></td></tr></table></figure>
 
 <hr>
-<h2 id="5-NodeID-与-ObjectID-对照"><a href="#5-NodeID-与-ObjectID-对照" class="headerlink" title="5. NodeID 与 ObjectID 对照"></a>5. NodeID 与 ObjectID 对照</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Tree.NodeID       ──►  zTree.id         （树结构、ParentID 父子关系）</span><br><span class="line">Tree.ObjectID     ──►  zTree.objectId   （STPermission 授权键）</span><br><span class="line"></span><br><span class="line">ObjectRegister.OwnerID  = Tree.NodeID</span><br><span class="line">ObjectRegister.ObjectID = Tree.ObjectID</span><br><span class="line">ObjectRegister.TypeID   = 7（菜单/目录）</span><br></pre></td></tr></table></figure>
+<h2 id="5-NodeID-与-ObjectID-对照"><a href="#5-NodeID-与-ObjectID-对照" class="headerlink" title="5. NodeID 与 ObjectID 对照"></a>5. NodeID 与 ObjectID 对照</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Tree.NodeID       ──►  zTree.id         （树结构、ParentID 父子关系）</span><br><span class="line">Tree.ObjectID     ──►  zTree.objectId   （STPermission「执行」授权键）</span><br><span class="line"></span><br><span class="line">ObjectRegister.OwnerID  = Tree.NodeID</span><br><span class="line">ObjectRegister.ObjectID = Tree.ObjectID</span><br><span class="line">ObjectRegister.TypeID   = 7（菜单/目录）</span><br></pre></td></tr></table></figure>
 
 <table>
 <thead>
@@ -312,7 +325,7 @@
 <td><code>objectId</code></td>
 </tr>
 <tr>
-<td>是否用于 STPermission</td>
+<td>是否用于 STPermission「执行」</td>
 <td>否</td>
 <td>是</td>
 </tr>
@@ -349,23 +362,63 @@
 <td><code>Oprate=EX61:...</code>, Permission&#x3D;0</td>
 </tr>
 </tbody></table>
-<p><strong>解析路径</strong>（<code>EosMenuObjectResolver</code>）：</p>
+<p><strong>解析路径</strong>（<code>EosMenuObjectResolver.resolveBusinessObjects</code>）：</p>
 <ol>
 <li><code>ObjectRegister.OwnerID = NodeID</code> 且 <code>TypeID != 7</code></li>
 <li><code>Tree.Functions</code> 括号内单据名 + 菜单对象名 → <code>DjDy.DjCName</code> → <code>ObjectRegister.Object = DjCName</code> 且 <code>TypeID != 7</code></li>
-<li>回退：<code>Tree.ObjectID</code> 对应 ObjectRegister</li>
+<li>回退：<code>Tree.ObjectID</code> 对应 ObjectRegister（<strong>可能含 TypeID&#x3D;7</strong>）</li>
 </ol>
 <p><strong>禁止</strong>仅用 <code>OwnerID=NodeID</code> 或 <code>Tree.ObjectID</code> 推断按钮授权 ObjectID。复合页可能返回多个业务 ObjectID；同一 ObjectID 上可有多个 <code>EXxx:</code> 按钮 Oprate。</p>
+<p><code>listAvailableOperations</code>：标准操作 + ExFunction <code>EXxx:</code> + 库中已有非「执行」Oprate。</p>
 <p>示例（NodeID&#x3D;430）：菜单树 <code>objectId=468</code> 用于勾选「执行」；按钮 <code>EX61:组织架构分发</code> 写在 ObjectID&#x3D;965。</p>
 <hr>
 <h2 id="6-后端组装与-API"><a href="#6-后端组装与-API" class="headerlink" title="6. 后端组装与 API"></a>6. 后端组装与 API</h2><h3 id="6-1-权限菜单树"><a href="#6-1-权限菜单树" class="headerlink" title="6.1 权限菜单树"></a>6.1 权限菜单树</h3><ul>
-<li><strong>接口</strong>：<code>GET /eosrole/menu/tree</code></li>
+<li><strong>接口</strong>：<code>GET /eosrole/menu/tree</code>（或 <code>@RequestMapping</code>）</li>
 <li><strong>实现</strong>：<code>EosRoleController.menuTree()</code> → <code>TreeService.listTreeForPermission()</code></li>
-<li><strong>返回字段</strong>：<code>id</code>（NodeID）、<code>pId</code>（ParentID）、<code>name</code>（NodeCaption）、<code>objectId</code>（Tree.ObjectID）</li>
+<li><strong>返回字段</strong>：</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TreeServiceImpl.listTreeForPermission()</span></span><br><span class="line">m.put(<span class="string">&quot;id&quot;</span>, e.getNodeid());</span><br><span class="line">m.put(<span class="string">&quot;pId&quot;</span>, e.getParentid() == <span class="literal">null</span> || e.getParentid() == <span class="number">0</span> ? -<span class="number">1</span> : e.getParentid());</span><br><span class="line">m.put(<span class="string">&quot;name&quot;</span>, e.getNodecaption() != <span class="literal">null</span> ? e.getNodecaption().trim() : <span class="string">&quot;&quot;</span>);</span><br><span class="line">m.put(<span class="string">&quot;objectId&quot;</span>, e.getObjectid());</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>来源</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>id</code></td>
+<td><code>Tree.NodeID</code></td>
+<td>zTree 节点 ID</td>
+</tr>
+<tr>
+<td><code>pId</code></td>
+<td><code>Tree.ParentID</code>（0 → -1）</td>
+<td>父节点</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>Tree.NodeCaption</code></td>
+<td>显示名</td>
+</tr>
+<tr>
+<td><code>objectId</code></td>
+<td><code>Tree.ObjectID</code></td>
+<td>STPermission「执行」键</td>
+</tr>
+<tr>
+<td><code>menuType</code></td>
+<td><code>EosMenuTypeHelper.resolveMenuType</code></td>
+<td><code>mes</code> &#x2F; <code>erp</code> &#x2F; <code>folder</code></td>
+</tr>
+<tr>
+<td><code>sysMenuId</code></td>
+<td><code>sys_menu_eos_node</code>，缺失时 NodeDesc fallback</td>
+<td>仅 MES 节点有值</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TreeServiceImpl.listTreeForPermission()</span></span><br><span class="line">m.put(<span class="string">&quot;id&quot;</span>, e.getNodeid());</span><br><span class="line">m.put(<span class="string">&quot;pId&quot;</span>, e.getParentid() == <span class="literal">null</span> || e.getParentid() == <span class="number">0</span> ? -<span class="number">1</span> : e.getParentid());</span><br><span class="line">m.put(<span class="string">&quot;name&quot;</span>, e.getNodecaption() != <span class="literal">null</span> ? e.getNodecaption().trim() : <span class="string">&quot;&quot;</span>);</span><br><span class="line">m.put(<span class="string">&quot;objectId&quot;</span>, e.getObjectid());</span><br><span class="line">m.put(<span class="string">&quot;menuType&quot;</span>, EosMenuTypeHelper.resolveMenuType(e));</span><br><span class="line">m.put(<span class="string">&quot;sysMenuId&quot;</span>, sysMenuIdLookup.get(e.getNodeid()));</span><br></pre></td></tr></table></figure>
 
-<p>与 <code>listTreeForSelect()</code>（eostree 选目录）的区别：后者<strong>不含 objectId</strong>，仅 <code>id</code> &#x2F; <code>pId</code> &#x2F; <code>name</code>。</p>
+<p>与 <code>listTreeForSelect()</code>（eostree 选目录）的区别：后者<strong>不含</strong> <code>objectId</code> &#x2F; <code>menuType</code> &#x2F; <code>sysMenuId</code>，仅 <code>id</code> &#x2F; <code>pId</code> &#x2F; <code>name</code>。</p>
 <h3 id="6-2-权限查询与保存"><a href="#6-2-权限查询与保存" class="headerlink" title="6.2 权限查询与保存"></a>6.2 权限查询与保存</h3><table>
 <thead>
 <tr>
@@ -375,23 +428,108 @@
 </thead>
 <tbody><tr>
 <td><code>GET /eosrole/permission/&#123;roleId&#125;</code></td>
-<td>返回已授权 <strong>objectId</strong> 列表</td>
+<td>返回已授权 <strong>objectId</strong> 列表（「执行」+ Permission&#x3D;1）</td>
+</tr>
+<tr>
+<td><code>GET /eosrole/permission/detail/&#123;roleId&#125;?nodeId=</code></td>
+<td>按 NodeID 加载对象&#x2F;按钮详情（MES 或 ERP）</td>
+</tr>
+<tr>
+<td><code>GET /eosrole/permission/mes-menu-ids/&#123;roleId&#125;</code></td>
+<td>返回 MES <code>sys_role_menu</code> 全部 menuId</td>
 </tr>
 <tr>
 <td><code>POST /eosrole/permission/save</code></td>
-<td>body: <code>&#123; roleIds, objectIds, mode &#125;</code></td>
+<td>菜单执行 + ERP 操作 + MES 按钮</td>
 </tr>
 </tbody></table>
 <p><code>EosRolePermissionServiceImpl.queryMenuObjectIds</code> 过滤条件：<code>Oprate=执行</code> 且 <code>Permission=1</code>（<strong>当前未按 TypeID&#x3D;7 过滤</strong>）。</p>
+<p>save body（<code>EosRolePermissionSaveRequest</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>roleIds</code></td>
+<td>EOS 角色 OID</td>
+</tr>
+<tr>
+<td><code>objectIds</code></td>
+<td>勾选菜单的 Tree.ObjectID → STPermission「执行」</td>
+</tr>
+<tr>
+<td><code>mode</code></td>
+<td><code>append</code> &#x2F; <code>replace</code></td>
+</tr>
+<tr>
+<td><code>mesMenuIds</code></td>
+<td>MES 目录&#x2F;菜单 menu_id → <code>sys_role_menu</code></td>
+</tr>
+<tr>
+<td><code>mesButtonMenuIds</code></td>
+<td>MES 按钮 menu_id → <code>sys_role_menu</code></td>
+</tr>
+<tr>
+<td><code>operationPermissions</code></td>
+<td>ERP <code>&#123;objectId, oprate, granted&#125;</code></td>
+</tr>
+<tr>
+<td><code>operationReplaceObjectIds</code></td>
+<td>replace 时清理非「执行」行的业务 ObjectID</td>
+</tr>
+</tbody></table>
+<p>保存委托：先 <code>EosRolePermissionServiceImpl</code> 写「执行」，再 <code>EosRoleObjectPermissionServiceImpl.saveMesAndObjectPermissions</code> 写 ERP&#x2F;MES。</p>
 <hr>
 <h2 id="7-前端使用（eosrole-js）"><a href="#7-前端使用（eosrole-js）" class="headerlink" title="7. 前端使用（eosrole.js）"></a>7. 前端使用（eosrole.js）</h2><h3 id="7-1-zTree-配置"><a href="#7-1-zTree-配置" class="headerlink" title="7.1 zTree 配置"></a>7.1 zTree 配置</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> permissionTreeSetting = &#123;</span><br><span class="line">    <span class="attr">data</span>: &#123;</span><br><span class="line">        <span class="attr">simpleData</span>: &#123;</span><br><span class="line">            <span class="attr">enable</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">idKey</span>: <span class="string">&quot;id&quot;</span>,      <span class="comment">// = NodeID</span></span><br><span class="line">            <span class="attr">pIdKey</span>: <span class="string">&quot;pId&quot;</span>,   <span class="comment">// = ParentID</span></span><br><span class="line">            <span class="attr">rootPId</span>: -<span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">check</span>: &#123; <span class="attr">enable</span>: <span class="literal">true</span>, <span class="attr">nocheckInherit</span>: <span class="literal">true</span> &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <h3 id="7-2-加载与回显"><a href="#7-2-加载与回显" class="headerlink" title="7.2 加载与回显"></a>7.2 加载与回显</h3><ol>
-<li><code>loadPermissionMenuTree</code> → 请求 <code>/eosrole/menu/tree</code>，用 <code>treeList</code> 初始化 zTree</li>
-<li>请求 <code>/eosrole/permission/&#123;roleId&#125;</code> 获取已授权 objectIds</li>
-<li>回显：<code>permissionMenuZtree.getNodeByParam(&#39;objectId&#39;, objectIds[i])</code> —— <strong>按 objectId 勾选，不是 id</strong></li>
+<li><code>loadPermissionMenuTree</code> → 请求 <code>/eosrole/menu/tree</code>，用 <code>treeList</code> 初始化 zTree（含 <code>menuType</code> &#x2F; <code>sysMenuId</code>）</li>
+<li>单角色 + replace 模式：<ul>
+<li><code>/eosrole/permission/&#123;roleId&#125;</code> → 按 <strong>objectId</strong> 勾选菜单树（不是 <code>id</code>）</li>
+<li><code>/eosrole/permission/mes-menu-ids/&#123;roleId&#125;</code> → 拆分 MES 菜单 ID &#x2F; 按钮 ID 到 <code>permissionMesMenuIds</code> 等</li>
+</ul>
+</li>
+<li>点击节点 → <code>/eosrole/permission/detail/&#123;roleId&#125;?nodeId=</code>：<ul>
+<li><code>menuType=mes</code>：展示 MES 按钮勾选</li>
+<li><code>menuType=erp</code>：展示 ERP 操作「禁止」勾选</li>
+<li><code>menuType=folder</code>：目录摘要</li>
+</ul>
+</li>
 </ol>
-<h3 id="7-3-保存"><a href="#7-3-保存" class="headerlink" title="7.3 保存"></a>7.3 保存</h3><p><code>collectPermissionObjectIds()</code> 从勾选节点收集 **<code>objectId</code>**（不是 <code>id</code>），提交到 <code>/eosrole/permission/save</code>。</p>
+<p>勾选 MES 节点时把 <code>sysMenuId</code> 加入 <code>permissionMesMenuIds</code>；取消勾选时清理对应按钮态。</p>
+<h3 id="7-3-保存"><a href="#7-3-保存" class="headerlink" title="7.3 保存"></a>7.3 保存</h3><p><code>savePermission</code> 收集并提交：</p>
+<table>
+<thead>
+<tr>
+<th>收集方法</th>
+<th>字段</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>collectPermissionObjectIds()</code></td>
+<td><code>objectIds</code>（勾选节点的 <strong>objectId</strong>，不是 <code>id</code>）</td>
+</tr>
+<tr>
+<td><code>collectMesMenuIdsForSave()</code></td>
+<td><code>mesMenuIds</code></td>
+</tr>
+<tr>
+<td><code>collectMesButtonMenuIdsForSave()</code></td>
+<td><code>mesButtonMenuIds</code></td>
+</tr>
+<tr>
+<td><code>collectOperationPermissionsForSave()</code></td>
+<td><code>operationPermissions</code></td>
+</tr>
+<tr>
+<td><code>collectOperationReplaceObjectIdsForSave()</code></td>
+<td><code>operationReplaceObjectIds</code></td>
+</tr>
+</tbody></table>
+<p>连同 <code>roleIds</code>、<code>mode</code> 一并 POST 到 <code>/eosrole/permission/save</code>。</p>
 <hr>
 <h2 id="8-验证-SQL"><a href="#8-验证-SQL" class="headerlink" title="8. 验证 SQL"></a>8. 验证 SQL</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- NodeID 与 ObjectID 对照</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    t.NodeID,</span><br><span class="line">    RTRIM(t.NodeCaption) <span class="keyword">AS</span> MenuCaption,</span><br><span class="line">    t.ParentID,</span><br><span class="line">    t.ObjectID           <span class="keyword">AS</span> TreeObjectID,</span><br><span class="line">    o.ObjectID           <span class="keyword">AS</span> RegObjectID,</span><br><span class="line">    o.TypeID,</span><br><span class="line">    o.OwnerID</span><br><span class="line"><span class="keyword">FROM</span> messys.dbo.Tree t</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> messys.dbo.ObjectRegister o <span class="keyword">ON</span> o.OwnerID <span class="operator">=</span> t.NodeID</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> t.NodeID;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- UniqueNO 当前序列</span></span><br><span class="line"><span class="keyword">SELECT</span> NName, <span class="keyword">No</span> <span class="keyword">FROM</span> messys.dbo.UniqueNO <span class="keyword">WHERE</span> NName <span class="operator">=</span> <span class="string">&#x27;tree&#x27;</span>;</span><br></pre></td></tr></table></figure>
 
@@ -420,12 +558,24 @@
 <td><code>TreeServiceImpl.listTreeForPermission()</code>、<code>EosRoleController</code></td>
 </tr>
 <tr>
-<td>权限读写</td>
+<td>菜单类型 &#x2F; sysMenuId</td>
+<td><code>EosMenuTypeHelper</code>、<code>SysMenuEosNodeService</code></td>
+</tr>
+<tr>
+<td>菜单「执行」读写</td>
 <td><code>EosRolePermissionServiceImpl</code></td>
 </tr>
 <tr>
+<td>ERP&#x2F;MES 扩展保存</td>
+<td><code>EosRoleObjectPermissionServiceImpl</code></td>
+</tr>
+<tr>
+<td>业务 ObjectID 解析</td>
+<td><code>EosMenuObjectResolver</code></td>
+</tr>
+<tr>
 <td>实体</td>
-<td><code>TreeEntity</code>（NodeID、ObjectID）、<code>ObjectRegisterEntity</code>、<code>StPermissionEntity</code></td>
+<td><code>TreeEntity</code>、<code>ObjectRegisterEntity</code>、<code>StPermissionEntity</code></td>
 </tr>
 <tr>
 <td>前端</td>
@@ -454,7 +604,7 @@
 </tr>
 <tr>
 <td>2026-07-31</td>
-<td>发布到个人博客</td>
+<td>按最新实现修订：权限树补 <code>menuType</code>&#x2F;<code>sysMenuId</code>；save&#x2F;前端补 MES 与 ERP 扩展字段；代码路径补 ObjectPermission &#x2F; Resolver</td>
 </tr>
 </tbody></table>
 
@@ -499,10 +649,10 @@
       
         <p>本文档说明 MES 项目中 EOS 原生权限体系与 MES Web RBAC 的关系，以及角色、菜单数据分别存储在哪里、如何保存关联。</p>
 <blockquote>
-<p><strong>2026-06-15 更新</strong>：通过 MCP 直连 SQL Server（<code>mesdata</code> + <code>messys</code>）验证，已确认 EOS 原生角色-菜单授权的核心表为 **<code>mesdata.dbo.STPermission</code>**，而非此前推断的未命名 <code>messys</code> 权限表。</p>
+<p><strong>2026-07-31 更新</strong>：按当前代码实现修订。eosrole 已映射并读写 **<code>STPermission</code>**（菜单「执行」+ ERP 对象操作）与 **<code>STUserGroup</code>**（用户-角色）；MES Web 按钮权限写入 **<code>sys_role_menu</code>**。核心授权表仍为 **<code>mesdata.dbo.STPermission</code>**。</p>
 </blockquote>
 <p>关联文档：<a href="/2026/07/31/eos-role-tree-nodeid-objectid/">EOS 菜单树 NodeID 与 ObjectID 说明</a></p>
-<h2 id="结论摘要"><a href="#结论摘要" class="headerlink" title="结论摘要"></a>结论摘要</h2><p><strong>在本项目（mes-parent）中，EOS 角色与 EOS 菜单的授权关系没有通过 MES 代码保存</strong>，但数据已落在数据库中，可在 EOS 原生安全管理器中配置，也可直接 SQL 查询。</p>
+<h2 id="结论摘要"><a href="#结论摘要" class="headerlink" title="结论摘要"></a>结论摘要</h2><p>**在本项目（mes-parent）中，EOS 角色 ↔ 菜单授权可由 MES eosrole「配置菜单权限」写入 <code>STPermission</code>**；也可在 EOS 原生安全管理器中配置。用户 ↔ 角色由 eosrole「配置用户权限」双写 <code>STUserGroup</code> + <code>sys_user_role</code>。</p>
 <table>
 <thead>
 <tr>
@@ -516,19 +666,19 @@
 <td>EOS 用户&#x2F;角色</td>
 <td><strong>mesdata</strong></td>
 <td><code>STUsers</code>（<code>uGroup=0/1</code>）</td>
-<td>仅角色 CRUD（eosrole）</td>
+<td>角色 CRUD（eosrole）</td>
 </tr>
 <tr>
 <td>用户 ↔ 角色</td>
 <td>mesdata</td>
 <td><code>STUserGroup</code></td>
-<td>已映射，由 <code>EosRoleUserServiceImpl</code> 管理</td>
+<td>已映射，由 <code>EosRoleUserServiceImpl</code> 管理（双写 <code>sys_user_role</code>）</td>
 </tr>
 <tr>
 <td><strong>角色 ↔ 菜单</strong></td>
 <td><strong>mesdata</strong></td>
 <td><strong><code>STPermission</code></strong></td>
-<td><strong>未映射</strong></td>
+<td><strong>已映射</strong>，由 <code>EosRolePermissionServiceImpl</code> &#x2F; <code>EosRoleObjectPermissionServiceImpl</code> 读写</td>
 </tr>
 <tr>
 <td>EOS 菜单树</td>
@@ -540,13 +690,13 @@
 <td>EOS 角色 → MES 角色</td>
 <td>mesdata</td>
 <td><code>sys_role</code>（<code>eos_role_id</code>）</td>
-<td>同步元数据，不含菜单</td>
+<td>同步元数据；权限保存时也可自动 <code>syncRole</code></td>
 </tr>
 <tr>
-<td>MES 角色 → MES 菜单</td>
+<td>MES 角色 → MES 菜单&#x2F;按钮</td>
 <td>mesdata</td>
 <td><code>sys_role_menu</code></td>
-<td>角色管理页面</td>
+<td>角色管理页面；eosrole 保存 MES 按钮时亦写入</td>
 </tr>
 <tr>
 <td>EOS NodeID → MES menu_id</td>
@@ -577,7 +727,7 @@
 </tr>
 </tbody></table>
 <p>相关代码：<code>StusersEntity</code>、<code>StusersServiceImpl.saveRole</code> &#x2F; <code>updateRole</code>、<code>EosRoleController</code>（路径 <code>/eosrole</code>）。</p>
-<p>eosrole 页面保存时只写角色基本信息（编码、名称、描述、分组 <code>Categories</code>、启用状态），<strong>不涉及菜单勾选</strong>。</p>
+<p>eosrole 页面「保存角色」只写角色基本信息（编码、名称、描述、分组 <code>Categories</code>、启用状态），<strong>不涉及菜单勾选</strong>。菜单与对象操作权限在「配置菜单权限」弹窗中单独保存（见 §2.3）；用户分配在「配置用户权限」中保存（见 §2.5）。</p>
 <p><code>EmpowermentRight</code>、<code>RelateUserH</code> 等字段在 MES 新增角色时仅填默认值，<strong>不用于菜单授权</strong>；菜单授权走 <code>STPermission</code>。</p>
 <h3 id="1-2-用户-角色：STUserGroup（mesdata）"><a href="#1-2-用户-角色：STUserGroup（mesdata）" class="headerlink" title="1.2 用户-角色：STUserGroup（mesdata）"></a>1.2 用户-角色：<code>STUserGroup</code>（mesdata）</h3><table>
 <thead>
@@ -599,7 +749,12 @@
 <td>备注</td>
 </tr>
 </tbody></table>
-<p>MES 未映射此表；用户在 EOS 原生安全管理中分配角色后写入。</p>
+<p>MES 已映射：<code>StUserGroupEntity</code> + <code>EosRoleUserServiceImpl</code>。eosrole「配置用户权限」保存时：</p>
+<ol>
+<li>清空该角色在 <code>STUserGroup</code> 中的旧关联，再批量插入新用户</li>
+<li>按 <code>STUsers.UserID</code> ↔ <code>sys_user.username</code> 匹配 MES 用户；有 MES 用户时先 <code>ensureMesRole</code>，再全量改写 <code>sys_user_role</code></li>
+</ol>
+<p>也可在 EOS 原生安全管理中分配角色（同样写入 <code>STUserGroup</code>）。</p>
 <h3 id="1-3-菜单：Tree-ObjectRegister（messys）"><a href="#1-3-菜单：Tree-ObjectRegister（messys）" class="headerlink" title="1.3 菜单：Tree + ObjectRegister（messys）"></a>1.3 菜单：<code>Tree</code> + <code>ObjectRegister</code>（messys）</h3><table>
 <thead>
 <tr>
@@ -634,7 +789,7 @@
 <p>数据库 schema 配置见 <code>mes-web/src/main/resources/schema.properties</code>：</p>
 <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">eossys.schema</span>=<span class="string">messys.dbo</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="1-4-角色-菜单关联：STPermission（mesdata）"><a href="#1-4-角色-菜单关联：STPermission（mesdata）" class="headerlink" title="1.4 角色-菜单关联：STPermission（mesdata）"></a>1.4 角色-菜单关联：<code>STPermission</code>（mesdata）</h3><p><strong>核心授权表</strong>，EOS 原生安全管理器保存角色菜单权限时写入此表。</p>
+<h3 id="1-4-角色-菜单关联：STPermission（mesdata）"><a href="#1-4-角色-菜单关联：STPermission（mesdata）" class="headerlink" title="1.4 角色-菜单关联：STPermission（mesdata）"></a>1.4 角色-菜单关联：<code>STPermission</code>（mesdata）</h3><p><strong>核心授权表</strong>。EOS 原生安全管理器与 MES eosrole「配置菜单权限」保存时均写入此表。</p>
 <table>
 <thead>
 <tr>
@@ -691,6 +846,24 @@
 <p><strong>菜单授权</strong>路径：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">STPermission(ObjectID, Oprate=&#x27;执行&#x27;, Permission=1)</span><br><span class="line">  → ObjectRegister (TypeID=7, OwnerID=Tree.NodeID)</span><br><span class="line">  → Tree.NodeCaption</span><br></pre></td></tr></table></figure>
 
+<p>MES 读写实现：</p>
+<table>
+<thead>
+<tr>
+<th>服务</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>EosRolePermissionServiceImpl</code></td>
+<td>查询&#x2F;保存菜单「执行」（<code>objectIds</code> + <code>mode</code>）</td>
+</tr>
+<tr>
+<td><code>EosRoleObjectPermissionServiceImpl</code></td>
+<td>ERP 对象操作（<code>operationPermissions</code>）+ MES 按钮（<code>sys_role_menu</code>）</td>
+</tr>
+</tbody></table>
+<p><code>queryMenuObjectIds</code> 过滤条件：<code>Oprate=执行</code> 且 <code>Permission=1</code>（<strong>当前未按 ObjectRegister.TypeID&#x3D;7 过滤</strong>）。</p>
 <h3 id="1-5-ERP-按钮权限（ExFunction-DjDy）"><a href="#1-5-ERP-按钮权限（ExFunction-DjDy）" class="headerlink" title="1.5 ERP 按钮权限（ExFunction + DjDy）"></a>1.5 ERP 按钮权限（ExFunction + DjDy）</h3><table>
 <thead>
 <tr>
@@ -742,6 +915,7 @@
 </tr>
 </tbody></table>
 <p>同一 DjDm 下多个 ExFunction（如 DjDm&#x3D;212 的 EX13&#x2F;EX14&#x2F;EX16&#x2F;EX17）共用<strong>同一</strong>业务 ObjectID，以不同 <code>Oprate</code> 区分。</p>
+<p>业务 ObjectID 解析见 <a href="/2026/07/31/eos-role-tree-nodeid-objectid/">EOS 菜单树 NodeID 与 ObjectID 说明</a> §5.1（<code>EosMenuObjectResolver</code>）。</p>
 <p><strong>说明</strong>：<code>WebPermission</code> 本环境未启用；<code>SType=CX</code> 且安全管理器不可见的 STPermission 记录（如 <code>EX10:查看JSON</code>）视为历史垃圾数据。</p>
 <p><strong>当前环境数据量（仅供参考）</strong>：</p>
 <table>
@@ -768,7 +942,7 @@
 <td>域-菜单节点（<code>DomainID</code> + <code>MenuNodeID</code>），本环境未使用</td>
 </tr>
 </tbody></table>
-<h3 id="1-6-跨库关系图"><a href="#1-6-跨库关系图" class="headerlink" title="1.6 跨库关系图"></a>1.6 跨库关系图</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──────────────────────── mesdata ────────────────────────┐</span><br><span class="line">│  STUsers (uGroup=0 用户 / uGroup=1 角色)                 │</span><br><span class="line">│       ↑ UserID              ↑ GroupID                      │</span><br><span class="line">│  STUserGroup ──────────────┘                             │</span><br><span class="line">│       ↑ UserID (角色 OID)                                │</span><br><span class="line">│  STPermission (ObjectID, Oprate, Permission)               │</span><br><span class="line">└──────────────────────────│ ObjectID ──────────────────────┘</span><br><span class="line">                           ▼</span><br><span class="line">┌──────────────────────── messys ─────────────────────────┐</span><br><span class="line">│  ObjectRegister (ObjectID, TypeID=7, OwnerID=NodeID)     │</span><br><span class="line">│       ↑ OwnerID                                          │</span><br><span class="line">│  Tree (NodeID, NodeCaption, ParentID, ObjectID)          │</span><br><span class="line">└─────────────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+<h3 id="1-6-跨库关系图"><a href="#1-6-跨库关系图" class="headerlink" title="1.6 跨库关系图"></a>1.6 跨库关系图</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">┌──────────────────────── mesdata ────────────────────────┐</span><br><span class="line">│  STUsers (uGroup=0 用户 / uGroup=1 角色)                 │</span><br><span class="line">│       ↑ UserID              ↑ GroupID                      │</span><br><span class="line">│  STUserGroup ──────────────┘                             │</span><br><span class="line">│       ↑ UserID (角色 OID)                                │</span><br><span class="line">│  STPermission (ObjectID, Oprate, Permission)               │</span><br><span class="line">│  sys_role / sys_role_menu / sys_menu_eos_node              │</span><br><span class="line">└──────────────────────────│ ObjectID ──────────────────────┘</span><br><span class="line">                           ▼</span><br><span class="line">┌──────────────────────── messys ─────────────────────────┐</span><br><span class="line">│  ObjectRegister (ObjectID, TypeID=7, OwnerID=NodeID)     │</span><br><span class="line">│       ↑ OwnerID                                          │</span><br><span class="line">│  Tree (NodeID, NodeCaption, ParentID, ObjectID)          │</span><br><span class="line">└─────────────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
 
 <hr>
 <h2 id="2-MES-侧数据模型"><a href="#2-MES-侧数据模型" class="headerlink" title="2. MES 侧数据模型"></a>2. MES 侧数据模型</h2><h3 id="2-1-角色-菜单：sys-role-menu"><a href="#2-1-角色-菜单：sys-role-menu" class="headerlink" title="2.1 角色-菜单：sys_role_menu"></a>2.1 角色-菜单：<code>sys_role_menu</code></h3><p>MES Web「角色管理」（<code>role.html</code> + <code>role.js</code>）通过 zTree 勾选菜单，提交 <code>menuIdList</code> 到 <code>/sys/role/save</code> 或 <code>/sys/role/update</code>。</p>
@@ -780,12 +954,203 @@
 <p>权限生效链路：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sys_user → sys_user_role → sys_role → sys_role_menu → sys_menu</span><br></pre></td></tr></table></figure>
 
+<p>eosrole 保存 MES 菜单&#x2F;按钮时也会写入同一张表（见 §2.3）。</p>
 <h3 id="2-2-EOS-角色同步到-MES"><a href="#2-2-EOS-角色同步到-MES" class="headerlink" title="2.2 EOS 角色同步到 MES"></a>2.2 EOS 角色同步到 MES</h3><p><code>EosRoleSyncServiceImpl</code> &#x2F; 定时任务 <code>EosTask.sycnEosRole()</code> 调用：</p>
 <ul>
 <li><code>sysRoleService.saveWithoutMenu()</code> — 新建 MES 角色</li>
 <li><code>sysRoleService.updateWithoutMenu()</code> — 更新 MES 角色</li>
 </ul>
-<p>同步字段：角色名、描述、分组、<code>eos_role_id</code>。<strong>不会</strong>同步 EOS <code>STPermission</code> 或 MES <code>sys_role_menu</code>。</p>
+<p>同步字段：角色名、描述、分组、<code>eos_role_id</code>。<strong>定时&#x2F;手动同步本身不会</strong>同步 EOS <code>STPermission</code> 或 MES <code>sys_role_menu</code>。</p>
+<p>若在 eosrole「配置菜单权限」中提交了 <code>mesMenuIds</code> &#x2F; <code>mesButtonMenuIds</code>，且尚无对应 MES 角色，会自动 <code>syncRole</code> 后再写 <code>sys_role_menu</code>。</p>
+<h3 id="2-3-eosrole「配置菜单权限」"><a href="#2-3-eosrole「配置菜单权限」" class="headerlink" title="2.3 eosrole「配置菜单权限」"></a>2.3 eosrole「配置菜单权限」</h3><p><code>eosrole</code> 弹窗支持统一配置：</p>
+<table>
+<thead>
+<tr>
+<th>菜单类型</th>
+<th>识别</th>
+<th>保存位置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ERP 原生</td>
+<td><code>Functions</code> 不含「函数打开网页」（<code>menuType=erp</code>）</td>
+<td>菜单 → <code>STPermission</code>（<code>Oprate=执行</code>, Permission&#x3D;1）；按钮 → <code>STPermission</code>（<code>EXxx:...</code> 等, Permission&#x3D;0&#x3D;禁用）</td>
+</tr>
+<tr>
+<td>MES Web</td>
+<td><code>Functions</code> 含「函数打开网页」（<code>menuType=mes</code>），<code>sys_menu_eos_node</code> 存 <code>menu_id</code> ↔ <code>eos_node_id</code></td>
+<td>菜单执行 → <code>STPermission</code>；按钮 → <code>sys_role_menu</code></td>
+</tr>
+<tr>
+<td>目录</td>
+<td><code>menuType=folder</code></td>
+<td>通常仅作树结构；勾选子节点时汇总子菜单 objectId</td>
+</tr>
+</tbody></table>
+<p>相关 API（<code>EosRoleController</code>，权限 <code>eosrole:permission</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>路径</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*</td>
+<td><code>/eosrole/menu/tree</code></td>
+<td>权限菜单树（含 <code>objectId</code> &#x2F; <code>menuType</code> &#x2F; <code>sysMenuId</code>）</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/eosrole/permission/&#123;roleId&#125;</code></td>
+<td>已授权菜单 objectId（执行+Permission&#x3D;1）</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/eosrole/permission/detail/&#123;roleId&#125;?nodeId=</code></td>
+<td>节点对象&#x2F;按钮权限详情</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/eosrole/permission/mes-menu-ids/&#123;roleId&#125;</code></td>
+<td>回显 MES 角色全部 <code>sys_role_menu</code> menuId</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/eosrole/permission/save</code></td>
+<td>保存菜单执行 + ERP 操作 + MES 按钮</td>
+</tr>
+<tr>
+<td>*</td>
+<td><code>/eosrole/menu/backfill-mes-menu-id</code></td>
+<td>历史 MES 节点回填 <code>sys_menu_eos_node</code></td>
+</tr>
+</tbody></table>
+<p><code>POST /eosrole/permission/save</code> body（<code>EosRolePermissionSaveRequest</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>roleIds</code></td>
+<td>EOS 角色 OID 列表</td>
+</tr>
+<tr>
+<td><code>objectIds</code></td>
+<td>勾选菜单的 <code>Tree.ObjectID</code> → <code>STPermission</code>「执行」</td>
+</tr>
+<tr>
+<td><code>mode</code></td>
+<td><code>append</code> &#x2F; <code>replace</code></td>
+</tr>
+<tr>
+<td><code>mesMenuIds</code></td>
+<td>MES 目录&#x2F;菜单 <code>menu_id</code> → <code>sys_role_menu</code></td>
+</tr>
+<tr>
+<td><code>mesButtonMenuIds</code></td>
+<td>MES 按钮 <code>menu_id</code> → <code>sys_role_menu</code></td>
+</tr>
+<tr>
+<td><code>operationPermissions</code></td>
+<td><code>&#123;objectId, oprate, granted&#125;</code>；ERP 禁止列表（<code>granted=false</code> 写 Permission&#x3D;0）</td>
+</tr>
+<tr>
+<td><code>operationReplaceObjectIds</code></td>
+<td>replace 时需清理非「执行」权限的业务 ObjectID</td>
+</tr>
+</tbody></table>
+<p>保存流程：</p>
+<ol>
+<li><code>EosRolePermissionServiceImpl.savePermissions(roleIds, objectIds, mode)</code> — 写菜单「执行」</li>
+<li><code>EosRoleObjectPermissionServiceImpl.saveMesAndObjectPermissions(request)</code> — ERP 操作 + MES 按钮</li>
+</ol>
+<p><code>mode=replace</code> 时：先按该角色已有「执行」的 ObjectID 删除这些 ObjectID 下<strong>全部 Oprate 行</strong>，再插入勾选的「执行」；<code>mesMenuIds</code> 与 <code>mesButtonMenuIds</code> <strong>都为空</strong>时不改动 <code>sys_role_menu</code>。</p>
+<p><strong>说明</strong>：<code>Tree.Functions</code> 里 URL 的 <code>menuId=</code> 是 <strong>EOS NodeID</strong>（页面跳转用）；<code>sys_menu.menu_id</code> 的权威映射在 **<code>mesdata.sys_menu_eos_node</code>**（<code>eos_node_id</code> → <code>menu_id</code>），由 <code>syncFromSysMenu</code> 写入或 <code>backfillSysMenuEosNode</code> 按 URL&#x2F;NodeDesc 回填。过渡期仍双写 <code>NodeDesc=MES_MENU:&#123;sysMenuId&#125;</code> 作兼容 fallback。</p>
+<p>建表与历史迁移脚本：<code>sys_menu_eos_node.sql</code>、<code>sys_menu_eos_node.mysql.sql</code>（位于 mes-security-eos 模块 <code>doc/</code>）。</p>
+<h3 id="2-4-MES-菜单管理「设置到-EOS」"><a href="#2-4-MES-菜单管理「设置到-EOS」" class="headerlink" title="2.4 MES 菜单管理「设置到 EOS」"></a>2.4 MES 菜单管理「设置到 EOS」</h3><p>MES 菜单管理页（<code>sys/menu</code>）勾选目录&#x2F;菜单后点击「设置到 EOS」，调用 <code>POST /tree/syncFromSysMenu</code>（<code>menu.js#setToEos</code>）。</p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>用户选择 EOS 目标目录 <code>parentNodeId</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>TreeServiceImpl.syncFromSysMenu</code> 为每个 type&#x3D;0&#x2F;1 的 sys_menu 新建 EOS Tree 节点</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>applySysMenuMapping</code> 写入 <code>sys_menu_eos_node</code>，并双写 <code>NodeDesc=MES_MENU:&#123;sysMenuId&#125;</code>（目录与菜单均写）</td>
+</tr>
+<tr>
+<td>4</td>
+<td>type&#x3D;1 且有 url 时，<code>Functions</code> 生成 MES Web 跳转 URL，其中 <code>menuId=</code> 为新分配的 <strong>EOS NodeID</strong></td>
+</tr>
+</tbody></table>
+<p>历史已同步但未写映射的节点，可任选以下方式处理（当前 sync 始终新建节点，不更新旧节点）：</p>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>定时任务</td>
+<td><code>EosTask.backfillSysMenuEosNode</code>，默认每日 3:00（<code>t_qrtz_schedule_job</code>；升级见 <code>V2__Update_backfill_sys_menu_eos_node_job.sql</code>）</td>
+</tr>
+<tr>
+<td>手动接口</td>
+<td><code>/eosrole/menu/backfill-mes-menu-id</code></td>
+</tr>
+<tr>
+<td>重新同步</td>
+<td>菜单管理页「设置到 EOS」（会新建节点）</td>
+</tr>
+<tr>
+<td>SQL 迁移</td>
+<td>执行 <code>sys_menu_eos_node.sql</code> 从 NodeDesc 导入历史映射</td>
+</tr>
+</tbody></table>
+<p>定时任务与手动接口共用 <code>TreeService.backfillSysMenuEosNode()</code>。<strong>局限</strong>：仅对尚无映射记录的节点回填；URL 匹配仅适用于 <code>Functions</code> 含「函数打开网页」的 MES Web 菜单；type&#x3D;0 目录（<code>Functions</code> 为空）若 NodeDesc 也无映射，需重新「设置到 EOS」。</p>
+<h3 id="2-5-eosrole「配置用户权限」"><a href="#2-5-eosrole「配置用户权限」" class="headerlink" title="2.5 eosrole「配置用户权限」"></a>2.5 eosrole「配置用户权限」</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>路径</th>
+<th>权限</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET</td>
+<td><code>/eosrole/users/assigned/&#123;roleId&#125;</code></td>
+<td><code>eosrole:user</code></td>
+<td>已授权用户（合并 EOS + MES）</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/eosrole/users/unassigned/&#123;roleId&#125;</code></td>
+<td><code>eosrole:user</code></td>
+<td>待授权用户</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/eosrole/users/save</code></td>
+<td><code>eosrole:user</code></td>
+<td>双写 <code>STUserGroup</code> + <code>sys_user_role</code></td>
+</tr>
+</tbody></table>
 <hr>
 <h2 id="3-两套体系对照"><a href="#3-两套体系对照" class="headerlink" title="3. 两套体系对照"></a>3. 两套体系对照</h2><table>
 <thead>
@@ -817,95 +1182,15 @@
 </tr>
 <tr>
 <td>MES 页面维护</td>
-<td>eosrole（菜单+ERP 对象操作+MES 按钮）&#x2F; eostree</td>
+<td>eosrole（菜单+ERP 对象操作+MES 按钮+用户）&#x2F; eostree</td>
 <td>角色管理（含菜单授权）</td>
 </tr>
 <tr>
 <td>跨系统同步</td>
-<td>EOS → MES 同步角色元数据；eosrole 保存 MES 按钮时写 <code>sys_role_menu</code></td>
+<td>EOS → MES 同步角色元数据；eosrole 保存时可统一写两侧</td>
 <td>可与 eosrole 统一配置</td>
 </tr>
 </tbody></table>
-<h3 id="2-3-eosrole「配置菜单权限」扩展（2026-06）"><a href="#2-3-eosrole「配置菜单权限」扩展（2026-06）" class="headerlink" title="2.3 eosrole「配置菜单权限」扩展（2026-06）"></a>2.3 eosrole「配置菜单权限」扩展（2026-06）</h3><p><code>eosrole</code> 弹窗现支持：</p>
-<table>
-<thead>
-<tr>
-<th>菜单类型</th>
-<th>识别</th>
-<th>保存位置</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>ERP 原生</td>
-<td><code>Functions</code> 不含「函数打开网页」</td>
-<td>菜单 → <code>STPermission</code>（<code>Oprate=执行</code>, Permission&#x3D;1）；按钮 → <code>STPermission</code>（<code>EXxx:...</code> 等, Permission&#x3D;0&#x3D;禁用）</td>
-</tr>
-<tr>
-<td>MES Web</td>
-<td><code>Functions</code> 含「函数打开网页」，<code>sys_menu_eos_node</code> 存 <code>menu_id</code> ↔ <code>eos_node_id</code></td>
-<td>菜单执行 → <code>STPermission</code>；按钮 → <code>sys_role_menu</code></td>
-</tr>
-</tbody></table>
-<p>相关 API：</p>
-<ul>
-<li><code>GET /eosrole/permission/detail/&#123;roleId&#125;?nodeId=</code> — 加载对象&#x2F;按钮权限</li>
-<li><code>GET /eosrole/permission/mes-menu-ids/&#123;roleId&#125;</code> — 回显 MES 角色菜单&#x2F;按钮 ID</li>
-<li><code>POST /eosrole/permission/save</code> — 扩展 body：<code>mesMenuIds</code>、<code>mesButtonMenuIds</code>、<code>operationPermissions</code></li>
-<li><code>POST /eosrole/menu/backfill-mes-menu-id</code> — 历史 MES 节点回填 <code>sys_menu_eos_node</code>（按 NodeDesc 或 Functions URL 路径匹配 <code>sys_menu.url</code>）</li>
-</ul>
-<p><strong>说明</strong>：<code>Tree.Functions</code> 里 URL 的 <code>menuId=</code> 是 <strong>EOS NodeID</strong>（页面跳转用）；<code>sys_menu.menu_id</code> 的权威映射在 **<code>mesdata.sys_menu_eos_node</code>**（<code>eos_node_id</code> → <code>menu_id</code>），由 <code>syncFromSysMenu</code> 写入或 <code>backfillSysMenuEosNode</code> 按 URL&#x2F;NodeDesc 回填。过渡期仍双写 <code>NodeDesc=MES_MENU:&#123;sysMenuId&#125;</code> 作兼容 fallback。</p>
-<p>建表与历史迁移脚本：<code>sys_menu_eos_node.sql</code>、<code>sys_menu_eos_node.mysql.sql</code>（位于 mes-security-eos 模块 <code>doc/</code>）。</p>
-<h3 id="2-4-MES-菜单管理「设置到-EOS」（2026-06）"><a href="#2-4-MES-菜单管理「设置到-EOS」（2026-06）" class="headerlink" title="2.4 MES 菜单管理「设置到 EOS」（2026-06）"></a>2.4 MES 菜单管理「设置到 EOS」（2026-06）</h3><p>MES 菜单管理页（<code>sys/menu</code>）勾选目录&#x2F;菜单后点击「设置到 EOS」，调用 <code>POST /tree/syncFromSysMenu</code>（<code>menu.js#setToEos</code>）。</p>
-<table>
-<thead>
-<tr>
-<th>步骤</th>
-<th>行为</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>用户选择 EOS 目标目录 <code>parentNodeId</code></td>
-</tr>
-<tr>
-<td>2</td>
-<td><code>TreeServiceImpl.syncFromSysMenu</code> 为每个 type&#x3D;0&#x2F;1 的 sys_menu 新建 EOS Tree 节点</td>
-</tr>
-<tr>
-<td>3</td>
-<td><code>toTreeEntity</code> 写入 <code>sys_menu_eos_node</code>，并双写 <code>NodeDesc=MES_MENU:&#123;sysMenuId&#125;</code>（目录与菜单均写）</td>
-</tr>
-<tr>
-<td>4</td>
-<td>type&#x3D;1 且有 url 时，<code>Functions</code> 生成 MES Web 跳转 URL，其中 <code>menuId=</code> 为新分配的 <strong>EOS NodeID</strong></td>
-</tr>
-</tbody></table>
-<p>历史已同步但未写 <code>MES_MENU:</code> 的节点，可任选以下方式处理（当前 sync 始终新建节点，不更新旧节点）：</p>
-<table>
-<thead>
-<tr>
-<th>方式</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>定时任务</td>
-<td><code>EosTask.backfillSysMenuEosNode</code>，默认每日 3:00（<code>t_qrtz_schedule_job</code>；升级见 <code>V2__Update_backfill_sys_menu_eos_node_job.sql</code>）</td>
-</tr>
-<tr>
-<td>手动接口</td>
-<td><code>POST /eosrole/menu/backfill-mes-menu-id</code></td>
-</tr>
-<tr>
-<td>重新同步</td>
-<td>菜单管理页「设置到 EOS」（会新建节点）</td>
-</tr>
-<tr>
-<td>SQL 迁移</td>
-<td>执行 <code>sys_menu_eos_node.sql</code> 从 NodeDesc 导入历史映射</td>
-</tr>
-</tbody></table>
-<p>定时任务与手动接口共用 <code>TreeService.backfillSysMenuEosNode()</code>。<strong>局限</strong>：仅对尚无映射记录的节点回填；URL 匹配仅适用于 <code>Functions</code> 含「函数打开网页」的 MES Web 菜单；type&#x3D;0 目录（<code>Functions</code> 为空）若 NodeDesc 也无映射，需重新「设置到 EOS」。</p>
 <hr>
 <h2 id="4-查询-SQL-示例"><a href="#4-查询-SQL-示例" class="headerlink" title="4. 查询 SQL 示例"></a>4. 查询 SQL 示例</h2><p>以下 SQL 在 SQL Server 上验证可用；跨库查询需当前连接对 <code>mesdata</code>、<code>messys</code> 均有读权限。</p>
 <h3 id="4-1-查看某角色的菜单权限（含菜单名）"><a href="#4-1-查看某角色的菜单权限（含菜单名）" class="headerlink" title="4.1 查看某角色的菜单权限（含菜单名）"></a>4.1 查看某角色的菜单权限（含菜单名）</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- @RoleOID: STUsers.OID，且 uGroup = 1</span></span><br><span class="line"><span class="keyword">DECLARE</span> <span class="variable">@RoleOID</span> <span class="type">INT</span> <span class="operator">=</span> <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    r.OID           <span class="keyword">AS</span> RoleOID,</span><br><span class="line">    r.UserName      <span class="keyword">AS</span> RoleName,</span><br><span class="line">    p.ObjectID,</span><br><span class="line">    o.[Object]      <span class="keyword">AS</span> ObjectName,</span><br><span class="line">    o.TypeID,</span><br><span class="line">    t.NodeID,</span><br><span class="line">    RTRIM(t.NodeCaption) <span class="keyword">AS</span> MenuCaption,</span><br><span class="line">    p.Oprate,</span><br><span class="line">    p.Permission</span><br><span class="line"><span class="keyword">FROM</span> mesdata.dbo.STUsers r</span><br><span class="line"><span class="keyword">JOIN</span> mesdata.dbo.STPermission p <span class="keyword">ON</span> p.UserID <span class="operator">=</span> r.OID</span><br><span class="line"><span class="keyword">JOIN</span> messys.dbo.ObjectRegister o <span class="keyword">ON</span> p.ObjectID <span class="operator">=</span> o.ObjectID</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> messys.dbo.Tree t <span class="keyword">ON</span> o.OwnerID <span class="operator">=</span> t.NodeID</span><br><span class="line"><span class="keyword">WHERE</span> r.OID <span class="operator">=</span> <span class="variable">@RoleOID</span></span><br><span class="line">  <span class="keyword">AND</span> r.uGroup <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">  <span class="keyword">AND</span> o.TypeID <span class="operator">=</span> <span class="number">7</span>          <span class="comment">-- 菜单/目录</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> t.NodeID, p.Oprate;</span><br></pre></td></tr></table></figure>
@@ -945,15 +1230,43 @@
 <td><code>mes-security-eos/.../service/impl/TreeServiceImpl.java</code></td>
 </tr>
 <tr>
+<td>菜单「执行」权限</td>
+<td><code>mes-security-eos/.../service/impl/EosRolePermissionServiceImpl.java</code></td>
+</tr>
+<tr>
+<td>ERP&#x2F;MES 对象与按钮</td>
+<td><code>mes-security-eos/.../service/impl/EosRoleObjectPermissionServiceImpl.java</code></td>
+</tr>
+<tr>
+<td>用户-角色</td>
+<td><code>mes-security-eos/.../service/impl/EosRoleUserServiceImpl.java</code></td>
+</tr>
+<tr>
+<td>业务 ObjectID 解析</td>
+<td><code>mes-security-eos/.../support/EosMenuObjectResolver.java</code></td>
+</tr>
+<tr>
+<td>实体</td>
+<td><code>StPermissionEntity</code>、<code>StUserGroupEntity</code>、<code>TreeEntity</code>、<code>ObjectRegisterEntity</code></td>
+</tr>
+<tr>
+<td>前端</td>
+<td><code>static/js/modules/security/eosrole.js</code></td>
+</tr>
+<tr>
 <td>MES 角色-菜单</td>
 <td><code>mes-core/.../service/impl/SysRoleMenuServiceImpl.java</code></td>
+</tr>
+<tr>
+<td>NodeID ↔ menu_id</td>
+<td><code>sys_menu_eos_node</code> + <code>SysMenuEosNodeService</code></td>
 </tr>
 <tr>
 <td>sys_menu → Tree SQL</td>
 <td><code>doc/sql/sys_menu_to_eos_tree.sql</code></td>
 </tr>
 </tbody></table>
-<p><strong>尚未实现的 EOS 权限表（可扩展）</strong>：</p>
+<p><strong>本环境未使用的 EOS 权限表（可扩展）</strong>：</p>
 <table>
 <thead>
 <tr>
@@ -962,14 +1275,6 @@
 </tr>
 </thead>
 <tbody><tr>
-<td><code>STPermission</code></td>
-<td>角色&#x2F;用户 ↔ ObjectRegister，<strong>建议优先映射</strong></td>
-</tr>
-<tr>
-<td><code>STUserGroup</code></td>
-<td>用户 ↔ 角色</td>
-</tr>
-<tr>
 <td><code>WebPermission</code></td>
 <td>Web 对象细粒度权限（RoleID + ObjID + Operate）</td>
 </tr>
@@ -980,16 +1285,16 @@
 </tbody></table>
 <hr>
 <h2 id="6-运维与开发建议"><a href="#6-运维与开发建议" class="headerlink" title="6. 运维与开发建议"></a>6. 运维与开发建议</h2><ol>
-<li><strong>EOS 客户端菜单权限</strong>：在 EOS 原生安全管理中配置；数据写入 <code>mesdata.dbo.STPermission</code>。运维排查可用上文 SQL。</li>
-<li><strong>MES 页面权限</strong>：在「系统管理 → 角色管理」中为 <code>sys_role</code> 勾选 <code>sys_menu</code>，与 EOS <code>STPermission</code> <strong>相互独立</strong>。</li>
-<li><strong>不要混用两套菜单</strong>：<ul>
+<li><strong>EOS 客户端菜单权限</strong>：可在 EOS 原生安全管理中配置，也可在 MES eosrole「配置菜单权限」中配置；数据均写入 <code>mesdata.dbo.STPermission</code>。运维排查可用上文 SQL。</li>
+<li><strong>MES 页面权限</strong>：可在「系统管理 → 角色管理」勾选 <code>sys_menu</code>；也可在 eosrole 中为 MES Web 菜单勾选按钮（写入同一 <code>sys_role_menu</code>）。菜单「执行」可见性仍依赖 <code>STPermission</code>。</li>
+<li><strong>两套菜单数据源</strong>：<ul>
 <li><code>Tree</code> &#x2F; <code>ObjectRegister</code>：EOS 客户端 &#x2F; Web 壳菜单</li>
 <li><code>sys_menu</code>：MES 页面与 Shiro 权限</li>
-<li>当前代码<strong>没有</strong> EOS 菜单权限与 MES 菜单权限的自动双向同步。</li>
+<li>eosrole 可在同一弹窗统一配置两侧，但<strong>没有</strong>从 <code>STPermission</code> 自动全量同步到 <code>sys_role_menu</code>（或反向）的后台任务；MES 按钮仅在 eosrole 保存时写入。</li>
 </ul>
 </li>
-<li><strong>从 EOS 同步角色后</strong>：若需在 MES Web 中使用该角色，仍需在 MES 角色管理中单独分配 <code>sys_menu</code>。</li>
-<li><strong>跨库注意</strong>：<code>STUsers</code>、<code>STPermission</code>、<code>STUserGroup</code> 在 <strong>mesdata</strong>；<code>Tree</code>、<code>ObjectRegister</code> 在 <strong>messys</strong>，关联字段为 <code>STPermission.ObjectID</code> ↔ <code>ObjectRegister.ObjectID</code>。</li>
+<li><strong>从 EOS 同步角色后</strong>：若需在 MES Web 中使用该角色的菜单&#x2F;按钮，可在角色管理中分配，或在 eosrole 配置菜单权限时一并提交 <code>mesMenuIds</code> &#x2F; <code>mesButtonMenuIds</code>。</li>
+<li><strong>跨库注意</strong>：<code>STUsers</code>、<code>STPermission</code>、<code>STUserGroup</code>、<code>sys_*</code> 在 <strong>mesdata</strong>；<code>Tree</code>、<code>ObjectRegister</code> 在 <strong>messys</strong>，关联字段为 <code>STPermission.ObjectID</code> ↔ <code>ObjectRegister.ObjectID</code>。</li>
 </ol>
 <hr>
 <h2 id="7-修订记录"><a href="#7-修订记录" class="headerlink" title="7. 修订记录"></a>7. 修订记录</h2><table>
@@ -1013,7 +1318,7 @@
 </tr>
 <tr>
 <td>2026-07-31</td>
-<td>发布到个人博客</td>
+<td>按最新实现修订：STPermission&#x2F;STUserGroup 已映射；统一结论&#x2F;§5&#x2F;§6 口径；补 save body（含 operationReplaceObjectIds）、用户权限 API、相关代码路径</td>
 </tr>
 </tbody></table>
 
