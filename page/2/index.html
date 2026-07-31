@@ -71,6 +71,182 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-use-deepseek-as-model-in-claude-code-cli" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/03/15/use-deepseek-as-model-in-claude-code-cli/" class="article-date">
+  <time class="dt-published" datetime="2026-03-15T10:39:08.000Z" itemprop="datePublished">2026-03-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/03/15/use-deepseek-as-model-in-claude-code-cli/">在 Claude Code CLI 中使用 DeepSeek 作为模型</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Claude Code 是 Anthropic 的 AI 编程助手，默认只使用 Anthropic 的模型。通过环境变量 <code>ANTHROPIC_BASE_URL</code> 可以切换 API 端点，DeepSeek 官方提供了 <strong>Anthropic API 兼容</strong> 的接口，因此可以直接把 Claude Code CLI 接到 DeepSeek，无需代理或第三方路由。</p>
+<p>本文介绍如何配置 Claude Code CLI，使其使用 DeepSeek 作为后端模型。</p>
+<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><ul>
+<li>已安装 <a target="_blank" rel="noopener" href="https://claude.ai/code">Claude Code</a>（官方安装：<code>curl -fsSL https://claude.ai/install.sh | bash</code>）</li>
+<li>已注册 <a target="_blank" rel="noopener" href="https://platform.deepseek.com/">DeepSeek 开放平台</a> 并获取 <strong>API Key</strong>（<a target="_blank" rel="noopener" href="https://platform.deepseek.com/api-keys">API Keys 页面</a>）</li>
+</ul>
+<h2 id="方式一：官方-Anthropic-兼容-API（推荐）"><a href="#方式一：官方-Anthropic-兼容-API（推荐）" class="headerlink" title="方式一：官方 Anthropic 兼容 API（推荐）"></a>方式一：官方 Anthropic 兼容 API（推荐）</h2><p>DeepSeek 提供与 Anthropic Messages API 兼容的端点，只需改环境变量即可让 Claude Code 走 DeepSeek。</p>
+<h3 id="1-配置环境变量"><a href="#1-配置环境变量" class="headerlink" title="1. 配置环境变量"></a>1. 配置环境变量</h3><p>在终端中执行（将 <code>YOUR_DEEPSEEK_API_KEY</code> 换成你的 DeepSeek API Key）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># DeepSeek Anthropic 兼容 API 端点</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定使用的模型（见下方「模型选择」）</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：避免长输出时客户端超时（单位毫秒，例如 10 分钟）</span></span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：禁用非必要流量（仅在使用第三方 API 时建议）</span></span><br><span class="line"><span class="built_in">export</span> CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-启动-Claude-Code"><a href="#2-启动-Claude-Code" class="headerlink" title="2. 启动 Claude Code"></a>2. 启动 Claude Code</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> your-project</span><br><span class="line">claude</span><br></pre></td></tr></table></figure>
+
+<p>之后 Claude Code 的请求会发往 DeepSeek，使用你配置的模型。</p>
+<h3 id="3-写入-Shell-配置（长期使用）"><a href="#3-写入-Shell-配置（长期使用）" class="headerlink" title="3. 写入 Shell 配置（长期使用）"></a>3. 写入 Shell 配置（长期使用）</h3><p>避免每次手动 export，可写入 <code>~/.bashrc</code>、<code>~/.zshrc</code> 或 Fish 的 <code>config.fish</code>。</p>
+<p><strong>Bash &#x2F; Zsh 示例：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># DeepSeek + Claude Code</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br></pre></td></tr></table></figure>
+
+<p><strong>Fish 示例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function claude-deepseek</span><br><span class="line">    set -x ANTHROPIC_BASE_URL https://api.deepseek.com/anthropic</span><br><span class="line">    set -x ANTHROPIC_AUTH_TOKEN &quot;YOUR_DEEPSEEK_API_KEY&quot;</span><br><span class="line">    set -x ANTHROPIC_MODEL deepseek-chat</span><br><span class="line">    set -x ANTHROPIC_SMALL_FAST_MODEL deepseek-chat</span><br><span class="line">    set -x API_TIMEOUT_MS 600000</span><br><span class="line">    claude $argv</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>之后在 Fish 中执行 <code>claude-deepseek</code> 即用 DeepSeek；其他终端保持默认则仍用 Anthropic。</p>
+<h2 id="模型选择"><a href="#模型选择" class="headerlink" title="模型选择"></a>模型选择</h2><p>DeepSeek 在 Anthropic 兼容接口中常用模型名：</p>
+<table>
+<thead>
+<tr>
+<th>模型名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>deepseek-chat</code></td>
+<td>通用对话，响应快，适合日常编码与问答</td>
+</tr>
+<tr>
+<td><code>deepseek-reasoner</code></td>
+<td>推理模式，步骤更详细，适合复杂分析与多步推理</td>
+</tr>
+</tbody></table>
+<p>通过修改 <code>ANTHROPIC_MODEL</code> 和 <code>ANTHROPIC_SMALL_FAST_MODEL</code> 即可切换。若传入 DeepSeek 不支持的模型名，接口会自动映射到 <code>deepseek-chat</code>。</p>
+<h2 id="方式二：通过-Claude-Code-Router-OpenRouter"><a href="#方式二：通过-Claude-Code-Router-OpenRouter" class="headerlink" title="方式二：通过 Claude Code Router + OpenRouter"></a>方式二：通过 Claude Code Router + OpenRouter</h2><p>若希望在同一套 Claude Code 里切换多种模型（如 Claude、GPT、DeepSeek），可使用 <a target="_blank" rel="noopener" href="https://github.com/musistudio/claude-code-router">Claude Code Router</a>，通过 OpenRouter 统一接入。</p>
+<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 已安装 Claude Code 的前提下</span></span><br><span class="line">npm install -g @musistudio/claude-code-router</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-获取-OpenRouter-API-Key"><a href="#2-获取-OpenRouter-API-Key" class="headerlink" title="2. 获取 OpenRouter API Key"></a>2. 获取 OpenRouter API Key</h3><p>在 <a target="_blank" rel="noopener" href="https://openrouter.ai/">OpenRouter</a> 注册并创建 API Key，按用量计费，可选用 DeepSeek 等模型。</p>
+<h3 id="3-配置文件"><a href="#3-配置文件" class="headerlink" title="3. 配置文件"></a>3. 配置文件</h3><p>创建并编辑 <code>~/.claude-code-router/config.json</code>：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;LOG&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;LOG_LEVEL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;info&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Providers&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_base_url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://openrouter.ai/api/v1/chat/completions&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;YOUR_OPENROUTER_API_KEY&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;transformer&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;use&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span> <span class="string">&quot;tooluse&quot;</span><span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;models&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;anthropic/claude-sonnet-4&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;openai/gpt-4o&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;deepseek/deepseek-chat&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Router&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;default&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;background&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;think&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>将 <code>YOUR_OPENROUTER_API_KEY</code> 换成你的 OpenRouter API Key。<code>transformer</code> 中的 <code>&quot;tooluse&quot;</code> 需保留，否则 Claude Code 的工具调用（编辑文件、执行命令等）会异常。</p>
+<h3 id="4-启动方式"><a href="#4-启动方式" class="headerlink" title="4. 启动方式"></a>4. 启动方式</h3><p>用 Router 启动 Claude Code（不再直接运行 <code>claude</code>）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ccr code</span><br></pre></td></tr></table></figure>
+
+<p>会话中可切换模型，例如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/model openrouter,deepseek/deepseek-chat</span><br><span class="line">/status</span><br></pre></td></tr></table></figure>
+
+<h2 id="Anthropic-API-兼容性说明（方式一）"><a href="#Anthropic-API-兼容性说明（方式一）" class="headerlink" title="Anthropic API 兼容性说明（方式一）"></a>Anthropic API 兼容性说明（方式一）</h2><p>DeepSeek 的 Anthropic 兼容接口支持：</p>
+<ul>
+<li><strong>常用参数</strong>：<code>max_tokens</code>、<code>stop_sequences</code>、<code>stream</code>、<code>system</code>、<code>temperature</code>（0.0～2.0）、<code>top_p</code></li>
+<li><strong>工具调用</strong>：<code>tools</code>、<code>tool_choice</code>，适合 Claude Code 的编辑与执行等能力</li>
+<li><strong>内容类型</strong>：文本、thinking 类内容</li>
+</ul>
+<p>以下能力在 DeepSeek 端<strong>不支持</strong>或不生效：</p>
+<ul>
+<li>消息中的图片、文档等 multimodal 类型</li>
+<li>部分 MCP 相关类型（如 <code>mcp_tool_use</code>、<code>mcp_tool_result</code>）</li>
+<li>部分 Anthropic 专有字段（如 <code>anthropic-beta</code>、<code>container</code>、<code>metadata</code> 等）</li>
+</ul>
+<p>仅使用「写代码、改文件、跑命令」等常见能力时，方式一即可满足需求。</p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><p><strong>Q: 必须用 Python 吗？</strong><br>A: 不必。方式一只是改环境变量，任意终端&#x2F;shell 均可；方式二需要 Node.js 来跑 <code>ccr</code>。</p>
+<p><strong>Q: DeepSeek 免费吗？</strong><br>A: 注册会有一定免费额度，超出后按官方定价计费，详见 <a target="_blank" rel="noopener" href="https://platform.deepseek.com/">DeepSeek 定价页</a>。</p>
+<p><strong>Q: 如何确认当前用的是 DeepSeek？</strong><br>A: 方式一：看环境变量 <code>ANTHROPIC_BASE_URL</code> 是否为 <code>https://api.deepseek.com/anthropic</code>。方式二：在会话里输入 <code>/status</code> 查看当前模型。</p>
+<p><strong>Q: 长输出被截断或超时？</strong><br>A: 增大 <code>API_TIMEOUT_MS</code>（例如 <code>600000</code> 表示 10 分钟）。</p>
+<hr>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://api-docs.deepseek.com/zh-cn/guides/anthropic_api">DeepSeek 官方：Anthropic API 兼容说明</a></li>
+<li><a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/settings#environment-variables">Claude Code 环境变量说明</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/musistudio/claude-code-router">Claude Code Router</a></li>
+<li><a target="_blank" rel="noopener" href="https://platform.deepseek.com/api-keys">DeepSeek 开放平台 &#x2F; API Keys</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://eppencn.com/2026/03/15/use-deepseek-as-model-in-claude-code-cli/" data-id="cms8ei1jc000igcv5avhycjf0" data-title="在 Claude Code CLI 中使用 DeepSeek 作为模型" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CLI/" rel="tag">CLI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Claude-Code/" rel="tag">Claude Code</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-使用tailscale组网-使用家里打印机" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/03/15/%E4%BD%BF%E7%94%A8tailscale%E7%BB%84%E7%BD%91-%E4%BD%BF%E7%94%A8%E5%AE%B6%E9%87%8C%E6%89%93%E5%8D%B0%E6%9C%BA/" class="article-date">
+  <time class="dt-published" datetime="2026-03-15T05:57:37.000Z" itemprop="datePublished">2026-03-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/03/15/%E4%BD%BF%E7%94%A8tailscale%E7%BB%84%E7%BD%91-%E4%BD%BF%E7%94%A8%E5%AE%B6%E9%87%8C%E6%89%93%E5%8D%B0%E6%9C%BA/">使用tailscale组网 使用家里打印机</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在 Ubuntu 上开启子网广播</p>
+<h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p><strong>确定家里的网段：</strong> 通常是 <code>192.168.1.0/24</code> 或 <code>192.168.0.0/24</code></p>
+<p><strong>开启 IP 转发（内核层面）：</strong><br>运行以下命令：</p>
+<p><strong>Bash</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;net.ipv4.ip_forward = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">echo &#x27;net.ipv6.conf.all.forwarding = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">sudo sysctl -p /etc/sysctl.d/99-tailscale.conf</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>启动子网路由：</strong><br>运行以下命令（将 <code>192.168.1.0/24</code> 替换为你家里的实际网段）：</p>
+<p><strong>Bash</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tailscale up --advertise-routes=192.168.1.0/24</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="第二步：在-Tailscale-控制面板允许路由"><a href="#第二步：在-Tailscale-控制面板允许路由" class="headerlink" title="第二步：在 Tailscale 控制面板允许路由"></a>第二步：在 Tailscale 控制面板允许路由</h3><p>为了安全，Tailscale 默认不会自动启用路由，需要你手动点一下：</p>
+<ol>
+<li>打开 <a target="_blank" rel="noopener" href="https://login.tailscale.com/admin/machines">Tailscale Admin Console</a>。</li>
+<li>找到你的 <strong>Ubuntu</strong> 设备。</li>
+<li>点击右侧的三个点 <code>...</code> -&gt;  <strong>Edit route settings</strong> 。</li>
+<li>在 <strong>Subnet routes</strong> 下，勾选你刚才添加的网段，点击确认。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://eppencn.com/2026/03/15/%E4%BD%BF%E7%94%A8tailscale%E7%BB%84%E7%BD%91-%E4%BD%BF%E7%94%A8%E5%AE%B6%E9%87%8C%E6%89%93%E5%8D%B0%E6%9C%BA/" data-id="cms8ei1jj000lgcv5ez6uha9o" data-title="使用tailscale组网 使用家里打印机" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-2026-work-calendar" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/12/10/2026-work-calendar/" class="article-date">
@@ -140,7 +316,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2025/12/10/2026-work-calendar/" data-id="cmr8z6oh70003qsv5h4d46j0n" data-title="2026 work calendar" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2025/12/10/2026-work-calendar/" data-id="cms8ei1hg0000gcv5aqdc91nk" data-title="2026 work calendar" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -225,7 +401,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2025/07/12/%E9%AD%94%E6%96%B9/" data-id="cmr8z6oi1001uqsv5gejf92h7" data-title="魔方" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2025/07/12/%E9%AD%94%E6%96%B9/" data-id="cms8ei1k70010gcv5a2u77hka" data-title="魔方" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -264,7 +440,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2025/07/07/%E6%B5%99%E7%9F%B3%E5%8C%96%E5%BA%8F/" data-id="cmr8z6ohi000gqsv59yzk6nch" data-title="浙石化序" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2025/07/07/%E6%B5%99%E7%9F%B3%E5%8C%96%E5%BA%8F/" data-id="cms8ei1jh000kgcv5d26v9j4b" data-title="浙石化序" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -438,7 +614,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2025/06/23/classicical-chinese-translation-private-policy/" data-id="cmr8z6oh90004qsv5g89b9dc1" data-title="classicical-chinese-translation-private-policy" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2025/06/23/classicical-chinese-translation-private-policy/" data-id="cms8ei1ie0004gcv56prp0gl0" data-title="classicical-chinese-translation-private-policy" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -622,7 +798,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2025/06/23/classical-chinese-translation/" data-id="cmr8z6oh20001qsv5713e7mks" data-title="classical chinese translation" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2025/06/23/classical-chinese-translation/" data-id="cms8ei1ib0003gcv5cfei4z1k" data-title="classical chinese translation" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -759,7 +935,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2025/06/12/%E9%98%9F%E5%88%97%E7%9B%91%E6%8E%A7%E9%A1%B5%E9%9D%A2%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" data-id="cmr8z6ohz001qqsv58on5efbh" data-title="队列监控页面使用指南" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2025/06/12/%E9%98%9F%E5%88%97%E7%9B%91%E6%8E%A7%E9%A1%B5%E9%9D%A2%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" data-id="cms8ei1k4000ygcv599n0ctg1" data-title="队列监控页面使用指南" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -853,7 +1029,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2025/06/12/health/" data-id="cmr8z6oha0005qsv52um17kjp" data-title="health" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2025/06/12/health/" data-id="cms8ei1ix000agcv51ic13ety" data-title="health" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -904,108 +1080,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/" data-id="cmr8z6ohl000kqsv5bunzg01i" data-title="查看电脑的电池状态" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-kingbase" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/09/02/kingbase/" class="article-date">
-  <time class="dt-published" datetime="2024-09-02T08:07:40.000Z" itemprop="datePublished">2024-09-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/09/02/kingbase/">kingbase</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="kingbase使用问题"><a href="#kingbase使用问题" class="headerlink" title="kingbase使用问题"></a>kingbase使用问题</h1><h2 id="乱码问题"><a href="#乱码问题" class="headerlink" title="乱码问题"></a>乱码问题</h2><p>创建gb18030的数据库，可以解决。</p>
-<img src="/2024/09/02/kingbase/1725264522588.png" class="" width="1725264522588">
-
-<img src="/2024/09/02/kingbase/1725264492761.png" class="" width="1725264492761">
-
-<p>更换驱动</p>
-<img src="/2024/09/02/kingbase/1725264867078.png" class="" width="1725264867078">
-
-<h2 id="不支持10"><a href="#不支持10" class="headerlink" title="不支持10"></a>不支持10</h2><img src="/2024/09/02/kingbase/1725264959146.png" class="" width="1725264959146">
-
-<h2 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pgjdbc: autodetected server-encoding to be ISO-8859-1, if the message is not readable, please check database logs and/or host, port, dbname, user, password, pg_hba.conf</span><br></pre></td></tr></table></figure>
-
-<h2 id="错误-1"><a href="#错误-1" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">See nested exception: org.postgresql.util.PSQLException: ERROR: 关系 &quot;qrtz_triggers&quot; 不存在</span><br></pre></td></tr></table></figure>
-
-<img src="/2024/09/02/kingbase/1725267331659.png" class="" width="1725267331659">
-
-<h2 id="查询数据库编码"><a href="#查询数据库编码" class="headerlink" title="查询数据库编码"></a>查询数据库编码</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT pg_encoding_to_char(encoding) FROM pg_database WHERE datname = &#x27;your_database_name&#x27;;</span><br></pre></td></tr></table></figure>
-
-<h2 id="对模式xx权限不够"><a href="#对模式xx权限不够" class="headerlink" title="对模式xx权限不够"></a>对模式xx权限不够</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Caused by: org.postgresql.util.PSQLException: ERROR: 对模式 cems 权限不够</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2024/09/02/kingbase/" data-id="cmr8z6ohc0008qsv52a6zed1i" data-title="kingbase" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-my-first-blog" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/08/24/my-first-blog/" class="article-date">
-  <time class="dt-published" datetime="2024-08-24T15:23:01.000Z" itemprop="datePublished">2024-08-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/08/24/my-first-blog/">使用github和hexo构建个人博客门户</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>看了别人写的使用github和hexo构建个人博客门户的说明后，发现有些跟现在2024的情况有些不同，并且有些没有介绍到的情况，导致架设过程中遇到的些问题也一起记录一下。</p>
-<p>之前看到很多博客是github.io结尾的，今天想了一下，肯定是github提供了这种博客服务，于是就去搜了一下。果然是这样。</p>
-        
-          <p class="article-more-link">
-            <a href="/2024/08/24/my-first-blog/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2024/08/24/my-first-blog/" data-id="cmr8z6ohf000bqsv59ywx5q1p" data-title="使用github和hexo构建个人博客门户" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/" data-id="cms8ei1jl000ngcv58c8m51af" data-title="查看电脑的电池状态" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -1021,7 +1096,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -1035,7 +1110,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/0AD/" rel="tag">0AD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Agent/" rel="tag">Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Automation/" rel="tag">Automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CLI/" rel="tag">CLI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Calendar/" rel="tag">Calendar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Claude-Code/" rel="tag">Claude Code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cursor/" rel="tag">Cursor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenSource/" rel="tag">OpenSource</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PowerShell/" rel="tag">PowerShell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTS/" rel="tag">RTS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/health/" rel="tag">health</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" rel="tag">中医体质</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" rel="tag">九体医学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" rel="tag">体质调理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" rel="tag">体重管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%81%A5%E5%BA%B7/" rel="tag">健康</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" rel="tag">慢性病</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" rel="tag">科学减肥</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%82%A5%E8%83%96/" rel="tag">肥胖</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/0AD/" rel="tag">0AD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Agent/" rel="tag">Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Automation/" rel="tag">Automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CLI/" rel="tag">CLI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Calendar/" rel="tag">Calendar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Claude-Code/" rel="tag">Claude Code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cursor/" rel="tag">Cursor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EOS/" rel="tag">EOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenSource/" rel="tag">OpenSource</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PowerShell/" rel="tag">PowerShell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RBAC/" rel="tag">RBAC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTS/" rel="tag">RTS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/health/" rel="tag">health</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zTree/" rel="tag">zTree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" rel="tag">中医体质</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" rel="tag">九体医学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" rel="tag">体质调理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" rel="tag">体重管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%81%A5%E5%BA%B7/" rel="tag">健康</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" rel="tag">慢性病</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" rel="tag">科学减肥</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%82%A5%E8%83%96/" rel="tag">肥胖</a></li></ul>
     </div>
   </div>
 
@@ -1045,7 +1120,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/0AD/" style="font-size: 10px;">0AD</a> <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/Agent/" style="font-size: 10px;">Agent</a> <a href="/tags/Automation/" style="font-size: 10px;">Automation</a> <a href="/tags/CLI/" style="font-size: 13.33px;">CLI</a> <a href="/tags/Calendar/" style="font-size: 10px;">Calendar</a> <a href="/tags/Claude-Code/" style="font-size: 10px;">Claude Code</a> <a href="/tags/Cursor/" style="font-size: 10px;">Cursor</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/Game/" style="font-size: 10px;">Game</a> <a href="/tags/OpenSource/" style="font-size: 10px;">OpenSource</a> <a href="/tags/PowerShell/" style="font-size: 10px;">PowerShell</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RTS/" style="font-size: 10px;">RTS</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/health/" style="font-size: 10px;">health</a> <a href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" style="font-size: 10px;">中医体质</a> <a href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" style="font-size: 16.67px;">九体医学</a> <a href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" style="font-size: 10px;">体质调理</a> <a href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" style="font-size: 13.33px;">体重管理</a> <a href="/tags/%E5%81%A5%E5%BA%B7/" style="font-size: 20px;">健康</a> <a href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" style="font-size: 10px;">慢性病</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" style="font-size: 10px;">科学减肥</a> <a href="/tags/%E8%82%A5%E8%83%96/" style="font-size: 10px;">肥胖</a>
+      <a href="/tags/0AD/" style="font-size: 10px;">0AD</a> <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/Agent/" style="font-size: 10px;">Agent</a> <a href="/tags/Automation/" style="font-size: 10px;">Automation</a> <a href="/tags/CLI/" style="font-size: 13.33px;">CLI</a> <a href="/tags/Calendar/" style="font-size: 10px;">Calendar</a> <a href="/tags/Claude-Code/" style="font-size: 10px;">Claude Code</a> <a href="/tags/Cursor/" style="font-size: 10px;">Cursor</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/EOS/" style="font-size: 13.33px;">EOS</a> <a href="/tags/Game/" style="font-size: 10px;">Game</a> <a href="/tags/MES/" style="font-size: 13.33px;">MES</a> <a href="/tags/OpenSource/" style="font-size: 10px;">OpenSource</a> <a href="/tags/PowerShell/" style="font-size: 10px;">PowerShell</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RBAC/" style="font-size: 10px;">RBAC</a> <a href="/tags/RTS/" style="font-size: 10px;">RTS</a> <a href="/tags/SQL-Server/" style="font-size: 13.33px;">SQL Server</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/health/" style="font-size: 10px;">health</a> <a href="/tags/zTree/" style="font-size: 10px;">zTree</a> <a href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" style="font-size: 10px;">中医体质</a> <a href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" style="font-size: 16.67px;">九体医学</a> <a href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" style="font-size: 10px;">体质调理</a> <a href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" style="font-size: 13.33px;">体重管理</a> <a href="/tags/%E5%81%A5%E5%BA%B7/" style="font-size: 20px;">健康</a> <a href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" style="font-size: 10px;">慢性病</a> <a href="/tags/%E6%9D%83%E9%99%90/" style="font-size: 13.33px;">权限</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" style="font-size: 10px;">科学减肥</a> <a href="/tags/%E8%82%A5%E8%83%96/" style="font-size: 10px;">肥胖</a>
     </div>
   </div>
 
@@ -1067,6 +1142,14 @@
       <ul>
         
           <li>
+            <a href="/2026/07/31/eos-role-tree-nodeid-objectid/">EOS 菜单树 NodeID 与 ObjectID 说明</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/31/eos-role-menu-relationship/">EOS 菜单与角色关联关系说明</a>
+          </li>
+        
+          <li>
             <a href="/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%82%A5%E8%83%96%E5%85%AB%E5%A4%A7%E5%81%A5%E5%BA%B7%E5%9C%B0%E9%9B%B7/">瘦身密码（五）：甜蜜陷阱——肥胖引爆的八大健康地雷</a>
           </li>
         
@@ -1076,14 +1159,6 @@
         
           <li>
             <a href="/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6%E4%BD%93%E8%B4%A8%E5%AF%86%E7%A0%81%E5%85%A5%E9%97%A8/">瘦身密码（三）：九体医学入门——解锁你的体质密码</a>
-          </li>
-        
-          <li>
-            <a href="/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%84%82%E8%82%AA%E5%B7%A5%E5%8E%82%E4%B8%8E%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/">瘦身密码（二）：脂肪工厂的运作密码——科学减肥是场马拉松</a>
-          </li>
-        
-          <li>
-            <a href="/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B8%AD%E5%9B%BD%E5%BC%8F%E5%8F%91%E7%A6%8F%E5%9B%BE%E9%89%B4/">瘦身密码（一）：中国式发福图鉴——14亿人的体重失控现场</a>
           </li>
         
       </ul>

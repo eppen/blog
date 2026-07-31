@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>EOS 菜单树 NodeID 与 ObjectID 说明 | Hua Liang&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="本文档说明 eosrole 页面「配置 EOS 菜单权限」树节点中 NodeID（前端 zTree 的 id）与 ObjectID（前端 objectId）的含义、数据库来源、后端组装与前端使用方式。  关联文档：EOS 菜单与角色关联关系说明  结论摘要   前端字段 含义 数据库来源 主要用途    zTree id 菜单节点 ID messys.Tree.NodeID 树结构、父子关系（pI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EOS 菜单树 NodeID 与 ObjectID 说明">
+<meta property="og:url" content="https://eppencn.com/2026/07/31/eos-role-tree-nodeid-objectid/index.html">
+<meta property="og:site_name" content="Hua Liang&#39;s Blog">
+<meta property="og:description" content="本文档说明 eosrole 页面「配置 EOS 菜单权限」树节点中 NodeID（前端 zTree 的 id）与 ObjectID（前端 objectId）的含义、数据库来源、后端组装与前端使用方式。  关联文档：EOS 菜单与角色关联关系说明  结论摘要   前端字段 含义 数据库来源 主要用途    zTree id 菜单节点 ID messys.Tree.NodeID 树结构、父子关系（pI">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-07-31T03:41:00.000Z">
+<meta property="article:modified_time" content="2026-07-31T03:45:18.753Z">
+<meta property="article:author" content="eppen">
+<meta property="article:tag" content="MES">
+<meta property="article:tag" content="EOS">
+<meta property="article:tag" content="权限">
+<meta property="article:tag" content="SQL Server">
+<meta property="article:tag" content="zTree">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hua Liang's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<!-- hexo injector head_end start --><meta name="google-adsense-account" content="ca-pub-2045994937692573">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2045994937692573" crossorigin="anonymous"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hua Liang&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://eppencn.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-eos-role-tree-nodeid-objectid" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/07/31/eos-role-tree-nodeid-objectid/" class="article-date">
+  <time class="dt-published" datetime="2026-07-31T03:41:00.000Z" itemprop="datePublished">2026-07-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      EOS 菜单树 NodeID 与 ObjectID 说明
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>本文档说明 eosrole 页面「配置 EOS 菜单权限」树节点中 <strong>NodeID</strong>（前端 zTree 的 <code>id</code>）与 <strong>ObjectID</strong>（前端 <code>objectId</code>）的含义、数据库来源、后端组装与前端使用方式。</p>
+<blockquote>
+<p>关联文档：<a href="/2026/07/31/eos-role-menu-relationship/">EOS 菜单与角色关联关系说明</a></p>
+</blockquote>
+<h2 id="结论摘要"><a href="#结论摘要" class="headerlink" title="结论摘要"></a>结论摘要</h2><table>
+<thead>
+<tr>
+<th>前端字段</th>
+<th>含义</th>
+<th>数据库来源</th>
+<th>主要用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>zTree <code>id</code></td>
+<td>菜单节点 ID</td>
+<td><code>messys.Tree.NodeID</code></td>
+<td>树结构、父子关系（<code>pId</code>）</td>
+</tr>
+<tr>
+<td>zTree <code>objectId</code></td>
+<td>EOS 权限对象 ID</td>
+<td><code>messys.Tree.ObjectID</code> &#x3D; <code>messys.ObjectRegister.ObjectID</code></td>
+<td>角色菜单授权（<code>STPermission.ObjectID</code>）</td>
+</tr>
+</tbody></table>
+<p><strong>NodeID 与 ObjectID 是两套独立编号体系</strong>，不可混用。角色授权必须使用 <strong>ObjectID</strong>；NodeID 仅用于描述菜单树层级关系。</p>
+<hr>
+<h2 id="1-NodeID-是什么"><a href="#1-NodeID-是什么" class="headerlink" title="1. NodeID 是什么"></a>1. NodeID 是什么</h2><p><code>NodeID</code> 是 EOS 菜单树 <code>messys.dbo.Tree</code> 的主键，标识一个菜单&#x2F;目录节点在树中的位置。</p>
+<p>在 MES 前端 zTree 中，NodeID 映射为节点的 **<code>id</code>**（<code>idKey: &quot;id&quot;</code>），<code>ParentID</code> 映射为 **<code>pId</code>**，用于渲染树形结构与展开&#x2F;折叠。</p>
+<p><strong>NodeID 不写入 STPermission</strong>。权限表引用的是 ObjectID。</p>
+<hr>
+<h2 id="2-NodeID-从哪来"><a href="#2-NodeID-从哪来" class="headerlink" title="2. NodeID 从哪来"></a>2. NodeID 从哪来</h2><h3 id="2-1-数据库表"><a href="#2-1-数据库表" class="headerlink" title="2.1 数据库表"></a>2.1 数据库表</h3><table>
+<thead>
+<tr>
+<th>表</th>
+<th>库</th>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Tree</code></td>
+<td>messys</td>
+<td><code>NodeID</code></td>
+<td>菜单节点主键</td>
+</tr>
+<tr>
+<td><code>Tree</code></td>
+<td>messys</td>
+<td><code>ParentID</code></td>
+<td>父节点 NodeID（根为 0）</td>
+</tr>
+<tr>
+<td><code>UniqueNO</code></td>
+<td>messys</td>
+<td><code>No</code></td>
+<td>下一个可用 NodeID（<code>NName=&#39;tree&#39;</code>）</td>
+</tr>
+</tbody></table>
+<h3 id="2-2-MES-新建节点时的分配逻辑"><a href="#2-2-MES-新建节点时的分配逻辑" class="headerlink" title="2.2 MES 新建节点时的分配逻辑"></a>2.2 MES 新建节点时的分配逻辑</h3><p>MES 通过 <code>TreeServiceImpl.getNextNodeIdForTree()</code> 从 <code>UniqueNO</code> 表取号：</p>
+<ol>
+<li>悲观锁查询 <code>UniqueNO</code> 中 <code>NName=&#39;tree&#39;</code> 的记录（<code>PESSIMISTIC_WRITE</code>）</li>
+<li>取当前 <code>No</code> 作为新 NodeID</li>
+<li>将 <code>No + 1</code> 写回，占用该编号</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TreeServiceImpl.getNextNodeIdForTree()</span></span><br><span class="line"><span class="type">UniqueNOEntity</span> <span class="variable">row</span> <span class="operator">=</span> uniqueNODao.findByNnameForUpdate(UNIQUE_NO_NAME_TREE);</span><br><span class="line"><span class="type">int</span> <span class="variable">currentNo</span> <span class="operator">=</span> row.getNo();</span><br><span class="line">row.setNo(currentNo + <span class="number">1</span>);</span><br><span class="line">uniqueNODao.save(row);</span><br><span class="line"><span class="keyword">return</span> Long.valueOf(currentNo);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-触发-NodeID-分配的操作"><a href="#2-3-触发-NodeID-分配的操作" class="headerlink" title="2.3 触发 NodeID 分配的操作"></a>2.3 触发 NodeID 分配的操作</h3><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>新增菜单节点</td>
+<td><code>TreeServiceImpl.addNode</code></td>
+<td>先 <code>getNextNodeIdForTree()</code>，再写 Tree</td>
+</tr>
+<tr>
+<td>sys_menu 同步</td>
+<td><code>TreeServiceImpl.syncFromSysMenu</code></td>
+<td>每个同步节点分配新 NodeID</td>
+</tr>
+<tr>
+<td>复制菜单</td>
+<td><code>TreeServiceImpl.copyMenu</code></td>
+<td>源节点及子树每个节点各分配新 NodeID</td>
+</tr>
+<tr>
+<td>交接班菜单批量创建</td>
+<td><code>createShiftLogDispatchMenus</code> → <code>addNode</code></td>
+<td>同上</td>
+</tr>
+</tbody></table>
+<h3 id="2-4-EOS-原生-历史数据"><a href="#2-4-EOS-原生-历史数据" class="headerlink" title="2.4 EOS 原生 &#x2F; 历史数据"></a>2.4 EOS 原生 &#x2F; 历史数据</h3><p>在 MES 介入之前，NodeID 可能由 EOS 客户端或其他工具写入 <code>Tree</code>，同样依赖 <code>UniqueNO</code> 序列或历史遗留编号。MES 只保证<strong>新增&#x2F;同步&#x2F;复制</strong>时走 <code>getNextNodeIdForTree()</code> 逻辑。</p>
+<h3 id="2-5-NodeID-在-Functions-中的用途"><a href="#2-5-NodeID-在-Functions-中的用途" class="headerlink" title="2.5 NodeID 在 Functions 中的用途"></a>2.5 NodeID 在 Functions 中的用途</h3><p><code>Tree.Functions</code> 字段保存菜单跳转 URL，其中 <strong><code>menuId</code> 参数值为 NodeID</strong>（不是 ObjectID）。例如同步 sys_menu 时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;baseUrl&#125;/&#123;url&#125;?token=%Token%&amp;menuId=&#123;NodeID&#125;</span><br></pre></td></tr></table></figure>
+
+<p>复制菜单时，<code>TreeServiceImpl</code> 会将 <code>Functions</code> 里的 <code>menuId=旧NodeID</code> 替换为 <code>menuId=新NodeID</code>。</p>
+<h3 id="2-6-NodeID-生命周期"><a href="#2-6-NodeID-生命周期" class="headerlink" title="2.6 NodeID 生命周期"></a>2.6 NodeID 生命周期</h3><ul>
+<li><strong>查询</strong>：<code>treeDao.findAll(...)</code>、<code>queryObject(nodeid)</code> 等</li>
+<li><strong>删除</strong>：<code>delete</code> &#x2F; <code>deleteBatch</code> 按 NodeID 删除 Tree，并先 <code>ObjectRegisterDao.deleteByOwnerId(NodeID)</code> 清理关联对象</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">  A[UniqueNO&lt;br/&gt;NName=tree] --&gt;|取 No 作为 NodeID| B[Tree.NodeID]</span><br><span class="line">  B --&gt; C[listTreeForPermission&lt;br/&gt;返回 id=NodeID]</span><br><span class="line">  C --&gt; D[zTree id / pId&lt;br/&gt;树结构展示]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-ObjectID-是什么"><a href="#3-ObjectID-是什么" class="headerlink" title="3. ObjectID 是什么"></a>3. ObjectID 是什么</h2><p><code>ObjectID</code> 是 EOS 对象注册表 <code>messys.dbo.ObjectRegister</code> 的主键。每个可授权对象在 <code>ObjectRegister</code> 中注册一条记录；菜单&#x2F;目录节点对应 <strong>TypeID &#x3D; 7</strong>，并通过 <strong>OwnerID &#x3D; Tree.NodeID</strong> 与菜单树关联。</p>
+<p>MES 维护菜单时会将 ObjectID <strong>冗余写入</strong> <code>Tree.ObjectID</code>，便于权限树接口一次查询带出。</p>
+<p>在角色菜单授权场景下，前端勾选菜单后提交的是 <strong>objectId 列表</strong>，写入 <code>mesdata.dbo.STPermission.ObjectID</code>（配合 <code>UserID</code>&#x3D;角色 OID、<code>Oprate</code>&#x3D;「执行」）。</p>
+<hr>
+<h2 id="4-ObjectID-从哪来"><a href="#4-ObjectID-从哪来" class="headerlink" title="4. ObjectID 从哪来"></a>4. ObjectID 从哪来</h2><h3 id="4-1-数据库表"><a href="#4-1-数据库表" class="headerlink" title="4.1 数据库表"></a>4.1 数据库表</h3><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>库&#x2F;表</th>
+<th>字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>权威主键</td>
+<td>messys <code>ObjectRegister</code></td>
+<td><code>ObjectID</code></td>
+<td>全局对象 ID（自增：MAX+1）</td>
+</tr>
+<tr>
+<td>关联</td>
+<td>messys <code>ObjectRegister</code></td>
+<td><code>OwnerID</code></td>
+<td>&#x3D; <code>Tree.NodeID</code></td>
+</tr>
+<tr>
+<td>类型</td>
+<td>messys <code>ObjectRegister</code></td>
+<td><code>TypeID</code></td>
+<td>MES 新建菜单固定为 <strong>7</strong>（菜单&#x2F;目录）</td>
+</tr>
+<tr>
+<td>冗余</td>
+<td>messys <code>Tree</code></td>
+<td><code>ObjectID</code></td>
+<td>与 <code>ObjectRegister.ObjectID</code> 一致</td>
+</tr>
+<tr>
+<td>授权</td>
+<td>mesdata <code>STPermission</code></td>
+<td><code>ObjectID</code></td>
+<td>引用 <code>ObjectRegister.ObjectID</code></td>
+</tr>
+</tbody></table>
+<p>关系：<code>Tree.NodeID</code> ← <code>ObjectRegister.OwnerID</code>；<code>Tree.ObjectID</code> &#x3D; <code>ObjectRegister.ObjectID</code>。</p>
+<h3 id="4-2-MES-新建节点时的分配逻辑"><a href="#4-2-MES-新建节点时的分配逻辑" class="headerlink" title="4.2 MES 新建节点时的分配逻辑"></a>4.2 MES 新建节点时的分配逻辑</h3><p><code>TreeServiceImpl.saveObjectRegisterForTree()</code>：</p>
+<ol>
+<li><code>ObjectRegisterDao.findMaxObjectId()</code> 取 MAX(ObjectID) + 1</li>
+<li>插入 <code>ObjectRegister</code>（<code>TypeID=7</code>，<code>OwnerID=NodeID</code>，<code>Object</code>&#x3D;菜单名）</li>
+<li>将返回的 <code>ObjectID</code> 写入 <code>Tree.ObjectID</code></li>
+</ol>
+<p>与 NodeID 分配在同一事务内完成（如 <code>addNode</code> 先取 NodeID，再创建 ObjectRegister）。</p>
+<h3 id="4-3-触发-ObjectID-分配的操作"><a href="#4-3-触发-ObjectID-分配的操作" class="headerlink" title="4.3 触发 ObjectID 分配的操作"></a>4.3 触发 ObjectID 分配的操作</h3><p>与 NodeID 分配的操作相同（新增、同步、复制）。<strong>复制菜单时 NodeID 与 ObjectID 均重新分配</strong>，不会沿用源节点的 ObjectID。</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>ObjectID 来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MES 新增 EOS 菜单节点</td>
+<td><code>saveObjectRegisterForTree</code> 新分配</td>
+</tr>
+<tr>
+<td>从 sys_menu 同步</td>
+<td>每个同步节点一条新 ObjectRegister</td>
+</tr>
+<tr>
+<td>复制菜单</td>
+<td>新 NodeID + 新 ObjectRegister + 新 ObjectID</td>
+</tr>
+<tr>
+<td>EOS 原生&#x2F;历史数据</td>
+<td>可能由 EOS 客户端写入；<code>Tree.ObjectID</code> 可能已存在</td>
+</tr>
+<tr>
+<td>失败兜底</td>
+<td><code>object == null</code> 时 <code>Tree.ObjectID = 0</code>（无有效授权对象）</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">  A[分配 NodeID] --&gt; B[插入 ObjectRegister&lt;br/&gt;ObjectID=MAX+1]</span><br><span class="line">  B --&gt; C[Tree.ObjectID = ObjectID]</span><br><span class="line">  C --&gt; D[listTreeForPermission&lt;br/&gt;返回 objectId]</span><br><span class="line">  D --&gt; E[前端勾选提交 objectIds]</span><br><span class="line">  E --&gt; F[STPermission 写入]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-NodeID-与-ObjectID-对照"><a href="#5-NodeID-与-ObjectID-对照" class="headerlink" title="5. NodeID 与 ObjectID 对照"></a>5. NodeID 与 ObjectID 对照</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Tree.NodeID       ──►  zTree.id         （树结构、ParentID 父子关系）</span><br><span class="line">Tree.ObjectID     ──►  zTree.objectId   （STPermission 授权键）</span><br><span class="line"></span><br><span class="line">ObjectRegister.OwnerID  = Tree.NodeID</span><br><span class="line">ObjectRegister.ObjectID = Tree.ObjectID</span><br><span class="line">ObjectRegister.TypeID   = 7（菜单/目录）</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>NodeID</th>
+<th>ObjectID</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>所属表</td>
+<td><code>messys.Tree</code> 主键</td>
+<td><code>messys.ObjectRegister</code> 主键，冗余在 <code>Tree.ObjectID</code></td>
+</tr>
+<tr>
+<td>分配方式</td>
+<td><code>UniqueNO</code>（NName&#x3D;’tree’）递增</td>
+<td><code>MAX(ObjectID)+1</code></td>
+</tr>
+<tr>
+<td>前端 zTree 字段</td>
+<td><code>id</code></td>
+<td><code>objectId</code></td>
+</tr>
+<tr>
+<td>是否用于 STPermission</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>复制菜单</td>
+<td>重新分配</td>
+<td>重新分配</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="5-1-业务-ObjectID-与-NodeID-的非-OwnerID-关联"><a href="#5-1-业务-ObjectID-与-NodeID-的非-OwnerID-关联" class="headerlink" title="5.1 业务 ObjectID 与 NodeID 的非 OwnerID 关联"></a>5.1 业务 ObjectID 与 NodeID 的非 OwnerID 关联</h2><p>菜单授权与 ERP 按钮授权使用<strong>不同的 ObjectID</strong>，且业务对象的 <code>OwnerID</code> <strong>不一定</strong>等于 <code>Tree.NodeID</code>。</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>ObjectID 示例</th>
+<th>TypeID</th>
+<th>OwnerID</th>
+<th>STPermission 用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>菜单对象</td>
+<td>468</td>
+<td>7</td>
+<td>430</td>
+<td><code>Oprate=执行</code>, Permission&#x3D;1</td>
+</tr>
+<tr>
+<td>业务对象</td>
+<td>965</td>
+<td>1</td>
+<td>null</td>
+<td><code>Oprate=EX61:...</code>, Permission&#x3D;0</td>
+</tr>
+</tbody></table>
+<p><strong>解析路径</strong>（<code>EosMenuObjectResolver</code>）：</p>
+<ol>
+<li><code>ObjectRegister.OwnerID = NodeID</code> 且 <code>TypeID != 7</code></li>
+<li><code>Tree.Functions</code> 括号内单据名 + 菜单对象名 → <code>DjDy.DjCName</code> → <code>ObjectRegister.Object = DjCName</code> 且 <code>TypeID != 7</code></li>
+<li>回退：<code>Tree.ObjectID</code> 对应 ObjectRegister</li>
+</ol>
+<p><strong>禁止</strong>仅用 <code>OwnerID=NodeID</code> 或 <code>Tree.ObjectID</code> 推断按钮授权 ObjectID。复合页可能返回多个业务 ObjectID；同一 ObjectID 上可有多个 <code>EXxx:</code> 按钮 Oprate。</p>
+<p>示例（NodeID&#x3D;430）：菜单树 <code>objectId=468</code> 用于勾选「执行」；按钮 <code>EX61:组织架构分发</code> 写在 ObjectID&#x3D;965。</p>
+<hr>
+<h2 id="6-后端组装与-API"><a href="#6-后端组装与-API" class="headerlink" title="6. 后端组装与 API"></a>6. 后端组装与 API</h2><h3 id="6-1-权限菜单树"><a href="#6-1-权限菜单树" class="headerlink" title="6.1 权限菜单树"></a>6.1 权限菜单树</h3><ul>
+<li><strong>接口</strong>：<code>GET /eosrole/menu/tree</code></li>
+<li><strong>实现</strong>：<code>EosRoleController.menuTree()</code> → <code>TreeService.listTreeForPermission()</code></li>
+<li><strong>返回字段</strong>：<code>id</code>（NodeID）、<code>pId</code>（ParentID）、<code>name</code>（NodeCaption）、<code>objectId</code>（Tree.ObjectID）</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TreeServiceImpl.listTreeForPermission()</span></span><br><span class="line">m.put(<span class="string">&quot;id&quot;</span>, e.getNodeid());</span><br><span class="line">m.put(<span class="string">&quot;pId&quot;</span>, e.getParentid() == <span class="literal">null</span> || e.getParentid() == <span class="number">0</span> ? -<span class="number">1</span> : e.getParentid());</span><br><span class="line">m.put(<span class="string">&quot;name&quot;</span>, e.getNodecaption() != <span class="literal">null</span> ? e.getNodecaption().trim() : <span class="string">&quot;&quot;</span>);</span><br><span class="line">m.put(<span class="string">&quot;objectId&quot;</span>, e.getObjectid());</span><br></pre></td></tr></table></figure>
+
+<p>与 <code>listTreeForSelect()</code>（eostree 选目录）的区别：后者<strong>不含 objectId</strong>，仅 <code>id</code> &#x2F; <code>pId</code> &#x2F; <code>name</code>。</p>
+<h3 id="6-2-权限查询与保存"><a href="#6-2-权限查询与保存" class="headerlink" title="6.2 权限查询与保存"></a>6.2 权限查询与保存</h3><table>
+<thead>
+<tr>
+<th>接口</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GET /eosrole/permission/&#123;roleId&#125;</code></td>
+<td>返回已授权 <strong>objectId</strong> 列表</td>
+</tr>
+<tr>
+<td><code>POST /eosrole/permission/save</code></td>
+<td>body: <code>&#123; roleIds, objectIds, mode &#125;</code></td>
+</tr>
+</tbody></table>
+<p><code>EosRolePermissionServiceImpl.queryMenuObjectIds</code> 过滤条件：<code>Oprate=执行</code> 且 <code>Permission=1</code>（<strong>当前未按 TypeID&#x3D;7 过滤</strong>）。</p>
+<hr>
+<h2 id="7-前端使用（eosrole-js）"><a href="#7-前端使用（eosrole-js）" class="headerlink" title="7. 前端使用（eosrole.js）"></a>7. 前端使用（eosrole.js）</h2><h3 id="7-1-zTree-配置"><a href="#7-1-zTree-配置" class="headerlink" title="7.1 zTree 配置"></a>7.1 zTree 配置</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> permissionTreeSetting = &#123;</span><br><span class="line">    <span class="attr">data</span>: &#123;</span><br><span class="line">        <span class="attr">simpleData</span>: &#123;</span><br><span class="line">            <span class="attr">enable</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">idKey</span>: <span class="string">&quot;id&quot;</span>,      <span class="comment">// = NodeID</span></span><br><span class="line">            <span class="attr">pIdKey</span>: <span class="string">&quot;pId&quot;</span>,   <span class="comment">// = ParentID</span></span><br><span class="line">            <span class="attr">rootPId</span>: -<span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">check</span>: &#123; <span class="attr">enable</span>: <span class="literal">true</span>, <span class="attr">nocheckInherit</span>: <span class="literal">true</span> &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-加载与回显"><a href="#7-2-加载与回显" class="headerlink" title="7.2 加载与回显"></a>7.2 加载与回显</h3><ol>
+<li><code>loadPermissionMenuTree</code> → 请求 <code>/eosrole/menu/tree</code>，用 <code>treeList</code> 初始化 zTree</li>
+<li>请求 <code>/eosrole/permission/&#123;roleId&#125;</code> 获取已授权 objectIds</li>
+<li>回显：<code>permissionMenuZtree.getNodeByParam(&#39;objectId&#39;, objectIds[i])</code> —— <strong>按 objectId 勾选，不是 id</strong></li>
+</ol>
+<h3 id="7-3-保存"><a href="#7-3-保存" class="headerlink" title="7.3 保存"></a>7.3 保存</h3><p><code>collectPermissionObjectIds()</code> 从勾选节点收集 **<code>objectId</code>**（不是 <code>id</code>），提交到 <code>/eosrole/permission/save</code>。</p>
+<hr>
+<h2 id="8-验证-SQL"><a href="#8-验证-SQL" class="headerlink" title="8. 验证 SQL"></a>8. 验证 SQL</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- NodeID 与 ObjectID 对照</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    t.NodeID,</span><br><span class="line">    RTRIM(t.NodeCaption) <span class="keyword">AS</span> MenuCaption,</span><br><span class="line">    t.ParentID,</span><br><span class="line">    t.ObjectID           <span class="keyword">AS</span> TreeObjectID,</span><br><span class="line">    o.ObjectID           <span class="keyword">AS</span> RegObjectID,</span><br><span class="line">    o.TypeID,</span><br><span class="line">    o.OwnerID</span><br><span class="line"><span class="keyword">FROM</span> messys.dbo.Tree t</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> messys.dbo.ObjectRegister o <span class="keyword">ON</span> o.OwnerID <span class="operator">=</span> t.NodeID</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> t.NodeID;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- UniqueNO 当前序列</span></span><br><span class="line"><span class="keyword">SELECT</span> NName, <span class="keyword">No</span> <span class="keyword">FROM</span> messys.dbo.UniqueNO <span class="keyword">WHERE</span> NName <span class="operator">=</span> <span class="string">&#x27;tree&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="9-相关代码路径"><a href="#9-相关代码路径" class="headerlink" title="9. 相关代码路径"></a>9. 相关代码路径</h2><table>
+<thead>
+<tr>
+<th>环节</th>
+<th>路径</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NodeID 分配</td>
+<td><code>TreeServiceImpl.getNextNodeIdForTree()</code></td>
+</tr>
+<tr>
+<td>ObjectID 分配</td>
+<td><code>TreeServiceImpl.saveObjectRegisterForTree()</code></td>
+</tr>
+<tr>
+<td>新增&#x2F;同步&#x2F;复制</td>
+<td><code>TreeServiceImpl.addNode</code> &#x2F; <code>syncFromSysMenu</code> &#x2F; <code>copyMenu</code></td>
+</tr>
+<tr>
+<td>权限树 API</td>
+<td><code>TreeServiceImpl.listTreeForPermission()</code>、<code>EosRoleController</code></td>
+</tr>
+<tr>
+<td>权限读写</td>
+<td><code>EosRolePermissionServiceImpl</code></td>
+</tr>
+<tr>
+<td>实体</td>
+<td><code>TreeEntity</code>（NodeID、ObjectID）、<code>ObjectRegisterEntity</code>、<code>StPermissionEntity</code></td>
+</tr>
+<tr>
+<td>前端</td>
+<td><code>static/js/modules/security/eosrole.js</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="10-修订记录"><a href="#10-修订记录" class="headerlink" title="10. 修订记录"></a>10. 修订记录</h2><table>
+<thead>
+<tr>
+<th>日期</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2026-06-16</td>
+<td>初版：梳理 Tree NodeID 与 ObjectID 从数据库到前端权限树的完整链路</td>
+</tr>
+<tr>
+<td>2026-06-16</td>
+<td>补充 NodeID 在 Tree.Functions URL 中作为 menuId 参数的说明</td>
+</tr>
+<tr>
+<td>2026-07-01</td>
+<td>补充业务 ObjectID 与 NodeID 非 OwnerID 关联及 eosrole 解析路径</td>
+</tr>
+<tr>
+<td>2026-07-31</td>
+<td>发布到个人博客</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://eppencn.com/2026/07/31/eos-role-tree-nodeid-objectid/" data-id="cms8ei1iq0008gcv5erq9hybk" data-title="EOS 菜单树 NodeID 与 ObjectID 说明" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EOS/" rel="tag">EOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zTree/" rel="tag">zTree</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/07/31/eos-role-menu-relationship/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">EOS 菜单与角色关联关系说明</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/0AD/" rel="tag">0AD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Agent/" rel="tag">Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Automation/" rel="tag">Automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CLI/" rel="tag">CLI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Calendar/" rel="tag">Calendar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Claude-Code/" rel="tag">Claude Code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cursor/" rel="tag">Cursor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EOS/" rel="tag">EOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenSource/" rel="tag">OpenSource</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PowerShell/" rel="tag">PowerShell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RBAC/" rel="tag">RBAC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTS/" rel="tag">RTS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/health/" rel="tag">health</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zTree/" rel="tag">zTree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" rel="tag">中医体质</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" rel="tag">九体医学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" rel="tag">体质调理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" rel="tag">体重管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%81%A5%E5%BA%B7/" rel="tag">健康</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" rel="tag">慢性病</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" rel="tag">科学减肥</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%82%A5%E8%83%96/" rel="tag">肥胖</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/0AD/" style="font-size: 10px;">0AD</a> <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/Agent/" style="font-size: 10px;">Agent</a> <a href="/tags/Automation/" style="font-size: 10px;">Automation</a> <a href="/tags/CLI/" style="font-size: 13.33px;">CLI</a> <a href="/tags/Calendar/" style="font-size: 10px;">Calendar</a> <a href="/tags/Claude-Code/" style="font-size: 10px;">Claude Code</a> <a href="/tags/Cursor/" style="font-size: 10px;">Cursor</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/EOS/" style="font-size: 13.33px;">EOS</a> <a href="/tags/Game/" style="font-size: 10px;">Game</a> <a href="/tags/MES/" style="font-size: 13.33px;">MES</a> <a href="/tags/OpenSource/" style="font-size: 10px;">OpenSource</a> <a href="/tags/PowerShell/" style="font-size: 10px;">PowerShell</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RBAC/" style="font-size: 10px;">RBAC</a> <a href="/tags/RTS/" style="font-size: 10px;">RTS</a> <a href="/tags/SQL-Server/" style="font-size: 13.33px;">SQL Server</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/health/" style="font-size: 10px;">health</a> <a href="/tags/zTree/" style="font-size: 10px;">zTree</a> <a href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" style="font-size: 10px;">中医体质</a> <a href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" style="font-size: 16.67px;">九体医学</a> <a href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" style="font-size: 10px;">体质调理</a> <a href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" style="font-size: 13.33px;">体重管理</a> <a href="/tags/%E5%81%A5%E5%BA%B7/" style="font-size: 20px;">健康</a> <a href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" style="font-size: 10px;">慢性病</a> <a href="/tags/%E6%9D%83%E9%99%90/" style="font-size: 13.33px;">权限</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" style="font-size: 10px;">科学减肥</a> <a href="/tags/%E8%82%A5%E8%83%96/" style="font-size: 10px;">肥胖</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">June 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">March 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/12/">December 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">July 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">May 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/09/">September 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">August 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/07/31/eos-role-tree-nodeid-objectid/">EOS 菜单树 NodeID 与 ObjectID 说明</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/31/eos-role-menu-relationship/">EOS 菜单与角色关联关系说明</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%82%A5%E8%83%96%E5%85%AB%E5%A4%A7%E5%81%A5%E5%BA%B7%E5%9C%B0%E9%9B%B7/">瘦身密码（五）：甜蜜陷阱——肥胖引爆的八大健康地雷</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E5%A4%A7%E4%BD%93%E8%B4%A8%E7%A7%91%E5%AD%A6%E7%94%A9%E8%82%89%E6%8C%87%E5%8D%97/">瘦身密码（四）：九大体质科学甩肉指南——管体加管重</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6%E4%BD%93%E8%B4%A8%E5%AF%86%E7%A0%81%E5%85%A5%E9%97%A8/">瘦身密码（三）：九体医学入门——解锁你的体质密码</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 eppen<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+<!-- hexo injector body_end start --><div class="adsense-wrap" style="margin:24px 0;text-align:center;min-height:90px;overflow:hidden;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2045994937692573" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><!-- hexo injector body_end end --></body>
+</html>
