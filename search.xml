@@ -1,59 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>2026 work calendar</title>
-    <url>/2025/12/10/2026-work-calendar/</url>
-    <content><![CDATA[<p>介绍一个非常实用的开源项目：<a href="https://github.com/eppen/2026-work-calendar">2026-work-calendar</a>。</p>
-<p>这个项目的主要功能是将 PDF 格式的 2026 年工作日历转换为通用的 ICS 日历文件，方便导入到 Google Calendar、Outlook 或 Apple Calendar 中。</p>
-<h2 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h2><p>每年的工作日历通常以 PDF 或图片形式发布，手动将节假日和调休安排录入到手机或电脑日历中非常繁琐。这个工具通过自动化脚本解决了这个问题。</p>
-<p>pdf格式的日历</p>
-<img src="/2025/12/10/2026-work-calendar/1765374243229.png" class="" width="1765374243229">
-
-<p>2026&#x2F;01</p>
-<img src="/2025/12/10/2026-work-calendar/1765374530671.png" class="" width="1765374530671">
-
-<p>Google calendar</p>
-<img src="/2025/12/10/2026-work-calendar/1765374321988.png" class="" width="1765374321988">
-
-<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><ul>
-<li><strong>PDF 解析</strong>：自动解析 PDF 格式的日历表格。</li>
-<li><strong>智能识别</strong>：<ul>
-<li>识别黄色高亮的日期为休息日（节假日）。</li>
-<li>识别周末（周六&#x2F;周日）但没有高亮的日期为工作日（调休上班）。</li>
-</ul>
-</li>
-<li><strong>多格式输出</strong>：<ul>
-<li>生成标准 ICS 日历文件 (<code>calendar_2026.ics</code>)。</li>
-<li>生成 CSV 数据文件 (<code>calendar_2026.csv</code>)，便于二次分析。</li>
-</ul>
-</li>
-</ul>
-<h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h2><h3 id="1-准备环境"><a href="#1-准备环境" class="headerlink" title="1. 准备环境"></a>1. 准备环境</h3><p>首先克隆项目并安装依赖：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/eppen/2026-work-calendar.git</span><br><span class="line"><span class="built_in">cd</span> 2026-work-calendar</span><br><span class="line">pip install -r requirements.txt</span><br></pre></td></tr></table></figure>
-
-<p>主要依赖库包括 <code>pdfplumber</code>（用于 PDF 解析）和 <code>ics</code>（用于生成日历文件）。</p>
-<h3 id="2-运行脚本"><a href="#2-运行脚本" class="headerlink" title="2. 运行脚本"></a>2. 运行脚本</h3><p>确保目录下包含源文件 <code>附件：2026年工作日历表.pdf</code>，然后运行主脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python generate_calendar.py</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-导入日历"><a href="#3-导入日历" class="headerlink" title="3. 导入日历"></a>3. 导入日历</h3><p>运行成功后，会生成 <code>calendar_2026.ics</code> 文件。你可以：</p>
-<ul>
-<li><strong>Google Calendar</strong>: 设置 -&gt; 导入和导出 -&gt; 选择文件导入。</li>
-<li><strong>Apple Calendar &#x2F; Outlook</strong>: 直接双击 ICS 文件即可添加。</li>
-</ul>
-<h2 id="数据处理规则"><a href="#数据处理规则" class="headerlink" title="数据处理规则"></a>数据处理规则</h2><ul>
-<li><strong>休息日</strong>：PDF 中黄色高亮的日期。</li>
-<li><strong>周末工作日</strong>：周六或周日，但未被标记为黄色的日期。</li>
-<li><strong>正常工作日</strong>：周一至周五且无高亮的日期（不会在日历中特别标记）。</li>
-</ul>
-<p>如果你也需要处理 2026 年的排班日历，不妨试试这个工具！</p>
-]]></content>
-      <tags>
-        <tag>Python</tag>
-        <tag>Calendar</tag>
-        <tag>Automation</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>0 A.D. 中文游戏攻略上线</title>
     <url>/2026/06/19/0-ad-strategy-guide/</url>
     <content><![CDATA[<p><a href="https://play0ad.com/">0 A.D.</a>（读作 “zero ey dee”）是一款免费开源的古代即时战略（RTS）游戏：采集资源、建设城镇、训练军队，在古典时代文明之间展开对决。游戏强调历史氛围，当前 Release 28 已包含 <strong>15 个文明</strong>（含新加入的日耳曼）。</p>
@@ -125,6 +72,59 @@
         <tag>RTS</tag>
         <tag>0AD</tag>
         <tag>OpenSource</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2026 work calendar</title>
+    <url>/2025/12/10/2026-work-calendar/</url>
+    <content><![CDATA[<p>介绍一个非常实用的开源项目：<a href="https://github.com/eppen/2026-work-calendar">2026-work-calendar</a>。</p>
+<p>这个项目的主要功能是将 PDF 格式的 2026 年工作日历转换为通用的 ICS 日历文件，方便导入到 Google Calendar、Outlook 或 Apple Calendar 中。</p>
+<h2 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h2><p>每年的工作日历通常以 PDF 或图片形式发布，手动将节假日和调休安排录入到手机或电脑日历中非常繁琐。这个工具通过自动化脚本解决了这个问题。</p>
+<p>pdf格式的日历</p>
+<img src="/2025/12/10/2026-work-calendar/1765374243229.png" class="" width="1765374243229">
+
+<p>2026&#x2F;01</p>
+<img src="/2025/12/10/2026-work-calendar/1765374530671.png" class="" width="1765374530671">
+
+<p>Google calendar</p>
+<img src="/2025/12/10/2026-work-calendar/1765374321988.png" class="" width="1765374321988">
+
+<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><ul>
+<li><strong>PDF 解析</strong>：自动解析 PDF 格式的日历表格。</li>
+<li><strong>智能识别</strong>：<ul>
+<li>识别黄色高亮的日期为休息日（节假日）。</li>
+<li>识别周末（周六&#x2F;周日）但没有高亮的日期为工作日（调休上班）。</li>
+</ul>
+</li>
+<li><strong>多格式输出</strong>：<ul>
+<li>生成标准 ICS 日历文件 (<code>calendar_2026.ics</code>)。</li>
+<li>生成 CSV 数据文件 (<code>calendar_2026.csv</code>)，便于二次分析。</li>
+</ul>
+</li>
+</ul>
+<h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h2><h3 id="1-准备环境"><a href="#1-准备环境" class="headerlink" title="1. 准备环境"></a>1. 准备环境</h3><p>首先克隆项目并安装依赖：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/eppen/2026-work-calendar.git</span><br><span class="line"><span class="built_in">cd</span> 2026-work-calendar</span><br><span class="line">pip install -r requirements.txt</span><br></pre></td></tr></table></figure>
+
+<p>主要依赖库包括 <code>pdfplumber</code>（用于 PDF 解析）和 <code>ics</code>（用于生成日历文件）。</p>
+<h3 id="2-运行脚本"><a href="#2-运行脚本" class="headerlink" title="2. 运行脚本"></a>2. 运行脚本</h3><p>确保目录下包含源文件 <code>附件：2026年工作日历表.pdf</code>，然后运行主脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python generate_calendar.py</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-导入日历"><a href="#3-导入日历" class="headerlink" title="3. 导入日历"></a>3. 导入日历</h3><p>运行成功后，会生成 <code>calendar_2026.ics</code> 文件。你可以：</p>
+<ul>
+<li><strong>Google Calendar</strong>: 设置 -&gt; 导入和导出 -&gt; 选择文件导入。</li>
+<li><strong>Apple Calendar &#x2F; Outlook</strong>: 直接双击 ICS 文件即可添加。</li>
+</ul>
+<h2 id="数据处理规则"><a href="#数据处理规则" class="headerlink" title="数据处理规则"></a>数据处理规则</h2><ul>
+<li><strong>休息日</strong>：PDF 中黄色高亮的日期。</li>
+<li><strong>周末工作日</strong>：周六或周日，但未被标记为黄色的日期。</li>
+<li><strong>正常工作日</strong>：周一至周五且无高亮的日期（不会在日历中特别标记）。</li>
+</ul>
+<p>如果你也需要处理 2026 年的排班日历，不妨试试这个工具！</p>
+]]></content>
+      <tags>
+        <tag>Python</tag>
+        <tag>Calendar</tag>
+        <tag>Automation</tag>
       </tags>
   </entry>
   <entry>
@@ -277,239 +277,6 @@
 <hr>
 <p><em>本文档将持续更新，反映插件的最新功能和改进。感谢您使用文言文现代翻译助手！</em></p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>classicical-chinese-translation-private-policy</title>
-    <url>/2025/06/23/classicical-chinese-translation-private-policy/</url>
-    <content><![CDATA[<h1 id="文言文现代翻译助手-隐私权政策"><a href="#文言文现代翻译助手-隐私权政策" class="headerlink" title="文言文现代翻译助手 - 隐私权政策"></a>文言文现代翻译助手 - 隐私权政策</h1><p><strong>生效日期：</strong> 2024年12月19日</p>
-<p><strong>最后更新：</strong> 2024年12月19日</p>
-<h2 id="📋-政策概述"><a href="#📋-政策概述" class="headerlink" title="📋 政策概述"></a>📋 政策概述</h2><p>文言文现代翻译助手（以下简称”本插件”）致力于保护用户的隐私权。本隐私权政策详细说明了我们如何收集、使用、存储和保护您的信息。</p>
-<p><strong>重要声明：本插件不会收集、存储或传输任何个人身份信息。</strong></p>
-<h2 id="🔍-信息收集与使用"><a href="#🔍-信息收集与使用" class="headerlink" title="🔍 信息收集与使用"></a>🔍 信息收集与使用</h2><h3 id="我们收集什么信息"><a href="#我们收集什么信息" class="headerlink" title="我们收集什么信息"></a>我们收集什么信息</h3><h4 id="1-用户主动提供的信息"><a href="#1-用户主动提供的信息" class="headerlink" title="1. 用户主动提供的信息"></a>1. 用户主动提供的信息</h4><p>-<strong>API密钥</strong>：您输入的DeepSeek API密钥</p>
-<p>-<strong>设置偏好</strong>：插件启用&#x2F;禁用状态等功能设置</p>
-<h4 id="2-翻译内容"><a href="#2-翻译内容" class="headerlink" title="2. 翻译内容"></a>2. 翻译内容</h4><p>-<strong>待翻译文本</strong>：您选择翻译或页面中识别的文言文内容</p>
-<p>-<strong>翻译结果</strong>：从DeepSeek API返回的翻译结果</p>
-<h4 id="3-我们不收集的信息"><a href="#3-我们不收集的信息" class="headerlink" title="3. 我们不收集的信息"></a>3. 我们不收集的信息</h4><ul>
-<li>❌ 个人身份信息（姓名、邮箱、电话等）</li>
-<li>❌ 浏览历史记录</li>
-<li>❌ 网站登录信息</li>
-<li>❌ 其他网站的用户数据</li>
-<li>❌ 设备信息或位置信息</li>
-</ul>
-<h3 id="信息使用目的"><a href="#信息使用目的" class="headerlink" title="信息使用目的"></a>信息使用目的</h3><p>我们收集的信息仅用于以下目的：</p>
-<p>1.<strong>提供翻译服务</strong>：将文言文内容发送至DeepSeek API进行翻译</p>
-<p>2.<strong>保存用户设置</strong>：在您的设备上本地保存API密钥和功能偏好</p>
-<p>3.<strong>改善用户体验</strong>：确保插件功能正常运行</p>
-<h2 id="💾-数据存储与安全"><a href="#💾-数据存储与安全" class="headerlink" title="💾 数据存储与安全"></a>💾 数据存储与安全</h2><h3 id="本地存储"><a href="#本地存储" class="headerlink" title="本地存储"></a>本地存储</h3><p>-<strong>API密钥</strong>：使用Chrome扩展存储API在您的设备上本地保存</p>
-<p>-<strong>用户设置</strong>：本地存储，不会上传到任何服务器</p>
-<p>-<strong>存储位置</strong>：仅存储在您的浏览器中，其他人无法访问</p>
-<h3 id="第三方服务"><a href="#第三方服务" class="headerlink" title="第三方服务"></a>第三方服务</h3><p>-<strong>DeepSeek API</strong>：翻译请求会发送到DeepSeek的服务器</p>
-<p>-<strong>数据传输</strong>：仅传输待翻译的文本内容</p>
-<p>-<strong>加密传输</strong>：所有API请求均通过HTTPS加密传输</p>
-<h3 id="数据安全措施"><a href="#数据安全措施" class="headerlink" title="数据安全措施"></a>数据安全措施</h3><p>1.<strong>本地加密存储</strong>：敏感信息在本地加密保存</p>
-<p>2.<strong>HTTPS传输</strong>：所有网络请求使用SSL&#x2F;TLS加密</p>
-<p>3.<strong>最小权限原则</strong>：插件仅申请必要的浏览器权限</p>
-<p>4.<strong>无服务器存储</strong>：我们不运营任何服务器存储用户数据</p>
-<h2 id="🌐-第三方服务说明"><a href="#🌐-第三方服务说明" class="headerlink" title="🌐 第三方服务说明"></a>🌐 第三方服务说明</h2><h3 id="DeepSeek-API服务"><a href="#DeepSeek-API服务" class="headerlink" title="DeepSeek API服务"></a>DeepSeek API服务</h3><p>-<strong>服务提供商</strong>：DeepSeek (<a href="https://platform.deepseek.com/">https://platform.deepseek.com/</a>)</p>
-<p>-<strong>数据传输</strong>：仅传输您选择翻译的文言文内容</p>
-<p>-<strong>用途</strong>：获取现代汉语翻译结果</p>
-<p>-<strong>隐私政策</strong>：请查看DeepSeek的隐私政策了解其数据处理方式</p>
-<h3 id="不与其他第三方共享数据"><a href="#不与其他第三方共享数据" class="headerlink" title="不与其他第三方共享数据"></a>不与其他第三方共享数据</h3><ul>
-<li>除DeepSeek翻译服务外，我们不会与任何其他第三方共享您的数据</li>
-<li>我们不会出售、租赁或以其他方式提供您的信息给第三方</li>
-</ul>
-<h2 id="🔒-权限说明"><a href="#🔒-权限说明" class="headerlink" title="🔒 权限说明"></a>🔒 权限说明</h2><p>本插件申请的浏览器权限及其用途：</p>
-<h3 id="必需权限"><a href="#必需权限" class="headerlink" title="必需权限"></a>必需权限</h3><p>1.<strong>activeTab</strong></p>
-<p>   -<strong>用途</strong>：在当前网页中识别和翻译文言文内容</p>
-<p>   -<strong>范围</strong>：仅限当前活动标签页</p>
-<p>   -<strong>数据访问</strong>：仅读取页面中的文本内容用于翻译</p>
-<p>2.<strong>storage</strong></p>
-<p>   -<strong>用途</strong>：本地保存API密钥和用户设置</p>
-<p>   -<strong>范围</strong>：仅限本插件的存储空间</p>
-<p>   -<strong>数据类型</strong>：API密钥、启用状态等设置信息</p>
-<p>3.<strong>contextMenus</strong></p>
-<p>   -<strong>用途</strong>：提供右键菜单翻译功能</p>
-<p>   -<strong>数据访问</strong>：仅访问用户选中的文本内容</p>
-<p>4.<strong>notifications</strong></p>
-<p>   -<strong>用途</strong>：显示操作状态和错误提示</p>
-<p>   -<strong>数据传输</strong>：无，仅本地显示通知</p>
-<h3 id="主机权限"><a href="#主机权限" class="headerlink" title="主机权限"></a>主机权限</h3><p>1.<strong><a href="https://api.deepseek.com/">https://api.deepseek.com/</a></strong>*</p>
-<p>   -<strong>用途</strong>：访问DeepSeek翻译API服务</p>
-<p>   -<strong>数据传输</strong>：仅传输待翻译的文言文内容</p>
-<p>   -<strong>必要性</strong>：翻译功能的核心依赖</p>
-<h2 id="👤-用户控制权"><a href="#👤-用户控制权" class="headerlink" title="👤 用户控制权"></a>👤 用户控制权</h2><h3 id="您可以控制的内容"><a href="#您可以控制的内容" class="headerlink" title="您可以控制的内容"></a>您可以控制的内容</h3><p>1.<strong>API密钥管理</strong></p>
-<ul>
-<li>随时修改或删除您的API密钥</li>
-<li>停止使用插件将自动停止所有数据传输</li>
-</ul>
-<p>2.<strong>功能控制</strong></p>
-<ul>
-<li>随时启用或禁用翻译功能</li>
-<li>选择性翻译特定内容</li>
-</ul>
-<p>3.<strong>数据删除</strong></p>
-<ul>
-<li>卸载插件将自动删除所有本地存储的数据</li>
-<li>可以手动清除浏览器扩展数据</li>
-</ul>
-<h3 id="选择退出"><a href="#选择退出" class="headerlink" title="选择退出"></a>选择退出</h3><p>-<strong>完全停用</strong>：在扩展程序管理页面禁用或卸载插件</p>
-<p>-<strong>临时停用</strong>：在插件设置中关闭翻译功能</p>
-<p>-<strong>选择性使用</strong>：仅在需要时手动翻译选定内容</p>
-<h2 id="🔄-数据保留政策"><a href="#🔄-数据保留政策" class="headerlink" title="🔄 数据保留政策"></a>🔄 数据保留政策</h2><h3 id="本地数据"><a href="#本地数据" class="headerlink" title="本地数据"></a>本地数据</h3><p>-<strong>保留期限</strong>：直到您主动删除或卸载插件</p>
-<p>-<strong>自动清理</strong>：卸载插件时自动清除所有本地数据</p>
-<p>-<strong>用户控制</strong>：您可以随时清除存储的设置</p>
-<h3 id="传输数据"><a href="#传输数据" class="headerlink" title="传输数据"></a>传输数据</h3><p>-<strong>API请求</strong>：翻译请求发送后不在本地保留</p>
-<p>-<strong>翻译结果</strong>：仅在页面显示，不永久存储</p>
-<p>-<strong>会话数据</strong>：浏览器关闭后自动清除</p>
-<h2 id="👶-儿童隐私保护"><a href="#👶-儿童隐私保护" class="headerlink" title="👶 儿童隐私保护"></a>👶 儿童隐私保护</h2><ul>
-<li>本插件不专门面向13岁以下儿童设计</li>
-<li>我们不会故意收集儿童的个人信息</li>
-<li>如果发现意外收集了儿童信息，我们会立即删除</li>
-</ul>
-<h2 id="🌍-国际数据传输"><a href="#🌍-国际数据传输" class="headerlink" title="🌍 国际数据传输"></a>🌍 国际数据传输</h2><p>-<strong>数据传输</strong>：翻译请求可能涉及跨境数据传输（发送至DeepSeek服务器）</p>
-<p>-<strong>传输内容</strong>：仅限待翻译的文言文内容</p>
-<p>-<strong>保护措施</strong>：所有传输均通过加密通道进行</p>
-<h2 id="📧-联系我们"><a href="#📧-联系我们" class="headerlink" title="📧 联系我们"></a>📧 联系我们</h2><p>如果您对本隐私政策有任何疑问或建议，请通过以下方式联系我们：</p>
-<p>-<strong>GitHub Issues</strong>：<a href="https://github.com/eppen/ClassicalChineseTranslation/issues">https://github.com/eppen/ClassicalChineseTranslation/issues</a></p>
-<p>-<strong>项目主页</strong>：<a href="https://github.com/eppen/ClassicalChineseTranslation">https://github.com/eppen/ClassicalChineseTranslation</a></p>
-<p>-<strong>邮箱联系</strong>：通过GitHub项目页面联系开发者</p>
-<h2 id="🔄-政策更新"><a href="#🔄-政策更新" class="headerlink" title="🔄 政策更新"></a>🔄 政策更新</h2><h3 id="更新通知"><a href="#更新通知" class="headerlink" title="更新通知"></a>更新通知</h3><ul>
-<li>我们可能会不定期更新本隐私政策</li>
-<li>重大变更将通过插件更新或GitHub通知用户</li>
-<li>建议定期查看最新版本的隐私政策</li>
-</ul>
-<h3 id="更新历史"><a href="#更新历史" class="headerlink" title="更新历史"></a>更新历史</h3><p>-<strong>2024年12月19日</strong>：初始版本发布</p>
-<h3 id="变更生效"><a href="#变更生效" class="headerlink" title="变更生效"></a>变更生效</h3><ul>
-<li>政策更新后继续使用插件即表示您接受新的隐私政策</li>
-<li>如不同意更新内容，请停止使用本插件</li>
-</ul>
-<h2 id="📜-法律依据"><a href="#📜-法律依据" class="headerlink" title="📜 法律依据"></a>📜 法律依据</h2><p>本隐私政策的制定基于：</p>
-<ul>
-<li>《中华人民共和国个人信息保护法》</li>
-<li>《欧盟通用数据保护条例》(GDPR)</li>
-<li>Chrome网上应用店隐私政策要求</li>
-<li>其他适用的隐私保护法律法规</li>
-</ul>
-<h2 id="✅-用户权利"><a href="#✅-用户权利" class="headerlink" title="✅ 用户权利"></a>✅ 用户权利</h2><p>根据适用的隐私法律，您享有以下权利：</p>
-<p>1.<strong>知情权</strong>：了解我们如何处理您的信息</p>
-<p>2.<strong>访问权</strong>：查看我们存储的关于您的信息</p>
-<p>3.<strong>更正权</strong>：修正不准确的个人信息</p>
-<p>4.<strong>删除权</strong>：要求删除您的个人信息</p>
-<p>5.<strong>限制处理权</strong>：限制我们处理您信息的方式</p>
-<p>6.<strong>数据可携权</strong>：获取您的数据副本</p>
-<p>7.<strong>反对权</strong>：反对某些类型的数据处理</p>
-<p><strong>行使权利</strong>：由于本插件不收集个人身份信息，大部分权利可通过卸载插件或清除浏览器数据来实现。</p>
-<h2 id="🛡️-安全事件响应"><a href="#🛡️-安全事件响应" class="headerlink" title="🛡️ 安全事件响应"></a>🛡️ 安全事件响应</h2><h3 id="安全措施"><a href="#安全措施" class="headerlink" title="安全措施"></a>安全措施</h3><ul>
-<li>我们采用行业标准的安全措施保护数据</li>
-<li>定期更新插件以修复安全漏洞</li>
-<li>监控潜在的安全威胁</li>
-</ul>
-<h3 id="事件响应"><a href="#事件响应" class="headerlink" title="事件响应"></a>事件响应</h3><ul>
-<li>如发现安全漏洞，我们将立即采取补救措施</li>
-<li>及时发布安全更新</li>
-<li>必要时通知受影响的用户</li>
-</ul>
-<h2 id="📊-数据最小化原则"><a href="#📊-数据最小化原则" class="headerlink" title="📊 数据最小化原则"></a>📊 数据最小化原则</h2><p>我们严格遵循数据最小化原则：</p>
-<p>-<strong>目的限制</strong>：仅收集实现功能所必需的数据</p>
-<p>-<strong>数量最小</strong>：收集的数据量保持在最低限度</p>
-<p>-<strong>时间最短</strong>：不会无限期保留数据</p>
-<p>-<strong>范围最窄</strong>：仅在必要范围内使用数据</p>
-<hr>
-<p><strong>本隐私政策是我们对用户隐私保护承诺的体现。我们将持续改进隐私保护措施，确保用户信息安全。</strong></p>
-<p><em>如有任何疑问，欢迎随时联系我们。感谢您对文言文现代翻译助手的信任与支持！</em></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>Cursor Agent CLI 报错 No version directories found 的排查与修复</title>
-    <url>/2026/06/19/cursor-agent-no-version-directories-fix/</url>
-    <content><![CDATA[<p>在 Windows 终端执行 <code>agent</code> 或 <code>cursor-agent</code> 时，可能遇到如下错误：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">C:\Users\liuhualiang\AppData\Local\cursor-agent\agent.ps1 : No version directories found in C:\Users\liuhualiang\AppData\Local\cursor-agent</span><br><span class="line">所在位置 行:1 字符: 1</span><br><span class="line">+ agent</span><br><span class="line">+ ~~~~~</span><br><span class="line">    + CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException</span><br><span class="line">    + FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException,agent.ps1</span><br></pre></td></tr></table></figure>
-
-<p>本文记录该问题的现象、根因、修复方式与临时绕过方法。</p>
-<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><ul>
-<li><code>agent</code>、<code>cursor-agent</code> 命令均无法启动</li>
-<li>报错提示在 <code>%LOCALAPPDATA%\cursor-agent</code> 下找不到版本目录</li>
-<li>但手动查看 <code>versions</code> 子目录，实际存在多个版本文件夹，例如：</li>
-</ul>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">C:\Users\liuhualiang\AppData\Local\cursor-agent\versions\</span><br><span class="line">├── 2026.06.12-19-59-36-f6aba9a</span><br><span class="line">├── 2026.06.15-03-48-54-da23e37</span><br><span class="line">└── 2026.06.16-20-30-07-a07d3ac</span><br></pre></td></tr></table></figure>
-
-<h2 id="根因"><a href="#根因" class="headerlink" title="根因"></a>根因</h2><p><code>agent.ps1</code> 与 <code>cursor-agent.ps1</code> 启动时会扫描 <code>versions</code> 目录，并用正则过滤合法版本名：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>该正则只匹配<strong>旧格式</strong>：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">YYYY.MM.DD-commit</span><br></pre></td></tr></table></figure>
-
-<p>例如：<code>2026.06.16-a07d3ac</code></p>
-<p>而 Cursor Agent 更新后的目录名变为<strong>新格式</strong>，中间多了构建时间：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">YYYY.MM.DD-HH-MM-SS-commit</span><br></pre></td></tr></table></figure>
-
-<p>例如：<code>2026.06.16-20-30-07-a07d3ac</code></p>
-<p>因此所有现有版本目录都被过滤掉，脚本误判为「没有版本目录」。</p>
-<h2 id="修复方法"><a href="#修复方法" class="headerlink" title="修复方法"></a>修复方法</h2><p>编辑以下两个文件（内容相同，需同步修改）：</p>
-<ul>
-<li><code>%LOCALAPPDATA%\cursor-agent\agent.ps1</code></li>
-<li><code>%LOCALAPPDATA%\cursor-agent\cursor-agent.ps1</code></li>
-</ul>
-<h3 id="1-更新版本目录匹配正则"><a href="#1-更新版本目录匹配正则" class="headerlink" title="1. 更新版本目录匹配正则"></a>1. 更新版本目录匹配正则</h3><p>将原来的：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>改为同时兼容新旧格式：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;(-\d&#123;1,2&#125;-\d&#123;1,2&#125;-\d&#123;1,2&#125;)?-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-改进版本排序逻辑（可选但推荐）"><a href="#2-改进版本排序逻辑（可选但推荐）" class="headerlink" title="2. 改进版本排序逻辑（可选但推荐）"></a>2. 改进版本排序逻辑（可选但推荐）</h3><p><code>Parse-VersionString</code> 函数原先只按日期 <code>YYYY.MM.DD</code> 排序。若同一天存在多个构建，建议解析时间戳后再比较：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Parse-VersionString</span></span> &#123;</span><br><span class="line">    <span class="keyword">param</span> (</span><br><span class="line">        [<span class="built_in">string</span>]<span class="variable">$versionString</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="variable">$segments</span> = <span class="variable">$versionString</span>.Split(<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">    <span class="variable">$datePart</span> = <span class="variable">$segments</span>[<span class="number">0</span>]</span><br><span class="line">    <span class="variable">$parts</span> = <span class="variable">$datePart</span>.Split(<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$parts</span>.Length <span class="operator">-ne</span> <span class="number">3</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="string">&quot;Invalid version format. Expected format: YYYY.MM.DD[-HH-MM-SS]-commit&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$year</span> = <span class="variable">$parts</span>[<span class="number">0</span>]</span><br><span class="line">    <span class="variable">$month</span> = <span class="variable">$parts</span>[<span class="number">1</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    <span class="variable">$day</span> = <span class="variable">$parts</span>[<span class="number">2</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    <span class="variable">$timeSuffix</span> = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$segments</span>.Length <span class="operator">-ge</span> <span class="number">5</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">1</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">2</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">3</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span>) &#123;</span><br><span class="line">        <span class="variable">$timeSuffix</span> = <span class="variable">$segments</span>[<span class="number">1</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>) + <span class="variable">$segments</span>[<span class="number">2</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>) + <span class="variable">$segments</span>[<span class="number">3</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">long</span>](<span class="variable">$year</span> + <span class="variable">$month</span> + <span class="variable">$day</span> + <span class="variable">$timeSuffix</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-验证修复"><a href="#3-验证修复" class="headerlink" title="3. 验证修复"></a>3. 验证修复</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">agent <span class="literal">--version</span></span><br><span class="line">agent status</span><br></pre></td></tr></table></figure>
-
-<p>预期输出示例：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">2026.06.16-20-30-07-a07d3ac</span><br><span class="line">✓ Logged in as your@email.com</span><br></pre></td></tr></table></figure>
-
-<h2 id="临时绕过（不修改脚本）"><a href="#临时绕过（不修改脚本）" class="headerlink" title="临时绕过（不修改脚本）"></a>临时绕过（不修改脚本）</h2><p>若暂时不想改启动脚本，可直接调用最新版本目录下的 <code>node.exe</code> 与 <code>index.js</code>：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$v</span> = <span class="string">&quot;C:\Users\liuhualiang\AppData\Local\cursor-agent\versions\2026.06.16-20-30-07-a07d3ac&quot;</span></span><br><span class="line">&amp; <span class="string">&quot;<span class="variable">$v</span>\node.exe&quot;</span> <span class="string">&quot;<span class="variable">$v</span>\index.js&quot;</span> status</span><br><span class="line">&amp; <span class="string">&quot;<span class="variable">$v</span>\node.exe&quot;</span> <span class="string">&quot;<span class="variable">$v</span>\index.js&quot;</span> <span class="literal">--help</span></span><br></pre></td></tr></table></figure>
-
-<p>将 <code>$v</code> 替换为 <code>versions</code> 下实际存在的最新目录名即可。</p>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
-<li><strong>更新可能覆盖修复</strong>：执行 <code>agent update</code> 或 Cursor 自动更新 Agent CLI 后，<code>agent.ps1</code> 可能被还原，问题会复现，需重新应用上述修改。</li>
-<li><strong>IDE CLI 与 Agent CLI 是两套工具</strong>：<ul>
-<li><code>cursor</code>：Cursor IDE 自带 CLI（打开文件、diff、tunnel 等），路径通常在 <code>%LOCALAPPDATA%\Programs\cursor\resources\app\bin\</code></li>
-<li><code>agent</code> &#x2F; <code>cursor-agent</code>：终端 Agent CLI，安装在 <code>%LOCALAPPDATA%\cursor-agent\</code></li>
-</ul>
-</li>
-<li><strong><code>cursor agent</code> 子命令</strong>：IDE CLI 也注册了 <code>agent</code> 子命令，但日常使用的 <code>agent</code> 命令通常来自 PATH 中的 <code>cursor-agent</code> 包装脚本。</li>
-</ol>
-<h2 id="相关环境信息（排查参考）"><a href="#相关环境信息（排查参考）" class="headerlink" title="相关环境信息（排查参考）"></a>相关环境信息（排查参考）</h2><table>
-<thead>
-<tr>
-<th>项目</th>
-<th>值</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Cursor IDE 版本</td>
-<td>3.8.11</td>
-</tr>
-<tr>
-<td>Agent CLI 版本</td>
-<td>2026.06.16-20-30-07-a07d3ac</td>
-</tr>
-<tr>
-<td>操作系统</td>
-<td>Windows 10&#x2F;11 x64</td>
-</tr>
-<tr>
-<td>安装路径</td>
-<td><code>%LOCALAPPDATA%\cursor-agent\</code></td>
-</tr>
-</tbody></table>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><code>No version directories found</code> 并非版本文件缺失，而是 <strong>PowerShell 启动脚本的版本名正则未跟上 Cursor Agent 新的目录命名规范</strong>。更新正则后即可恢复正常；若再次被更新覆盖，按本文步骤重新修复即可。</p>
-]]></content>
-      <tags>
-        <tag>Cursor</tag>
-        <tag>CLI</tag>
-        <tag>Agent</tag>
-        <tag>Windows</tag>
-        <tag>PowerShell</tag>
-      </tags>
   </entry>
   <entry>
     <title>EOS 菜单与角色关联关系说明</title>
@@ -1419,6 +1186,26 @@
       </tags>
   </entry>
   <entry>
+    <title>Hello World</title>
+    <url>/2026/07/06/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><span id="more"></span>
+
+<h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>health</title>
     <url>/2025/06/12/health/</url>
     <content><![CDATA[<table>
@@ -1483,24 +1270,96 @@
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2026/07/06/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><span id="more"></span>
+    <title>Cursor Agent CLI 报错 No version directories found 的排查与修复</title>
+    <url>/2026/06/19/cursor-agent-no-version-directories-fix/</url>
+    <content><![CDATA[<p>在 Windows 终端执行 <code>agent</code> 或 <code>cursor-agent</code> 时，可能遇到如下错误：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">C:\Users\liuhualiang\AppData\Local\cursor-agent\agent.ps1 : No version directories found in C:\Users\liuhualiang\AppData\Local\cursor-agent</span><br><span class="line">所在位置 行:1 字符: 1</span><br><span class="line">+ agent</span><br><span class="line">+ ~~~~~</span><br><span class="line">    + CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException</span><br><span class="line">    + FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException,agent.ps1</span><br></pre></td></tr></table></figure>
 
-<h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>本文记录该问题的现象、根因、修复方式与临时绕过方法。</p>
+<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><ul>
+<li><code>agent</code>、<code>cursor-agent</code> 命令均无法启动</li>
+<li>报错提示在 <code>%LOCALAPPDATA%\cursor-agent</code> 下找不到版本目录</li>
+<li>但手动查看 <code>versions</code> 子目录，实际存在多个版本文件夹，例如：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">C:\Users\liuhualiang\AppData\Local\cursor-agent\versions\</span><br><span class="line">├── 2026.06.12-19-59-36-f6aba9a</span><br><span class="line">├── 2026.06.15-03-48-54-da23e37</span><br><span class="line">└── 2026.06.16-20-30-07-a07d3ac</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<h2 id="根因"><a href="#根因" class="headerlink" title="根因"></a>根因</h2><p><code>agent.ps1</code> 与 <code>cursor-agent.ps1</code> 启动时会扫描 <code>versions</code> 目录，并用正则过滤合法版本名：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>该正则只匹配<strong>旧格式</strong>：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">YYYY.MM.DD-commit</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>例如：<code>2026.06.16-a07d3ac</code></p>
+<p>而 Cursor Agent 更新后的目录名变为<strong>新格式</strong>，中间多了构建时间：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">YYYY.MM.DD-HH-MM-SS-commit</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<p>例如：<code>2026.06.16-20-30-07-a07d3ac</code></p>
+<p>因此所有现有版本目录都被过滤掉，脚本误判为「没有版本目录」。</p>
+<h2 id="修复方法"><a href="#修复方法" class="headerlink" title="修复方法"></a>修复方法</h2><p>编辑以下两个文件（内容相同，需同步修改）：</p>
+<ul>
+<li><code>%LOCALAPPDATA%\cursor-agent\agent.ps1</code></li>
+<li><code>%LOCALAPPDATA%\cursor-agent\cursor-agent.ps1</code></li>
+</ul>
+<h3 id="1-更新版本目录匹配正则"><a href="#1-更新版本目录匹配正则" class="headerlink" title="1. 更新版本目录匹配正则"></a>1. 更新版本目录匹配正则</h3><p>将原来的：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>改为同时兼容新旧格式：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;(-\d&#123;1,2&#125;-\d&#123;1,2&#125;-\d&#123;1,2&#125;)?-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-改进版本排序逻辑（可选但推荐）"><a href="#2-改进版本排序逻辑（可选但推荐）" class="headerlink" title="2. 改进版本排序逻辑（可选但推荐）"></a>2. 改进版本排序逻辑（可选但推荐）</h3><p><code>Parse-VersionString</code> 函数原先只按日期 <code>YYYY.MM.DD</code> 排序。若同一天存在多个构建，建议解析时间戳后再比较：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Parse-VersionString</span></span> &#123;</span><br><span class="line">    <span class="keyword">param</span> (</span><br><span class="line">        [<span class="built_in">string</span>]<span class="variable">$versionString</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="variable">$segments</span> = <span class="variable">$versionString</span>.Split(<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">    <span class="variable">$datePart</span> = <span class="variable">$segments</span>[<span class="number">0</span>]</span><br><span class="line">    <span class="variable">$parts</span> = <span class="variable">$datePart</span>.Split(<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$parts</span>.Length <span class="operator">-ne</span> <span class="number">3</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="string">&quot;Invalid version format. Expected format: YYYY.MM.DD[-HH-MM-SS]-commit&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$year</span> = <span class="variable">$parts</span>[<span class="number">0</span>]</span><br><span class="line">    <span class="variable">$month</span> = <span class="variable">$parts</span>[<span class="number">1</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    <span class="variable">$day</span> = <span class="variable">$parts</span>[<span class="number">2</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    <span class="variable">$timeSuffix</span> = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$segments</span>.Length <span class="operator">-ge</span> <span class="number">5</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">1</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">2</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">3</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span>) &#123;</span><br><span class="line">        <span class="variable">$timeSuffix</span> = <span class="variable">$segments</span>[<span class="number">1</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>) + <span class="variable">$segments</span>[<span class="number">2</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>) + <span class="variable">$segments</span>[<span class="number">3</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">long</span>](<span class="variable">$year</span> + <span class="variable">$month</span> + <span class="variable">$day</span> + <span class="variable">$timeSuffix</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-验证修复"><a href="#3-验证修复" class="headerlink" title="3. 验证修复"></a>3. 验证修复</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">agent <span class="literal">--version</span></span><br><span class="line">agent status</span><br></pre></td></tr></table></figure>
+
+<p>预期输出示例：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">2026.06.16-20-30-07-a07d3ac</span><br><span class="line">✓ Logged in as your@email.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="临时绕过（不修改脚本）"><a href="#临时绕过（不修改脚本）" class="headerlink" title="临时绕过（不修改脚本）"></a>临时绕过（不修改脚本）</h2><p>若暂时不想改启动脚本，可直接调用最新版本目录下的 <code>node.exe</code> 与 <code>index.js</code>：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$v</span> = <span class="string">&quot;C:\Users\liuhualiang\AppData\Local\cursor-agent\versions\2026.06.16-20-30-07-a07d3ac&quot;</span></span><br><span class="line">&amp; <span class="string">&quot;<span class="variable">$v</span>\node.exe&quot;</span> <span class="string">&quot;<span class="variable">$v</span>\index.js&quot;</span> status</span><br><span class="line">&amp; <span class="string">&quot;<span class="variable">$v</span>\node.exe&quot;</span> <span class="string">&quot;<span class="variable">$v</span>\index.js&quot;</span> <span class="literal">--help</span></span><br></pre></td></tr></table></figure>
+
+<p>将 <code>$v</code> 替换为 <code>versions</code> 下实际存在的最新目录名即可。</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<li><strong>更新可能覆盖修复</strong>：执行 <code>agent update</code> 或 Cursor 自动更新 Agent CLI 后，<code>agent.ps1</code> 可能被还原，问题会复现，需重新应用上述修改。</li>
+<li><strong>IDE CLI 与 Agent CLI 是两套工具</strong>：<ul>
+<li><code>cursor</code>：Cursor IDE 自带 CLI（打开文件、diff、tunnel 等），路径通常在 <code>%LOCALAPPDATA%\Programs\cursor\resources\app\bin\</code></li>
+<li><code>agent</code> &#x2F; <code>cursor-agent</code>：终端 Agent CLI，安装在 <code>%LOCALAPPDATA%\cursor-agent\</code></li>
+</ul>
+</li>
+<li><strong><code>cursor agent</code> 子命令</strong>：IDE CLI 也注册了 <code>agent</code> 子命令，但日常使用的 <code>agent</code> 命令通常来自 PATH 中的 <code>cursor-agent</code> 包装脚本。</li>
+</ol>
+<h2 id="相关环境信息（排查参考）"><a href="#相关环境信息（排查参考）" class="headerlink" title="相关环境信息（排查参考）"></a>相关环境信息（排查参考）</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cursor IDE 版本</td>
+<td>3.8.11</td>
+</tr>
+<tr>
+<td>Agent CLI 版本</td>
+<td>2026.06.16-20-30-07-a07d3ac</td>
+</tr>
+<tr>
+<td>操作系统</td>
+<td>Windows 10&#x2F;11 x64</td>
+</tr>
+<tr>
+<td>安装路径</td>
+<td><code>%LOCALAPPDATA%\cursor-agent\</code></td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><code>No version directories found</code> 并非版本文件缺失，而是 <strong>PowerShell 启动脚本的版本名正则未跟上 Cursor Agent 新的目录命名规范</strong>。更新正则后即可恢复正常；若再次被更新覆盖，按本文步骤重新修复即可。</p>
 ]]></content>
+      <tags>
+        <tag>Cursor</tag>
+        <tag>CLI</tag>
+        <tag>Agent</tag>
+        <tag>Windows</tag>
+        <tag>PowerShell</tag>
+      </tags>
   </entry>
   <entry>
     <title>kingbase</title>
@@ -1524,6 +1383,350 @@
 <h2 id="查询数据库编码"><a href="#查询数据库编码" class="headerlink" title="查询数据库编码"></a>查询数据库编码</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT pg_encoding_to_char(encoding) FROM pg_database WHERE datname = &#x27;your_database_name&#x27;;</span><br></pre></td></tr></table></figure>
 
 <h2 id="对模式xx权限不够"><a href="#对模式xx权限不够" class="headerlink" title="对模式xx权限不够"></a>对模式xx权限不够</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Caused by: org.postgresql.util.PSQLException: ERROR: 对模式 cems 权限不够</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>查看电脑的电池状态</title>
+    <url>/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/</url>
+    <content><![CDATA[<p>没有特殊软件的情况下，使用powershell命令生成电池使用情况报告</p>
+<p>在 PowerShell（管理员模式）输入 powercfg &#x2F;batteryreport，系统会生成一个 HTML 报告，包含电池设计容量、当前满电容量、充放电历史等信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">powercfg /batteryreport</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行后生成一个html文件 batteryreport.html</p>
+<p>使用浏览器打开这个html文件  </p>
+<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070792534.png" class="" width="1748070792534">
+
+
+<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070821322.png" class="" width="1748070821322">
+
+]]></content>
+  </entry>
+  <entry>
+    <title>使用tailscale组网 使用家里打印机</title>
+    <url>/2026/03/15/%E4%BD%BF%E7%94%A8tailscale%E7%BB%84%E7%BD%91-%E4%BD%BF%E7%94%A8%E5%AE%B6%E9%87%8C%E6%89%93%E5%8D%B0%E6%9C%BA/</url>
+    <content><![CDATA[<p>在 Ubuntu 上开启子网广播</p>
+<h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p><strong>确定家里的网段：</strong> 通常是 <code>192.168.1.0/24</code> 或 <code>192.168.0.0/24</code></p>
+<p><strong>开启 IP 转发（内核层面）：</strong><br>运行以下命令：</p>
+<p><strong>Bash</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;net.ipv4.ip_forward = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">echo &#x27;net.ipv6.conf.all.forwarding = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">sudo sysctl -p /etc/sysctl.d/99-tailscale.conf</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>启动子网路由：</strong><br>运行以下命令（将 <code>192.168.1.0/24</code> 替换为你家里的实际网段）：</p>
+<p><strong>Bash</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo tailscale up --advertise-routes=192.168.1.0/24</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="第二步：在-Tailscale-控制面板允许路由"><a href="#第二步：在-Tailscale-控制面板允许路由" class="headerlink" title="第二步：在 Tailscale 控制面板允许路由"></a>第二步：在 Tailscale 控制面板允许路由</h3><p>为了安全，Tailscale 默认不会自动启用路由，需要你手动点一下：</p>
+<ol>
+<li>打开 <a href="https://login.tailscale.com/admin/machines">Tailscale Admin Console</a>。</li>
+<li>找到你的 <strong>Ubuntu</strong> 设备。</li>
+<li>点击右侧的三个点 <code>...</code> -&gt;  <strong>Edit route settings</strong> 。</li>
+<li>在 <strong>Subnet routes</strong> 下，勾选你刚才添加的网段，点击确认。</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>在 Claude Code CLI 中使用 DeepSeek 作为模型</title>
+    <url>/2026/03/15/use-deepseek-as-model-in-claude-code-cli/</url>
+    <content><![CDATA[<p>Claude Code 是 Anthropic 的 AI 编程助手，默认只使用 Anthropic 的模型。通过环境变量 <code>ANTHROPIC_BASE_URL</code> 可以切换 API 端点，DeepSeek 官方提供了 <strong>Anthropic API 兼容</strong> 的接口，因此可以直接把 Claude Code CLI 接到 DeepSeek，无需代理或第三方路由。</p>
+<p>本文介绍如何配置 Claude Code CLI，使其使用 DeepSeek 作为后端模型。</p>
+<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><ul>
+<li>已安装 <a href="https://claude.ai/code">Claude Code</a>（官方安装：<code>curl -fsSL https://claude.ai/install.sh | bash</code>）</li>
+<li>已注册 <a href="https://platform.deepseek.com/">DeepSeek 开放平台</a> 并获取 <strong>API Key</strong>（<a href="https://platform.deepseek.com/api-keys">API Keys 页面</a>）</li>
+</ul>
+<h2 id="方式一：官方-Anthropic-兼容-API（推荐）"><a href="#方式一：官方-Anthropic-兼容-API（推荐）" class="headerlink" title="方式一：官方 Anthropic 兼容 API（推荐）"></a>方式一：官方 Anthropic 兼容 API（推荐）</h2><p>DeepSeek 提供与 Anthropic Messages API 兼容的端点，只需改环境变量即可让 Claude Code 走 DeepSeek。</p>
+<h3 id="1-配置环境变量"><a href="#1-配置环境变量" class="headerlink" title="1. 配置环境变量"></a>1. 配置环境变量</h3><p>在终端中执行（将 <code>YOUR_DEEPSEEK_API_KEY</code> 换成你的 DeepSeek API Key）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># DeepSeek Anthropic 兼容 API 端点</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定使用的模型（见下方「模型选择」）</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：避免长输出时客户端超时（单位毫秒，例如 10 分钟）</span></span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：禁用非必要流量（仅在使用第三方 API 时建议）</span></span><br><span class="line"><span class="built_in">export</span> CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-启动-Claude-Code"><a href="#2-启动-Claude-Code" class="headerlink" title="2. 启动 Claude Code"></a>2. 启动 Claude Code</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> your-project</span><br><span class="line">claude</span><br></pre></td></tr></table></figure>
+
+<p>之后 Claude Code 的请求会发往 DeepSeek，使用你配置的模型。</p>
+<h3 id="3-写入-Shell-配置（长期使用）"><a href="#3-写入-Shell-配置（长期使用）" class="headerlink" title="3. 写入 Shell 配置（长期使用）"></a>3. 写入 Shell 配置（长期使用）</h3><p>避免每次手动 export，可写入 <code>~/.bashrc</code>、<code>~/.zshrc</code> 或 Fish 的 <code>config.fish</code>。</p>
+<p><strong>Bash &#x2F; Zsh 示例：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># DeepSeek + Claude Code</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br></pre></td></tr></table></figure>
+
+<p><strong>Fish 示例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function claude-deepseek</span><br><span class="line">    set -x ANTHROPIC_BASE_URL https://api.deepseek.com/anthropic</span><br><span class="line">    set -x ANTHROPIC_AUTH_TOKEN &quot;YOUR_DEEPSEEK_API_KEY&quot;</span><br><span class="line">    set -x ANTHROPIC_MODEL deepseek-chat</span><br><span class="line">    set -x ANTHROPIC_SMALL_FAST_MODEL deepseek-chat</span><br><span class="line">    set -x API_TIMEOUT_MS 600000</span><br><span class="line">    claude $argv</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>之后在 Fish 中执行 <code>claude-deepseek</code> 即用 DeepSeek；其他终端保持默认则仍用 Anthropic。</p>
+<h2 id="模型选择"><a href="#模型选择" class="headerlink" title="模型选择"></a>模型选择</h2><p>DeepSeek 在 Anthropic 兼容接口中常用模型名：</p>
+<table>
+<thead>
+<tr>
+<th>模型名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>deepseek-chat</code></td>
+<td>通用对话，响应快，适合日常编码与问答</td>
+</tr>
+<tr>
+<td><code>deepseek-reasoner</code></td>
+<td>推理模式，步骤更详细，适合复杂分析与多步推理</td>
+</tr>
+</tbody></table>
+<p>通过修改 <code>ANTHROPIC_MODEL</code> 和 <code>ANTHROPIC_SMALL_FAST_MODEL</code> 即可切换。若传入 DeepSeek 不支持的模型名，接口会自动映射到 <code>deepseek-chat</code>。</p>
+<h2 id="方式二：通过-Claude-Code-Router-OpenRouter"><a href="#方式二：通过-Claude-Code-Router-OpenRouter" class="headerlink" title="方式二：通过 Claude Code Router + OpenRouter"></a>方式二：通过 Claude Code Router + OpenRouter</h2><p>若希望在同一套 Claude Code 里切换多种模型（如 Claude、GPT、DeepSeek），可使用 <a href="https://github.com/musistudio/claude-code-router">Claude Code Router</a>，通过 OpenRouter 统一接入。</p>
+<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 已安装 Claude Code 的前提下</span></span><br><span class="line">npm install -g @musistudio/claude-code-router</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-获取-OpenRouter-API-Key"><a href="#2-获取-OpenRouter-API-Key" class="headerlink" title="2. 获取 OpenRouter API Key"></a>2. 获取 OpenRouter API Key</h3><p>在 <a href="https://openrouter.ai/">OpenRouter</a> 注册并创建 API Key，按用量计费，可选用 DeepSeek 等模型。</p>
+<h3 id="3-配置文件"><a href="#3-配置文件" class="headerlink" title="3. 配置文件"></a>3. 配置文件</h3><p>创建并编辑 <code>~/.claude-code-router/config.json</code>：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;LOG&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;LOG_LEVEL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;info&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Providers&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_base_url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://openrouter.ai/api/v1/chat/completions&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;YOUR_OPENROUTER_API_KEY&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;transformer&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;use&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span> <span class="string">&quot;tooluse&quot;</span><span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;models&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;anthropic/claude-sonnet-4&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;openai/gpt-4o&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;deepseek/deepseek-chat&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Router&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;default&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;background&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;think&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>将 <code>YOUR_OPENROUTER_API_KEY</code> 换成你的 OpenRouter API Key。<code>transformer</code> 中的 <code>&quot;tooluse&quot;</code> 需保留，否则 Claude Code 的工具调用（编辑文件、执行命令等）会异常。</p>
+<h3 id="4-启动方式"><a href="#4-启动方式" class="headerlink" title="4. 启动方式"></a>4. 启动方式</h3><p>用 Router 启动 Claude Code（不再直接运行 <code>claude</code>）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ccr code</span><br></pre></td></tr></table></figure>
+
+<p>会话中可切换模型，例如：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">/model openrouter,deepseek/deepseek-chat</span><br><span class="line">/status</span><br></pre></td></tr></table></figure>
+
+<h2 id="Anthropic-API-兼容性说明（方式一）"><a href="#Anthropic-API-兼容性说明（方式一）" class="headerlink" title="Anthropic API 兼容性说明（方式一）"></a>Anthropic API 兼容性说明（方式一）</h2><p>DeepSeek 的 Anthropic 兼容接口支持：</p>
+<ul>
+<li><strong>常用参数</strong>：<code>max_tokens</code>、<code>stop_sequences</code>、<code>stream</code>、<code>system</code>、<code>temperature</code>（0.0～2.0）、<code>top_p</code></li>
+<li><strong>工具调用</strong>：<code>tools</code>、<code>tool_choice</code>，适合 Claude Code 的编辑与执行等能力</li>
+<li><strong>内容类型</strong>：文本、thinking 类内容</li>
+</ul>
+<p>以下能力在 DeepSeek 端<strong>不支持</strong>或不生效：</p>
+<ul>
+<li>消息中的图片、文档等 multimodal 类型</li>
+<li>部分 MCP 相关类型（如 <code>mcp_tool_use</code>、<code>mcp_tool_result</code>）</li>
+<li>部分 Anthropic 专有字段（如 <code>anthropic-beta</code>、<code>container</code>、<code>metadata</code> 等）</li>
+</ul>
+<p>仅使用「写代码、改文件、跑命令」等常见能力时，方式一即可满足需求。</p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><p><strong>Q: 必须用 Python 吗？</strong><br>A: 不必。方式一只是改环境变量，任意终端&#x2F;shell 均可；方式二需要 Node.js 来跑 <code>ccr</code>。</p>
+<p><strong>Q: DeepSeek 免费吗？</strong><br>A: 注册会有一定免费额度，超出后按官方定价计费，详见 <a href="https://platform.deepseek.com/">DeepSeek 定价页</a>。</p>
+<p><strong>Q: 如何确认当前用的是 DeepSeek？</strong><br>A: 方式一：看环境变量 <code>ANTHROPIC_BASE_URL</code> 是否为 <code>https://api.deepseek.com/anthropic</code>。方式二：在会话里输入 <code>/status</code> 查看当前模型。</p>
+<p><strong>Q: 长输出被截断或超时？</strong><br>A: 增大 <code>API_TIMEOUT_MS</code>（例如 <code>600000</code> 表示 10 分钟）。</p>
+<hr>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a href="https://api-docs.deepseek.com/zh-cn/guides/anthropic_api">DeepSeek 官方：Anthropic API 兼容说明</a></li>
+<li><a href="https://code.claude.com/docs/en/settings#environment-variables">Claude Code 环境变量说明</a></li>
+<li><a href="https://github.com/musistudio/claude-code-router">Claude Code Router</a></li>
+<li><a href="https://platform.deepseek.com/api-keys">DeepSeek 开放平台 &#x2F; API Keys</a></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>CLI</tag>
+        <tag>Claude Code</tag>
+        <tag>DeepSeek</tag>
+        <tag>AI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>瘦身密码（一）：中国式发福图鉴——14亿人的体重失控现场</title>
+    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B8%AD%E5%9B%BD%E5%BC%8F%E5%8F%91%E7%A6%8F%E5%9B%BE%E9%89%B4/</url>
+    <content><![CDATA[<p>近三十年，中国人以惊人速度「胖」了起来。据《中国居民营养与慢性病状况报告（2020）》，成年居民超重率 34.3%、肥胖率 16.4%——<strong>每 2 个成年人就有 1 人面临超重&#x2F;肥胖威胁</strong>。</p>
+<p>更令人警醒的是增速：1989 年中国超重人口约 1.67 亿，2009 年增至 5.29 亿，20 年间每天约增加 4.9 万人，年均增长率 10.8%，超过同期 GDP 增速。《柳叶刀》估算，2021 年全球超重&#x2F;肥胖成年人 21.1 亿，中国以 4.02 亿居首；预计到 2050 年，全球将有超过一半成年人超重&#x2F;肥胖。</p>
+<p>若以腰围衡量腹型肥胖，2009 年中国腹型肥胖人口约 6.7 亿，超过欧美总和。李新华等团队在《柳叶刀》发表的研究显示，2004～2018 年间，18～69 岁人群标准化平均 BMI 从 22.7 升至 24.4 kg&#x2F;m²，肥胖患病率（BMI≥30）从 3.1% 升至 8.1%。2018 年肥胖人数约 8500 万，是 2004 年的三倍。</p>
+<h2 id="谁更容易发胖？"><a href="#谁更容易发胖？" class="headerlink" title="谁更容易发胖？"></a>谁更容易发胖？</h2><p>肥胖增长并非均匀分布，城乡、性别、年龄各有特点：</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>主要趋势</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>城乡</strong></td>
+<td>2010 年前城市高于农村；此后农村女性 BMI 增速快于城市，2018 年农村女性已超过城市</td>
+</tr>
+<tr>
+<td><strong>性别</strong></td>
+<td>2004 年男性低于女性，2018 年完全逆转，男性增速更快</td>
+</tr>
+<tr>
+<td><strong>年龄</strong></td>
+<td>女性随年龄升高至 50 岁；男性 30～49 岁为高峰</td>
+</tr>
+<tr>
+<td><strong>儿童</strong></td>
+<td>与 1985 年比，2014 年 7～18 岁学生肥胖患病率增长 54.8 倍</td>
+</tr>
+<tr>
+<td><strong>老年人</strong></td>
+<td>2011～2015 年超重率 29.2%→33.2%，中心性肥胖 58.3%→63.9%</td>
+</tr>
+</tbody></table>
+<h2 id="肥胖正在吃掉你的存款"><a href="#肥胖正在吃掉你的存款" class="headerlink" title="肥胖正在吃掉你的存款"></a>肥胖正在吃掉你的存款</h2><p>肥胖已从个人问题演变为国家危机。2024 年 6 月，国家卫生健康委联合 16 部门启动「体重管理年」活动，推动慢病防治关口前移。</p>
+<p><strong>健康代价：</strong></p>
+<ul>
+<li>近 20 年高血压患病率 19%→28%，糖尿病约 3%→13%</li>
+<li>2018 年糖尿病及前期患病率合计约 51%，知晓率、治疗率、控制率均偏低</li>
+<li>预测 2030 年成人超重&#x2F;肥胖率或达 70.5%</li>
+</ul>
+<p><strong>经济代价：</strong></p>
+<ul>
+<li>2030 年归因于超重&#x2F;肥胖的医疗费用预计约 4180 亿元，约占全国医疗费用 22%</li>
+<li>超重&#x2F;肥胖对全球经济影响占 GDP 2.4%，2035 年预计升至更高</li>
+<li>肥胖还带来间接损失：工作效率下降、请假增多、就业机会受影响（「体型歧视」）</li>
+</ul>
+<p>研究还发现，肥胖与收入的关系并非线性——<strong>中等收入人群肥胖风险反而最高</strong>；农村高收入男性、高教育男性肥胖关联更强，而女性高教育与肥胖呈负相关。</p>
+<h2 id="腰围比体重更值得警惕"><a href="#腰围比体重更值得警惕" class="headerlink" title="腰围比体重更值得警惕"></a>腰围比体重更值得警惕</h2><p>BMI 虽常用，但有盲区：不区分肌肉与脂肪、不反映脂肪分布。腹型肥胖（苹果型）风险远高于梨型：</p>
+<ul>
+<li>男性腰围 ≥90 cm、女性 ≥85 cm，即存在腹型肥胖风险</li>
+<li>内脏脂肪升高甘油三酯、胆固醇，促动脉粥样硬化</li>
+<li>干扰胰岛素作用，显著增加 2 型糖尿病风险</li>
+<li>与结直肠癌、子宫内膜癌等多种癌症相关</li>
+<li>压迫横膈膜，引发睡眠呼吸暂停；加重关节负担</li>
+</ul>
+<p><strong>建议：</strong> 除定期测 BMI 外，务必关注腰围和腰臀比（亚洲男性上限 0.9，女性 0.8）。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>肥胖威胁的不只是外形，更是心血管、代谢、呼吸、骨骼乃至心理的全方位健康。2024 年「体重管理年」与「九体医学健康中国计划」的推进，标志着体重管理正从「一刀切节食」走向<strong>个体化、科学化、中西医协同</strong>的新阶段。</p>
+<p>下一篇，我们将拆解「脂肪工厂」——脂肪从何而来，以及什么才是科学的减肥马拉松。</p>
+]]></content>
+      <tags>
+        <tag>健康</tag>
+        <tag>体重管理</tag>
+        <tag>九体医学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>classicical-chinese-translation-private-policy</title>
+    <url>/2025/06/23/classicical-chinese-translation-private-policy/</url>
+    <content><![CDATA[<h1 id="文言文现代翻译助手-隐私权政策"><a href="#文言文现代翻译助手-隐私权政策" class="headerlink" title="文言文现代翻译助手 - 隐私权政策"></a>文言文现代翻译助手 - 隐私权政策</h1><p><strong>生效日期：</strong> 2024年12月19日</p>
+<p><strong>最后更新：</strong> 2024年12月19日</p>
+<h2 id="📋-政策概述"><a href="#📋-政策概述" class="headerlink" title="📋 政策概述"></a>📋 政策概述</h2><p>文言文现代翻译助手（以下简称”本插件”）致力于保护用户的隐私权。本隐私权政策详细说明了我们如何收集、使用、存储和保护您的信息。</p>
+<p><strong>重要声明：本插件不会收集、存储或传输任何个人身份信息。</strong></p>
+<h2 id="🔍-信息收集与使用"><a href="#🔍-信息收集与使用" class="headerlink" title="🔍 信息收集与使用"></a>🔍 信息收集与使用</h2><h3 id="我们收集什么信息"><a href="#我们收集什么信息" class="headerlink" title="我们收集什么信息"></a>我们收集什么信息</h3><h4 id="1-用户主动提供的信息"><a href="#1-用户主动提供的信息" class="headerlink" title="1. 用户主动提供的信息"></a>1. 用户主动提供的信息</h4><p>-<strong>API密钥</strong>：您输入的DeepSeek API密钥</p>
+<p>-<strong>设置偏好</strong>：插件启用&#x2F;禁用状态等功能设置</p>
+<h4 id="2-翻译内容"><a href="#2-翻译内容" class="headerlink" title="2. 翻译内容"></a>2. 翻译内容</h4><p>-<strong>待翻译文本</strong>：您选择翻译或页面中识别的文言文内容</p>
+<p>-<strong>翻译结果</strong>：从DeepSeek API返回的翻译结果</p>
+<h4 id="3-我们不收集的信息"><a href="#3-我们不收集的信息" class="headerlink" title="3. 我们不收集的信息"></a>3. 我们不收集的信息</h4><ul>
+<li>❌ 个人身份信息（姓名、邮箱、电话等）</li>
+<li>❌ 浏览历史记录</li>
+<li>❌ 网站登录信息</li>
+<li>❌ 其他网站的用户数据</li>
+<li>❌ 设备信息或位置信息</li>
+</ul>
+<h3 id="信息使用目的"><a href="#信息使用目的" class="headerlink" title="信息使用目的"></a>信息使用目的</h3><p>我们收集的信息仅用于以下目的：</p>
+<p>1.<strong>提供翻译服务</strong>：将文言文内容发送至DeepSeek API进行翻译</p>
+<p>2.<strong>保存用户设置</strong>：在您的设备上本地保存API密钥和功能偏好</p>
+<p>3.<strong>改善用户体验</strong>：确保插件功能正常运行</p>
+<h2 id="💾-数据存储与安全"><a href="#💾-数据存储与安全" class="headerlink" title="💾 数据存储与安全"></a>💾 数据存储与安全</h2><h3 id="本地存储"><a href="#本地存储" class="headerlink" title="本地存储"></a>本地存储</h3><p>-<strong>API密钥</strong>：使用Chrome扩展存储API在您的设备上本地保存</p>
+<p>-<strong>用户设置</strong>：本地存储，不会上传到任何服务器</p>
+<p>-<strong>存储位置</strong>：仅存储在您的浏览器中，其他人无法访问</p>
+<h3 id="第三方服务"><a href="#第三方服务" class="headerlink" title="第三方服务"></a>第三方服务</h3><p>-<strong>DeepSeek API</strong>：翻译请求会发送到DeepSeek的服务器</p>
+<p>-<strong>数据传输</strong>：仅传输待翻译的文本内容</p>
+<p>-<strong>加密传输</strong>：所有API请求均通过HTTPS加密传输</p>
+<h3 id="数据安全措施"><a href="#数据安全措施" class="headerlink" title="数据安全措施"></a>数据安全措施</h3><p>1.<strong>本地加密存储</strong>：敏感信息在本地加密保存</p>
+<p>2.<strong>HTTPS传输</strong>：所有网络请求使用SSL&#x2F;TLS加密</p>
+<p>3.<strong>最小权限原则</strong>：插件仅申请必要的浏览器权限</p>
+<p>4.<strong>无服务器存储</strong>：我们不运营任何服务器存储用户数据</p>
+<h2 id="🌐-第三方服务说明"><a href="#🌐-第三方服务说明" class="headerlink" title="🌐 第三方服务说明"></a>🌐 第三方服务说明</h2><h3 id="DeepSeek-API服务"><a href="#DeepSeek-API服务" class="headerlink" title="DeepSeek API服务"></a>DeepSeek API服务</h3><p>-<strong>服务提供商</strong>：DeepSeek (<a href="https://platform.deepseek.com/">https://platform.deepseek.com/</a>)</p>
+<p>-<strong>数据传输</strong>：仅传输您选择翻译的文言文内容</p>
+<p>-<strong>用途</strong>：获取现代汉语翻译结果</p>
+<p>-<strong>隐私政策</strong>：请查看DeepSeek的隐私政策了解其数据处理方式</p>
+<h3 id="不与其他第三方共享数据"><a href="#不与其他第三方共享数据" class="headerlink" title="不与其他第三方共享数据"></a>不与其他第三方共享数据</h3><ul>
+<li>除DeepSeek翻译服务外，我们不会与任何其他第三方共享您的数据</li>
+<li>我们不会出售、租赁或以其他方式提供您的信息给第三方</li>
+</ul>
+<h2 id="🔒-权限说明"><a href="#🔒-权限说明" class="headerlink" title="🔒 权限说明"></a>🔒 权限说明</h2><p>本插件申请的浏览器权限及其用途：</p>
+<h3 id="必需权限"><a href="#必需权限" class="headerlink" title="必需权限"></a>必需权限</h3><p>1.<strong>activeTab</strong></p>
+<p>   -<strong>用途</strong>：在当前网页中识别和翻译文言文内容</p>
+<p>   -<strong>范围</strong>：仅限当前活动标签页</p>
+<p>   -<strong>数据访问</strong>：仅读取页面中的文本内容用于翻译</p>
+<p>2.<strong>storage</strong></p>
+<p>   -<strong>用途</strong>：本地保存API密钥和用户设置</p>
+<p>   -<strong>范围</strong>：仅限本插件的存储空间</p>
+<p>   -<strong>数据类型</strong>：API密钥、启用状态等设置信息</p>
+<p>3.<strong>contextMenus</strong></p>
+<p>   -<strong>用途</strong>：提供右键菜单翻译功能</p>
+<p>   -<strong>数据访问</strong>：仅访问用户选中的文本内容</p>
+<p>4.<strong>notifications</strong></p>
+<p>   -<strong>用途</strong>：显示操作状态和错误提示</p>
+<p>   -<strong>数据传输</strong>：无，仅本地显示通知</p>
+<h3 id="主机权限"><a href="#主机权限" class="headerlink" title="主机权限"></a>主机权限</h3><p>1.<strong><a href="https://api.deepseek.com/">https://api.deepseek.com/</a></strong>*</p>
+<p>   -<strong>用途</strong>：访问DeepSeek翻译API服务</p>
+<p>   -<strong>数据传输</strong>：仅传输待翻译的文言文内容</p>
+<p>   -<strong>必要性</strong>：翻译功能的核心依赖</p>
+<h2 id="👤-用户控制权"><a href="#👤-用户控制权" class="headerlink" title="👤 用户控制权"></a>👤 用户控制权</h2><h3 id="您可以控制的内容"><a href="#您可以控制的内容" class="headerlink" title="您可以控制的内容"></a>您可以控制的内容</h3><p>1.<strong>API密钥管理</strong></p>
+<ul>
+<li>随时修改或删除您的API密钥</li>
+<li>停止使用插件将自动停止所有数据传输</li>
+</ul>
+<p>2.<strong>功能控制</strong></p>
+<ul>
+<li>随时启用或禁用翻译功能</li>
+<li>选择性翻译特定内容</li>
+</ul>
+<p>3.<strong>数据删除</strong></p>
+<ul>
+<li>卸载插件将自动删除所有本地存储的数据</li>
+<li>可以手动清除浏览器扩展数据</li>
+</ul>
+<h3 id="选择退出"><a href="#选择退出" class="headerlink" title="选择退出"></a>选择退出</h3><p>-<strong>完全停用</strong>：在扩展程序管理页面禁用或卸载插件</p>
+<p>-<strong>临时停用</strong>：在插件设置中关闭翻译功能</p>
+<p>-<strong>选择性使用</strong>：仅在需要时手动翻译选定内容</p>
+<h2 id="🔄-数据保留政策"><a href="#🔄-数据保留政策" class="headerlink" title="🔄 数据保留政策"></a>🔄 数据保留政策</h2><h3 id="本地数据"><a href="#本地数据" class="headerlink" title="本地数据"></a>本地数据</h3><p>-<strong>保留期限</strong>：直到您主动删除或卸载插件</p>
+<p>-<strong>自动清理</strong>：卸载插件时自动清除所有本地数据</p>
+<p>-<strong>用户控制</strong>：您可以随时清除存储的设置</p>
+<h3 id="传输数据"><a href="#传输数据" class="headerlink" title="传输数据"></a>传输数据</h3><p>-<strong>API请求</strong>：翻译请求发送后不在本地保留</p>
+<p>-<strong>翻译结果</strong>：仅在页面显示，不永久存储</p>
+<p>-<strong>会话数据</strong>：浏览器关闭后自动清除</p>
+<h2 id="👶-儿童隐私保护"><a href="#👶-儿童隐私保护" class="headerlink" title="👶 儿童隐私保护"></a>👶 儿童隐私保护</h2><ul>
+<li>本插件不专门面向13岁以下儿童设计</li>
+<li>我们不会故意收集儿童的个人信息</li>
+<li>如果发现意外收集了儿童信息，我们会立即删除</li>
+</ul>
+<h2 id="🌍-国际数据传输"><a href="#🌍-国际数据传输" class="headerlink" title="🌍 国际数据传输"></a>🌍 国际数据传输</h2><p>-<strong>数据传输</strong>：翻译请求可能涉及跨境数据传输（发送至DeepSeek服务器）</p>
+<p>-<strong>传输内容</strong>：仅限待翻译的文言文内容</p>
+<p>-<strong>保护措施</strong>：所有传输均通过加密通道进行</p>
+<h2 id="📧-联系我们"><a href="#📧-联系我们" class="headerlink" title="📧 联系我们"></a>📧 联系我们</h2><p>如果您对本隐私政策有任何疑问或建议，请通过以下方式联系我们：</p>
+<p>-<strong>GitHub Issues</strong>：<a href="https://github.com/eppen/ClassicalChineseTranslation/issues">https://github.com/eppen/ClassicalChineseTranslation/issues</a></p>
+<p>-<strong>项目主页</strong>：<a href="https://github.com/eppen/ClassicalChineseTranslation">https://github.com/eppen/ClassicalChineseTranslation</a></p>
+<p>-<strong>邮箱联系</strong>：通过GitHub项目页面联系开发者</p>
+<h2 id="🔄-政策更新"><a href="#🔄-政策更新" class="headerlink" title="🔄 政策更新"></a>🔄 政策更新</h2><h3 id="更新通知"><a href="#更新通知" class="headerlink" title="更新通知"></a>更新通知</h3><ul>
+<li>我们可能会不定期更新本隐私政策</li>
+<li>重大变更将通过插件更新或GitHub通知用户</li>
+<li>建议定期查看最新版本的隐私政策</li>
+</ul>
+<h3 id="更新历史"><a href="#更新历史" class="headerlink" title="更新历史"></a>更新历史</h3><p>-<strong>2024年12月19日</strong>：初始版本发布</p>
+<h3 id="变更生效"><a href="#变更生效" class="headerlink" title="变更生效"></a>变更生效</h3><ul>
+<li>政策更新后继续使用插件即表示您接受新的隐私政策</li>
+<li>如不同意更新内容，请停止使用本插件</li>
+</ul>
+<h2 id="📜-法律依据"><a href="#📜-法律依据" class="headerlink" title="📜 法律依据"></a>📜 法律依据</h2><p>本隐私政策的制定基于：</p>
+<ul>
+<li>《中华人民共和国个人信息保护法》</li>
+<li>《欧盟通用数据保护条例》(GDPR)</li>
+<li>Chrome网上应用店隐私政策要求</li>
+<li>其他适用的隐私保护法律法规</li>
+</ul>
+<h2 id="✅-用户权利"><a href="#✅-用户权利" class="headerlink" title="✅ 用户权利"></a>✅ 用户权利</h2><p>根据适用的隐私法律，您享有以下权利：</p>
+<p>1.<strong>知情权</strong>：了解我们如何处理您的信息</p>
+<p>2.<strong>访问权</strong>：查看我们存储的关于您的信息</p>
+<p>3.<strong>更正权</strong>：修正不准确的个人信息</p>
+<p>4.<strong>删除权</strong>：要求删除您的个人信息</p>
+<p>5.<strong>限制处理权</strong>：限制我们处理您信息的方式</p>
+<p>6.<strong>数据可携权</strong>：获取您的数据副本</p>
+<p>7.<strong>反对权</strong>：反对某些类型的数据处理</p>
+<p><strong>行使权利</strong>：由于本插件不收集个人身份信息，大部分权利可通过卸载插件或清除浏览器数据来实现。</p>
+<h2 id="🛡️-安全事件响应"><a href="#🛡️-安全事件响应" class="headerlink" title="🛡️ 安全事件响应"></a>🛡️ 安全事件响应</h2><h3 id="安全措施"><a href="#安全措施" class="headerlink" title="安全措施"></a>安全措施</h3><ul>
+<li>我们采用行业标准的安全措施保护数据</li>
+<li>定期更新插件以修复安全漏洞</li>
+<li>监控潜在的安全威胁</li>
+</ul>
+<h3 id="事件响应"><a href="#事件响应" class="headerlink" title="事件响应"></a>事件响应</h3><ul>
+<li>如发现安全漏洞，我们将立即采取补救措施</li>
+<li>及时发布安全更新</li>
+<li>必要时通知受影响的用户</li>
+</ul>
+<h2 id="📊-数据最小化原则"><a href="#📊-数据最小化原则" class="headerlink" title="📊 数据最小化原则"></a>📊 数据最小化原则</h2><p>我们严格遵循数据最小化原则：</p>
+<p>-<strong>目的限制</strong>：仅收集实现功能所必需的数据</p>
+<p>-<strong>数量最小</strong>：收集的数据量保持在最低限度</p>
+<p>-<strong>时间最短</strong>：不会无限期保留数据</p>
+<p>-<strong>范围最窄</strong>：仅在必要范围内使用数据</p>
+<hr>
+<p><strong>本隐私政策是我们对用户隐私保护承诺的体现。我们将持续改进隐私保护措施，确保用户信息安全。</strong></p>
+<p><em>如有任何疑问，欢迎随时联系我们。感谢您对文言文现代翻译助手的信任与支持！</em></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>浙石化序</title>
+    <url>/2025/07/07/%E6%B5%99%E7%9F%B3%E5%8C%96%E5%BA%8F/</url>
+    <content><![CDATA[<p>浙东形胜，三衢古郡，舟山新府。襟东海而带杭湾，控岛链而引巨舶。物华天宝，原油映碧海之光;人杰地灵，工匠聚寰宇之智。雄州雾列，塔器参天;货积云屯，管道织地。时维仲夏，序属清和，掌舵人邀宾朋于鱼山，展宏图于海隅。群贤毕至，少长成集，观此化工新城，敢竭鄙诚，恭疏短引。<br>若夫巨浸茫茫，沧波浩荡。昔者荒礁寂寥，渔火零星;今朝钢构峥，银灯璀璨。削峰填壑，六载功成;跨海连洲，百里势就。银罐如林，贮寰球之黑金;铁轨似弦，奏工业之强音。裂解装置耸若剑阁，催化高塔峻比雷峰。火炬凌雪，夜燃不灭之<br>炬;码头枕浪，朝发万吨之舟。<br>至若生产之盛，则见管道蟠空，银蛇舞壑;仪表星罗，明眸察微。中央控室，决胜千里之外;智能系统，运筹方寸之间。<br>原油分馏，轻质化而为汽柴;分子重构，烯烃聚而成塑胶。芳烃织锦衣之梦，PX解化纤之渴。硫黄变废为宝，尾气点石成金。<br>节能减排，树绿色标杆;循环利用，开生态新篇。若乃创新之道，院十工作站藏龙卧虎，博十后基地起凤腾蛟。专利千项，破外邦之垄断;标准百家，立行业之丰泉。纳米催化，巧夺造化;智能炼厂，智领未来。校企联姻，产学研一体;中外合作，技贸融三通。斯诚东海之硅谷，实乃化工之殿<br>早:嗟乎!石化兴衰，关乎国运。昔闻大庆精神，铁人泣血;今见浙石气象，海匠呕心。老牌炼厂，困陈规而式微;新兴基地，乘东风而崛起。屈子求索，路漫漫其修远;愚公移山，志巍巍而不改。岂效守成之辈，坐享其成?敢为天下先，方兄英雄色。<br>掌舵人，精神抖擞，壮志凌云。掌千亿之资，立百年之业。创新驱动，布新局如弈棋;安全为本，守红线若履冰。绿色低碳，岂止合规达标?数字智能，更求行业引领。呜呯!碧海蓝天，岂与黑烟共存?金山银山，终须绿水相伴。所赖转型及时，未雨绸缪。<br>敢竭鄙怀，恭疏短引。一言均赋，四韵俱成:鱼山螺岛起宏图，钢构连云海气殊。裂解千钧轻似羽，合成万象妙如珠。智能已破重洋术，绿色新开双碳途。莫道化工皆浊物，今看白舞银炉。</p>
 ]]></content>
   </entry>
   <entry>
@@ -1616,311 +1819,6 @@
 
 <img src="/2024/08/24/my-first-blog/1724523222999.png" class="" width="1724523222999"><img src="/2024/08/24/my-first-blog/1724523235531.png" class="" width="1724523235531">
 ]]></content>
-  </entry>
-  <entry>
-    <title>在 Claude Code CLI 中使用 DeepSeek 作为模型</title>
-    <url>/2026/03/15/use-deepseek-as-model-in-claude-code-cli/</url>
-    <content><![CDATA[<p>Claude Code 是 Anthropic 的 AI 编程助手，默认只使用 Anthropic 的模型。通过环境变量 <code>ANTHROPIC_BASE_URL</code> 可以切换 API 端点，DeepSeek 官方提供了 <strong>Anthropic API 兼容</strong> 的接口，因此可以直接把 Claude Code CLI 接到 DeepSeek，无需代理或第三方路由。</p>
-<p>本文介绍如何配置 Claude Code CLI，使其使用 DeepSeek 作为后端模型。</p>
-<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><ul>
-<li>已安装 <a href="https://claude.ai/code">Claude Code</a>（官方安装：<code>curl -fsSL https://claude.ai/install.sh | bash</code>）</li>
-<li>已注册 <a href="https://platform.deepseek.com/">DeepSeek 开放平台</a> 并获取 <strong>API Key</strong>（<a href="https://platform.deepseek.com/api-keys">API Keys 页面</a>）</li>
-</ul>
-<h2 id="方式一：官方-Anthropic-兼容-API（推荐）"><a href="#方式一：官方-Anthropic-兼容-API（推荐）" class="headerlink" title="方式一：官方 Anthropic 兼容 API（推荐）"></a>方式一：官方 Anthropic 兼容 API（推荐）</h2><p>DeepSeek 提供与 Anthropic Messages API 兼容的端点，只需改环境变量即可让 Claude Code 走 DeepSeek。</p>
-<h3 id="1-配置环境变量"><a href="#1-配置环境变量" class="headerlink" title="1. 配置环境变量"></a>1. 配置环境变量</h3><p>在终端中执行（将 <code>YOUR_DEEPSEEK_API_KEY</code> 换成你的 DeepSeek API Key）：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># DeepSeek Anthropic 兼容 API 端点</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定使用的模型（见下方「模型选择」）</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：避免长输出时客户端超时（单位毫秒，例如 10 分钟）</span></span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：禁用非必要流量（仅在使用第三方 API 时建议）</span></span><br><span class="line"><span class="built_in">export</span> CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-启动-Claude-Code"><a href="#2-启动-Claude-Code" class="headerlink" title="2. 启动 Claude Code"></a>2. 启动 Claude Code</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> your-project</span><br><span class="line">claude</span><br></pre></td></tr></table></figure>
-
-<p>之后 Claude Code 的请求会发往 DeepSeek，使用你配置的模型。</p>
-<h3 id="3-写入-Shell-配置（长期使用）"><a href="#3-写入-Shell-配置（长期使用）" class="headerlink" title="3. 写入 Shell 配置（长期使用）"></a>3. 写入 Shell 配置（长期使用）</h3><p>避免每次手动 export，可写入 <code>~/.bashrc</code>、<code>~/.zshrc</code> 或 Fish 的 <code>config.fish</code>。</p>
-<p><strong>Bash &#x2F; Zsh 示例：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># DeepSeek + Claude Code</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br></pre></td></tr></table></figure>
-
-<p><strong>Fish 示例：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function claude-deepseek</span><br><span class="line">    set -x ANTHROPIC_BASE_URL https://api.deepseek.com/anthropic</span><br><span class="line">    set -x ANTHROPIC_AUTH_TOKEN &quot;YOUR_DEEPSEEK_API_KEY&quot;</span><br><span class="line">    set -x ANTHROPIC_MODEL deepseek-chat</span><br><span class="line">    set -x ANTHROPIC_SMALL_FAST_MODEL deepseek-chat</span><br><span class="line">    set -x API_TIMEOUT_MS 600000</span><br><span class="line">    claude $argv</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<p>之后在 Fish 中执行 <code>claude-deepseek</code> 即用 DeepSeek；其他终端保持默认则仍用 Anthropic。</p>
-<h2 id="模型选择"><a href="#模型选择" class="headerlink" title="模型选择"></a>模型选择</h2><p>DeepSeek 在 Anthropic 兼容接口中常用模型名：</p>
-<table>
-<thead>
-<tr>
-<th>模型名</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>deepseek-chat</code></td>
-<td>通用对话，响应快，适合日常编码与问答</td>
-</tr>
-<tr>
-<td><code>deepseek-reasoner</code></td>
-<td>推理模式，步骤更详细，适合复杂分析与多步推理</td>
-</tr>
-</tbody></table>
-<p>通过修改 <code>ANTHROPIC_MODEL</code> 和 <code>ANTHROPIC_SMALL_FAST_MODEL</code> 即可切换。若传入 DeepSeek 不支持的模型名，接口会自动映射到 <code>deepseek-chat</code>。</p>
-<h2 id="方式二：通过-Claude-Code-Router-OpenRouter"><a href="#方式二：通过-Claude-Code-Router-OpenRouter" class="headerlink" title="方式二：通过 Claude Code Router + OpenRouter"></a>方式二：通过 Claude Code Router + OpenRouter</h2><p>若希望在同一套 Claude Code 里切换多种模型（如 Claude、GPT、DeepSeek），可使用 <a href="https://github.com/musistudio/claude-code-router">Claude Code Router</a>，通过 OpenRouter 统一接入。</p>
-<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 已安装 Claude Code 的前提下</span></span><br><span class="line">npm install -g @musistudio/claude-code-router</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-获取-OpenRouter-API-Key"><a href="#2-获取-OpenRouter-API-Key" class="headerlink" title="2. 获取 OpenRouter API Key"></a>2. 获取 OpenRouter API Key</h3><p>在 <a href="https://openrouter.ai/">OpenRouter</a> 注册并创建 API Key，按用量计费，可选用 DeepSeek 等模型。</p>
-<h3 id="3-配置文件"><a href="#3-配置文件" class="headerlink" title="3. 配置文件"></a>3. 配置文件</h3><p>创建并编辑 <code>~/.claude-code-router/config.json</code>：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;LOG&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;LOG_LEVEL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;info&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Providers&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_base_url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://openrouter.ai/api/v1/chat/completions&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;YOUR_OPENROUTER_API_KEY&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;transformer&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;use&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span> <span class="string">&quot;tooluse&quot;</span><span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;models&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;anthropic/claude-sonnet-4&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;openai/gpt-4o&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;deepseek/deepseek-chat&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Router&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;default&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;background&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;think&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>将 <code>YOUR_OPENROUTER_API_KEY</code> 换成你的 OpenRouter API Key。<code>transformer</code> 中的 <code>&quot;tooluse&quot;</code> 需保留，否则 Claude Code 的工具调用（编辑文件、执行命令等）会异常。</p>
-<h3 id="4-启动方式"><a href="#4-启动方式" class="headerlink" title="4. 启动方式"></a>4. 启动方式</h3><p>用 Router 启动 Claude Code（不再直接运行 <code>claude</code>）：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ccr code</span><br></pre></td></tr></table></figure>
-
-<p>会话中可切换模型，例如：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">/model openrouter,deepseek/deepseek-chat</span><br><span class="line">/status</span><br></pre></td></tr></table></figure>
-
-<h2 id="Anthropic-API-兼容性说明（方式一）"><a href="#Anthropic-API-兼容性说明（方式一）" class="headerlink" title="Anthropic API 兼容性说明（方式一）"></a>Anthropic API 兼容性说明（方式一）</h2><p>DeepSeek 的 Anthropic 兼容接口支持：</p>
-<ul>
-<li><strong>常用参数</strong>：<code>max_tokens</code>、<code>stop_sequences</code>、<code>stream</code>、<code>system</code>、<code>temperature</code>（0.0～2.0）、<code>top_p</code></li>
-<li><strong>工具调用</strong>：<code>tools</code>、<code>tool_choice</code>，适合 Claude Code 的编辑与执行等能力</li>
-<li><strong>内容类型</strong>：文本、thinking 类内容</li>
-</ul>
-<p>以下能力在 DeepSeek 端<strong>不支持</strong>或不生效：</p>
-<ul>
-<li>消息中的图片、文档等 multimodal 类型</li>
-<li>部分 MCP 相关类型（如 <code>mcp_tool_use</code>、<code>mcp_tool_result</code>）</li>
-<li>部分 Anthropic 专有字段（如 <code>anthropic-beta</code>、<code>container</code>、<code>metadata</code> 等）</li>
-</ul>
-<p>仅使用「写代码、改文件、跑命令」等常见能力时，方式一即可满足需求。</p>
-<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><p><strong>Q: 必须用 Python 吗？</strong><br>A: 不必。方式一只是改环境变量，任意终端&#x2F;shell 均可；方式二需要 Node.js 来跑 <code>ccr</code>。</p>
-<p><strong>Q: DeepSeek 免费吗？</strong><br>A: 注册会有一定免费额度，超出后按官方定价计费，详见 <a href="https://platform.deepseek.com/">DeepSeek 定价页</a>。</p>
-<p><strong>Q: 如何确认当前用的是 DeepSeek？</strong><br>A: 方式一：看环境变量 <code>ANTHROPIC_BASE_URL</code> 是否为 <code>https://api.deepseek.com/anthropic</code>。方式二：在会话里输入 <code>/status</code> 查看当前模型。</p>
-<p><strong>Q: 长输出被截断或超时？</strong><br>A: 增大 <code>API_TIMEOUT_MS</code>（例如 <code>600000</code> 表示 10 分钟）。</p>
-<hr>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
-<li><a href="https://api-docs.deepseek.com/zh-cn/guides/anthropic_api">DeepSeek 官方：Anthropic API 兼容说明</a></li>
-<li><a href="https://code.claude.com/docs/en/settings#environment-variables">Claude Code 环境变量说明</a></li>
-<li><a href="https://github.com/musistudio/claude-code-router">Claude Code Router</a></li>
-<li><a href="https://platform.deepseek.com/api-keys">DeepSeek 开放平台 &#x2F; API Keys</a></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>CLI</tag>
-        <tag>Claude Code</tag>
-        <tag>DeepSeek</tag>
-        <tag>AI</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>浙石化序</title>
-    <url>/2025/07/07/%E6%B5%99%E7%9F%B3%E5%8C%96%E5%BA%8F/</url>
-    <content><![CDATA[<p>浙东形胜，三衢古郡，舟山新府。襟东海而带杭湾，控岛链而引巨舶。物华天宝，原油映碧海之光;人杰地灵，工匠聚寰宇之智。雄州雾列，塔器参天;货积云屯，管道织地。时维仲夏，序属清和，掌舵人邀宾朋于鱼山，展宏图于海隅。群贤毕至，少长成集，观此化工新城，敢竭鄙诚，恭疏短引。<br>若夫巨浸茫茫，沧波浩荡。昔者荒礁寂寥，渔火零星;今朝钢构峥，银灯璀璨。削峰填壑，六载功成;跨海连洲，百里势就。银罐如林，贮寰球之黑金;铁轨似弦，奏工业之强音。裂解装置耸若剑阁，催化高塔峻比雷峰。火炬凌雪，夜燃不灭之<br>炬;码头枕浪，朝发万吨之舟。<br>至若生产之盛，则见管道蟠空，银蛇舞壑;仪表星罗，明眸察微。中央控室，决胜千里之外;智能系统，运筹方寸之间。<br>原油分馏，轻质化而为汽柴;分子重构，烯烃聚而成塑胶。芳烃织锦衣之梦，PX解化纤之渴。硫黄变废为宝，尾气点石成金。<br>节能减排，树绿色标杆;循环利用，开生态新篇。若乃创新之道，院十工作站藏龙卧虎，博十后基地起凤腾蛟。专利千项，破外邦之垄断;标准百家，立行业之丰泉。纳米催化，巧夺造化;智能炼厂，智领未来。校企联姻，产学研一体;中外合作，技贸融三通。斯诚东海之硅谷，实乃化工之殿<br>早:嗟乎!石化兴衰，关乎国运。昔闻大庆精神，铁人泣血;今见浙石气象，海匠呕心。老牌炼厂，困陈规而式微;新兴基地，乘东风而崛起。屈子求索，路漫漫其修远;愚公移山，志巍巍而不改。岂效守成之辈，坐享其成?敢为天下先，方兄英雄色。<br>掌舵人，精神抖擞，壮志凌云。掌千亿之资，立百年之业。创新驱动，布新局如弈棋;安全为本，守红线若履冰。绿色低碳，岂止合规达标?数字智能，更求行业引领。呜呯!碧海蓝天，岂与黑烟共存?金山银山，终须绿水相伴。所赖转型及时，未雨绸缪。<br>敢竭鄙怀，恭疏短引。一言均赋，四韵俱成:鱼山螺岛起宏图，钢构连云海气殊。裂解千钧轻似羽，合成万象妙如珠。智能已破重洋术，绿色新开双碳途。莫道化工皆浊物，今看白舞银炉。</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>使用tailscale组网 使用家里打印机</title>
-    <url>/2026/03/15/%E4%BD%BF%E7%94%A8tailscale%E7%BB%84%E7%BD%91-%E4%BD%BF%E7%94%A8%E5%AE%B6%E9%87%8C%E6%89%93%E5%8D%B0%E6%9C%BA/</url>
-    <content><![CDATA[<p>在 Ubuntu 上开启子网广播</p>
-<h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p><strong>确定家里的网段：</strong> 通常是 <code>192.168.1.0/24</code> 或 <code>192.168.0.0/24</code></p>
-<p><strong>开启 IP 转发（内核层面）：</strong><br>运行以下命令：</p>
-<p><strong>Bash</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;net.ipv4.ip_forward = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">echo &#x27;net.ipv6.conf.all.forwarding = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">sudo sysctl -p /etc/sysctl.d/99-tailscale.conf</span><br></pre></td></tr></table></figure>
-
-
-<p><strong>启动子网路由：</strong><br>运行以下命令（将 <code>192.168.1.0/24</code> 替换为你家里的实际网段）：</p>
-<p><strong>Bash</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo tailscale up --advertise-routes=192.168.1.0/24</span><br></pre></td></tr></table></figure>
-
-
-
-
-<h3 id="第二步：在-Tailscale-控制面板允许路由"><a href="#第二步：在-Tailscale-控制面板允许路由" class="headerlink" title="第二步：在 Tailscale 控制面板允许路由"></a>第二步：在 Tailscale 控制面板允许路由</h3><p>为了安全，Tailscale 默认不会自动启用路由，需要你手动点一下：</p>
-<ol>
-<li>打开 <a href="https://login.tailscale.com/admin/machines">Tailscale Admin Console</a>。</li>
-<li>找到你的 <strong>Ubuntu</strong> 设备。</li>
-<li>点击右侧的三个点 <code>...</code> -&gt;  <strong>Edit route settings</strong> 。</li>
-<li>在 <strong>Subnet routes</strong> 下，勾选你刚才添加的网段，点击确认。</li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
-    <title>查看电脑的电池状态</title>
-    <url>/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/</url>
-    <content><![CDATA[<p>没有特殊软件的情况下，使用powershell命令生成电池使用情况报告</p>
-<p>在 PowerShell（管理员模式）输入 powercfg &#x2F;batteryreport，系统会生成一个 HTML 报告，包含电池设计容量、当前满电容量、充放电历史等信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">powercfg /batteryreport</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>运行后生成一个html文件 batteryreport.html</p>
-<p>使用浏览器打开这个html文件  </p>
-<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070792534.png" class="" width="1748070792534">
-
-
-<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070821322.png" class="" width="1748070821322">
-
-]]></content>
-  </entry>
-  <entry>
-    <title>瘦身密码（三）：九体医学入门——解锁你的体质密码</title>
-    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6%E4%BD%93%E8%B4%A8%E5%AF%86%E7%A0%81%E5%85%A5%E9%97%A8/</url>
-    <content><![CDATA[<h2 id="世界上没有两片相同的树叶"><a href="#世界上没有两片相同的树叶" class="headerlink" title="世界上没有两片相同的树叶"></a>世界上没有两片相同的树叶</h2><p>九体医学以九种体质分类为指导，研究体质特征与疾病的相关性，从而指导预防、治疗与养生康复。王琦院士将人群科学分为九种类型：</p>
-<table>
-<thead>
-<tr>
-<th>体质</th>
-<th>形象比喻</th>
-<th>典型特征（口诀）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>平和质</strong></td>
-<td>小太阳</td>
-<td>气血匀，面红润，目光炯，元气振</td>
-</tr>
-<tr>
-<td><strong>气虚质</strong></td>
-<td>小懒猫</td>
-<td>常气短，虚汗浸，懒言语，易疲晕</td>
-</tr>
-<tr>
-<td><strong>阳虚质</strong></td>
-<td>小冰块</td>
-<td>手足冰，腰膝冷，舌淡胖，夜尿频</td>
-</tr>
-<tr>
-<td><strong>阴虚质</strong></td>
-<td>小火苗</td>
-<td>颧潮红，五心热，口咽干，便秘困</td>
-</tr>
-<tr>
-<td><strong>痰湿质</strong></td>
-<td>小水库</td>
-<td>体臃肿，大肚腩，鼾声大，腹胀闷</td>
-</tr>
-<tr>
-<td><strong>湿热质</strong></td>
-<td>小蒸笼</td>
-<td>面油腻，痤疮丛，常口臭，便黏滞</td>
-</tr>
-<tr>
-<td><strong>血瘀质</strong></td>
-<td>小堵车</td>
-<td>唇舌黯，黑眼圈，痛如刺，易长斑</td>
-</tr>
-<tr>
-<td><strong>气郁质</strong></td>
-<td>小气球</td>
-<td>眉紧蹙，多善感，常郁闷，结节生</td>
-</tr>
-<tr>
-<td><strong>特禀质</strong></td>
-<td>小敏感</td>
-<td>易过敏，风团起，喷嚏疾，泪涟涕</td>
-</tr>
-</tbody></table>
-<p><strong>平和质</strong>是健康基准；其余八种为偏颇体质，如同八条通往特定疾病的道路——早发现、早调体，就能掉头往回走。</p>
-<h2 id="九体医学与精准医学"><a href="#九体医学与精准医学" class="headerlink" title="九体医学与精准医学"></a>九体医学与精准医学</h2><p>2015 年，王琦院士团队提出「九体医学健康计划」，被视为中国版「精准医学」：与奥巴马「精准医学」计划同年亮相，却更强调中医「治未病」「同病异治」思想。</p>
-<ul>
-<li>体质辨识已纳入《国家基本公共卫生服务标准》</li>
-<li>《中医体质分类与判定》量表已翻译成英、日、韩等多国语言</li>
-<li>覆盖全国 31 个省区，应用于健康管理、亚健康调理、慢病防控</li>
-</ul>
-<p>古籍早有端倪：「肥人多痰湿」（朱丹溪）、「阴阳匀平……命曰平人」（《素问》）。王琦院士用 40 余年研究，将零散珍珠串成体系。</p>
-<h2 id="四大原理"><a href="#四大原理" class="headerlink" title="四大原理"></a>四大原理</h2><ol>
-<li><strong>体质过程论</strong>：体质随年龄阶段演变，养生应因时而异</li>
-<li><strong>形神构成论</strong>：躯体与心理一体，痰湿质者情绪稳定型居多</li>
-<li><strong>环境制约论</strong>：饮食、气候、地理塑造体质——嗜肥甘生痰湿，过逸成痰瘀</li>
-<li><strong>禀赋遗传论</strong>：先天禀赋决定体质底色，后天仍可调节</li>
-</ol>
-<h2 id="三大核心"><a href="#三大核心" class="headerlink" title="三大核心"></a>三大核心</h2><ul>
-<li><strong>体质可分论</strong>：个体差异与群体趋同性并存</li>
-<li><strong>体病相关论</strong>：痰湿质易患肥胖、三高；气虚质易感冒、内脏下垂；血瘀质易患肿瘤、痛证</li>
-<li><strong>体质可调论</strong>：偏颇体质可通过饮食、起居、运动、情志干预改善</li>
-</ul>
-<h2 id="与肥胖的关系"><a href="#与肥胖的关系" class="headerlink" title="与肥胖的关系"></a>与肥胖的关系</h2><p>肥胖与体质密切相关：</p>
-<ul>
-<li><strong>痰湿质</strong>：中心性肥胖、高血脂、高血糖、高血压高发——「祛湿排浊才是真抽脂」</li>
-<li><strong>气虚质</strong>：肉松垮、动则气短，减肥效率低</li>
-<li><strong>阳虚质</strong>：怕冷，脂肪像「穿羽绒服」保温</li>
-<li><strong>气郁质</strong>：压力肥，焦虑时暴食，肉易堆腰腹</li>
-<li><strong>湿热质</strong>：脸油肚凸，「油胖子」需清火除湿</li>
-<li><strong>血瘀质</strong>：肉硬、循环差，减肥像挤牙膏</li>
-</ul>
-<p>国家 2024 年「体重管理年」方案明确发挥中医药技术优势；王琦院士「九体医学健康中国计划」正是体重个体化管理的理论基础。</p>
-<h2 id="如何判定自己的体质？"><a href="#如何判定自己的体质？" class="headerlink" title="如何判定自己的体质？"></a>如何判定自己的体质？</h2><p>依据《中医体质分类与判定》标准：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">原始分 = 各条目分值相加</span><br><span class="line">转化分 = [(原始分 − 条目数) / (条目数 × 4)] × 100</span><br></pre></td></tr></table></figure>
-
-<p><strong>平和质</strong>：转化分 ≥60，且其余 8 种均 &lt;30（或均 &lt;40 为「基本是」）</p>
-<p><strong>偏颇质</strong>：转化分 ≥40 为「是」；30～39 为「倾向是」</p>
-<p>建议通过正规医疗机构或社区卫生中心的体质辨识服务获取准确结果，勿仅凭网络测试下定论。</p>
-<h2 id="体质不是终身标签"><a href="#体质不是终身标签" class="headerlink" title="体质不是终身标签"></a>体质不是终身标签</h2><p>体质会随环境、饮食、情绪变化而调整。一方水土养一方人，养生需<strong>因人制宜、因时制宜</strong>——读懂身体密码，才能把健康主动权握在自己手里。</p>
-<p>下一篇将进入实战：<strong>九大体质的科学甩肉指南</strong>，痰湿、湿热、阳虚……各有什么吃法、练法和穴位？</p>
-]]></content>
-      <tags>
-        <tag>健康</tag>
-        <tag>九体医学</tag>
-        <tag>中医体质</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>瘦身密码（一）：中国式发福图鉴——14亿人的体重失控现场</title>
-    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B8%AD%E5%9B%BD%E5%BC%8F%E5%8F%91%E7%A6%8F%E5%9B%BE%E9%89%B4/</url>
-    <content><![CDATA[<p>近三十年，中国人以惊人速度「胖」了起来。据《中国居民营养与慢性病状况报告（2020）》，成年居民超重率 34.3%、肥胖率 16.4%——<strong>每 2 个成年人就有 1 人面临超重&#x2F;肥胖威胁</strong>。</p>
-<p>更令人警醒的是增速：1989 年中国超重人口约 1.67 亿，2009 年增至 5.29 亿，20 年间每天约增加 4.9 万人，年均增长率 10.8%，超过同期 GDP 增速。《柳叶刀》估算，2021 年全球超重&#x2F;肥胖成年人 21.1 亿，中国以 4.02 亿居首；预计到 2050 年，全球将有超过一半成年人超重&#x2F;肥胖。</p>
-<p>若以腰围衡量腹型肥胖，2009 年中国腹型肥胖人口约 6.7 亿，超过欧美总和。李新华等团队在《柳叶刀》发表的研究显示，2004～2018 年间，18～69 岁人群标准化平均 BMI 从 22.7 升至 24.4 kg&#x2F;m²，肥胖患病率（BMI≥30）从 3.1% 升至 8.1%。2018 年肥胖人数约 8500 万，是 2004 年的三倍。</p>
-<h2 id="谁更容易发胖？"><a href="#谁更容易发胖？" class="headerlink" title="谁更容易发胖？"></a>谁更容易发胖？</h2><p>肥胖增长并非均匀分布，城乡、性别、年龄各有特点：</p>
-<table>
-<thead>
-<tr>
-<th>维度</th>
-<th>主要趋势</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>城乡</strong></td>
-<td>2010 年前城市高于农村；此后农村女性 BMI 增速快于城市，2018 年农村女性已超过城市</td>
-</tr>
-<tr>
-<td><strong>性别</strong></td>
-<td>2004 年男性低于女性，2018 年完全逆转，男性增速更快</td>
-</tr>
-<tr>
-<td><strong>年龄</strong></td>
-<td>女性随年龄升高至 50 岁；男性 30～49 岁为高峰</td>
-</tr>
-<tr>
-<td><strong>儿童</strong></td>
-<td>与 1985 年比，2014 年 7～18 岁学生肥胖患病率增长 54.8 倍</td>
-</tr>
-<tr>
-<td><strong>老年人</strong></td>
-<td>2011～2015 年超重率 29.2%→33.2%，中心性肥胖 58.3%→63.9%</td>
-</tr>
-</tbody></table>
-<h2 id="肥胖正在吃掉你的存款"><a href="#肥胖正在吃掉你的存款" class="headerlink" title="肥胖正在吃掉你的存款"></a>肥胖正在吃掉你的存款</h2><p>肥胖已从个人问题演变为国家危机。2024 年 6 月，国家卫生健康委联合 16 部门启动「体重管理年」活动，推动慢病防治关口前移。</p>
-<p><strong>健康代价：</strong></p>
-<ul>
-<li>近 20 年高血压患病率 19%→28%，糖尿病约 3%→13%</li>
-<li>2018 年糖尿病及前期患病率合计约 51%，知晓率、治疗率、控制率均偏低</li>
-<li>预测 2030 年成人超重&#x2F;肥胖率或达 70.5%</li>
-</ul>
-<p><strong>经济代价：</strong></p>
-<ul>
-<li>2030 年归因于超重&#x2F;肥胖的医疗费用预计约 4180 亿元，约占全国医疗费用 22%</li>
-<li>超重&#x2F;肥胖对全球经济影响占 GDP 2.4%，2035 年预计升至更高</li>
-<li>肥胖还带来间接损失：工作效率下降、请假增多、就业机会受影响（「体型歧视」）</li>
-</ul>
-<p>研究还发现，肥胖与收入的关系并非线性——<strong>中等收入人群肥胖风险反而最高</strong>；农村高收入男性、高教育男性肥胖关联更强，而女性高教育与肥胖呈负相关。</p>
-<h2 id="腰围比体重更值得警惕"><a href="#腰围比体重更值得警惕" class="headerlink" title="腰围比体重更值得警惕"></a>腰围比体重更值得警惕</h2><p>BMI 虽常用，但有盲区：不区分肌肉与脂肪、不反映脂肪分布。腹型肥胖（苹果型）风险远高于梨型：</p>
-<ul>
-<li>男性腰围 ≥90 cm、女性 ≥85 cm，即存在腹型肥胖风险</li>
-<li>内脏脂肪升高甘油三酯、胆固醇，促动脉粥样硬化</li>
-<li>干扰胰岛素作用，显著增加 2 型糖尿病风险</li>
-<li>与结直肠癌、子宫内膜癌等多种癌症相关</li>
-<li>压迫横膈膜，引发睡眠呼吸暂停；加重关节负担</li>
-</ul>
-<p><strong>建议：</strong> 除定期测 BMI 外，务必关注腰围和腰臀比（亚洲男性上限 0.9，女性 0.8）。</p>
-<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>肥胖威胁的不只是外形，更是心血管、代谢、呼吸、骨骼乃至心理的全方位健康。2024 年「体重管理年」与「九体医学健康中国计划」的推进，标志着体重管理正从「一刀切节食」走向<strong>个体化、科学化、中西医协同</strong>的新阶段。</p>
-<p>下一篇，我们将拆解「脂肪工厂」——脂肪从何而来，以及什么才是科学的减肥马拉松。</p>
-]]></content>
-      <tags>
-        <tag>健康</tag>
-        <tag>九体医学</tag>
-        <tag>体重管理</tag>
-      </tags>
   </entry>
   <entry>
     <title>瘦身密码（四）：九大体质科学甩肉指南——管体加管重</title>
@@ -2055,111 +1953,6 @@
       </tags>
   </entry>
   <entry>
-    <title>瘦身密码（五）：甜蜜陷阱——肥胖引爆的八大健康地雷</title>
-    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%82%A5%E8%83%96%E5%85%AB%E5%A4%A7%E5%81%A5%E5%BA%B7%E5%9C%B0%E9%9B%B7/</url>
-    <content><![CDATA[<p>肥胖是健康的「隐形杀手」——影响的不只是外形，而是心血管、代谢、内分泌、呼吸、骨骼、生殖乃至心理的全系统连锁反应。以下梳理书中重点阐述的<strong>八大健康地雷</strong>及应对思路。</p>
-<hr>
-<h2 id="1-糖尿病：胰岛素遇上甜甜圈"><a href="#1-糖尿病：胰岛素遇上甜甜圈" class="headerlink" title="1. 糖尿病：胰岛素遇上甜甜圈"></a>1. 糖尿病：胰岛素遇上甜甜圈</h2><p>中国 20～79 岁人群糖尿病患病率约 10.6%，患病人数约 1.41 亿。肥胖与糖尿病如影随形：</p>
-<ul>
-<li>体重每增加 1 kg，糖尿病风险至少升 5%</li>
-<li>约 50% 肥胖者将来可能患 2 型糖尿病</li>
-<li>糖尿病患者中约 2&#x2F;3 超重或肥胖</li>
-</ul>
-<p><strong>机制</strong>：内脏脂肪像「棉袄」包裹细胞，胰岛素（钥匙）难以与受体（锁）结合，葡萄糖进不了细胞 → <strong>胰岛素抵抗</strong> → 代偿性高胰岛素 → 食欲增加 → 更胖 → 最终血糖失控。</p>
-<p><strong>逆转密码</strong>：</p>
-<ul>
-<li>少吃深加工食品、奶茶炸鸡；多吃蔬菜、粗粮</li>
-<li>中低强度有氧运动，餐后 30～60 分钟，每次 ≥30 分钟，约 200～300 千卡</li>
-<li>超重人群 35～70 岁应每 3 年筛查血糖</li>
-<li>九体医学统计：气虚质、阴虚质、痰湿质最易患糖尿病</li>
-</ul>
-<hr>
-<h2 id="2-冠心病：糖脂风暴下的冠状动脉"><a href="#2-冠心病：糖脂风暴下的冠状动脉" class="headerlink" title="2. 冠心病：糖脂风暴下的冠状动脉"></a>2. 冠心病：糖脂风暴下的冠状动脉</h2><p>冠心病患者超重&#x2F;肥胖率超 50%。BMI 越高，冠心病发病率越高；肥胖者患病概率约为常人 2～3 倍，超平均体重 40% 者死亡风险翻倍。</p>
-<p><strong>机制</strong>：肥胖 → 血脂紊乱 → 动脉粥样硬化斑块 → 冠脉狭窄 → 心肌缺血。心脏如同小发动机驱动重型卡车，长期超负荷终将「罢工」。</p>
-<p><strong>逆转密码</strong>：减重 + 控脂 + 戒烟限酒 + 规律运动；编写细胞层面的「燃脂程序」，减轻心脏负担。</p>
-<hr>
-<h2 id="3-睡眠呼吸暂停：内脏脂肪的午夜叛乱"><a href="#3-睡眠呼吸暂停：内脏脂肪的午夜叛乱" class="headerlink" title="3. 睡眠呼吸暂停：内脏脂肪的午夜叛乱"></a>3. 睡眠呼吸暂停：内脏脂肪的午夜叛乱</h2><p>腹型肥胖者脂肪堆积在呼吸道周围，气道变窄，睡眠时呼吸暂停 → 缺氧 → 睡眠质量差 → 日间嗜睡 → 活动减少 → 更胖，形成<strong>死亡循环</strong>。</p>
-<p><strong>逆转密码</strong>：减重是核心；侧睡、避免睡前饮酒；严重者需呼吸机等医学干预。</p>
-<hr>
-<h2 id="4-脂肪肝：内脏的「垃圾处理厂」瘫痪"><a href="#4-脂肪肝：内脏的「垃圾处理厂」瘫痪" class="headerlink" title="4. 脂肪肝：内脏的「垃圾处理厂」瘫痪"></a>4. 脂肪肝：内脏的「垃圾处理厂」瘫痪</h2><p>超重&#x2F;肥胖者并发症中，脂肪肝最常见之一。肝脏本应将脂肪打包运出，糖尿病与肥胖使这一过程效率降低，脂肪在肝内堆积。</p>
-<p><strong>常见认知陷阱</strong>（书中强调）：</p>
-<ul>
-<li>「不胖就不会脂肪肝」——瘦人脂肪肝也不少见</li>
-<li>「无症状就不用管」——可进展为肝纤维化</li>
-<li>「只吃素就能好」——关键在于总能量与代谢</li>
-<li>「护肝片够用了」——病因不除，难以逆转</li>
-</ul>
-<p><strong>逆转密码</strong>：减重 5%～10% 常可显著改善肝脂肪变；控糖控脂 + 运动。</p>
-<hr>
-<h2 id="5-骨关节炎：关节的载荷安全阈值"><a href="#5-骨关节炎：关节的载荷安全阈值" class="headerlink" title="5. 骨关节炎：关节的载荷安全阈值"></a>5. 骨关节炎：关节的载荷安全阈值</h2><p>体重每增加 1 kg，膝关节承受压力约增加 3～4 kg。肥胖 → 慢性炎症 → 软骨磨损加速。</p>
-<p><strong>逆转密码</strong>：减重减轻关节负荷；水中运动、肌力训练增强关节稳定性。</p>
-<hr>
-<h2 id="6-多囊卵巢综合征：激素风暴"><a href="#6-多囊卵巢综合征：激素风暴" class="headerlink" title="6. 多囊卵巢综合征：激素风暴"></a>6. 多囊卵巢综合征：激素风暴</h2><p>肥胖与多囊卵巢相互加剧：脂肪组织干扰激素平衡，胰岛素抵抗推高雄激素，影响排卵与生育。</p>
-<p><strong>逆转密码</strong>：减重 5%～10% 可显著改善月经与排卵；生活方式干预是一线治疗。</p>
-<hr>
-<h2 id="7-乳腺癌：癌变风险的土壤"><a href="#7-乳腺癌：癌变风险的土壤" class="headerlink" title="7. 乳腺癌：癌变风险的土壤"></a>7. 乳腺癌：癌变风险的土壤</h2><p>肥胖改变雌激素等激素水平，脂肪组织释放炎症因子，为癌细胞生长提供「土壤」。腹型肥胖与多种妇科、消化道肿瘤风险相关。</p>
-<p><strong>逆转密码</strong>：保持健康体重、规律筛查、减少久坐。</p>
-<hr>
-<h2 id="8-心理沼泽：身材焦虑与情绪雪崩"><a href="#8-心理沼泽：身材焦虑与情绪雪崩" class="headerlink" title="8. 心理沼泽：身材焦虑与情绪雪崩"></a>8. 心理沼泽：身材焦虑与情绪雪崩</h2><p>肥胖与心理相互纠缠：</p>
-<ul>
-<li>自尊心、自我形象受损</li>
-<li>焦虑 → 暴食 → 更胖 → 更焦虑</li>
-<li>脂肪组织炎症因子可能影响大脑情绪通路</li>
-<li>社会偏见与「体型歧视」加重心理负担</li>
-<li>极端节食或暴食交替，饮食成为情绪的「翻译器」</li>
-</ul>
-<p><strong>逆转密码</strong>：接纳与改变并行；寻求心理咨询；用运动、社交替代情绪性进食；体重管理应是关爱自己，而非自我惩罚。</p>
-<hr>
-<h2 id="九体视角下的并发症预防"><a href="#九体视角下的并发症预防" class="headerlink" title="九体视角下的并发症预防"></a>九体视角下的并发症预防</h2><p>不同体质易患不同慢病，调理应有的放矢：</p>
-<table>
-<thead>
-<tr>
-<th>体质</th>
-<th>相关风险</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>痰湿质</td>
-<td>肥胖、高血压、糖尿病、高血脂</td>
-</tr>
-<tr>
-<td>气虚质</td>
-<td>感冒、内脏下垂、乏力</td>
-</tr>
-<tr>
-<td>阳虚质</td>
-<td>畏寒、腹泻、痹证</td>
-</tr>
-<tr>
-<td>阴虚质</td>
-<td>失眠、咽痛、「三高」</td>
-</tr>
-<tr>
-<td>血瘀质</td>
-<td>肿瘤、痛证、卒中</td>
-</tr>
-<tr>
-<td>气郁质</td>
-<td>甲状腺、乳腺疾病、情绪障碍</td>
-</tr>
-</tbody></table>
-<p><strong>体质可调</strong>——在并发症尚未形成前调体，是最好的「逆转密码」。</p>
-<hr>
-<h2 id="系列结语"><a href="#系列结语" class="headerlink" title="系列结语"></a>系列结语</h2><p>《瘦身密码》传递的核心信息可以概括为三句话：</p>
-<ol>
-<li><strong>中国肥胖形势严峻</strong>，腰围与 BMI 同样值得每日关注</li>
-<li><strong>科学减肥是马拉松</strong>，忌节食、代餐、极端断食</li>
-<li><strong>九体医学提供个体化路径</strong>——先识体质，再管体重，方能健康瘦身不反弹</li>
-</ol>
-<p>2024 年国家「体重管理年」已经启程。愿我们都不再以「换大码裤子」为常态，而是在读懂自己身体密码的基础上，走出属于自己的健康之路。</p>
-]]></content>
-      <tags>
-        <tag>健康</tag>
-        <tag>肥胖</tag>
-        <tag>慢性病</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>瘦身密码（二）：脂肪工厂的运作密码——科学减肥是场马拉松</title>
     <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%84%82%E8%82%AA%E5%B7%A5%E5%8E%82%E4%B8%8E%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/</url>
     <content><![CDATA[<h2 id="你真的需要减肥吗？"><a href="#你真的需要减肥吗？" class="headerlink" title="你真的需要减肥吗？"></a>你真的需要减肥吗？</h2><h3 id="BMI：有用，但不万能"><a href="#BMI：有用，但不万能" class="headerlink" title="BMI：有用，但不万能"></a>BMI：有用，但不万能</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">BMI = 体重(kg) ÷ 身高²(m²)</span><br></pre></td></tr></table></figure>
@@ -2274,6 +2067,263 @@
       </tags>
   </entry>
   <entry>
+    <title>瘦身密码（三）：九体医学入门——解锁你的体质密码</title>
+    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6%E4%BD%93%E8%B4%A8%E5%AF%86%E7%A0%81%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<h2 id="世界上没有两片相同的树叶"><a href="#世界上没有两片相同的树叶" class="headerlink" title="世界上没有两片相同的树叶"></a>世界上没有两片相同的树叶</h2><p>九体医学以九种体质分类为指导，研究体质特征与疾病的相关性，从而指导预防、治疗与养生康复。王琦院士将人群科学分为九种类型：</p>
+<table>
+<thead>
+<tr>
+<th>体质</th>
+<th>形象比喻</th>
+<th>典型特征（口诀）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>平和质</strong></td>
+<td>小太阳</td>
+<td>气血匀，面红润，目光炯，元气振</td>
+</tr>
+<tr>
+<td><strong>气虚质</strong></td>
+<td>小懒猫</td>
+<td>常气短，虚汗浸，懒言语，易疲晕</td>
+</tr>
+<tr>
+<td><strong>阳虚质</strong></td>
+<td>小冰块</td>
+<td>手足冰，腰膝冷，舌淡胖，夜尿频</td>
+</tr>
+<tr>
+<td><strong>阴虚质</strong></td>
+<td>小火苗</td>
+<td>颧潮红，五心热，口咽干，便秘困</td>
+</tr>
+<tr>
+<td><strong>痰湿质</strong></td>
+<td>小水库</td>
+<td>体臃肿，大肚腩，鼾声大，腹胀闷</td>
+</tr>
+<tr>
+<td><strong>湿热质</strong></td>
+<td>小蒸笼</td>
+<td>面油腻，痤疮丛，常口臭，便黏滞</td>
+</tr>
+<tr>
+<td><strong>血瘀质</strong></td>
+<td>小堵车</td>
+<td>唇舌黯，黑眼圈，痛如刺，易长斑</td>
+</tr>
+<tr>
+<td><strong>气郁质</strong></td>
+<td>小气球</td>
+<td>眉紧蹙，多善感，常郁闷，结节生</td>
+</tr>
+<tr>
+<td><strong>特禀质</strong></td>
+<td>小敏感</td>
+<td>易过敏，风团起，喷嚏疾，泪涟涕</td>
+</tr>
+</tbody></table>
+<p><strong>平和质</strong>是健康基准；其余八种为偏颇体质，如同八条通往特定疾病的道路——早发现、早调体，就能掉头往回走。</p>
+<h2 id="九体医学与精准医学"><a href="#九体医学与精准医学" class="headerlink" title="九体医学与精准医学"></a>九体医学与精准医学</h2><p>2015 年，王琦院士团队提出「九体医学健康计划」，被视为中国版「精准医学」：与奥巴马「精准医学」计划同年亮相，却更强调中医「治未病」「同病异治」思想。</p>
+<ul>
+<li>体质辨识已纳入《国家基本公共卫生服务标准》</li>
+<li>《中医体质分类与判定》量表已翻译成英、日、韩等多国语言</li>
+<li>覆盖全国 31 个省区，应用于健康管理、亚健康调理、慢病防控</li>
+</ul>
+<p>古籍早有端倪：「肥人多痰湿」（朱丹溪）、「阴阳匀平……命曰平人」（《素问》）。王琦院士用 40 余年研究，将零散珍珠串成体系。</p>
+<h2 id="四大原理"><a href="#四大原理" class="headerlink" title="四大原理"></a>四大原理</h2><ol>
+<li><strong>体质过程论</strong>：体质随年龄阶段演变，养生应因时而异</li>
+<li><strong>形神构成论</strong>：躯体与心理一体，痰湿质者情绪稳定型居多</li>
+<li><strong>环境制约论</strong>：饮食、气候、地理塑造体质——嗜肥甘生痰湿，过逸成痰瘀</li>
+<li><strong>禀赋遗传论</strong>：先天禀赋决定体质底色，后天仍可调节</li>
+</ol>
+<h2 id="三大核心"><a href="#三大核心" class="headerlink" title="三大核心"></a>三大核心</h2><ul>
+<li><strong>体质可分论</strong>：个体差异与群体趋同性并存</li>
+<li><strong>体病相关论</strong>：痰湿质易患肥胖、三高；气虚质易感冒、内脏下垂；血瘀质易患肿瘤、痛证</li>
+<li><strong>体质可调论</strong>：偏颇体质可通过饮食、起居、运动、情志干预改善</li>
+</ul>
+<h2 id="与肥胖的关系"><a href="#与肥胖的关系" class="headerlink" title="与肥胖的关系"></a>与肥胖的关系</h2><p>肥胖与体质密切相关：</p>
+<ul>
+<li><strong>痰湿质</strong>：中心性肥胖、高血脂、高血糖、高血压高发——「祛湿排浊才是真抽脂」</li>
+<li><strong>气虚质</strong>：肉松垮、动则气短，减肥效率低</li>
+<li><strong>阳虚质</strong>：怕冷，脂肪像「穿羽绒服」保温</li>
+<li><strong>气郁质</strong>：压力肥，焦虑时暴食，肉易堆腰腹</li>
+<li><strong>湿热质</strong>：脸油肚凸，「油胖子」需清火除湿</li>
+<li><strong>血瘀质</strong>：肉硬、循环差，减肥像挤牙膏</li>
+</ul>
+<p>国家 2024 年「体重管理年」方案明确发挥中医药技术优势；王琦院士「九体医学健康中国计划」正是体重个体化管理的理论基础。</p>
+<h2 id="如何判定自己的体质？"><a href="#如何判定自己的体质？" class="headerlink" title="如何判定自己的体质？"></a>如何判定自己的体质？</h2><p>依据《中医体质分类与判定》标准：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">原始分 = 各条目分值相加</span><br><span class="line">转化分 = [(原始分 − 条目数) / (条目数 × 4)] × 100</span><br></pre></td></tr></table></figure>
+
+<p><strong>平和质</strong>：转化分 ≥60，且其余 8 种均 &lt;30（或均 &lt;40 为「基本是」）</p>
+<p><strong>偏颇质</strong>：转化分 ≥40 为「是」；30～39 为「倾向是」</p>
+<p>建议通过正规医疗机构或社区卫生中心的体质辨识服务获取准确结果，勿仅凭网络测试下定论。</p>
+<h2 id="体质不是终身标签"><a href="#体质不是终身标签" class="headerlink" title="体质不是终身标签"></a>体质不是终身标签</h2><p>体质会随环境、饮食、情绪变化而调整。一方水土养一方人，养生需<strong>因人制宜、因时制宜</strong>——读懂身体密码，才能把健康主动权握在自己手里。</p>
+<p>下一篇将进入实战：<strong>九大体质的科学甩肉指南</strong>，痰湿、湿热、阳虚……各有什么吃法、练法和穴位？</p>
+]]></content>
+      <tags>
+        <tag>健康</tag>
+        <tag>九体医学</tag>
+        <tag>中医体质</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>瘦身密码（五）：甜蜜陷阱——肥胖引爆的八大健康地雷</title>
+    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%82%A5%E8%83%96%E5%85%AB%E5%A4%A7%E5%81%A5%E5%BA%B7%E5%9C%B0%E9%9B%B7/</url>
+    <content><![CDATA[<p>肥胖是健康的「隐形杀手」——影响的不只是外形，而是心血管、代谢、内分泌、呼吸、骨骼、生殖乃至心理的全系统连锁反应。以下梳理书中重点阐述的<strong>八大健康地雷</strong>及应对思路。</p>
+<hr>
+<h2 id="1-糖尿病：胰岛素遇上甜甜圈"><a href="#1-糖尿病：胰岛素遇上甜甜圈" class="headerlink" title="1. 糖尿病：胰岛素遇上甜甜圈"></a>1. 糖尿病：胰岛素遇上甜甜圈</h2><p>中国 20～79 岁人群糖尿病患病率约 10.6%，患病人数约 1.41 亿。肥胖与糖尿病如影随形：</p>
+<ul>
+<li>体重每增加 1 kg，糖尿病风险至少升 5%</li>
+<li>约 50% 肥胖者将来可能患 2 型糖尿病</li>
+<li>糖尿病患者中约 2&#x2F;3 超重或肥胖</li>
+</ul>
+<p><strong>机制</strong>：内脏脂肪像「棉袄」包裹细胞，胰岛素（钥匙）难以与受体（锁）结合，葡萄糖进不了细胞 → <strong>胰岛素抵抗</strong> → 代偿性高胰岛素 → 食欲增加 → 更胖 → 最终血糖失控。</p>
+<p><strong>逆转密码</strong>：</p>
+<ul>
+<li>少吃深加工食品、奶茶炸鸡；多吃蔬菜、粗粮</li>
+<li>中低强度有氧运动，餐后 30～60 分钟，每次 ≥30 分钟，约 200～300 千卡</li>
+<li>超重人群 35～70 岁应每 3 年筛查血糖</li>
+<li>九体医学统计：气虚质、阴虚质、痰湿质最易患糖尿病</li>
+</ul>
+<hr>
+<h2 id="2-冠心病：糖脂风暴下的冠状动脉"><a href="#2-冠心病：糖脂风暴下的冠状动脉" class="headerlink" title="2. 冠心病：糖脂风暴下的冠状动脉"></a>2. 冠心病：糖脂风暴下的冠状动脉</h2><p>冠心病患者超重&#x2F;肥胖率超 50%。BMI 越高，冠心病发病率越高；肥胖者患病概率约为常人 2～3 倍，超平均体重 40% 者死亡风险翻倍。</p>
+<p><strong>机制</strong>：肥胖 → 血脂紊乱 → 动脉粥样硬化斑块 → 冠脉狭窄 → 心肌缺血。心脏如同小发动机驱动重型卡车，长期超负荷终将「罢工」。</p>
+<p><strong>逆转密码</strong>：减重 + 控脂 + 戒烟限酒 + 规律运动；编写细胞层面的「燃脂程序」，减轻心脏负担。</p>
+<hr>
+<h2 id="3-睡眠呼吸暂停：内脏脂肪的午夜叛乱"><a href="#3-睡眠呼吸暂停：内脏脂肪的午夜叛乱" class="headerlink" title="3. 睡眠呼吸暂停：内脏脂肪的午夜叛乱"></a>3. 睡眠呼吸暂停：内脏脂肪的午夜叛乱</h2><p>腹型肥胖者脂肪堆积在呼吸道周围，气道变窄，睡眠时呼吸暂停 → 缺氧 → 睡眠质量差 → 日间嗜睡 → 活动减少 → 更胖，形成<strong>死亡循环</strong>。</p>
+<p><strong>逆转密码</strong>：减重是核心；侧睡、避免睡前饮酒；严重者需呼吸机等医学干预。</p>
+<hr>
+<h2 id="4-脂肪肝：内脏的「垃圾处理厂」瘫痪"><a href="#4-脂肪肝：内脏的「垃圾处理厂」瘫痪" class="headerlink" title="4. 脂肪肝：内脏的「垃圾处理厂」瘫痪"></a>4. 脂肪肝：内脏的「垃圾处理厂」瘫痪</h2><p>超重&#x2F;肥胖者并发症中，脂肪肝最常见之一。肝脏本应将脂肪打包运出，糖尿病与肥胖使这一过程效率降低，脂肪在肝内堆积。</p>
+<p><strong>常见认知陷阱</strong>（书中强调）：</p>
+<ul>
+<li>「不胖就不会脂肪肝」——瘦人脂肪肝也不少见</li>
+<li>「无症状就不用管」——可进展为肝纤维化</li>
+<li>「只吃素就能好」——关键在于总能量与代谢</li>
+<li>「护肝片够用了」——病因不除，难以逆转</li>
+</ul>
+<p><strong>逆转密码</strong>：减重 5%～10% 常可显著改善肝脂肪变；控糖控脂 + 运动。</p>
+<hr>
+<h2 id="5-骨关节炎：关节的载荷安全阈值"><a href="#5-骨关节炎：关节的载荷安全阈值" class="headerlink" title="5. 骨关节炎：关节的载荷安全阈值"></a>5. 骨关节炎：关节的载荷安全阈值</h2><p>体重每增加 1 kg，膝关节承受压力约增加 3～4 kg。肥胖 → 慢性炎症 → 软骨磨损加速。</p>
+<p><strong>逆转密码</strong>：减重减轻关节负荷；水中运动、肌力训练增强关节稳定性。</p>
+<hr>
+<h2 id="6-多囊卵巢综合征：激素风暴"><a href="#6-多囊卵巢综合征：激素风暴" class="headerlink" title="6. 多囊卵巢综合征：激素风暴"></a>6. 多囊卵巢综合征：激素风暴</h2><p>肥胖与多囊卵巢相互加剧：脂肪组织干扰激素平衡，胰岛素抵抗推高雄激素，影响排卵与生育。</p>
+<p><strong>逆转密码</strong>：减重 5%～10% 可显著改善月经与排卵；生活方式干预是一线治疗。</p>
+<hr>
+<h2 id="7-乳腺癌：癌变风险的土壤"><a href="#7-乳腺癌：癌变风险的土壤" class="headerlink" title="7. 乳腺癌：癌变风险的土壤"></a>7. 乳腺癌：癌变风险的土壤</h2><p>肥胖改变雌激素等激素水平，脂肪组织释放炎症因子，为癌细胞生长提供「土壤」。腹型肥胖与多种妇科、消化道肿瘤风险相关。</p>
+<p><strong>逆转密码</strong>：保持健康体重、规律筛查、减少久坐。</p>
+<hr>
+<h2 id="8-心理沼泽：身材焦虑与情绪雪崩"><a href="#8-心理沼泽：身材焦虑与情绪雪崩" class="headerlink" title="8. 心理沼泽：身材焦虑与情绪雪崩"></a>8. 心理沼泽：身材焦虑与情绪雪崩</h2><p>肥胖与心理相互纠缠：</p>
+<ul>
+<li>自尊心、自我形象受损</li>
+<li>焦虑 → 暴食 → 更胖 → 更焦虑</li>
+<li>脂肪组织炎症因子可能影响大脑情绪通路</li>
+<li>社会偏见与「体型歧视」加重心理负担</li>
+<li>极端节食或暴食交替，饮食成为情绪的「翻译器」</li>
+</ul>
+<p><strong>逆转密码</strong>：接纳与改变并行；寻求心理咨询；用运动、社交替代情绪性进食；体重管理应是关爱自己，而非自我惩罚。</p>
+<hr>
+<h2 id="九体视角下的并发症预防"><a href="#九体视角下的并发症预防" class="headerlink" title="九体视角下的并发症预防"></a>九体视角下的并发症预防</h2><p>不同体质易患不同慢病，调理应有的放矢：</p>
+<table>
+<thead>
+<tr>
+<th>体质</th>
+<th>相关风险</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>痰湿质</td>
+<td>肥胖、高血压、糖尿病、高血脂</td>
+</tr>
+<tr>
+<td>气虚质</td>
+<td>感冒、内脏下垂、乏力</td>
+</tr>
+<tr>
+<td>阳虚质</td>
+<td>畏寒、腹泻、痹证</td>
+</tr>
+<tr>
+<td>阴虚质</td>
+<td>失眠、咽痛、「三高」</td>
+</tr>
+<tr>
+<td>血瘀质</td>
+<td>肿瘤、痛证、卒中</td>
+</tr>
+<tr>
+<td>气郁质</td>
+<td>甲状腺、乳腺疾病、情绪障碍</td>
+</tr>
+</tbody></table>
+<p><strong>体质可调</strong>——在并发症尚未形成前调体，是最好的「逆转密码」。</p>
+<hr>
+<h2 id="系列结语"><a href="#系列结语" class="headerlink" title="系列结语"></a>系列结语</h2><p>《瘦身密码》传递的核心信息可以概括为三句话：</p>
+<ol>
+<li><strong>中国肥胖形势严峻</strong>，腰围与 BMI 同样值得每日关注</li>
+<li><strong>科学减肥是马拉松</strong>，忌节食、代餐、极端断食</li>
+<li><strong>九体医学提供个体化路径</strong>——先识体质，再管体重，方能健康瘦身不反弹</li>
+</ol>
+<p>2024 年国家「体重管理年」已经启程。愿我们都不再以「换大码裤子」为常态，而是在读懂自己身体密码的基础上，走出属于自己的健康之路。</p>
+]]></content>
+      <tags>
+        <tag>健康</tag>
+        <tag>肥胖</tag>
+        <tag>慢性病</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>魔方</title>
+    <url>/2025/07/12/%E9%AD%94%E6%96%B9/</url>
+    <content><![CDATA[<h3 id="第一层"><a href="#第一层" class="headerlink" title="第一层"></a>第一层</h3><ol>
+<li><strong>白底十字</strong>：找到黄色中心块朝上，将四个白色棱块拼在黄色周围形成“黄芯白花”。然后对齐侧面中心块颜色，旋转180度到底部。</li>
+<li><strong>底角归位</strong>：将带有白色的角块放在目标位置上方，使用公式 <code>R U R&#39; U&#39;</code> （右手公式）直到白色面朝下。</li>
+</ol>
+<h3 id="第二层"><a href="#第二层" class="headerlink" title="第二层"></a>第二层</h3><p><strong>左手公式</strong>：<code>U&#39; L&#39; U L U F U&#39; F&#39;</code><br>（口诀：远切回回，接孩子放学 - 左手版）</p>
+<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752365841117.png" class="" width="1752365841117">
+
+<p><strong>右手公式</strong>：<code>U R U&#39; R&#39; U&#39; F&#39; U F</code><br>（口诀：远切回回，接孩子放学 - 右手版）</p>
+<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752367368372.png" class="" width="1752367368372">
+
+<h2 id="最后一层"><a href="#最后一层" class="headerlink" title="最后一层"></a>最后一层</h2><h3 id="1-顶层十字"><a href="#1-顶层十字" class="headerlink" title="1. 顶层十字"></a>1. 顶层十字</h3><p><strong>公式</strong>：<code>F R U R&#39; U&#39; F&#39;</code><br>（顺时针转前层，做一次右手公式 <code>R U R&#39; U&#39;</code>，逆时针转回前层）</p>
+<ul>
+<li><strong>直角（拐弯）</strong>：放在<strong>左上角</strong>（9点钟方向），做一次公式。</li>
+<li><strong>一字</strong>：横着放，做一次公式。</li>
+<li><strong>点</strong>：做一次公式变成直角，再按直角做。</li>
+</ul>
+<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752368255349.png" class="" width="1752368255349">
+
+<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752368275584.png" class="" width="1752368275584">
+
+<p>弄十字</p>
+<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752368048454.png" class="" width="1752368048454">
+
+<h3 id="2-顶层全色（小鱼）"><a href="#2-顶层全色（小鱼）" class="headerlink" title="2. 顶层全色（小鱼）"></a>2. 顶层全色（小鱼）</h3><p>如果不成鱼形，多做几次公式直到出现“小鱼”形状。</p>
+<p><strong>标准小鱼公式（右手）</strong>：<code>R U R&#39; U R U2 R&#39;</code></p>
+<p>左手</p>
+<h3 id="3-顶层角块归位（找双眼）"><a href="#3-顶层角块归位（找双眼）" class="headerlink" title="3. 顶层角块归位（找双眼）"></a>3. 顶层角块归位（找双眼）</h3><p>寻找是否有两个角块在同一面颜色相同（<strong>双眼&#x2F;车灯</strong>）。</p>
+<ul>
+<li><strong>有双眼</strong>：将双眼朝向<strong>背面</strong>（Back），做公式。</li>
+<li><strong>无双眼</strong>：任意方向做一次公式，就会出现双眼。</li>
+</ul>
+<p>**公式 (T-Perm 或 A-Perm 变体)**：<br><code>R B&#39; R F2 R&#39; B R F2 R2</code><br>或者<br><code>R U R&#39; U&#39; R&#39; F R2 U&#39; R&#39; U&#39; R U R&#39; F&#39;</code></p>
+<h3 id="4-最后一层-对棱调换（三棱换）"><a href="#4-最后一层-对棱调换（三棱换）" class="headerlink" title="4. 最后一层 对棱调换（三棱换）"></a>4. 最后一层 对棱调换（三棱换）</h3><p><strong>H Perm</strong> ：解决两对相邻棱块交换（<code>M2 U M2 U2 M2 U M2</code>）</p>
+<p>**U Perm (三棱换)**：<br>有一个面已经完成之后</p>
+<p>转方向，底朝自己，完成的那面朝<strong>背面</strong>（Back）</p>
+<p><strong>公式</strong>：<code>R U&#39; R U R U R U&#39; R&#39; U&#39; R2</code></p>
+<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752334150214.png" class="" width="1752334150214">
+
+<h3 id="最后一层-对棱调换"><a href="#最后一层-对棱调换" class="headerlink" title="最后一层 对棱调换"></a>最后一层 对棱调换</h3><p><strong>H Perm</strong> ：解决两对相邻棱块交换（<code>M2 U M2 U2 M2 U M2</code>）</p>
+<p>相邻棱交换</p>
+<p>有一个面已经完成之后</p>
+<p>转方向，底朝自己，完成的那面朝右手方向</p>
+<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752366641031.png" class="" width="1752366641031">
+
+<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752334486991.png" class="" width="1752334486991">
+]]></content>
+  </entry>
+  <entry>
     <title>队列监控页面使用指南</title>
     <url>/2025/06/12/%E9%98%9F%E5%88%97%E7%9B%91%E6%8E%A7%E9%A1%B5%E9%9D%A2%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</url>
     <content><![CDATA[<h1 id="队列监控页面使用指南"><a href="#队列监控页面使用指南" class="headerlink" title="队列监控页面使用指南"></a>队列监控页面使用指南</h1><h2 id="页面访问"><a href="#页面访问" class="headerlink" title="页面访问"></a>页面访问</h2><p>队列监控页面位于：<code>/views/modules/mm/queue.html</code></p>
@@ -2375,56 +2425,6 @@
 <p><strong>Q: 队列状态显示异常</strong></p>
 <p>A: 可能是Redis数据不一致，可以尝试清空队列解决</p>
 <h3 id="联系支持"><a href="#联系支持" class="headerlink" title="联系支持"></a>联系支持</h3><p>如遇到技术问题，请联系系统管理员或查看系统日志获取详细错误信息。</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>魔方</title>
-    <url>/2025/07/12/%E9%AD%94%E6%96%B9/</url>
-    <content><![CDATA[<h3 id="第一层"><a href="#第一层" class="headerlink" title="第一层"></a>第一层</h3><ol>
-<li><strong>白底十字</strong>：找到黄色中心块朝上，将四个白色棱块拼在黄色周围形成“黄芯白花”。然后对齐侧面中心块颜色，旋转180度到底部。</li>
-<li><strong>底角归位</strong>：将带有白色的角块放在目标位置上方，使用公式 <code>R U R&#39; U&#39;</code> （右手公式）直到白色面朝下。</li>
-</ol>
-<h3 id="第二层"><a href="#第二层" class="headerlink" title="第二层"></a>第二层</h3><p><strong>左手公式</strong>：<code>U&#39; L&#39; U L U F U&#39; F&#39;</code><br>（口诀：远切回回，接孩子放学 - 左手版）</p>
-<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752365841117.png" class="" width="1752365841117">
-
-<p><strong>右手公式</strong>：<code>U R U&#39; R&#39; U&#39; F&#39; U F</code><br>（口诀：远切回回，接孩子放学 - 右手版）</p>
-<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752367368372.png" class="" width="1752367368372">
-
-<h2 id="最后一层"><a href="#最后一层" class="headerlink" title="最后一层"></a>最后一层</h2><h3 id="1-顶层十字"><a href="#1-顶层十字" class="headerlink" title="1. 顶层十字"></a>1. 顶层十字</h3><p><strong>公式</strong>：<code>F R U R&#39; U&#39; F&#39;</code><br>（顺时针转前层，做一次右手公式 <code>R U R&#39; U&#39;</code>，逆时针转回前层）</p>
-<ul>
-<li><strong>直角（拐弯）</strong>：放在<strong>左上角</strong>（9点钟方向），做一次公式。</li>
-<li><strong>一字</strong>：横着放，做一次公式。</li>
-<li><strong>点</strong>：做一次公式变成直角，再按直角做。</li>
-</ul>
-<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752368255349.png" class="" width="1752368255349">
-
-<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752368275584.png" class="" width="1752368275584">
-
-<p>弄十字</p>
-<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752368048454.png" class="" width="1752368048454">
-
-<h3 id="2-顶层全色（小鱼）"><a href="#2-顶层全色（小鱼）" class="headerlink" title="2. 顶层全色（小鱼）"></a>2. 顶层全色（小鱼）</h3><p>如果不成鱼形，多做几次公式直到出现“小鱼”形状。</p>
-<p><strong>标准小鱼公式（右手）</strong>：<code>R U R&#39; U R U2 R&#39;</code></p>
-<p>左手</p>
-<h3 id="3-顶层角块归位（找双眼）"><a href="#3-顶层角块归位（找双眼）" class="headerlink" title="3. 顶层角块归位（找双眼）"></a>3. 顶层角块归位（找双眼）</h3><p>寻找是否有两个角块在同一面颜色相同（<strong>双眼&#x2F;车灯</strong>）。</p>
-<ul>
-<li><strong>有双眼</strong>：将双眼朝向<strong>背面</strong>（Back），做公式。</li>
-<li><strong>无双眼</strong>：任意方向做一次公式，就会出现双眼。</li>
-</ul>
-<p>**公式 (T-Perm 或 A-Perm 变体)**：<br><code>R B&#39; R F2 R&#39; B R F2 R2</code><br>或者<br><code>R U R&#39; U&#39; R&#39; F R2 U&#39; R&#39; U&#39; R U R&#39; F&#39;</code></p>
-<h3 id="4-最后一层-对棱调换（三棱换）"><a href="#4-最后一层-对棱调换（三棱换）" class="headerlink" title="4. 最后一层 对棱调换（三棱换）"></a>4. 最后一层 对棱调换（三棱换）</h3><p><strong>H Perm</strong> ：解决两对相邻棱块交换（<code>M2 U M2 U2 M2 U M2</code>）</p>
-<p>**U Perm (三棱换)**：<br>有一个面已经完成之后</p>
-<p>转方向，底朝自己，完成的那面朝<strong>背面</strong>（Back）</p>
-<p><strong>公式</strong>：<code>R U&#39; R U R U R U&#39; R&#39; U&#39; R2</code></p>
-<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752334150214.png" class="" width="1752334150214">
-
-<h3 id="最后一层-对棱调换"><a href="#最后一层-对棱调换" class="headerlink" title="最后一层 对棱调换"></a>最后一层 对棱调换</h3><p><strong>H Perm</strong> ：解决两对相邻棱块交换（<code>M2 U M2 U2 M2 U M2</code>）</p>
-<p>相邻棱交换</p>
-<p>有一个面已经完成之后</p>
-<p>转方向，底朝自己，完成的那面朝右手方向</p>
-<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752366641031.png" class="" width="1752366641031">
-
-<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752334486991.png" class="" width="1752334486991">
 ]]></content>
   </entry>
 </search>
