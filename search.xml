@@ -1,135 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>0 A.D. 中文游戏攻略上线</title>
-    <url>/2026/06/19/0-ad-strategy-guide/</url>
-    <content><![CDATA[<img src="/2026/06/19/0-ad-strategy-guide/cover.png" class="">
-
-<p><a href="https://play0ad.com/">0 A.D.</a>（读作 “zero ey dee”）是一款免费开源的古代即时战略（RTS）游戏：采集资源、建设城镇、训练军队，在古典时代文明之间展开对决。游戏强调历史氛围，当前 Release 28 已包含 <strong>15 个文明</strong>（含新加入的日耳曼）。</p>
-<p>我整理了一份 <strong>非官方中文攻略</strong>，单独托管在子站，方便查阅与后续更新：</p>
-<p><strong>👉 <a href="https://0ad.eppencn.com/">https://0ad.eppencn.com/</a></strong></p>
-<p>源码在 GitHub：<a href="https://github.com/eppen/0ad-strategy-guide">eppen&#x2F;0ad-strategy-guide</a></p>
-<h2 id="攻略里有什么"><a href="#攻略里有什么" class="headerlink" title="攻略里有什么"></a>攻略里有什么</h2><table>
-<thead>
-<tr>
-<th>章节</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>入门指南</td>
-<td>安装、界面、首局 15 分钟流程</td>
-</tr>
-<tr>
-<td>核心机制</td>
-<td>资源、领土、公民兵、胜负条件</td>
-</tr>
-<tr>
-<td>经济发展</td>
-<td>dropsite 布局、贸易、升阶段</td>
-</tr>
-<tr>
-<td>军事战术</td>
-<td>兵种克制、阵型、攻城与海战</td>
-</tr>
-<tr>
-<td>三阶段进阶</td>
-<td>Village → Town → City 节奏</td>
-</tr>
-<tr>
-<td>文明详解</td>
-<td>15 个文明特色与推荐打法</td>
-</tr>
-<tr>
-<td>多人对战</td>
-<td>联机、排位、常见套路</td>
-</tr>
-<tr>
-<td>进阶技巧</td>
-<td>微操、反制、AI 与 Mod</td>
-</tr>
-</tbody></table>
-<h2 id="为什么单独建站"><a href="#为什么单独建站" class="headerlink" title="为什么单独建站"></a>为什么单独建站</h2><ul>
-<li><strong>MkDocs Material</strong> 更适合长文档：侧边导航、全文搜索、章节跳转。</li>
-<li>主站 <a href="https://eppencn.com/">eppencn.com</a> 继续用 Hexo 写博客；攻略子站专注游戏内容，互不干扰。</li>
-<li>游戏版本会随 Wildfire Games 更新平衡，攻略仓库独立迭代更快。</li>
-</ul>
-<h2 id="适合谁"><a href="#适合谁" class="headerlink" title="适合谁"></a>适合谁</h2><ul>
-<li>刚下载游戏、不知道先造什么的新手</li>
-<li>被 AI 早攻、不知道怎么升 Town 的单机玩家</li>
-<li>想查某个文明（如孔雀象兵流、迦太基雇佣兵）怎么打的休闲玩家</li>
-</ul>
-<h2 id="快速上手（3-条）"><a href="#快速上手（3-条）" class="headerlink" title="快速上手（3 条）"></a>快速上手（3 条）</h2><ol>
-<li>资源点旁建 <strong>仓库 &#x2F; 农庄</strong>，别让平民走太远。</li>
-<li><strong>7 分钟内升 Town</strong>，先塔后兵。</li>
-<li>步兵 + 远程 + 攻城器 <strong>混合编队</strong>，别散开送。</li>
-</ol>
-<h2 id="关于-AI"><a href="#关于-AI" class="headerlink" title="关于 AI"></a>关于 AI</h2><p>Skirmish 模式可添加电脑对手（如 Petra AI），难度从 Sandbox 到 Very Hard。攻略中的节奏与打法主要针对 <strong>Normal AI</strong>，也适用于多人入门。</p>
-<hr>
-<p>欢迎 Issue &#x2F; PR 纠错或补充文明打法。游戏本体版权归 <a href="https://play0ad.com/">Wildfire Games</a>，攻略文本采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>。</p>
-<p><strong>再次入口：<a href="https://0ad.eppencn.com/">0ad.eppencn.com</a></strong></p>
-]]></content>
-      <tags>
-        <tag>Game</tag>
-        <tag>RTS</tag>
-        <tag>0AD</tag>
-        <tag>OpenSource</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>2026 work calendar</title>
-    <url>/2025/12/10/2026-work-calendar/</url>
-    <content><![CDATA[<p>介绍一个非常实用的开源项目：<a href="https://github.com/eppen/2026-work-calendar">2026-work-calendar</a>。</p>
-<p>这个项目的主要功能是将 PDF 格式的 2026 年工作日历转换为通用的 ICS 日历文件，方便导入到 Google Calendar、Outlook 或 Apple Calendar 中。</p>
-<h2 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h2><p>每年的工作日历通常以 PDF 或图片形式发布，手动将节假日和调休安排录入到手机或电脑日历中非常繁琐。这个工具通过自动化脚本解决了这个问题。</p>
-<p>pdf格式的日历</p>
-<img src="/2025/12/10/2026-work-calendar/1765374243229.png" class="" width="1765374243229">
-
-<p>2026&#x2F;01</p>
-<img src="/2025/12/10/2026-work-calendar/1765374530671.png" class="" width="1765374530671">
-
-<p>Google calendar</p>
-<img src="/2025/12/10/2026-work-calendar/1765374321988.png" class="" width="1765374321988">
-
-<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><ul>
-<li><strong>PDF 解析</strong>：自动解析 PDF 格式的日历表格。</li>
-<li><strong>智能识别</strong>：<ul>
-<li>识别黄色高亮的日期为休息日（节假日）。</li>
-<li>识别周末（周六&#x2F;周日）但没有高亮的日期为工作日（调休上班）。</li>
-</ul>
-</li>
-<li><strong>多格式输出</strong>：<ul>
-<li>生成标准 ICS 日历文件 (<code>calendar_2026.ics</code>)。</li>
-<li>生成 CSV 数据文件 (<code>calendar_2026.csv</code>)，便于二次分析。</li>
-</ul>
-</li>
-</ul>
-<h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h2><h3 id="1-准备环境"><a href="#1-准备环境" class="headerlink" title="1. 准备环境"></a>1. 准备环境</h3><p>首先克隆项目并安装依赖：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/eppen/2026-work-calendar.git</span><br><span class="line"><span class="built_in">cd</span> 2026-work-calendar</span><br><span class="line">pip install -r requirements.txt</span><br></pre></td></tr></table></figure>
-
-<p>主要依赖库包括 <code>pdfplumber</code>（用于 PDF 解析）和 <code>ics</code>（用于生成日历文件）。</p>
-<h3 id="2-运行脚本"><a href="#2-运行脚本" class="headerlink" title="2. 运行脚本"></a>2. 运行脚本</h3><p>确保目录下包含源文件 <code>附件：2026年工作日历表.pdf</code>，然后运行主脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python generate_calendar.py</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-导入日历"><a href="#3-导入日历" class="headerlink" title="3. 导入日历"></a>3. 导入日历</h3><p>运行成功后，会生成 <code>calendar_2026.ics</code> 文件。你可以：</p>
-<ul>
-<li><strong>Google Calendar</strong>: 设置 -&gt; 导入和导出 -&gt; 选择文件导入。</li>
-<li><strong>Apple Calendar &#x2F; Outlook</strong>: 直接双击 ICS 文件即可添加。</li>
-</ul>
-<h2 id="数据处理规则"><a href="#数据处理规则" class="headerlink" title="数据处理规则"></a>数据处理规则</h2><ul>
-<li><strong>休息日</strong>：PDF 中黄色高亮的日期。</li>
-<li><strong>周末工作日</strong>：周六或周日，但未被标记为黄色的日期。</li>
-<li><strong>正常工作日</strong>：周一至周五且无高亮的日期（不会在日历中特别标记）。</li>
-</ul>
-<p>如果你也需要处理 2026 年的排班日历，不妨试试这个工具！</p>
-]]></content>
-      <tags>
-        <tag>Python</tag>
-        <tag>Calendar</tag>
-        <tag>Automation</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>classical chinese translation</title>
     <url>/2025/06/23/classical-chinese-translation/</url>
     <content><![CDATA[<h1 id="文言文现代翻译助手-内容说明"><a href="#文言文现代翻译助手-内容说明" class="headerlink" title="文言文现代翻译助手 - 内容说明"></a>文言文现代翻译助手 - 内容说明</h1><h2 id="📖-插件简介"><a href="#📖-插件简介" class="headerlink" title="📖 插件简介"></a>📖 插件简介</h2><p>文言文现代翻译助手是一款专为古典文学爱好者和学习者设计的Chrome浏览器插件。它能够智能识别网页中的文言文内容，并通过先进的AI技术将其翻译为现代汉语，帮助用户更好地理解古典文献。</p>
@@ -279,6 +150,135 @@
 <hr>
 <p><em>本文档将持续更新，反映插件的最新功能和改进。感谢您使用文言文现代翻译助手！</em></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>0 A.D. 中文游戏攻略上线</title>
+    <url>/2026/06/19/0-ad-strategy-guide/</url>
+    <content><![CDATA[<img src="/2026/06/19/0-ad-strategy-guide/cover.png" class="">
+
+<p><a href="https://play0ad.com/">0 A.D.</a>（读作 “zero ey dee”）是一款免费开源的古代即时战略（RTS）游戏：采集资源、建设城镇、训练军队，在古典时代文明之间展开对决。游戏强调历史氛围，当前 Release 28 已包含 <strong>15 个文明</strong>（含新加入的日耳曼）。</p>
+<p>我整理了一份 <strong>非官方中文攻略</strong>，单独托管在子站，方便查阅与后续更新：</p>
+<p><strong>👉 <a href="https://0ad.eppencn.com/">https://0ad.eppencn.com/</a></strong></p>
+<p>源码在 GitHub：<a href="https://github.com/eppen/0ad-strategy-guide">eppen&#x2F;0ad-strategy-guide</a></p>
+<h2 id="攻略里有什么"><a href="#攻略里有什么" class="headerlink" title="攻略里有什么"></a>攻略里有什么</h2><table>
+<thead>
+<tr>
+<th>章节</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>入门指南</td>
+<td>安装、界面、首局 15 分钟流程</td>
+</tr>
+<tr>
+<td>核心机制</td>
+<td>资源、领土、公民兵、胜负条件</td>
+</tr>
+<tr>
+<td>经济发展</td>
+<td>dropsite 布局、贸易、升阶段</td>
+</tr>
+<tr>
+<td>军事战术</td>
+<td>兵种克制、阵型、攻城与海战</td>
+</tr>
+<tr>
+<td>三阶段进阶</td>
+<td>Village → Town → City 节奏</td>
+</tr>
+<tr>
+<td>文明详解</td>
+<td>15 个文明特色与推荐打法</td>
+</tr>
+<tr>
+<td>多人对战</td>
+<td>联机、排位、常见套路</td>
+</tr>
+<tr>
+<td>进阶技巧</td>
+<td>微操、反制、AI 与 Mod</td>
+</tr>
+</tbody></table>
+<h2 id="为什么单独建站"><a href="#为什么单独建站" class="headerlink" title="为什么单独建站"></a>为什么单独建站</h2><ul>
+<li><strong>MkDocs Material</strong> 更适合长文档：侧边导航、全文搜索、章节跳转。</li>
+<li>主站 <a href="https://eppencn.com/">eppencn.com</a> 继续用 Hexo 写博客；攻略子站专注游戏内容，互不干扰。</li>
+<li>游戏版本会随 Wildfire Games 更新平衡，攻略仓库独立迭代更快。</li>
+</ul>
+<h2 id="适合谁"><a href="#适合谁" class="headerlink" title="适合谁"></a>适合谁</h2><ul>
+<li>刚下载游戏、不知道先造什么的新手</li>
+<li>被 AI 早攻、不知道怎么升 Town 的单机玩家</li>
+<li>想查某个文明（如孔雀象兵流、迦太基雇佣兵）怎么打的休闲玩家</li>
+</ul>
+<h2 id="快速上手（3-条）"><a href="#快速上手（3-条）" class="headerlink" title="快速上手（3 条）"></a>快速上手（3 条）</h2><ol>
+<li>资源点旁建 <strong>仓库 &#x2F; 农庄</strong>，别让平民走太远。</li>
+<li><strong>7 分钟内升 Town</strong>，先塔后兵。</li>
+<li>步兵 + 远程 + 攻城器 <strong>混合编队</strong>，别散开送。</li>
+</ol>
+<h2 id="关于-AI"><a href="#关于-AI" class="headerlink" title="关于 AI"></a>关于 AI</h2><p>Skirmish 模式可添加电脑对手（如 Petra AI），难度从 Sandbox 到 Very Hard。攻略中的节奏与打法主要针对 <strong>Normal AI</strong>，也适用于多人入门。</p>
+<hr>
+<p>欢迎 Issue &#x2F; PR 纠错或补充文明打法。游戏本体版权归 <a href="https://play0ad.com/">Wildfire Games</a>，攻略文本采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>。</p>
+<p><strong>再次入口：<a href="https://0ad.eppencn.com/">0ad.eppencn.com</a></strong></p>
+]]></content>
+      <tags>
+        <tag>Game</tag>
+        <tag>RTS</tag>
+        <tag>0AD</tag>
+        <tag>OpenSource</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2026 work calendar</title>
+    <url>/2025/12/10/2026-work-calendar/</url>
+    <content><![CDATA[<p>介绍一个非常实用的开源项目：<a href="https://github.com/eppen/2026-work-calendar">2026-work-calendar</a>。</p>
+<p>这个项目的主要功能是将 PDF 格式的 2026 年工作日历转换为通用的 ICS 日历文件，方便导入到 Google Calendar、Outlook 或 Apple Calendar 中。</p>
+<h2 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h2><p>每年的工作日历通常以 PDF 或图片形式发布，手动将节假日和调休安排录入到手机或电脑日历中非常繁琐。这个工具通过自动化脚本解决了这个问题。</p>
+<p>pdf格式的日历</p>
+<img src="/2025/12/10/2026-work-calendar/1765374243229.png" class="" width="1765374243229">
+
+<p>2026&#x2F;01</p>
+<img src="/2025/12/10/2026-work-calendar/1765374530671.png" class="" width="1765374530671">
+
+<p>Google calendar</p>
+<img src="/2025/12/10/2026-work-calendar/1765374321988.png" class="" width="1765374321988">
+
+<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><ul>
+<li><strong>PDF 解析</strong>：自动解析 PDF 格式的日历表格。</li>
+<li><strong>智能识别</strong>：<ul>
+<li>识别黄色高亮的日期为休息日（节假日）。</li>
+<li>识别周末（周六&#x2F;周日）但没有高亮的日期为工作日（调休上班）。</li>
+</ul>
+</li>
+<li><strong>多格式输出</strong>：<ul>
+<li>生成标准 ICS 日历文件 (<code>calendar_2026.ics</code>)。</li>
+<li>生成 CSV 数据文件 (<code>calendar_2026.csv</code>)，便于二次分析。</li>
+</ul>
+</li>
+</ul>
+<h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h2><h3 id="1-准备环境"><a href="#1-准备环境" class="headerlink" title="1. 准备环境"></a>1. 准备环境</h3><p>首先克隆项目并安装依赖：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/eppen/2026-work-calendar.git</span><br><span class="line"><span class="built_in">cd</span> 2026-work-calendar</span><br><span class="line">pip install -r requirements.txt</span><br></pre></td></tr></table></figure>
+
+<p>主要依赖库包括 <code>pdfplumber</code>（用于 PDF 解析）和 <code>ics</code>（用于生成日历文件）。</p>
+<h3 id="2-运行脚本"><a href="#2-运行脚本" class="headerlink" title="2. 运行脚本"></a>2. 运行脚本</h3><p>确保目录下包含源文件 <code>附件：2026年工作日历表.pdf</code>，然后运行主脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python generate_calendar.py</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-导入日历"><a href="#3-导入日历" class="headerlink" title="3. 导入日历"></a>3. 导入日历</h3><p>运行成功后，会生成 <code>calendar_2026.ics</code> 文件。你可以：</p>
+<ul>
+<li><strong>Google Calendar</strong>: 设置 -&gt; 导入和导出 -&gt; 选择文件导入。</li>
+<li><strong>Apple Calendar &#x2F; Outlook</strong>: 直接双击 ICS 文件即可添加。</li>
+</ul>
+<h2 id="数据处理规则"><a href="#数据处理规则" class="headerlink" title="数据处理规则"></a>数据处理规则</h2><ul>
+<li><strong>休息日</strong>：PDF 中黄色高亮的日期。</li>
+<li><strong>周末工作日</strong>：周六或周日，但未被标记为黄色的日期。</li>
+<li><strong>正常工作日</strong>：周一至周五且无高亮的日期（不会在日历中特别标记）。</li>
+</ul>
+<p>如果你也需要处理 2026 年的排班日历，不妨试试这个工具！</p>
+]]></content>
+      <tags>
+        <tag>Python</tag>
+        <tag>Calendar</tag>
+        <tag>Automation</tag>
+      </tags>
   </entry>
   <entry>
     <title>classicical-chinese-translation-private-policy</title>
@@ -511,6 +511,532 @@
         <tag>Agent</tag>
         <tag>Windows</tag>
         <tag>PowerShell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>EOS 菜单树 NodeID 与 ObjectID 说明</title>
+    <url>/2026/07/31/eos-role-tree-nodeid-objectid/</url>
+    <content><![CDATA[<p>本文档说明 eosrole 页面「配置 EOS 菜单权限」树节点中 <strong>NodeID</strong>（前端 zTree 的 <code>id</code>）与 <strong>ObjectID</strong>（前端 <code>objectId</code>）的含义、数据库来源、后端组装与前端使用方式。</p>
+<blockquote>
+<p>关联文档：<a href="/2026/07/31/eos-role-menu-relationship/">EOS 菜单与角色关联关系说明</a></p>
+<p><strong>2026-07-31 更新</strong>：权限树接口额外返回 <code>menuType</code> &#x2F; <code>sysMenuId</code>；保存 body 含 MES 按钮与 ERP 操作扩展字段。</p>
+</blockquote>
+<h2 id="结论摘要"><a href="#结论摘要" class="headerlink" title="结论摘要"></a>结论摘要</h2><table>
+<thead>
+<tr>
+<th>前端字段</th>
+<th>含义</th>
+<th>数据库来源</th>
+<th>主要用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>zTree <code>id</code></td>
+<td>菜单节点 ID</td>
+<td><code>messys.Tree.NodeID</code></td>
+<td>树结构、父子关系（<code>pId</code>）；前端勾选态缓存键</td>
+</tr>
+<tr>
+<td>zTree <code>objectId</code></td>
+<td>EOS 权限对象 ID</td>
+<td><code>messys.Tree.ObjectID</code> &#x3D; <code>messys.ObjectRegister.ObjectID</code></td>
+<td>角色菜单授权（<code>STPermission.ObjectID</code>，「执行」）</td>
+</tr>
+<tr>
+<td>zTree <code>menuType</code></td>
+<td>菜单类型</td>
+<td><code>EosMenuTypeHelper.resolveMenuType</code></td>
+<td><code>mes</code> &#x2F; <code>erp</code> &#x2F; <code>folder</code>，决定右侧详情面板</td>
+</tr>
+<tr>
+<td>zTree <code>sysMenuId</code></td>
+<td>MES 菜单 ID</td>
+<td>优先 <code>sys_menu_eos_node</code>，否则 <code>NodeDesc=MES_MENU:</code></td>
+<td>MES 菜单&#x2F;按钮写入 <code>sys_role_menu</code></td>
+</tr>
+</tbody></table>
+<p><strong>NodeID 与 ObjectID 是两套独立编号体系</strong>，不可混用。角色菜单「执行」授权必须使用 <strong>ObjectID</strong>；NodeID 用于树层级与 detail 查询参数。</p>
+<hr>
+<h2 id="1-NodeID-是什么"><a href="#1-NodeID-是什么" class="headerlink" title="1. NodeID 是什么"></a>1. NodeID 是什么</h2><p><code>NodeID</code> 是 EOS 菜单树 <code>messys.dbo.Tree</code> 的主键，标识一个菜单&#x2F;目录节点在树中的位置。</p>
+<p>在 MES 前端 zTree 中，NodeID 映射为节点的 **<code>id</code>**（<code>idKey: &quot;id&quot;</code>），<code>ParentID</code> 映射为 **<code>pId</code>**，用于渲染树形结构与展开&#x2F;折叠。前端勾选态 <code>permissionCheckedNodeIds</code> 也按 NodeID 缓存。</p>
+<p><strong>NodeID 不写入 STPermission</strong>。权限表引用的是 ObjectID。detail 接口用 <code>nodeId</code> 定位节点后再解析业务 ObjectID。</p>
+<hr>
+<h2 id="2-NodeID-从哪来"><a href="#2-NodeID-从哪来" class="headerlink" title="2. NodeID 从哪来"></a>2. NodeID 从哪来</h2><h3 id="2-1-数据库表"><a href="#2-1-数据库表" class="headerlink" title="2.1 数据库表"></a>2.1 数据库表</h3><table>
+<thead>
+<tr>
+<th>表</th>
+<th>库</th>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Tree</code></td>
+<td>messys</td>
+<td><code>NodeID</code></td>
+<td>菜单节点主键</td>
+</tr>
+<tr>
+<td><code>Tree</code></td>
+<td>messys</td>
+<td><code>ParentID</code></td>
+<td>父节点 NodeID（根为 0）</td>
+</tr>
+<tr>
+<td><code>UniqueNO</code></td>
+<td>messys</td>
+<td><code>No</code></td>
+<td>下一个可用 NodeID（<code>NName=&#39;tree&#39;</code>）</td>
+</tr>
+</tbody></table>
+<h3 id="2-2-MES-新建节点时的分配逻辑"><a href="#2-2-MES-新建节点时的分配逻辑" class="headerlink" title="2.2 MES 新建节点时的分配逻辑"></a>2.2 MES 新建节点时的分配逻辑</h3><p>MES 通过 <code>TreeServiceImpl.getNextNodeIdForTree()</code> 从 <code>UniqueNO</code> 表取号：</p>
+<ol>
+<li>悲观锁查询 <code>UniqueNO</code> 中 <code>NName=&#39;tree&#39;</code> 的记录（<code>PESSIMISTIC_WRITE</code>）</li>
+<li>取当前 <code>No</code> 作为新 NodeID</li>
+<li>将 <code>No + 1</code> 写回，占用该编号</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// TreeServiceImpl.getNextNodeIdForTree()</span></span><br><span class="line"><span class="type">UniqueNOEntity</span> <span class="variable">row</span> <span class="operator">=</span> uniqueNODao.findByNnameForUpdate(UNIQUE_NO_NAME_TREE);</span><br><span class="line"><span class="type">int</span> <span class="variable">currentNo</span> <span class="operator">=</span> row.getNo();</span><br><span class="line">row.setNo(currentNo + <span class="number">1</span>);</span><br><span class="line">uniqueNODao.save(row);</span><br><span class="line"><span class="keyword">return</span> Long.valueOf(currentNo);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-触发-NodeID-分配的操作"><a href="#2-3-触发-NodeID-分配的操作" class="headerlink" title="2.3 触发 NodeID 分配的操作"></a>2.3 触发 NodeID 分配的操作</h3><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>新增菜单节点</td>
+<td><code>TreeServiceImpl.addNode</code></td>
+<td>先 <code>getNextNodeIdForTree()</code>，再写 Tree</td>
+</tr>
+<tr>
+<td>sys_menu 同步</td>
+<td><code>TreeServiceImpl.syncFromSysMenu</code></td>
+<td>每个同步节点分配新 NodeID</td>
+</tr>
+<tr>
+<td>复制菜单</td>
+<td><code>TreeServiceImpl.copyMenu</code></td>
+<td>源节点及子树每个节点各分配新 NodeID</td>
+</tr>
+<tr>
+<td>交接班菜单批量创建</td>
+<td><code>createShiftLogDispatchMenus</code> → <code>addNode</code></td>
+<td>同上</td>
+</tr>
+</tbody></table>
+<h3 id="2-4-EOS-原生-历史数据"><a href="#2-4-EOS-原生-历史数据" class="headerlink" title="2.4 EOS 原生 &#x2F; 历史数据"></a>2.4 EOS 原生 &#x2F; 历史数据</h3><p>在 MES 介入之前，NodeID 可能由 EOS 客户端或其他工具写入 <code>Tree</code>，同样依赖 <code>UniqueNO</code> 序列或历史遗留编号。MES 只保证<strong>新增&#x2F;同步&#x2F;复制</strong>时走 <code>getNextNodeIdForTree()</code> 逻辑。</p>
+<h3 id="2-5-NodeID-在-Functions-中的用途"><a href="#2-5-NodeID-在-Functions-中的用途" class="headerlink" title="2.5 NodeID 在 Functions 中的用途"></a>2.5 NodeID 在 Functions 中的用途</h3><p><code>Tree.Functions</code> 字段保存菜单跳转 URL，其中 <strong><code>menuId</code> 参数值为 NodeID</strong>（不是 ObjectID）。例如同步 sys_menu 时：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;baseUrl&#125;/&#123;url&#125;?token=%Token%&amp;menuId=&#123;NodeID&#125;</span><br></pre></td></tr></table></figure>
+
+<p>复制菜单时，<code>TreeServiceImpl</code> 会将 <code>Functions</code> 里的 <code>menuId=旧NodeID</code> 替换为 <code>menuId=新NodeID</code>。</p>
+<h3 id="2-6-NodeID-生命周期"><a href="#2-6-NodeID-生命周期" class="headerlink" title="2.6 NodeID 生命周期"></a>2.6 NodeID 生命周期</h3><ul>
+<li><strong>查询</strong>：<code>treeDao.findAll(...)</code>、<code>queryObject(nodeid)</code> 等</li>
+<li><strong>删除</strong>：<code>delete</code> &#x2F; <code>deleteBatch</code> 按 NodeID 删除 Tree，并先 <code>ObjectRegisterDao.deleteByOwnerId(NodeID)</code> 清理关联对象</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">  A[UniqueNO&lt;br/&gt;NName=tree] --&gt;|取 No 作为 NodeID| B[Tree.NodeID]</span><br><span class="line">  B --&gt; C[listTreeForPermission&lt;br/&gt;返回 id=NodeID]</span><br><span class="line">  C --&gt; D[zTree id / pId&lt;br/&gt;树结构展示]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-ObjectID-是什么"><a href="#3-ObjectID-是什么" class="headerlink" title="3. ObjectID 是什么"></a>3. ObjectID 是什么</h2><p><code>ObjectID</code> 是 EOS 对象注册表 <code>messys.dbo.ObjectRegister</code> 的主键。每个可授权对象在 <code>ObjectRegister</code> 中注册一条记录；菜单&#x2F;目录节点对应 <strong>TypeID &#x3D; 7</strong>，并通过 <strong>OwnerID &#x3D; Tree.NodeID</strong> 与菜单树关联。</p>
+<p>MES 维护菜单时会将 ObjectID <strong>冗余写入</strong> <code>Tree.ObjectID</code>，便于权限树接口一次查询带出。</p>
+<p>在角色菜单授权场景下，前端勾选菜单后提交的是 <strong>objectId 列表</strong>，写入 <code>mesdata.dbo.STPermission.ObjectID</code>（配合 <code>UserID</code>&#x3D;角色 OID、<code>Oprate</code>&#x3D;「执行」、<code>Permission</code>&#x3D;1）。</p>
+<hr>
+<h2 id="4-ObjectID-从哪来"><a href="#4-ObjectID-从哪来" class="headerlink" title="4. ObjectID 从哪来"></a>4. ObjectID 从哪来</h2><h3 id="4-1-数据库表"><a href="#4-1-数据库表" class="headerlink" title="4.1 数据库表"></a>4.1 数据库表</h3><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>库&#x2F;表</th>
+<th>字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>权威主键</td>
+<td>messys <code>ObjectRegister</code></td>
+<td><code>ObjectID</code></td>
+<td>全局对象 ID（自增：MAX+1）</td>
+</tr>
+<tr>
+<td>关联</td>
+<td>messys <code>ObjectRegister</code></td>
+<td><code>OwnerID</code></td>
+<td>&#x3D; <code>Tree.NodeID</code></td>
+</tr>
+<tr>
+<td>类型</td>
+<td>messys <code>ObjectRegister</code></td>
+<td><code>TypeID</code></td>
+<td>MES 新建菜单固定为 <strong>7</strong>（菜单&#x2F;目录）</td>
+</tr>
+<tr>
+<td>冗余</td>
+<td>messys <code>Tree</code></td>
+<td><code>ObjectID</code></td>
+<td>与 <code>ObjectRegister.ObjectID</code> 一致</td>
+</tr>
+<tr>
+<td>授权</td>
+<td>mesdata <code>STPermission</code></td>
+<td><code>ObjectID</code></td>
+<td>引用 <code>ObjectRegister.ObjectID</code></td>
+</tr>
+</tbody></table>
+<p>关系：<code>Tree.NodeID</code> ← <code>ObjectRegister.OwnerID</code>；<code>Tree.ObjectID</code> &#x3D; <code>ObjectRegister.ObjectID</code>。</p>
+<h3 id="4-2-MES-新建节点时的分配逻辑"><a href="#4-2-MES-新建节点时的分配逻辑" class="headerlink" title="4.2 MES 新建节点时的分配逻辑"></a>4.2 MES 新建节点时的分配逻辑</h3><p><code>TreeServiceImpl.saveObjectRegisterForTree()</code>：</p>
+<ol>
+<li><code>ObjectRegisterDao.findMaxObjectId()</code> 取 MAX(ObjectID) + 1</li>
+<li>插入 <code>ObjectRegister</code>（<code>TypeID=7</code>，<code>OwnerID=NodeID</code>，<code>Object</code>&#x3D;菜单名）</li>
+<li>将返回的 <code>ObjectID</code> 写入 <code>Tree.ObjectID</code></li>
+</ol>
+<p>与 NodeID 分配在同一事务内完成（如 <code>addNode</code> 先取 NodeID，再创建 ObjectRegister）。</p>
+<h3 id="4-3-触发-ObjectID-分配的操作"><a href="#4-3-触发-ObjectID-分配的操作" class="headerlink" title="4.3 触发 ObjectID 分配的操作"></a>4.3 触发 ObjectID 分配的操作</h3><p>与 NodeID 分配的操作相同（新增、同步、复制）。<strong>复制菜单时 NodeID 与 ObjectID 均重新分配</strong>，不会沿用源节点的 ObjectID。</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>ObjectID 来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MES 新增 EOS 菜单节点</td>
+<td><code>saveObjectRegisterForTree</code> 新分配</td>
+</tr>
+<tr>
+<td>从 sys_menu 同步</td>
+<td>每个同步节点一条新 ObjectRegister</td>
+</tr>
+<tr>
+<td>复制菜单</td>
+<td>新 NodeID + 新 ObjectRegister + 新 ObjectID</td>
+</tr>
+<tr>
+<td>EOS 原生&#x2F;历史数据</td>
+<td>可能由 EOS 客户端写入；<code>Tree.ObjectID</code> 可能已存在</td>
+</tr>
+<tr>
+<td>失败兜底</td>
+<td><code>object == null</code> 时 <code>Tree.ObjectID = 0</code>（无有效授权对象）</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">  A[分配 NodeID] --&gt; B[插入 ObjectRegister&lt;br/&gt;ObjectID=MAX+1]</span><br><span class="line">  B --&gt; C[Tree.ObjectID = ObjectID]</span><br><span class="line">  C --&gt; D[listTreeForPermission&lt;br/&gt;返回 objectId]</span><br><span class="line">  D --&gt; E[前端勾选提交 objectIds]</span><br><span class="line">  E --&gt; F[STPermission 写入]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-NodeID-与-ObjectID-对照"><a href="#5-NodeID-与-ObjectID-对照" class="headerlink" title="5. NodeID 与 ObjectID 对照"></a>5. NodeID 与 ObjectID 对照</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Tree.NodeID       ──►  zTree.id         （树结构、ParentID 父子关系）</span><br><span class="line">Tree.ObjectID     ──►  zTree.objectId   （STPermission「执行」授权键）</span><br><span class="line"></span><br><span class="line">ObjectRegister.OwnerID  = Tree.NodeID</span><br><span class="line">ObjectRegister.ObjectID = Tree.ObjectID</span><br><span class="line">ObjectRegister.TypeID   = 7（菜单/目录）</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>NodeID</th>
+<th>ObjectID</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>所属表</td>
+<td><code>messys.Tree</code> 主键</td>
+<td><code>messys.ObjectRegister</code> 主键，冗余在 <code>Tree.ObjectID</code></td>
+</tr>
+<tr>
+<td>分配方式</td>
+<td><code>UniqueNO</code>（NName&#x3D;’tree’）递增</td>
+<td><code>MAX(ObjectID)+1</code></td>
+</tr>
+<tr>
+<td>前端 zTree 字段</td>
+<td><code>id</code></td>
+<td><code>objectId</code></td>
+</tr>
+<tr>
+<td>是否用于 STPermission「执行」</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>复制菜单</td>
+<td>重新分配</td>
+<td>重新分配</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="5-1-业务-ObjectID-与-NodeID-的非-OwnerID-关联"><a href="#5-1-业务-ObjectID-与-NodeID-的非-OwnerID-关联" class="headerlink" title="5.1 业务 ObjectID 与 NodeID 的非 OwnerID 关联"></a>5.1 业务 ObjectID 与 NodeID 的非 OwnerID 关联</h2><p>菜单授权与 ERP 按钮授权使用<strong>不同的 ObjectID</strong>，且业务对象的 <code>OwnerID</code> <strong>不一定</strong>等于 <code>Tree.NodeID</code>。</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>ObjectID 示例</th>
+<th>TypeID</th>
+<th>OwnerID</th>
+<th>STPermission 用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>菜单对象</td>
+<td>468</td>
+<td>7</td>
+<td>430</td>
+<td><code>Oprate=执行</code>, Permission&#x3D;1</td>
+</tr>
+<tr>
+<td>业务对象</td>
+<td>965</td>
+<td>1</td>
+<td>null</td>
+<td><code>Oprate=EX61:...</code>, Permission&#x3D;0</td>
+</tr>
+</tbody></table>
+<p><strong>解析路径</strong>（<code>EosMenuObjectResolver.resolveBusinessObjects</code>）：</p>
+<ol>
+<li><code>ObjectRegister.OwnerID = NodeID</code> 且 <code>TypeID != 7</code></li>
+<li><code>Tree.Functions</code> 括号内单据名 + 菜单对象名 → <code>DjDy.DjCName</code> → <code>ObjectRegister.Object = DjCName</code> 且 <code>TypeID != 7</code></li>
+<li>回退：<code>Tree.ObjectID</code> 对应 ObjectRegister（<strong>可能含 TypeID&#x3D;7</strong>）</li>
+</ol>
+<p><strong>禁止</strong>仅用 <code>OwnerID=NodeID</code> 或 <code>Tree.ObjectID</code> 推断按钮授权 ObjectID。复合页可能返回多个业务 ObjectID；同一 ObjectID 上可有多个 <code>EXxx:</code> 按钮 Oprate。</p>
+<p><code>listAvailableOperations</code>：标准操作 + ExFunction <code>EXxx:</code> + 库中已有非「执行」Oprate。</p>
+<p>示例（NodeID&#x3D;430）：菜单树 <code>objectId=468</code> 用于勾选「执行」；按钮 <code>EX61:组织架构分发</code> 写在 ObjectID&#x3D;965。</p>
+<hr>
+<h2 id="6-后端组装与-API"><a href="#6-后端组装与-API" class="headerlink" title="6. 后端组装与 API"></a>6. 后端组装与 API</h2><h3 id="6-1-权限菜单树"><a href="#6-1-权限菜单树" class="headerlink" title="6.1 权限菜单树"></a>6.1 权限菜单树</h3><ul>
+<li><strong>接口</strong>：<code>GET /eosrole/menu/tree</code>（或 <code>@RequestMapping</code>）</li>
+<li><strong>实现</strong>：<code>EosRoleController.menuTree()</code> → <code>TreeService.listTreeForPermission()</code></li>
+<li><strong>返回字段</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>来源</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>id</code></td>
+<td><code>Tree.NodeID</code></td>
+<td>zTree 节点 ID</td>
+</tr>
+<tr>
+<td><code>pId</code></td>
+<td><code>Tree.ParentID</code>（0 → -1）</td>
+<td>父节点</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>Tree.NodeCaption</code></td>
+<td>显示名</td>
+</tr>
+<tr>
+<td><code>objectId</code></td>
+<td><code>Tree.ObjectID</code></td>
+<td>STPermission「执行」键</td>
+</tr>
+<tr>
+<td><code>menuType</code></td>
+<td><code>EosMenuTypeHelper.resolveMenuType</code></td>
+<td><code>mes</code> &#x2F; <code>erp</code> &#x2F; <code>folder</code></td>
+</tr>
+<tr>
+<td><code>sysMenuId</code></td>
+<td><code>sys_menu_eos_node</code>，缺失时 NodeDesc fallback</td>
+<td>仅 MES 节点有值</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// TreeServiceImpl.listTreeForPermission()</span></span><br><span class="line">m.put(<span class="string">&quot;id&quot;</span>, e.getNodeid());</span><br><span class="line">m.put(<span class="string">&quot;pId&quot;</span>, e.getParentid() == <span class="literal">null</span> || e.getParentid() == <span class="number">0</span> ? -<span class="number">1</span> : e.getParentid());</span><br><span class="line">m.put(<span class="string">&quot;name&quot;</span>, e.getNodecaption() != <span class="literal">null</span> ? e.getNodecaption().trim() : <span class="string">&quot;&quot;</span>);</span><br><span class="line">m.put(<span class="string">&quot;objectId&quot;</span>, e.getObjectid());</span><br><span class="line">m.put(<span class="string">&quot;menuType&quot;</span>, EosMenuTypeHelper.resolveMenuType(e));</span><br><span class="line">m.put(<span class="string">&quot;sysMenuId&quot;</span>, sysMenuIdLookup.get(e.getNodeid()));</span><br></pre></td></tr></table></figure>
+
+<p>与 <code>listTreeForSelect()</code>（eostree 选目录）的区别：后者<strong>不含</strong> <code>objectId</code> &#x2F; <code>menuType</code> &#x2F; <code>sysMenuId</code>，仅 <code>id</code> &#x2F; <code>pId</code> &#x2F; <code>name</code>。</p>
+<h3 id="6-2-权限查询与保存"><a href="#6-2-权限查询与保存" class="headerlink" title="6.2 权限查询与保存"></a>6.2 权限查询与保存</h3><table>
+<thead>
+<tr>
+<th>接口</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GET /eosrole/permission/&#123;roleId&#125;</code></td>
+<td>返回已授权 <strong>objectId</strong> 列表（「执行」+ Permission&#x3D;1）</td>
+</tr>
+<tr>
+<td><code>GET /eosrole/permission/detail/&#123;roleId&#125;?nodeId=</code></td>
+<td>按 NodeID 加载对象&#x2F;按钮详情（MES 或 ERP）</td>
+</tr>
+<tr>
+<td><code>GET /eosrole/permission/mes-menu-ids/&#123;roleId&#125;</code></td>
+<td>返回 MES <code>sys_role_menu</code> 全部 menuId</td>
+</tr>
+<tr>
+<td><code>POST /eosrole/permission/save</code></td>
+<td>菜单执行 + ERP 操作 + MES 按钮</td>
+</tr>
+</tbody></table>
+<p><code>EosRolePermissionServiceImpl.queryMenuObjectIds</code> 过滤条件：<code>Oprate=执行</code> 且 <code>Permission=1</code>（<strong>当前未按 TypeID&#x3D;7 过滤</strong>）。</p>
+<p>save body（<code>EosRolePermissionSaveRequest</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>roleIds</code></td>
+<td>EOS 角色 OID</td>
+</tr>
+<tr>
+<td><code>objectIds</code></td>
+<td>勾选菜单的 Tree.ObjectID → STPermission「执行」</td>
+</tr>
+<tr>
+<td><code>mode</code></td>
+<td><code>append</code> &#x2F; <code>replace</code></td>
+</tr>
+<tr>
+<td><code>mesMenuIds</code></td>
+<td>MES 目录&#x2F;菜单 menu_id → <code>sys_role_menu</code></td>
+</tr>
+<tr>
+<td><code>mesButtonMenuIds</code></td>
+<td>MES 按钮 menu_id → <code>sys_role_menu</code></td>
+</tr>
+<tr>
+<td><code>operationPermissions</code></td>
+<td>ERP <code>&#123;objectId, oprate, granted&#125;</code></td>
+</tr>
+<tr>
+<td><code>operationReplaceObjectIds</code></td>
+<td>replace 时清理非「执行」行的业务 ObjectID</td>
+</tr>
+</tbody></table>
+<p>保存委托：先 <code>EosRolePermissionServiceImpl</code> 写「执行」，再 <code>EosRoleObjectPermissionServiceImpl.saveMesAndObjectPermissions</code> 写 ERP&#x2F;MES。</p>
+<hr>
+<h2 id="7-前端使用（eosrole-js）"><a href="#7-前端使用（eosrole-js）" class="headerlink" title="7. 前端使用（eosrole.js）"></a>7. 前端使用（eosrole.js）</h2><h3 id="7-1-zTree-配置"><a href="#7-1-zTree-配置" class="headerlink" title="7.1 zTree 配置"></a>7.1 zTree 配置</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> permissionTreeSetting = &#123;</span><br><span class="line">    <span class="attr">data</span>: &#123;</span><br><span class="line">        <span class="attr">simpleData</span>: &#123;</span><br><span class="line">            <span class="attr">enable</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">idKey</span>: <span class="string">&quot;id&quot;</span>,      <span class="comment">// = NodeID</span></span><br><span class="line">            <span class="attr">pIdKey</span>: <span class="string">&quot;pId&quot;</span>,   <span class="comment">// = ParentID</span></span><br><span class="line">            <span class="attr">rootPId</span>: -<span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">check</span>: &#123; <span class="attr">enable</span>: <span class="literal">true</span>, <span class="attr">nocheckInherit</span>: <span class="literal">true</span> &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-加载与回显"><a href="#7-2-加载与回显" class="headerlink" title="7.2 加载与回显"></a>7.2 加载与回显</h3><ol>
+<li><code>loadPermissionMenuTree</code> → 请求 <code>/eosrole/menu/tree</code>，用 <code>treeList</code> 初始化 zTree（含 <code>menuType</code> &#x2F; <code>sysMenuId</code>）</li>
+<li>单角色 + replace 模式：<ul>
+<li><code>/eosrole/permission/&#123;roleId&#125;</code> → 按 <strong>objectId</strong> 勾选菜单树（不是 <code>id</code>）</li>
+<li><code>/eosrole/permission/mes-menu-ids/&#123;roleId&#125;</code> → 拆分 MES 菜单 ID &#x2F; 按钮 ID 到 <code>permissionMesMenuIds</code> 等</li>
+</ul>
+</li>
+<li>点击节点 → <code>/eosrole/permission/detail/&#123;roleId&#125;?nodeId=</code>：<ul>
+<li><code>menuType=mes</code>：展示 MES 按钮勾选</li>
+<li><code>menuType=erp</code>：展示 ERP 操作「禁止」勾选</li>
+<li><code>menuType=folder</code>：目录摘要</li>
+</ul>
+</li>
+</ol>
+<p>勾选 MES 节点时把 <code>sysMenuId</code> 加入 <code>permissionMesMenuIds</code>；取消勾选时清理对应按钮态。</p>
+<h3 id="7-3-保存"><a href="#7-3-保存" class="headerlink" title="7.3 保存"></a>7.3 保存</h3><p><code>savePermission</code> 收集并提交：</p>
+<table>
+<thead>
+<tr>
+<th>收集方法</th>
+<th>字段</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>collectPermissionObjectIds()</code></td>
+<td><code>objectIds</code>（勾选节点的 <strong>objectId</strong>，不是 <code>id</code>）</td>
+</tr>
+<tr>
+<td><code>collectMesMenuIdsForSave()</code></td>
+<td><code>mesMenuIds</code></td>
+</tr>
+<tr>
+<td><code>collectMesButtonMenuIdsForSave()</code></td>
+<td><code>mesButtonMenuIds</code></td>
+</tr>
+<tr>
+<td><code>collectOperationPermissionsForSave()</code></td>
+<td><code>operationPermissions</code></td>
+</tr>
+<tr>
+<td><code>collectOperationReplaceObjectIdsForSave()</code></td>
+<td><code>operationReplaceObjectIds</code></td>
+</tr>
+</tbody></table>
+<p>连同 <code>roleIds</code>、<code>mode</code> 一并 POST 到 <code>/eosrole/permission/save</code>。</p>
+<hr>
+<h2 id="8-验证-SQL"><a href="#8-验证-SQL" class="headerlink" title="8. 验证 SQL"></a>8. 验证 SQL</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- NodeID 与 ObjectID 对照</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    t.NodeID,</span><br><span class="line">    RTRIM(t.NodeCaption) <span class="keyword">AS</span> MenuCaption,</span><br><span class="line">    t.ParentID,</span><br><span class="line">    t.ObjectID           <span class="keyword">AS</span> TreeObjectID,</span><br><span class="line">    o.ObjectID           <span class="keyword">AS</span> RegObjectID,</span><br><span class="line">    o.TypeID,</span><br><span class="line">    o.OwnerID</span><br><span class="line"><span class="keyword">FROM</span> messys.dbo.Tree t</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> messys.dbo.ObjectRegister o <span class="keyword">ON</span> o.OwnerID <span class="operator">=</span> t.NodeID</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> t.NodeID;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- UniqueNO 当前序列</span></span><br><span class="line"><span class="keyword">SELECT</span> NName, <span class="keyword">No</span> <span class="keyword">FROM</span> messys.dbo.UniqueNO <span class="keyword">WHERE</span> NName <span class="operator">=</span> <span class="string">&#x27;tree&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="9-相关代码路径"><a href="#9-相关代码路径" class="headerlink" title="9. 相关代码路径"></a>9. 相关代码路径</h2><table>
+<thead>
+<tr>
+<th>环节</th>
+<th>路径</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NodeID 分配</td>
+<td><code>TreeServiceImpl.getNextNodeIdForTree()</code></td>
+</tr>
+<tr>
+<td>ObjectID 分配</td>
+<td><code>TreeServiceImpl.saveObjectRegisterForTree()</code></td>
+</tr>
+<tr>
+<td>新增&#x2F;同步&#x2F;复制</td>
+<td><code>TreeServiceImpl.addNode</code> &#x2F; <code>syncFromSysMenu</code> &#x2F; <code>copyMenu</code></td>
+</tr>
+<tr>
+<td>权限树 API</td>
+<td><code>TreeServiceImpl.listTreeForPermission()</code>、<code>EosRoleController</code></td>
+</tr>
+<tr>
+<td>菜单类型 &#x2F; sysMenuId</td>
+<td><code>EosMenuTypeHelper</code>、<code>SysMenuEosNodeService</code></td>
+</tr>
+<tr>
+<td>菜单「执行」读写</td>
+<td><code>EosRolePermissionServiceImpl</code></td>
+</tr>
+<tr>
+<td>ERP&#x2F;MES 扩展保存</td>
+<td><code>EosRoleObjectPermissionServiceImpl</code></td>
+</tr>
+<tr>
+<td>业务 ObjectID 解析</td>
+<td><code>EosMenuObjectResolver</code></td>
+</tr>
+<tr>
+<td>实体</td>
+<td><code>TreeEntity</code>、<code>ObjectRegisterEntity</code>、<code>StPermissionEntity</code></td>
+</tr>
+<tr>
+<td>前端</td>
+<td><code>static/js/modules/security/eosrole.js</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="10-修订记录"><a href="#10-修订记录" class="headerlink" title="10. 修订记录"></a>10. 修订记录</h2><table>
+<thead>
+<tr>
+<th>日期</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2026-06-16</td>
+<td>初版：梳理 Tree NodeID 与 ObjectID 从数据库到前端权限树的完整链路</td>
+</tr>
+<tr>
+<td>2026-06-16</td>
+<td>补充 NodeID 在 Tree.Functions URL 中作为 menuId 参数的说明</td>
+</tr>
+<tr>
+<td>2026-07-01</td>
+<td>补充业务 ObjectID 与 NodeID 非 OwnerID 关联及 eosrole 解析路径</td>
+</tr>
+<tr>
+<td>2026-07-31</td>
+<td>按最新实现修订：权限树补 <code>menuType</code>&#x2F;<code>sysMenuId</code>；save&#x2F;前端补 MES 与 ERP 扩展字段；代码路径补 ObjectPermission &#x2F; Resolver</td>
+</tr>
+</tbody></table>
+]]></content>
+      <tags>
+        <tag>MES</tag>
+        <tag>EOS</tag>
+        <tag>权限</tag>
+        <tag>zTree</tag>
+        <tag>SQL Server</tag>
       </tags>
   </entry>
   <entry>
@@ -1195,535 +1721,95 @@
         <tag>MES</tag>
         <tag>EOS</tag>
         <tag>权限</tag>
-        <tag>RBAC</tag>
         <tag>SQL Server</tag>
+        <tag>RBAC</tag>
       </tags>
   </entry>
   <entry>
-    <title>EOS 菜单树 NodeID 与 ObjectID 说明</title>
-    <url>/2026/07/31/eos-role-tree-nodeid-objectid/</url>
-    <content><![CDATA[<p>本文档说明 eosrole 页面「配置 EOS 菜单权限」树节点中 <strong>NodeID</strong>（前端 zTree 的 <code>id</code>）与 <strong>ObjectID</strong>（前端 <code>objectId</code>）的含义、数据库来源、后端组装与前端使用方式。</p>
-<blockquote>
-<p>关联文档：<a href="/2026/07/31/eos-role-menu-relationship/">EOS 菜单与角色关联关系说明</a></p>
-<p><strong>2026-07-31 更新</strong>：权限树接口额外返回 <code>menuType</code> &#x2F; <code>sysMenuId</code>；保存 body 含 MES 按钮与 ERP 操作扩展字段。</p>
-</blockquote>
-<h2 id="结论摘要"><a href="#结论摘要" class="headerlink" title="结论摘要"></a>结论摘要</h2><table>
-<thead>
-<tr>
-<th>前端字段</th>
-<th>含义</th>
-<th>数据库来源</th>
-<th>主要用途</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>zTree <code>id</code></td>
-<td>菜单节点 ID</td>
-<td><code>messys.Tree.NodeID</code></td>
-<td>树结构、父子关系（<code>pId</code>）；前端勾选态缓存键</td>
-</tr>
-<tr>
-<td>zTree <code>objectId</code></td>
-<td>EOS 权限对象 ID</td>
-<td><code>messys.Tree.ObjectID</code> &#x3D; <code>messys.ObjectRegister.ObjectID</code></td>
-<td>角色菜单授权（<code>STPermission.ObjectID</code>，「执行」）</td>
-</tr>
-<tr>
-<td>zTree <code>menuType</code></td>
-<td>菜单类型</td>
-<td><code>EosMenuTypeHelper.resolveMenuType</code></td>
-<td><code>mes</code> &#x2F; <code>erp</code> &#x2F; <code>folder</code>，决定右侧详情面板</td>
-</tr>
-<tr>
-<td>zTree <code>sysMenuId</code></td>
-<td>MES 菜单 ID</td>
-<td>优先 <code>sys_menu_eos_node</code>，否则 <code>NodeDesc=MES_MENU:</code></td>
-<td>MES 菜单&#x2F;按钮写入 <code>sys_role_menu</code></td>
-</tr>
-</tbody></table>
-<p><strong>NodeID 与 ObjectID 是两套独立编号体系</strong>，不可混用。角色菜单「执行」授权必须使用 <strong>ObjectID</strong>；NodeID 用于树层级与 detail 查询参数。</p>
-<hr>
-<h2 id="1-NodeID-是什么"><a href="#1-NodeID-是什么" class="headerlink" title="1. NodeID 是什么"></a>1. NodeID 是什么</h2><p><code>NodeID</code> 是 EOS 菜单树 <code>messys.dbo.Tree</code> 的主键，标识一个菜单&#x2F;目录节点在树中的位置。</p>
-<p>在 MES 前端 zTree 中，NodeID 映射为节点的 **<code>id</code>**（<code>idKey: &quot;id&quot;</code>），<code>ParentID</code> 映射为 **<code>pId</code>**，用于渲染树形结构与展开&#x2F;折叠。前端勾选态 <code>permissionCheckedNodeIds</code> 也按 NodeID 缓存。</p>
-<p><strong>NodeID 不写入 STPermission</strong>。权限表引用的是 ObjectID。detail 接口用 <code>nodeId</code> 定位节点后再解析业务 ObjectID。</p>
-<hr>
-<h2 id="2-NodeID-从哪来"><a href="#2-NodeID-从哪来" class="headerlink" title="2. NodeID 从哪来"></a>2. NodeID 从哪来</h2><h3 id="2-1-数据库表"><a href="#2-1-数据库表" class="headerlink" title="2.1 数据库表"></a>2.1 数据库表</h3><table>
-<thead>
-<tr>
-<th>表</th>
-<th>库</th>
-<th>字段</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>Tree</code></td>
-<td>messys</td>
-<td><code>NodeID</code></td>
-<td>菜单节点主键</td>
-</tr>
-<tr>
-<td><code>Tree</code></td>
-<td>messys</td>
-<td><code>ParentID</code></td>
-<td>父节点 NodeID（根为 0）</td>
-</tr>
-<tr>
-<td><code>UniqueNO</code></td>
-<td>messys</td>
-<td><code>No</code></td>
-<td>下一个可用 NodeID（<code>NName=&#39;tree&#39;</code>）</td>
-</tr>
-</tbody></table>
-<h3 id="2-2-MES-新建节点时的分配逻辑"><a href="#2-2-MES-新建节点时的分配逻辑" class="headerlink" title="2.2 MES 新建节点时的分配逻辑"></a>2.2 MES 新建节点时的分配逻辑</h3><p>MES 通过 <code>TreeServiceImpl.getNextNodeIdForTree()</code> 从 <code>UniqueNO</code> 表取号：</p>
-<ol>
-<li>悲观锁查询 <code>UniqueNO</code> 中 <code>NName=&#39;tree&#39;</code> 的记录（<code>PESSIMISTIC_WRITE</code>）</li>
-<li>取当前 <code>No</code> 作为新 NodeID</li>
-<li>将 <code>No + 1</code> 写回，占用该编号</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// TreeServiceImpl.getNextNodeIdForTree()</span></span><br><span class="line"><span class="type">UniqueNOEntity</span> <span class="variable">row</span> <span class="operator">=</span> uniqueNODao.findByNnameForUpdate(UNIQUE_NO_NAME_TREE);</span><br><span class="line"><span class="type">int</span> <span class="variable">currentNo</span> <span class="operator">=</span> row.getNo();</span><br><span class="line">row.setNo(currentNo + <span class="number">1</span>);</span><br><span class="line">uniqueNODao.save(row);</span><br><span class="line"><span class="keyword">return</span> Long.valueOf(currentNo);</span><br></pre></td></tr></table></figure>
+    <title>kingbase</title>
+    <url>/2024/09/02/kingbase/</url>
+    <content><![CDATA[<h1 id="kingbase使用问题"><a href="#kingbase使用问题" class="headerlink" title="kingbase使用问题"></a>kingbase使用问题</h1><h2 id="乱码问题"><a href="#乱码问题" class="headerlink" title="乱码问题"></a>乱码问题</h2><p>创建gb18030的数据库，可以解决。</p>
+<img src="/2024/09/02/kingbase/1725264522588.png" class="" width="1725264522588">
 
-<h3 id="2-3-触发-NodeID-分配的操作"><a href="#2-3-触发-NodeID-分配的操作" class="headerlink" title="2.3 触发 NodeID 分配的操作"></a>2.3 触发 NodeID 分配的操作</h3><table>
-<thead>
-<tr>
-<th>操作</th>
-<th>方法</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>新增菜单节点</td>
-<td><code>TreeServiceImpl.addNode</code></td>
-<td>先 <code>getNextNodeIdForTree()</code>，再写 Tree</td>
-</tr>
-<tr>
-<td>sys_menu 同步</td>
-<td><code>TreeServiceImpl.syncFromSysMenu</code></td>
-<td>每个同步节点分配新 NodeID</td>
-</tr>
-<tr>
-<td>复制菜单</td>
-<td><code>TreeServiceImpl.copyMenu</code></td>
-<td>源节点及子树每个节点各分配新 NodeID</td>
-</tr>
-<tr>
-<td>交接班菜单批量创建</td>
-<td><code>createShiftLogDispatchMenus</code> → <code>addNode</code></td>
-<td>同上</td>
-</tr>
-</tbody></table>
-<h3 id="2-4-EOS-原生-历史数据"><a href="#2-4-EOS-原生-历史数据" class="headerlink" title="2.4 EOS 原生 &#x2F; 历史数据"></a>2.4 EOS 原生 &#x2F; 历史数据</h3><p>在 MES 介入之前，NodeID 可能由 EOS 客户端或其他工具写入 <code>Tree</code>，同样依赖 <code>UniqueNO</code> 序列或历史遗留编号。MES 只保证<strong>新增&#x2F;同步&#x2F;复制</strong>时走 <code>getNextNodeIdForTree()</code> 逻辑。</p>
-<h3 id="2-5-NodeID-在-Functions-中的用途"><a href="#2-5-NodeID-在-Functions-中的用途" class="headerlink" title="2.5 NodeID 在 Functions 中的用途"></a>2.5 NodeID 在 Functions 中的用途</h3><p><code>Tree.Functions</code> 字段保存菜单跳转 URL，其中 <strong><code>menuId</code> 参数值为 NodeID</strong>（不是 ObjectID）。例如同步 sys_menu 时：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;baseUrl&#125;/&#123;url&#125;?token=%Token%&amp;menuId=&#123;NodeID&#125;</span><br></pre></td></tr></table></figure>
+<img src="/2024/09/02/kingbase/1725264492761.png" class="" width="1725264492761">
 
-<p>复制菜单时，<code>TreeServiceImpl</code> 会将 <code>Functions</code> 里的 <code>menuId=旧NodeID</code> 替换为 <code>menuId=新NodeID</code>。</p>
-<h3 id="2-6-NodeID-生命周期"><a href="#2-6-NodeID-生命周期" class="headerlink" title="2.6 NodeID 生命周期"></a>2.6 NodeID 生命周期</h3><ul>
-<li><strong>查询</strong>：<code>treeDao.findAll(...)</code>、<code>queryObject(nodeid)</code> 等</li>
-<li><strong>删除</strong>：<code>delete</code> &#x2F; <code>deleteBatch</code> 按 NodeID 删除 Tree，并先 <code>ObjectRegisterDao.deleteByOwnerId(NodeID)</code> 清理关联对象</li>
+<p>更换驱动</p>
+<img src="/2024/09/02/kingbase/1725264867078.png" class="" width="1725264867078">
+
+<h2 id="不支持10"><a href="#不支持10" class="headerlink" title="不支持10"></a>不支持10</h2><img src="/2024/09/02/kingbase/1725264959146.png" class="" width="1725264959146">
+
+<h2 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pgjdbc: autodetected server-encoding to be ISO-8859-1, if the message is not readable, please check database logs and/or host, port, dbname, user, password, pg_hba.conf</span><br></pre></td></tr></table></figure>
+
+<h2 id="错误-1"><a href="#错误-1" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">See nested exception: org.postgresql.util.PSQLException: ERROR: 关系 &quot;qrtz_triggers&quot; 不存在</span><br></pre></td></tr></table></figure>
+
+<img src="/2024/09/02/kingbase/1725267331659.png" class="" width="1725267331659">
+
+<h2 id="查询数据库编码"><a href="#查询数据库编码" class="headerlink" title="查询数据库编码"></a>查询数据库编码</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT pg_encoding_to_char(encoding) FROM pg_database WHERE datname = &#x27;your_database_name&#x27;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="对模式xx权限不够"><a href="#对模式xx权限不够" class="headerlink" title="对模式xx权限不够"></a>对模式xx权限不够</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Caused by: org.postgresql.util.PSQLException: ERROR: 对模式 cems 权限不够</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>MES 本周工作小结（2026-07-28 ~ 08-01）</title>
+    <url>/2026/08/01/mes-weekly-2026-w31/</url>
+    <content><![CDATA[<img src="/2026/08/01/mes-weekly-2026-w31/cover.png" class="">
+
+<p>本周（7&#x2F;28–8&#x2F;1）工作以 <strong>MES-AI 能耗分析与对话表格展示</strong> 为主线，并落地了 Eos 工程师日志、船舶作业校验与一批文档。约 74 次提交，合并 10 个 PR（#357–#367）。</p>
+<h2 id="一、MES-AI-能耗智能体（主线）"><a href="#一、MES-AI-能耗智能体（主线）" class="headerlink" title="一、MES-AI 能耗智能体（主线）"></a>一、MES-AI 能耗智能体（主线）</h2><ul>
+<li><strong>SQL 工具与参数</strong>：完善能耗工具参数解析（#357）、同比环比工具、装置&#x2F;时段槽位提取；多轮按运行日志纠偏（装置识别、明细 vs 汇总、单位标注等）。</li>
+<li><strong>日表查询</strong>：新增 <code>energy_nhfx_day</code> &#x2F; <code>Z_View_NHFX_TABLE</code> 日表多装置查询（#363），持续修 JSON、错误处理与设计物耗字段表述。</li>
+<li><strong>表格与图表</strong>：复合表头&#x2F;列组（#358）、单元格着色（#359）、汇总行与派生率（#361）、双图（多日&#x2F;多装置）、<code>excludeFromUiTable</code> 隐藏辅助结果（#365）。</li>
+<li><strong>稳定性</strong>：<code>StoredProcToolHandler</code> 围绕 Fastjson 未闭合字符串等问题迭代，后简化控制字符预处理逻辑。</li>
+<li><strong>硬编码治理</strong>：默认模型可配置、Embedding base-url 清理等 P0 项合入（#367）。</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">  A[UniqueNO&lt;br/&gt;NName=tree] --&gt;|取 No 作为 NodeID| B[Tree.NodeID]</span><br><span class="line">  B --&gt; C[listTreeForPermission&lt;br/&gt;返回 id=NodeID]</span><br><span class="line">  C --&gt; D[zTree id / pId&lt;br/&gt;树结构展示]</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="3-ObjectID-是什么"><a href="#3-ObjectID-是什么" class="headerlink" title="3. ObjectID 是什么"></a>3. ObjectID 是什么</h2><p><code>ObjectID</code> 是 EOS 对象注册表 <code>messys.dbo.ObjectRegister</code> 的主键。每个可授权对象在 <code>ObjectRegister</code> 中注册一条记录；菜单&#x2F;目录节点对应 <strong>TypeID &#x3D; 7</strong>，并通过 <strong>OwnerID &#x3D; Tree.NodeID</strong> 与菜单树关联。</p>
-<p>MES 维护菜单时会将 ObjectID <strong>冗余写入</strong> <code>Tree.ObjectID</code>，便于权限树接口一次查询带出。</p>
-<p>在角色菜单授权场景下，前端勾选菜单后提交的是 <strong>objectId 列表</strong>，写入 <code>mesdata.dbo.STPermission.ObjectID</code>（配合 <code>UserID</code>&#x3D;角色 OID、<code>Oprate</code>&#x3D;「执行」、<code>Permission</code>&#x3D;1）。</p>
-<hr>
-<h2 id="4-ObjectID-从哪来"><a href="#4-ObjectID-从哪来" class="headerlink" title="4. ObjectID 从哪来"></a>4. ObjectID 从哪来</h2><h3 id="4-1-数据库表"><a href="#4-1-数据库表" class="headerlink" title="4.1 数据库表"></a>4.1 数据库表</h3><table>
-<thead>
-<tr>
-<th>层级</th>
-<th>库&#x2F;表</th>
-<th>字段</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>权威主键</td>
-<td>messys <code>ObjectRegister</code></td>
-<td><code>ObjectID</code></td>
-<td>全局对象 ID（自增：MAX+1）</td>
-</tr>
-<tr>
-<td>关联</td>
-<td>messys <code>ObjectRegister</code></td>
-<td><code>OwnerID</code></td>
-<td>&#x3D; <code>Tree.NodeID</code></td>
-</tr>
-<tr>
-<td>类型</td>
-<td>messys <code>ObjectRegister</code></td>
-<td><code>TypeID</code></td>
-<td>MES 新建菜单固定为 <strong>7</strong>（菜单&#x2F;目录）</td>
-</tr>
-<tr>
-<td>冗余</td>
-<td>messys <code>Tree</code></td>
-<td><code>ObjectID</code></td>
-<td>与 <code>ObjectRegister.ObjectID</code> 一致</td>
-</tr>
-<tr>
-<td>授权</td>
-<td>mesdata <code>STPermission</code></td>
-<td><code>ObjectID</code></td>
-<td>引用 <code>ObjectRegister.ObjectID</code></td>
-</tr>
-</tbody></table>
-<p>关系：<code>Tree.NodeID</code> ← <code>ObjectRegister.OwnerID</code>；<code>Tree.ObjectID</code> &#x3D; <code>ObjectRegister.ObjectID</code>。</p>
-<h3 id="4-2-MES-新建节点时的分配逻辑"><a href="#4-2-MES-新建节点时的分配逻辑" class="headerlink" title="4.2 MES 新建节点时的分配逻辑"></a>4.2 MES 新建节点时的分配逻辑</h3><p><code>TreeServiceImpl.saveObjectRegisterForTree()</code>：</p>
-<ol>
-<li><code>ObjectRegisterDao.findMaxObjectId()</code> 取 MAX(ObjectID) + 1</li>
-<li>插入 <code>ObjectRegister</code>（<code>TypeID=7</code>，<code>OwnerID=NodeID</code>，<code>Object</code>&#x3D;菜单名）</li>
-<li>将返回的 <code>ObjectID</code> 写入 <code>Tree.ObjectID</code></li>
-</ol>
-<p>与 NodeID 分配在同一事务内完成（如 <code>addNode</code> 先取 NodeID，再创建 ObjectRegister）。</p>
-<h3 id="4-3-触发-ObjectID-分配的操作"><a href="#4-3-触发-ObjectID-分配的操作" class="headerlink" title="4.3 触发 ObjectID 分配的操作"></a>4.3 触发 ObjectID 分配的操作</h3><p>与 NodeID 分配的操作相同（新增、同步、复制）。<strong>复制菜单时 NodeID 与 ObjectID 均重新分配</strong>，不会沿用源节点的 ObjectID。</p>
-<table>
-<thead>
-<tr>
-<th>场景</th>
-<th>ObjectID 来源</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>MES 新增 EOS 菜单节点</td>
-<td><code>saveObjectRegisterForTree</code> 新分配</td>
-</tr>
-<tr>
-<td>从 sys_menu 同步</td>
-<td>每个同步节点一条新 ObjectRegister</td>
-</tr>
-<tr>
-<td>复制菜单</td>
-<td>新 NodeID + 新 ObjectRegister + 新 ObjectID</td>
-</tr>
-<tr>
-<td>EOS 原生&#x2F;历史数据</td>
-<td>可能由 EOS 客户端写入；<code>Tree.ObjectID</code> 可能已存在</td>
-</tr>
-<tr>
-<td>失败兜底</td>
-<td><code>object == null</code> 时 <code>Tree.ObjectID = 0</code>（无有效授权对象）</td>
-</tr>
-</tbody></table>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">  A[分配 NodeID] --&gt; B[插入 ObjectRegister&lt;br/&gt;ObjectID=MAX+1]</span><br><span class="line">  B --&gt; C[Tree.ObjectID = ObjectID]</span><br><span class="line">  C --&gt; D[listTreeForPermission&lt;br/&gt;返回 objectId]</span><br><span class="line">  D --&gt; E[前端勾选提交 objectIds]</span><br><span class="line">  E --&gt; F[STPermission 写入]</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="5-NodeID-与-ObjectID-对照"><a href="#5-NodeID-与-ObjectID-对照" class="headerlink" title="5. NodeID 与 ObjectID 对照"></a>5. NodeID 与 ObjectID 对照</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Tree.NodeID       ──►  zTree.id         （树结构、ParentID 父子关系）</span><br><span class="line">Tree.ObjectID     ──►  zTree.objectId   （STPermission「执行」授权键）</span><br><span class="line"></span><br><span class="line">ObjectRegister.OwnerID  = Tree.NodeID</span><br><span class="line">ObjectRegister.ObjectID = Tree.ObjectID</span><br><span class="line">ObjectRegister.TypeID   = 7（菜单/目录）</span><br></pre></td></tr></table></figure>
-
-<table>
-<thead>
-<tr>
-<th>对比项</th>
-<th>NodeID</th>
-<th>ObjectID</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>所属表</td>
-<td><code>messys.Tree</code> 主键</td>
-<td><code>messys.ObjectRegister</code> 主键，冗余在 <code>Tree.ObjectID</code></td>
-</tr>
-<tr>
-<td>分配方式</td>
-<td><code>UniqueNO</code>（NName&#x3D;’tree’）递增</td>
-<td><code>MAX(ObjectID)+1</code></td>
-</tr>
-<tr>
-<td>前端 zTree 字段</td>
-<td><code>id</code></td>
-<td><code>objectId</code></td>
-</tr>
-<tr>
-<td>是否用于 STPermission「执行」</td>
-<td>否</td>
-<td>是</td>
-</tr>
-<tr>
-<td>复制菜单</td>
-<td>重新分配</td>
-<td>重新分配</td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="5-1-业务-ObjectID-与-NodeID-的非-OwnerID-关联"><a href="#5-1-业务-ObjectID-与-NodeID-的非-OwnerID-关联" class="headerlink" title="5.1 业务 ObjectID 与 NodeID 的非 OwnerID 关联"></a>5.1 业务 ObjectID 与 NodeID 的非 OwnerID 关联</h2><p>菜单授权与 ERP 按钮授权使用<strong>不同的 ObjectID</strong>，且业务对象的 <code>OwnerID</code> <strong>不一定</strong>等于 <code>Tree.NodeID</code>。</p>
-<table>
-<thead>
-<tr>
-<th>场景</th>
-<th>ObjectID 示例</th>
-<th>TypeID</th>
-<th>OwnerID</th>
-<th>STPermission 用途</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>菜单对象</td>
-<td>468</td>
-<td>7</td>
-<td>430</td>
-<td><code>Oprate=执行</code>, Permission&#x3D;1</td>
-</tr>
-<tr>
-<td>业务对象</td>
-<td>965</td>
-<td>1</td>
-<td>null</td>
-<td><code>Oprate=EX61:...</code>, Permission&#x3D;0</td>
-</tr>
-</tbody></table>
-<p><strong>解析路径</strong>（<code>EosMenuObjectResolver.resolveBusinessObjects</code>）：</p>
-<ol>
-<li><code>ObjectRegister.OwnerID = NodeID</code> 且 <code>TypeID != 7</code></li>
-<li><code>Tree.Functions</code> 括号内单据名 + 菜单对象名 → <code>DjDy.DjCName</code> → <code>ObjectRegister.Object = DjCName</code> 且 <code>TypeID != 7</code></li>
-<li>回退：<code>Tree.ObjectID</code> 对应 ObjectRegister（<strong>可能含 TypeID&#x3D;7</strong>）</li>
-</ol>
-<p><strong>禁止</strong>仅用 <code>OwnerID=NodeID</code> 或 <code>Tree.ObjectID</code> 推断按钮授权 ObjectID。复合页可能返回多个业务 ObjectID；同一 ObjectID 上可有多个 <code>EXxx:</code> 按钮 Oprate。</p>
-<p><code>listAvailableOperations</code>：标准操作 + ExFunction <code>EXxx:</code> + 库中已有非「执行」Oprate。</p>
-<p>示例（NodeID&#x3D;430）：菜单树 <code>objectId=468</code> 用于勾选「执行」；按钮 <code>EX61:组织架构分发</code> 写在 ObjectID&#x3D;965。</p>
-<hr>
-<h2 id="6-后端组装与-API"><a href="#6-后端组装与-API" class="headerlink" title="6. 后端组装与 API"></a>6. 后端组装与 API</h2><h3 id="6-1-权限菜单树"><a href="#6-1-权限菜单树" class="headerlink" title="6.1 权限菜单树"></a>6.1 权限菜单树</h3><ul>
-<li><strong>接口</strong>：<code>GET /eosrole/menu/tree</code>（或 <code>@RequestMapping</code>）</li>
-<li><strong>实现</strong>：<code>EosRoleController.menuTree()</code> → <code>TreeService.listTreeForPermission()</code></li>
-<li><strong>返回字段</strong>：</li>
+<h2 id="二、AI-管理端与规范"><a href="#二、AI-管理端与规范" class="headerlink" title="二、AI 管理端与规范"></a>二、AI 管理端与规范</h2><ul>
+<li>AI 列表&#x2F;编辑页统一按钮样式、导航、成功提示改用 <code>msg</code>（#364）。</li>
+<li>Cursor 规则与页面约定对齐（成功&#x2F;失败提示、按钮风格）。</li>
 </ul>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>来源</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>id</code></td>
-<td><code>Tree.NodeID</code></td>
-<td>zTree 节点 ID</td>
-</tr>
-<tr>
-<td><code>pId</code></td>
-<td><code>Tree.ParentID</code>（0 → -1）</td>
-<td>父节点</td>
-</tr>
-<tr>
-<td><code>name</code></td>
-<td><code>Tree.NodeCaption</code></td>
-<td>显示名</td>
-</tr>
-<tr>
-<td><code>objectId</code></td>
-<td><code>Tree.ObjectID</code></td>
-<td>STPermission「执行」键</td>
-</tr>
-<tr>
-<td><code>menuType</code></td>
-<td><code>EosMenuTypeHelper.resolveMenuType</code></td>
-<td><code>mes</code> &#x2F; <code>erp</code> &#x2F; <code>folder</code></td>
-</tr>
-<tr>
-<td><code>sysMenuId</code></td>
-<td><code>sys_menu_eos_node</code>，缺失时 NodeDesc fallback</td>
-<td>仅 MES 节点有值</td>
-</tr>
-</tbody></table>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// TreeServiceImpl.listTreeForPermission()</span></span><br><span class="line">m.put(<span class="string">&quot;id&quot;</span>, e.getNodeid());</span><br><span class="line">m.put(<span class="string">&quot;pId&quot;</span>, e.getParentid() == <span class="literal">null</span> || e.getParentid() == <span class="number">0</span> ? -<span class="number">1</span> : e.getParentid());</span><br><span class="line">m.put(<span class="string">&quot;name&quot;</span>, e.getNodecaption() != <span class="literal">null</span> ? e.getNodecaption().trim() : <span class="string">&quot;&quot;</span>);</span><br><span class="line">m.put(<span class="string">&quot;objectId&quot;</span>, e.getObjectid());</span><br><span class="line">m.put(<span class="string">&quot;menuType&quot;</span>, EosMenuTypeHelper.resolveMenuType(e));</span><br><span class="line">m.put(<span class="string">&quot;sysMenuId&quot;</span>, sysMenuIdLookup.get(e.getNodeid()));</span><br></pre></td></tr></table></figure>
-
-<p>与 <code>listTreeForSelect()</code>（eostree 选目录）的区别：后者<strong>不含</strong> <code>objectId</code> &#x2F; <code>menuType</code> &#x2F; <code>sysMenuId</code>，仅 <code>id</code> &#x2F; <code>pId</code> &#x2F; <code>name</code>。</p>
-<h3 id="6-2-权限查询与保存"><a href="#6-2-权限查询与保存" class="headerlink" title="6.2 权限查询与保存"></a>6.2 权限查询与保存</h3><table>
-<thead>
-<tr>
-<th>接口</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>GET /eosrole/permission/&#123;roleId&#125;</code></td>
-<td>返回已授权 <strong>objectId</strong> 列表（「执行」+ Permission&#x3D;1）</td>
-</tr>
-<tr>
-<td><code>GET /eosrole/permission/detail/&#123;roleId&#125;?nodeId=</code></td>
-<td>按 NodeID 加载对象&#x2F;按钮详情（MES 或 ERP）</td>
-</tr>
-<tr>
-<td><code>GET /eosrole/permission/mes-menu-ids/&#123;roleId&#125;</code></td>
-<td>返回 MES <code>sys_role_menu</code> 全部 menuId</td>
-</tr>
-<tr>
-<td><code>POST /eosrole/permission/save</code></td>
-<td>菜单执行 + ERP 操作 + MES 按钮</td>
-</tr>
-</tbody></table>
-<p><code>EosRolePermissionServiceImpl.queryMenuObjectIds</code> 过滤条件：<code>Oprate=执行</code> 且 <code>Permission=1</code>（<strong>当前未按 TypeID&#x3D;7 过滤</strong>）。</p>
-<p>save body（<code>EosRolePermissionSaveRequest</code>）：</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>roleIds</code></td>
-<td>EOS 角色 OID</td>
-</tr>
-<tr>
-<td><code>objectIds</code></td>
-<td>勾选菜单的 Tree.ObjectID → STPermission「执行」</td>
-</tr>
-<tr>
-<td><code>mode</code></td>
-<td><code>append</code> &#x2F; <code>replace</code></td>
-</tr>
-<tr>
-<td><code>mesMenuIds</code></td>
-<td>MES 目录&#x2F;菜单 menu_id → <code>sys_role_menu</code></td>
-</tr>
-<tr>
-<td><code>mesButtonMenuIds</code></td>
-<td>MES 按钮 menu_id → <code>sys_role_menu</code></td>
-</tr>
-<tr>
-<td><code>operationPermissions</code></td>
-<td>ERP <code>&#123;objectId, oprate, granted&#125;</code></td>
-</tr>
-<tr>
-<td><code>operationReplaceObjectIds</code></td>
-<td>replace 时清理非「执行」行的业务 ObjectID</td>
-</tr>
-</tbody></table>
-<p>保存委托：先 <code>EosRolePermissionServiceImpl</code> 写「执行」，再 <code>EosRoleObjectPermissionServiceImpl.saveMesAndObjectPermissions</code> 写 ERP&#x2F;MES。</p>
-<hr>
-<h2 id="7-前端使用（eosrole-js）"><a href="#7-前端使用（eosrole-js）" class="headerlink" title="7. 前端使用（eosrole.js）"></a>7. 前端使用（eosrole.js）</h2><h3 id="7-1-zTree-配置"><a href="#7-1-zTree-配置" class="headerlink" title="7.1 zTree 配置"></a>7.1 zTree 配置</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> permissionTreeSetting = &#123;</span><br><span class="line">    <span class="attr">data</span>: &#123;</span><br><span class="line">        <span class="attr">simpleData</span>: &#123;</span><br><span class="line">            <span class="attr">enable</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">idKey</span>: <span class="string">&quot;id&quot;</span>,      <span class="comment">// = NodeID</span></span><br><span class="line">            <span class="attr">pIdKey</span>: <span class="string">&quot;pId&quot;</span>,   <span class="comment">// = ParentID</span></span><br><span class="line">            <span class="attr">rootPId</span>: -<span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">check</span>: &#123; <span class="attr">enable</span>: <span class="literal">true</span>, <span class="attr">nocheckInherit</span>: <span class="literal">true</span> &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h3 id="7-2-加载与回显"><a href="#7-2-加载与回显" class="headerlink" title="7.2 加载与回显"></a>7.2 加载与回显</h3><ol>
-<li><code>loadPermissionMenuTree</code> → 请求 <code>/eosrole/menu/tree</code>，用 <code>treeList</code> 初始化 zTree（含 <code>menuType</code> &#x2F; <code>sysMenuId</code>）</li>
-<li>单角色 + replace 模式：<ul>
-<li><code>/eosrole/permission/&#123;roleId&#125;</code> → 按 <strong>objectId</strong> 勾选菜单树（不是 <code>id</code>）</li>
-<li><code>/eosrole/permission/mes-menu-ids/&#123;roleId&#125;</code> → 拆分 MES 菜单 ID &#x2F; 按钮 ID 到 <code>permissionMesMenuIds</code> 等</li>
+<h2 id="三、Eos-安全任务"><a href="#三、Eos-安全任务" class="headerlink" title="三、Eos &#x2F; 安全任务"></a>三、Eos &#x2F; 安全任务</h2><ul>
+<li>新增 <strong>Eos 工程师日志</strong> 模块（OpenService 客户端、定时任务、装置配置、测试）（#366）。</li>
+<li>日常用 skill&#x2F;脚本按 token 批量生成各装置工程师日志。</li>
+<li>补充&#x2F;更新 EOS 角色-菜单、角色树 nodeId&#x2F;objectId 文档。</li>
 </ul>
-</li>
-<li>点击节点 → <code>/eosrole/permission/detail/&#123;roleId&#125;?nodeId=</code>：<ul>
-<li><code>menuType=mes</code>：展示 MES 按钮勾选</li>
-<li><code>menuType=erp</code>：展示 ERP 操作「禁止」勾选</li>
-<li><code>menuType=folder</code>：目录摘要</li>
+<h2 id="四、船舶作业"><a href="#四、船舶作业" class="headerlink" title="四、船舶作业"></a>四、船舶作业</h2><ul>
+<li>终端侧强制&#x2F;校验 <code>vesselOperationDynamicId</code>（#362）。</li>
+<li>完善到离港接口与 <code>mes-measure-vessel</code> ↔ <code>mes-vessel-operation</code> 调用说明文档。</li>
 </ul>
-</li>
-</ol>
-<p>勾选 MES 节点时把 <code>sysMenuId</code> 加入 <code>permissionMesMenuIds</code>；取消勾选时清理对应按钮态。</p>
-<h3 id="7-3-保存"><a href="#7-3-保存" class="headerlink" title="7.3 保存"></a>7.3 保存</h3><p><code>savePermission</code> 收集并提交：</p>
-<table>
-<thead>
-<tr>
-<th>收集方法</th>
-<th>字段</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>collectPermissionObjectIds()</code></td>
-<td><code>objectIds</code>（勾选节点的 <strong>objectId</strong>，不是 <code>id</code>）</td>
-</tr>
-<tr>
-<td><code>collectMesMenuIdsForSave()</code></td>
-<td><code>mesMenuIds</code></td>
-</tr>
-<tr>
-<td><code>collectMesButtonMenuIdsForSave()</code></td>
-<td><code>mesButtonMenuIds</code></td>
-</tr>
-<tr>
-<td><code>collectOperationPermissionsForSave()</code></td>
-<td><code>operationPermissions</code></td>
-</tr>
-<tr>
-<td><code>collectOperationReplaceObjectIdsForSave()</code></td>
-<td><code>operationReplaceObjectIds</code></td>
-</tr>
-</tbody></table>
-<p>连同 <code>roleIds</code>、<code>mode</code> 一并 POST 到 <code>/eosrole/permission/save</code>。</p>
+<h2 id="五、其他"><a href="#五、其他" class="headerlink" title="五、其他"></a>五、其他</h2><ul>
+<li>mesdata 存储过程&#x2F;函数梳理、能耗模型数据核对、日志错误报告更新。</li>
+<li>README 与若干 AI&#x2F;业务 PDF 文档整理。</li>
+</ul>
+<h2 id="六、周末进行中"><a href="#六、周末进行中" class="headerlink" title="六、周末进行中"></a>六、周末进行中</h2><p>本地仍有未合入改动：<code>ai-chat-render.js</code>、若干 AI HTML，以及 <code>index.html</code> &#x2F; <code>main.css</code>（偏首页&#x2F;样式微调）。</p>
 <hr>
-<h2 id="8-验证-SQL"><a href="#8-验证-SQL" class="headerlink" title="8. 验证 SQL"></a>8. 验证 SQL</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- NodeID 与 ObjectID 对照</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    t.NodeID,</span><br><span class="line">    RTRIM(t.NodeCaption) <span class="keyword">AS</span> MenuCaption,</span><br><span class="line">    t.ParentID,</span><br><span class="line">    t.ObjectID           <span class="keyword">AS</span> TreeObjectID,</span><br><span class="line">    o.ObjectID           <span class="keyword">AS</span> RegObjectID,</span><br><span class="line">    o.TypeID,</span><br><span class="line">    o.OwnerID</span><br><span class="line"><span class="keyword">FROM</span> messys.dbo.Tree t</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> messys.dbo.ObjectRegister o <span class="keyword">ON</span> o.OwnerID <span class="operator">=</span> t.NodeID</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> t.NodeID;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- UniqueNO 当前序列</span></span><br><span class="line"><span class="keyword">SELECT</span> NName, <span class="keyword">No</span> <span class="keyword">FROM</span> messys.dbo.UniqueNO <span class="keyword">WHERE</span> NName <span class="operator">=</span> <span class="string">&#x27;tree&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="9-相关代码路径"><a href="#9-相关代码路径" class="headerlink" title="9. 相关代码路径"></a>9. 相关代码路径</h2><table>
-<thead>
-<tr>
-<th>环节</th>
-<th>路径</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>NodeID 分配</td>
-<td><code>TreeServiceImpl.getNextNodeIdForTree()</code></td>
-</tr>
-<tr>
-<td>ObjectID 分配</td>
-<td><code>TreeServiceImpl.saveObjectRegisterForTree()</code></td>
-</tr>
-<tr>
-<td>新增&#x2F;同步&#x2F;复制</td>
-<td><code>TreeServiceImpl.addNode</code> &#x2F; <code>syncFromSysMenu</code> &#x2F; <code>copyMenu</code></td>
-</tr>
-<tr>
-<td>权限树 API</td>
-<td><code>TreeServiceImpl.listTreeForPermission()</code>、<code>EosRoleController</code></td>
-</tr>
-<tr>
-<td>菜单类型 &#x2F; sysMenuId</td>
-<td><code>EosMenuTypeHelper</code>、<code>SysMenuEosNodeService</code></td>
-</tr>
-<tr>
-<td>菜单「执行」读写</td>
-<td><code>EosRolePermissionServiceImpl</code></td>
-</tr>
-<tr>
-<td>ERP&#x2F;MES 扩展保存</td>
-<td><code>EosRoleObjectPermissionServiceImpl</code></td>
-</tr>
-<tr>
-<td>业务 ObjectID 解析</td>
-<td><code>EosMenuObjectResolver</code></td>
-</tr>
-<tr>
-<td>实体</td>
-<td><code>TreeEntity</code>、<code>ObjectRegisterEntity</code>、<code>StPermissionEntity</code></td>
-</tr>
-<tr>
-<td>前端</td>
-<td><code>static/js/modules/security/eosrole.js</code></td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="10-修订记录"><a href="#10-修订记录" class="headerlink" title="10. 修订记录"></a>10. 修订记录</h2><table>
-<thead>
-<tr>
-<th>日期</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>2026-06-16</td>
-<td>初版：梳理 Tree NodeID 与 ObjectID 从数据库到前端权限树的完整链路</td>
-</tr>
-<tr>
-<td>2026-06-16</td>
-<td>补充 NodeID 在 Tree.Functions URL 中作为 menuId 参数的说明</td>
-</tr>
-<tr>
-<td>2026-07-01</td>
-<td>补充业务 ObjectID 与 NodeID 非 OwnerID 关联及 eosrole 解析路径</td>
-</tr>
-<tr>
-<td>2026-07-31</td>
-<td>按最新实现修订：权限树补 <code>menuType</code>&#x2F;<code>sysMenuId</code>；save&#x2F;前端补 MES 与 ERP 扩展字段；代码路径补 ObjectPermission &#x2F; Resolver</td>
-</tr>
-</tbody></table>
+<p><strong>一句话</strong>：本周把能耗 AI 从「能查」推进到「表格好看、图表可用、结果可控、配置可治理」，并完成工程师日志自动化与船舶动态 ID 校验。</p>
 ]]></content>
       <tags>
         <tag>MES</tag>
-        <tag>EOS</tag>
-        <tag>权限</tag>
-        <tag>SQL Server</tag>
-        <tag>zTree</tag>
+        <tag>mes-ai</tag>
+        <tag>工作小结</tag>
+        <tag>能耗分析</tag>
+        <tag>Eos</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2026/07/06/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><span id="more"></span>
+
+<h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>health</title>
@@ -1787,138 +1873,6 @@
 ]]></content>
       <tags>
         <tag>health</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2026/07/06/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><span id="more"></span>
-
-<h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>kingbase</title>
-    <url>/2024/09/02/kingbase/</url>
-    <content><![CDATA[<h1 id="kingbase使用问题"><a href="#kingbase使用问题" class="headerlink" title="kingbase使用问题"></a>kingbase使用问题</h1><h2 id="乱码问题"><a href="#乱码问题" class="headerlink" title="乱码问题"></a>乱码问题</h2><p>创建gb18030的数据库，可以解决。</p>
-<img src="/2024/09/02/kingbase/1725264522588.png" class="" width="1725264522588">
-
-<img src="/2024/09/02/kingbase/1725264492761.png" class="" width="1725264492761">
-
-<p>更换驱动</p>
-<img src="/2024/09/02/kingbase/1725264867078.png" class="" width="1725264867078">
-
-<h2 id="不支持10"><a href="#不支持10" class="headerlink" title="不支持10"></a>不支持10</h2><img src="/2024/09/02/kingbase/1725264959146.png" class="" width="1725264959146">
-
-<h2 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pgjdbc: autodetected server-encoding to be ISO-8859-1, if the message is not readable, please check database logs and/or host, port, dbname, user, password, pg_hba.conf</span><br></pre></td></tr></table></figure>
-
-<h2 id="错误-1"><a href="#错误-1" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">See nested exception: org.postgresql.util.PSQLException: ERROR: 关系 &quot;qrtz_triggers&quot; 不存在</span><br></pre></td></tr></table></figure>
-
-<img src="/2024/09/02/kingbase/1725267331659.png" class="" width="1725267331659">
-
-<h2 id="查询数据库编码"><a href="#查询数据库编码" class="headerlink" title="查询数据库编码"></a>查询数据库编码</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT pg_encoding_to_char(encoding) FROM pg_database WHERE datname = &#x27;your_database_name&#x27;;</span><br></pre></td></tr></table></figure>
-
-<h2 id="对模式xx权限不够"><a href="#对模式xx权限不够" class="headerlink" title="对模式xx权限不够"></a>对模式xx权限不够</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Caused by: org.postgresql.util.PSQLException: ERROR: 对模式 cems 权限不够</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
-    <title>在 Claude Code CLI 中使用 DeepSeek 作为模型</title>
-    <url>/2026/03/15/use-deepseek-as-model-in-claude-code-cli/</url>
-    <content><![CDATA[<p>Claude Code 是 Anthropic 的 AI 编程助手，默认只使用 Anthropic 的模型。通过环境变量 <code>ANTHROPIC_BASE_URL</code> 可以切换 API 端点，DeepSeek 官方提供了 <strong>Anthropic API 兼容</strong> 的接口，因此可以直接把 Claude Code CLI 接到 DeepSeek，无需代理或第三方路由。</p>
-<p>本文介绍如何配置 Claude Code CLI，使其使用 DeepSeek 作为后端模型。</p>
-<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><ul>
-<li>已安装 <a href="https://claude.ai/code">Claude Code</a>（官方安装：<code>curl -fsSL https://claude.ai/install.sh | bash</code>）</li>
-<li>已注册 <a href="https://platform.deepseek.com/">DeepSeek 开放平台</a> 并获取 <strong>API Key</strong>（<a href="https://platform.deepseek.com/api-keys">API Keys 页面</a>）</li>
-</ul>
-<h2 id="方式一：官方-Anthropic-兼容-API（推荐）"><a href="#方式一：官方-Anthropic-兼容-API（推荐）" class="headerlink" title="方式一：官方 Anthropic 兼容 API（推荐）"></a>方式一：官方 Anthropic 兼容 API（推荐）</h2><p>DeepSeek 提供与 Anthropic Messages API 兼容的端点，只需改环境变量即可让 Claude Code 走 DeepSeek。</p>
-<h3 id="1-配置环境变量"><a href="#1-配置环境变量" class="headerlink" title="1. 配置环境变量"></a>1. 配置环境变量</h3><p>在终端中执行（将 <code>YOUR_DEEPSEEK_API_KEY</code> 换成你的 DeepSeek API Key）：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># DeepSeek Anthropic 兼容 API 端点</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定使用的模型（见下方「模型选择」）</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：避免长输出时客户端超时（单位毫秒，例如 10 分钟）</span></span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：禁用非必要流量（仅在使用第三方 API 时建议）</span></span><br><span class="line"><span class="built_in">export</span> CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-启动-Claude-Code"><a href="#2-启动-Claude-Code" class="headerlink" title="2. 启动 Claude Code"></a>2. 启动 Claude Code</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> your-project</span><br><span class="line">claude</span><br></pre></td></tr></table></figure>
-
-<p>之后 Claude Code 的请求会发往 DeepSeek，使用你配置的模型。</p>
-<h3 id="3-写入-Shell-配置（长期使用）"><a href="#3-写入-Shell-配置（长期使用）" class="headerlink" title="3. 写入 Shell 配置（长期使用）"></a>3. 写入 Shell 配置（长期使用）</h3><p>避免每次手动 export，可写入 <code>~/.bashrc</code>、<code>~/.zshrc</code> 或 Fish 的 <code>config.fish</code>。</p>
-<p><strong>Bash &#x2F; Zsh 示例：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># DeepSeek + Claude Code</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br></pre></td></tr></table></figure>
-
-<p><strong>Fish 示例：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function claude-deepseek</span><br><span class="line">    set -x ANTHROPIC_BASE_URL https://api.deepseek.com/anthropic</span><br><span class="line">    set -x ANTHROPIC_AUTH_TOKEN &quot;YOUR_DEEPSEEK_API_KEY&quot;</span><br><span class="line">    set -x ANTHROPIC_MODEL deepseek-chat</span><br><span class="line">    set -x ANTHROPIC_SMALL_FAST_MODEL deepseek-chat</span><br><span class="line">    set -x API_TIMEOUT_MS 600000</span><br><span class="line">    claude $argv</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<p>之后在 Fish 中执行 <code>claude-deepseek</code> 即用 DeepSeek；其他终端保持默认则仍用 Anthropic。</p>
-<h2 id="模型选择"><a href="#模型选择" class="headerlink" title="模型选择"></a>模型选择</h2><p>DeepSeek 在 Anthropic 兼容接口中常用模型名：</p>
-<table>
-<thead>
-<tr>
-<th>模型名</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>deepseek-chat</code></td>
-<td>通用对话，响应快，适合日常编码与问答</td>
-</tr>
-<tr>
-<td><code>deepseek-reasoner</code></td>
-<td>推理模式，步骤更详细，适合复杂分析与多步推理</td>
-</tr>
-</tbody></table>
-<p>通过修改 <code>ANTHROPIC_MODEL</code> 和 <code>ANTHROPIC_SMALL_FAST_MODEL</code> 即可切换。若传入 DeepSeek 不支持的模型名，接口会自动映射到 <code>deepseek-chat</code>。</p>
-<h2 id="方式二：通过-Claude-Code-Router-OpenRouter"><a href="#方式二：通过-Claude-Code-Router-OpenRouter" class="headerlink" title="方式二：通过 Claude Code Router + OpenRouter"></a>方式二：通过 Claude Code Router + OpenRouter</h2><p>若希望在同一套 Claude Code 里切换多种模型（如 Claude、GPT、DeepSeek），可使用 <a href="https://github.com/musistudio/claude-code-router">Claude Code Router</a>，通过 OpenRouter 统一接入。</p>
-<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 已安装 Claude Code 的前提下</span></span><br><span class="line">npm install -g @musistudio/claude-code-router</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-获取-OpenRouter-API-Key"><a href="#2-获取-OpenRouter-API-Key" class="headerlink" title="2. 获取 OpenRouter API Key"></a>2. 获取 OpenRouter API Key</h3><p>在 <a href="https://openrouter.ai/">OpenRouter</a> 注册并创建 API Key，按用量计费，可选用 DeepSeek 等模型。</p>
-<h3 id="3-配置文件"><a href="#3-配置文件" class="headerlink" title="3. 配置文件"></a>3. 配置文件</h3><p>创建并编辑 <code>~/.claude-code-router/config.json</code>：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;LOG&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;LOG_LEVEL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;info&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Providers&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_base_url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://openrouter.ai/api/v1/chat/completions&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;YOUR_OPENROUTER_API_KEY&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;transformer&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;use&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span> <span class="string">&quot;tooluse&quot;</span><span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;models&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;anthropic/claude-sonnet-4&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;openai/gpt-4o&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;deepseek/deepseek-chat&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Router&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;default&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;background&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;think&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>将 <code>YOUR_OPENROUTER_API_KEY</code> 换成你的 OpenRouter API Key。<code>transformer</code> 中的 <code>&quot;tooluse&quot;</code> 需保留，否则 Claude Code 的工具调用（编辑文件、执行命令等）会异常。</p>
-<h3 id="4-启动方式"><a href="#4-启动方式" class="headerlink" title="4. 启动方式"></a>4. 启动方式</h3><p>用 Router 启动 Claude Code（不再直接运行 <code>claude</code>）：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ccr code</span><br></pre></td></tr></table></figure>
-
-<p>会话中可切换模型，例如：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">/model openrouter,deepseek/deepseek-chat</span><br><span class="line">/status</span><br></pre></td></tr></table></figure>
-
-<h2 id="Anthropic-API-兼容性说明（方式一）"><a href="#Anthropic-API-兼容性说明（方式一）" class="headerlink" title="Anthropic API 兼容性说明（方式一）"></a>Anthropic API 兼容性说明（方式一）</h2><p>DeepSeek 的 Anthropic 兼容接口支持：</p>
-<ul>
-<li><strong>常用参数</strong>：<code>max_tokens</code>、<code>stop_sequences</code>、<code>stream</code>、<code>system</code>、<code>temperature</code>（0.0～2.0）、<code>top_p</code></li>
-<li><strong>工具调用</strong>：<code>tools</code>、<code>tool_choice</code>，适合 Claude Code 的编辑与执行等能力</li>
-<li><strong>内容类型</strong>：文本、thinking 类内容</li>
-</ul>
-<p>以下能力在 DeepSeek 端<strong>不支持</strong>或不生效：</p>
-<ul>
-<li>消息中的图片、文档等 multimodal 类型</li>
-<li>部分 MCP 相关类型（如 <code>mcp_tool_use</code>、<code>mcp_tool_result</code>）</li>
-<li>部分 Anthropic 专有字段（如 <code>anthropic-beta</code>、<code>container</code>、<code>metadata</code> 等）</li>
-</ul>
-<p>仅使用「写代码、改文件、跑命令」等常见能力时，方式一即可满足需求。</p>
-<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><p><strong>Q: 必须用 Python 吗？</strong><br>A: 不必。方式一只是改环境变量，任意终端&#x2F;shell 均可；方式二需要 Node.js 来跑 <code>ccr</code>。</p>
-<p><strong>Q: DeepSeek 免费吗？</strong><br>A: 注册会有一定免费额度，超出后按官方定价计费，详见 <a href="https://platform.deepseek.com/">DeepSeek 定价页</a>。</p>
-<p><strong>Q: 如何确认当前用的是 DeepSeek？</strong><br>A: 方式一：看环境变量 <code>ANTHROPIC_BASE_URL</code> 是否为 <code>https://api.deepseek.com/anthropic</code>。方式二：在会话里输入 <code>/status</code> 查看当前模型。</p>
-<p><strong>Q: 长输出被截断或超时？</strong><br>A: 增大 <code>API_TIMEOUT_MS</code>（例如 <code>600000</code> 表示 10 分钟）。</p>
-<hr>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
-<li><a href="https://api-docs.deepseek.com/zh-cn/guides/anthropic_api">DeepSeek 官方：Anthropic API 兼容说明</a></li>
-<li><a href="https://code.claude.com/docs/en/settings#environment-variables">Claude Code 环境变量说明</a></li>
-<li><a href="https://github.com/musistudio/claude-code-router">Claude Code Router</a></li>
-<li><a href="https://platform.deepseek.com/api-keys">DeepSeek 开放平台 &#x2F; API Keys</a></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>CLI</tag>
-        <tag>Claude Code</tag>
-        <tag>DeepSeek</tag>
-        <tag>AI</tag>
       </tags>
   </entry>
   <entry>
@@ -2013,20 +1967,92 @@
 ]]></content>
   </entry>
   <entry>
-    <title>查看电脑的电池状态</title>
-    <url>/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/</url>
-    <content><![CDATA[<p>没有特殊软件的情况下，使用powershell命令生成电池使用情况报告</p>
-<p>在 PowerShell（管理员模式）输入 powercfg &#x2F;batteryreport，系统会生成一个 HTML 报告，包含电池设计容量、当前满电容量、充放电历史等信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">powercfg /batteryreport</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    <title>在 Claude Code CLI 中使用 DeepSeek 作为模型</title>
+    <url>/2026/03/15/use-deepseek-as-model-in-claude-code-cli/</url>
+    <content><![CDATA[<p>Claude Code 是 Anthropic 的 AI 编程助手，默认只使用 Anthropic 的模型。通过环境变量 <code>ANTHROPIC_BASE_URL</code> 可以切换 API 端点，DeepSeek 官方提供了 <strong>Anthropic API 兼容</strong> 的接口，因此可以直接把 Claude Code CLI 接到 DeepSeek，无需代理或第三方路由。</p>
+<p>本文介绍如何配置 Claude Code CLI，使其使用 DeepSeek 作为后端模型。</p>
+<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><ul>
+<li>已安装 <a href="https://claude.ai/code">Claude Code</a>（官方安装：<code>curl -fsSL https://claude.ai/install.sh | bash</code>）</li>
+<li>已注册 <a href="https://platform.deepseek.com/">DeepSeek 开放平台</a> 并获取 <strong>API Key</strong>（<a href="https://platform.deepseek.com/api-keys">API Keys 页面</a>）</li>
+</ul>
+<h2 id="方式一：官方-Anthropic-兼容-API（推荐）"><a href="#方式一：官方-Anthropic-兼容-API（推荐）" class="headerlink" title="方式一：官方 Anthropic 兼容 API（推荐）"></a>方式一：官方 Anthropic 兼容 API（推荐）</h2><p>DeepSeek 提供与 Anthropic Messages API 兼容的端点，只需改环境变量即可让 Claude Code 走 DeepSeek。</p>
+<h3 id="1-配置环境变量"><a href="#1-配置环境变量" class="headerlink" title="1. 配置环境变量"></a>1. 配置环境变量</h3><p>在终端中执行（将 <code>YOUR_DEEPSEEK_API_KEY</code> 换成你的 DeepSeek API Key）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># DeepSeek Anthropic 兼容 API 端点</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定使用的模型（见下方「模型选择」）</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：避免长输出时客户端超时（单位毫秒，例如 10 分钟）</span></span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：禁用非必要流量（仅在使用第三方 API 时建议）</span></span><br><span class="line"><span class="built_in">export</span> CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1</span><br></pre></td></tr></table></figure>
 
-<p>运行后生成一个html文件 batteryreport.html</p>
-<p>使用浏览器打开这个html文件  </p>
-<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070792534.png" class="" width="1748070792534">
+<h3 id="2-启动-Claude-Code"><a href="#2-启动-Claude-Code" class="headerlink" title="2. 启动 Claude Code"></a>2. 启动 Claude Code</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> your-project</span><br><span class="line">claude</span><br></pre></td></tr></table></figure>
 
+<p>之后 Claude Code 的请求会发往 DeepSeek，使用你配置的模型。</p>
+<h3 id="3-写入-Shell-配置（长期使用）"><a href="#3-写入-Shell-配置（长期使用）" class="headerlink" title="3. 写入 Shell 配置（长期使用）"></a>3. 写入 Shell 配置（长期使用）</h3><p>避免每次手动 export，可写入 <code>~/.bashrc</code>、<code>~/.zshrc</code> 或 Fish 的 <code>config.fish</code>。</p>
+<p><strong>Bash &#x2F; Zsh 示例：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># DeepSeek + Claude Code</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br></pre></td></tr></table></figure>
 
-<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070821322.png" class="" width="1748070821322">
+<p><strong>Fish 示例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function claude-deepseek</span><br><span class="line">    set -x ANTHROPIC_BASE_URL https://api.deepseek.com/anthropic</span><br><span class="line">    set -x ANTHROPIC_AUTH_TOKEN &quot;YOUR_DEEPSEEK_API_KEY&quot;</span><br><span class="line">    set -x ANTHROPIC_MODEL deepseek-chat</span><br><span class="line">    set -x ANTHROPIC_SMALL_FAST_MODEL deepseek-chat</span><br><span class="line">    set -x API_TIMEOUT_MS 600000</span><br><span class="line">    claude $argv</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
 
+<p>之后在 Fish 中执行 <code>claude-deepseek</code> 即用 DeepSeek；其他终端保持默认则仍用 Anthropic。</p>
+<h2 id="模型选择"><a href="#模型选择" class="headerlink" title="模型选择"></a>模型选择</h2><p>DeepSeek 在 Anthropic 兼容接口中常用模型名：</p>
+<table>
+<thead>
+<tr>
+<th>模型名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>deepseek-chat</code></td>
+<td>通用对话，响应快，适合日常编码与问答</td>
+</tr>
+<tr>
+<td><code>deepseek-reasoner</code></td>
+<td>推理模式，步骤更详细，适合复杂分析与多步推理</td>
+</tr>
+</tbody></table>
+<p>通过修改 <code>ANTHROPIC_MODEL</code> 和 <code>ANTHROPIC_SMALL_FAST_MODEL</code> 即可切换。若传入 DeepSeek 不支持的模型名，接口会自动映射到 <code>deepseek-chat</code>。</p>
+<h2 id="方式二：通过-Claude-Code-Router-OpenRouter"><a href="#方式二：通过-Claude-Code-Router-OpenRouter" class="headerlink" title="方式二：通过 Claude Code Router + OpenRouter"></a>方式二：通过 Claude Code Router + OpenRouter</h2><p>若希望在同一套 Claude Code 里切换多种模型（如 Claude、GPT、DeepSeek），可使用 <a href="https://github.com/musistudio/claude-code-router">Claude Code Router</a>，通过 OpenRouter 统一接入。</p>
+<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 已安装 Claude Code 的前提下</span></span><br><span class="line">npm install -g @musistudio/claude-code-router</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-获取-OpenRouter-API-Key"><a href="#2-获取-OpenRouter-API-Key" class="headerlink" title="2. 获取 OpenRouter API Key"></a>2. 获取 OpenRouter API Key</h3><p>在 <a href="https://openrouter.ai/">OpenRouter</a> 注册并创建 API Key，按用量计费，可选用 DeepSeek 等模型。</p>
+<h3 id="3-配置文件"><a href="#3-配置文件" class="headerlink" title="3. 配置文件"></a>3. 配置文件</h3><p>创建并编辑 <code>~/.claude-code-router/config.json</code>：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;LOG&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;LOG_LEVEL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;info&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Providers&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_base_url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://openrouter.ai/api/v1/chat/completions&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;YOUR_OPENROUTER_API_KEY&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;transformer&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;use&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span> <span class="string">&quot;tooluse&quot;</span><span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;models&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;anthropic/claude-sonnet-4&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;openai/gpt-4o&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;deepseek/deepseek-chat&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Router&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;default&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;background&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;think&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>将 <code>YOUR_OPENROUTER_API_KEY</code> 换成你的 OpenRouter API Key。<code>transformer</code> 中的 <code>&quot;tooluse&quot;</code> 需保留，否则 Claude Code 的工具调用（编辑文件、执行命令等）会异常。</p>
+<h3 id="4-启动方式"><a href="#4-启动方式" class="headerlink" title="4. 启动方式"></a>4. 启动方式</h3><p>用 Router 启动 Claude Code（不再直接运行 <code>claude</code>）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ccr code</span><br></pre></td></tr></table></figure>
+
+<p>会话中可切换模型，例如：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">/model openrouter,deepseek/deepseek-chat</span><br><span class="line">/status</span><br></pre></td></tr></table></figure>
+
+<h2 id="Anthropic-API-兼容性说明（方式一）"><a href="#Anthropic-API-兼容性说明（方式一）" class="headerlink" title="Anthropic API 兼容性说明（方式一）"></a>Anthropic API 兼容性说明（方式一）</h2><p>DeepSeek 的 Anthropic 兼容接口支持：</p>
+<ul>
+<li><strong>常用参数</strong>：<code>max_tokens</code>、<code>stop_sequences</code>、<code>stream</code>、<code>system</code>、<code>temperature</code>（0.0～2.0）、<code>top_p</code></li>
+<li><strong>工具调用</strong>：<code>tools</code>、<code>tool_choice</code>，适合 Claude Code 的编辑与执行等能力</li>
+<li><strong>内容类型</strong>：文本、thinking 类内容</li>
+</ul>
+<p>以下能力在 DeepSeek 端<strong>不支持</strong>或不生效：</p>
+<ul>
+<li>消息中的图片、文档等 multimodal 类型</li>
+<li>部分 MCP 相关类型（如 <code>mcp_tool_use</code>、<code>mcp_tool_result</code>）</li>
+<li>部分 Anthropic 专有字段（如 <code>anthropic-beta</code>、<code>container</code>、<code>metadata</code> 等）</li>
+</ul>
+<p>仅使用「写代码、改文件、跑命令」等常见能力时，方式一即可满足需求。</p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><p><strong>Q: 必须用 Python 吗？</strong><br>A: 不必。方式一只是改环境变量，任意终端&#x2F;shell 均可；方式二需要 Node.js 来跑 <code>ccr</code>。</p>
+<p><strong>Q: DeepSeek 免费吗？</strong><br>A: 注册会有一定免费额度，超出后按官方定价计费，详见 <a href="https://platform.deepseek.com/">DeepSeek 定价页</a>。</p>
+<p><strong>Q: 如何确认当前用的是 DeepSeek？</strong><br>A: 方式一：看环境变量 <code>ANTHROPIC_BASE_URL</code> 是否为 <code>https://api.deepseek.com/anthropic</code>。方式二：在会话里输入 <code>/status</code> 查看当前模型。</p>
+<p><strong>Q: 长输出被截断或超时？</strong><br>A: 增大 <code>API_TIMEOUT_MS</code>（例如 <code>600000</code> 表示 10 分钟）。</p>
+<hr>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a href="https://api-docs.deepseek.com/zh-cn/guides/anthropic_api">DeepSeek 官方：Anthropic API 兼容说明</a></li>
+<li><a href="https://code.claude.com/docs/en/settings#environment-variables">Claude Code 环境变量说明</a></li>
+<li><a href="https://github.com/musistudio/claude-code-router">Claude Code Router</a></li>
+<li><a href="https://platform.deepseek.com/api-keys">DeepSeek 开放平台 &#x2F; API Keys</a></li>
+</ul>
 ]]></content>
+      <tags>
+        <tag>CLI</tag>
+        <tag>Claude Code</tag>
+        <tag>DeepSeek</tag>
+        <tag>AI</tag>
+      </tags>
   </entry>
   <entry>
     <title>使用tailscale组网 使用家里打印机</title>
@@ -2058,6 +2084,22 @@
     <title>浙石化序</title>
     <url>/2025/07/07/%E6%B5%99%E7%9F%B3%E5%8C%96%E5%BA%8F/</url>
     <content><![CDATA[<p>浙东形胜，三衢古郡，舟山新府。襟东海而带杭湾，控岛链而引巨舶。物华天宝，原油映碧海之光;人杰地灵，工匠聚寰宇之智。雄州雾列，塔器参天;货积云屯，管道织地。时维仲夏，序属清和，掌舵人邀宾朋于鱼山，展宏图于海隅。群贤毕至，少长成集，观此化工新城，敢竭鄙诚，恭疏短引。<br>若夫巨浸茫茫，沧波浩荡。昔者荒礁寂寥，渔火零星;今朝钢构峥，银灯璀璨。削峰填壑，六载功成;跨海连洲，百里势就。银罐如林，贮寰球之黑金;铁轨似弦，奏工业之强音。裂解装置耸若剑阁，催化高塔峻比雷峰。火炬凌雪，夜燃不灭之<br>炬;码头枕浪，朝发万吨之舟。<br>至若生产之盛，则见管道蟠空，银蛇舞壑;仪表星罗，明眸察微。中央控室，决胜千里之外;智能系统，运筹方寸之间。<br>原油分馏，轻质化而为汽柴;分子重构，烯烃聚而成塑胶。芳烃织锦衣之梦，PX解化纤之渴。硫黄变废为宝，尾气点石成金。<br>节能减排，树绿色标杆;循环利用，开生态新篇。若乃创新之道，院十工作站藏龙卧虎，博十后基地起凤腾蛟。专利千项，破外邦之垄断;标准百家，立行业之丰泉。纳米催化，巧夺造化;智能炼厂，智领未来。校企联姻，产学研一体;中外合作，技贸融三通。斯诚东海之硅谷，实乃化工之殿<br>早:嗟乎!石化兴衰，关乎国运。昔闻大庆精神，铁人泣血;今见浙石气象，海匠呕心。老牌炼厂，困陈规而式微;新兴基地，乘东风而崛起。屈子求索，路漫漫其修远;愚公移山，志巍巍而不改。岂效守成之辈，坐享其成?敢为天下先，方兄英雄色。<br>掌舵人，精神抖擞，壮志凌云。掌千亿之资，立百年之业。创新驱动，布新局如弈棋;安全为本，守红线若履冰。绿色低碳，岂止合规达标?数字智能，更求行业引领。呜呯!碧海蓝天，岂与黑烟共存?金山银山，终须绿水相伴。所赖转型及时，未雨绸缪。<br>敢竭鄙怀，恭疏短引。一言均赋，四韵俱成:鱼山螺岛起宏图，钢构连云海气殊。裂解千钧轻似羽，合成万象妙如珠。智能已破重洋术，绿色新开双碳途。莫道化工皆浊物，今看白舞银炉。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>查看电脑的电池状态</title>
+    <url>/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/</url>
+    <content><![CDATA[<p>没有特殊软件的情况下，使用powershell命令生成电池使用情况报告</p>
+<p>在 PowerShell（管理员模式）输入 powercfg &#x2F;batteryreport，系统会生成一个 HTML 报告，包含电池设计容量、当前满电容量、充放电历史等信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">powercfg /batteryreport</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行后生成一个html文件 batteryreport.html</p>
+<p>使用浏览器打开这个html文件  </p>
+<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070792534.png" class="" width="1748070792534">
+
+
+<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070821322.png" class="" width="1748070821322">
+
 ]]></content>
   </entry>
   <entry>
@@ -2467,6 +2509,110 @@
       </tags>
   </entry>
   <entry>
+    <title>队列监控页面使用指南</title>
+    <url>/2025/06/12/%E9%98%9F%E5%88%97%E7%9B%91%E6%8E%A7%E9%A1%B5%E9%9D%A2%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</url>
+    <content><![CDATA[<h1 id="队列监控页面使用指南"><a href="#队列监控页面使用指南" class="headerlink" title="队列监控页面使用指南"></a>队列监控页面使用指南</h1><h2 id="页面访问"><a href="#页面访问" class="headerlink" title="页面访问"></a>页面访问</h2><p>队列监控页面位于：<code>/views/modules/mm/queue.html</code></p>
+<h2 id="页面功能"><a href="#页面功能" class="headerlink" title="页面功能"></a>页面功能</h2><h3 id="1-概览统计"><a href="#1-概览统计" class="headerlink" title="1. 概览统计"></a>1. 概览统计</h3><p>页面顶部显示四个关键指标：</p>
+<p>-<strong>活跃队列总数</strong>：当前有请求等待的队列数量</p>
+<p>-<strong>等待请求总数</strong>：所有队列中等待执行的请求总数</p>
+<p>-<strong>执行中请求</strong>：当前正在执行的请求数量</p>
+<p>-<strong>最大队列长度</strong>：所有队列中最长的队列长度</p>
+<h3 id="2-自动刷新功能"><a href="#2-自动刷新功能" class="headerlink" title="2. 自动刷新功能"></a>2. 自动刷新功能</h3><ul>
+<li>点击”开启自动刷新”按钮启用自动刷新（每5秒刷新一次）</li>
+<li>点击”停止自动刷新”按钮关闭自动刷新</li>
+<li>可随时点击”手动刷新”按钮立即更新数据</li>
+</ul>
+<h3 id="3-队列列表"><a href="#3-队列列表" class="headerlink" title="3. 队列列表"></a>3. 队列列表</h3><p>显示所有租户的队列状态，包括：</p>
+<p>-<strong>租户ID</strong>：队列所属的租户标识</p>
+<p>-<strong>队列长度</strong>：当前队列中的请求数量</p>
+<p>-<strong>当前执行请求</strong>：正在执行的请求UUID（显示前16位）</p>
+<p>-<strong>状态</strong>：队列当前状态</p>
+<ul>
+<li>🟢 空闲：队列为空</li>
+<li>🟡 执行中：有请求正在执行</li>
+<li>🔴 异常：队列有请求但没有执行中的请求</li>
+</ul>
+<p>-<strong>操作</strong>：可执行的操作按钮</p>
+<h3 id="4-状态说明"><a href="#4-状态说明" class="headerlink" title="4. 状态说明"></a>4. 状态说明</h3><h4 id="队列状态图标说明"><a href="#队列状态图标说明" class="headerlink" title="队列状态图标说明"></a>队列状态图标说明</h4><p>-**绿色标签 (0)**：队列为空，无等待请求</p>
+<p>-**黄色标签 (数字)**：队列中有等待的请求</p>
+<p>-<strong>蓝色标签</strong>：当前执行的请求ID</p>
+<p>-<strong>灰色文字</strong>：无执行请求</p>
+<h4 id="状态类型"><a href="#状态类型" class="headerlink" title="状态类型"></a>状态类型</h4><p>-<strong>空闲</strong>：队列无任何请求</p>
+<p>-<strong>执行中</strong>：有请求正在执行，可能还有其他请求在等待</p>
+<p>-<strong>异常</strong>：队列中有请求但没有正在执行的请求（可能需要清理）</p>
+<h3 id="5-操作功能"><a href="#5-操作功能" class="headerlink" title="5. 操作功能"></a>5. 操作功能</h3><h4 id="查看详情"><a href="#查看详情" class="headerlink" title="查看详情"></a>查看详情</h4><ul>
+<li><p>点击操作列的”详情”按钮或选中行后点击”查看详情”</p>
+</li>
+<li><p>弹出详情窗口显示：</p>
+<ul>
+<li>租户ID和队列长度</li>
+<li>当前执行请求的完整UUID</li>
+<li>队列中所有请求的列表（按执行顺序排列）</li>
+<li>第一个请求标记为”执行中”，其余为”等待中”</li>
+</ul>
+</li>
+</ul>
+<h4 id="清空队列"><a href="#清空队列" class="headerlink" title="清空队列"></a>清空队列</h4><ul>
+<li>只有当队列长度大于0时才显示”清空”按钮</li>
+<li>点击后会弹出确认对话框</li>
+<li>确认后将清除队列中所有等待的请求</li>
+<li>⚠️ <strong>注意</strong>：此操作会中断所有等待的请求，请谨慎使用</li>
+</ul>
+<h3 id="6-搜索和筛选"><a href="#6-搜索和筛选" class="headerlink" title="6. 搜索和筛选"></a>6. 搜索和筛选</h3><ul>
+<li>可以通过租户ID搜索特定的队列</li>
+<li>点击”重置”按钮清空搜索条件并显示所有队列</li>
+</ul>
+<h2 id="权限说明"><a href="#权限说明" class="headerlink" title="权限说明"></a>权限说明</h2><p>页面需要以下权限：</p>
+<p>-<code>queueManagement:view</code> - 查看队列状态</p>
+<p>-<code>queueManagement:clear</code> - 清空队列</p>
+<p>没有相应权限的用户将无法看到对应的操作按钮。</p>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><h3 id="1-日常监控"><a href="#1-日常监控" class="headerlink" title="1. 日常监控"></a>1. 日常监控</h3><ul>
+<li>开启自动刷新功能，实时监控队列状态</li>
+<li>关注”等待请求总数”和”最大队列长度”指标</li>
+<li>当看到红色异常状态时及时处理</li>
+</ul>
+<h3 id="2-问题排查"><a href="#2-问题排查" class="headerlink" title="2. 问题排查"></a>2. 问题排查</h3><ul>
+<li>当业务反馈操作缓慢时，查看对应租户的队列长度</li>
+<li>通过队列详情查看具体的请求排队情况</li>
+<li>分析队列积压的原因</li>
+</ul>
+<h3 id="3-紧急处理"><a href="#3-紧急处理" class="headerlink" title="3. 紧急处理"></a>3. 紧急处理</h3><ul>
+<li>当队列出现异常积压时，可以使用清空功能</li>
+<li>清空前建议先查看详情了解具体情况</li>
+<li>清空后通知相关用户重新提交请求</li>
+</ul>
+<h2 id="技术说明"><a href="#技术说明" class="headerlink" title="技术说明"></a>技术说明</h2><h3 id="数据刷新机制"><a href="#数据刷新机制" class="headerlink" title="数据刷新机制"></a>数据刷新机制</h3><ul>
+<li>手动刷新：立即获取最新数据</li>
+<li>自动刷新：每5秒钟自动获取最新数据</li>
+<li>页面加载时自动执行一次查询</li>
+</ul>
+<h3 id="统计计算规则"><a href="#统计计算规则" class="headerlink" title="统计计算规则"></a>统计计算规则</h3><p>-<strong>活跃队列</strong>：队列长度 &gt; 0 的队列数量</p>
+<p>-<strong>等待请求</strong>：所有队列长度之和 - 执行中请求数</p>
+<p>-<strong>执行中请求</strong>：有 currentExecutingRequest 的队列数量</p>
+<p>-<strong>最大队列长度</strong>：所有队列中长度的最大值</p>
+<h3 id="前端技术栈"><a href="#前端技术栈" class="headerlink" title="前端技术栈"></a>前端技术栈</h3><ul>
+<li>Vue.js：数据绑定和组件化</li>
+<li>jQuery jqGrid：表格展示</li>
+<li>Bootstrap：UI框架</li>
+<li>自定义CSS：样式美化</li>
+</ul>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>1.<strong>性能考虑</strong>：队列监控会频繁访问Redis，大量租户时注意性能影响</p>
+<p>2.<strong>权限控制</strong>：确保只有授权用户才能访问监控页面</p>
+<p>3.<strong>操作审计</strong>：清空队列等关键操作会记录系统日志</p>
+<p>4.<strong>浏览器兼容</strong>：建议使用现代浏览器以获得最佳体验</p>
+<p>5.<strong>移动端适配</strong>：页面已优化移动端显示效果</p>
+<h2 id="故障处理"><a href="#故障处理" class="headerlink" title="故障处理"></a>故障处理</h2><h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><p><strong>Q: 页面显示”获取队列状态失败”</strong></p>
+<p>A: 检查Redis连接状态和后端服务是否正常</p>
+<p><strong>Q: 自动刷新不工作</strong></p>
+<p>A: 检查浏览器是否阻止了定时器，或刷新页面重试</p>
+<p><strong>Q: 清空队列后仍显示有请求</strong></p>
+<p>A: 可能有新请求进入，手动刷新查看最新状态</p>
+<p><strong>Q: 队列状态显示异常</strong></p>
+<p>A: 可能是Redis数据不一致，可以尝试清空队列解决</p>
+<h3 id="联系支持"><a href="#联系支持" class="headerlink" title="联系支持"></a>联系支持</h3><p>如遇到技术问题，请联系系统管理员或查看系统日志获取详细错误信息。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>瘦身密码（二）：脂肪工厂的运作密码——科学减肥是场马拉松</title>
     <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%84%82%E8%82%AA%E5%B7%A5%E5%8E%82%E4%B8%8E%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/</url>
     <content><![CDATA[<h2 id="你真的需要减肥吗？"><a href="#你真的需要减肥吗？" class="headerlink" title="你真的需要减肥吗？"></a>你真的需要减肥吗？</h2><h3 id="BMI：有用，但不万能"><a href="#BMI：有用，但不万能" class="headerlink" title="BMI：有用，但不万能"></a>BMI：有用，但不万能</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">BMI = 体重(kg) ÷ 身高²(m²)</span><br></pre></td></tr></table></figure>
@@ -2628,110 +2774,6 @@
 <img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752366641031.png" class="" width="1752366641031">
 
 <img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752334486991.png" class="" width="1752334486991">
-]]></content>
-  </entry>
-  <entry>
-    <title>队列监控页面使用指南</title>
-    <url>/2025/06/12/%E9%98%9F%E5%88%97%E7%9B%91%E6%8E%A7%E9%A1%B5%E9%9D%A2%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</url>
-    <content><![CDATA[<h1 id="队列监控页面使用指南"><a href="#队列监控页面使用指南" class="headerlink" title="队列监控页面使用指南"></a>队列监控页面使用指南</h1><h2 id="页面访问"><a href="#页面访问" class="headerlink" title="页面访问"></a>页面访问</h2><p>队列监控页面位于：<code>/views/modules/mm/queue.html</code></p>
-<h2 id="页面功能"><a href="#页面功能" class="headerlink" title="页面功能"></a>页面功能</h2><h3 id="1-概览统计"><a href="#1-概览统计" class="headerlink" title="1. 概览统计"></a>1. 概览统计</h3><p>页面顶部显示四个关键指标：</p>
-<p>-<strong>活跃队列总数</strong>：当前有请求等待的队列数量</p>
-<p>-<strong>等待请求总数</strong>：所有队列中等待执行的请求总数</p>
-<p>-<strong>执行中请求</strong>：当前正在执行的请求数量</p>
-<p>-<strong>最大队列长度</strong>：所有队列中最长的队列长度</p>
-<h3 id="2-自动刷新功能"><a href="#2-自动刷新功能" class="headerlink" title="2. 自动刷新功能"></a>2. 自动刷新功能</h3><ul>
-<li>点击”开启自动刷新”按钮启用自动刷新（每5秒刷新一次）</li>
-<li>点击”停止自动刷新”按钮关闭自动刷新</li>
-<li>可随时点击”手动刷新”按钮立即更新数据</li>
-</ul>
-<h3 id="3-队列列表"><a href="#3-队列列表" class="headerlink" title="3. 队列列表"></a>3. 队列列表</h3><p>显示所有租户的队列状态，包括：</p>
-<p>-<strong>租户ID</strong>：队列所属的租户标识</p>
-<p>-<strong>队列长度</strong>：当前队列中的请求数量</p>
-<p>-<strong>当前执行请求</strong>：正在执行的请求UUID（显示前16位）</p>
-<p>-<strong>状态</strong>：队列当前状态</p>
-<ul>
-<li>🟢 空闲：队列为空</li>
-<li>🟡 执行中：有请求正在执行</li>
-<li>🔴 异常：队列有请求但没有执行中的请求</li>
-</ul>
-<p>-<strong>操作</strong>：可执行的操作按钮</p>
-<h3 id="4-状态说明"><a href="#4-状态说明" class="headerlink" title="4. 状态说明"></a>4. 状态说明</h3><h4 id="队列状态图标说明"><a href="#队列状态图标说明" class="headerlink" title="队列状态图标说明"></a>队列状态图标说明</h4><p>-**绿色标签 (0)**：队列为空，无等待请求</p>
-<p>-**黄色标签 (数字)**：队列中有等待的请求</p>
-<p>-<strong>蓝色标签</strong>：当前执行的请求ID</p>
-<p>-<strong>灰色文字</strong>：无执行请求</p>
-<h4 id="状态类型"><a href="#状态类型" class="headerlink" title="状态类型"></a>状态类型</h4><p>-<strong>空闲</strong>：队列无任何请求</p>
-<p>-<strong>执行中</strong>：有请求正在执行，可能还有其他请求在等待</p>
-<p>-<strong>异常</strong>：队列中有请求但没有正在执行的请求（可能需要清理）</p>
-<h3 id="5-操作功能"><a href="#5-操作功能" class="headerlink" title="5. 操作功能"></a>5. 操作功能</h3><h4 id="查看详情"><a href="#查看详情" class="headerlink" title="查看详情"></a>查看详情</h4><ul>
-<li><p>点击操作列的”详情”按钮或选中行后点击”查看详情”</p>
-</li>
-<li><p>弹出详情窗口显示：</p>
-<ul>
-<li>租户ID和队列长度</li>
-<li>当前执行请求的完整UUID</li>
-<li>队列中所有请求的列表（按执行顺序排列）</li>
-<li>第一个请求标记为”执行中”，其余为”等待中”</li>
-</ul>
-</li>
-</ul>
-<h4 id="清空队列"><a href="#清空队列" class="headerlink" title="清空队列"></a>清空队列</h4><ul>
-<li>只有当队列长度大于0时才显示”清空”按钮</li>
-<li>点击后会弹出确认对话框</li>
-<li>确认后将清除队列中所有等待的请求</li>
-<li>⚠️ <strong>注意</strong>：此操作会中断所有等待的请求，请谨慎使用</li>
-</ul>
-<h3 id="6-搜索和筛选"><a href="#6-搜索和筛选" class="headerlink" title="6. 搜索和筛选"></a>6. 搜索和筛选</h3><ul>
-<li>可以通过租户ID搜索特定的队列</li>
-<li>点击”重置”按钮清空搜索条件并显示所有队列</li>
-</ul>
-<h2 id="权限说明"><a href="#权限说明" class="headerlink" title="权限说明"></a>权限说明</h2><p>页面需要以下权限：</p>
-<p>-<code>queueManagement:view</code> - 查看队列状态</p>
-<p>-<code>queueManagement:clear</code> - 清空队列</p>
-<p>没有相应权限的用户将无法看到对应的操作按钮。</p>
-<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><h3 id="1-日常监控"><a href="#1-日常监控" class="headerlink" title="1. 日常监控"></a>1. 日常监控</h3><ul>
-<li>开启自动刷新功能，实时监控队列状态</li>
-<li>关注”等待请求总数”和”最大队列长度”指标</li>
-<li>当看到红色异常状态时及时处理</li>
-</ul>
-<h3 id="2-问题排查"><a href="#2-问题排查" class="headerlink" title="2. 问题排查"></a>2. 问题排查</h3><ul>
-<li>当业务反馈操作缓慢时，查看对应租户的队列长度</li>
-<li>通过队列详情查看具体的请求排队情况</li>
-<li>分析队列积压的原因</li>
-</ul>
-<h3 id="3-紧急处理"><a href="#3-紧急处理" class="headerlink" title="3. 紧急处理"></a>3. 紧急处理</h3><ul>
-<li>当队列出现异常积压时，可以使用清空功能</li>
-<li>清空前建议先查看详情了解具体情况</li>
-<li>清空后通知相关用户重新提交请求</li>
-</ul>
-<h2 id="技术说明"><a href="#技术说明" class="headerlink" title="技术说明"></a>技术说明</h2><h3 id="数据刷新机制"><a href="#数据刷新机制" class="headerlink" title="数据刷新机制"></a>数据刷新机制</h3><ul>
-<li>手动刷新：立即获取最新数据</li>
-<li>自动刷新：每5秒钟自动获取最新数据</li>
-<li>页面加载时自动执行一次查询</li>
-</ul>
-<h3 id="统计计算规则"><a href="#统计计算规则" class="headerlink" title="统计计算规则"></a>统计计算规则</h3><p>-<strong>活跃队列</strong>：队列长度 &gt; 0 的队列数量</p>
-<p>-<strong>等待请求</strong>：所有队列长度之和 - 执行中请求数</p>
-<p>-<strong>执行中请求</strong>：有 currentExecutingRequest 的队列数量</p>
-<p>-<strong>最大队列长度</strong>：所有队列中长度的最大值</p>
-<h3 id="前端技术栈"><a href="#前端技术栈" class="headerlink" title="前端技术栈"></a>前端技术栈</h3><ul>
-<li>Vue.js：数据绑定和组件化</li>
-<li>jQuery jqGrid：表格展示</li>
-<li>Bootstrap：UI框架</li>
-<li>自定义CSS：样式美化</li>
-</ul>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>1.<strong>性能考虑</strong>：队列监控会频繁访问Redis，大量租户时注意性能影响</p>
-<p>2.<strong>权限控制</strong>：确保只有授权用户才能访问监控页面</p>
-<p>3.<strong>操作审计</strong>：清空队列等关键操作会记录系统日志</p>
-<p>4.<strong>浏览器兼容</strong>：建议使用现代浏览器以获得最佳体验</p>
-<p>5.<strong>移动端适配</strong>：页面已优化移动端显示效果</p>
-<h2 id="故障处理"><a href="#故障处理" class="headerlink" title="故障处理"></a>故障处理</h2><h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><p><strong>Q: 页面显示”获取队列状态失败”</strong></p>
-<p>A: 检查Redis连接状态和后端服务是否正常</p>
-<p><strong>Q: 自动刷新不工作</strong></p>
-<p>A: 检查浏览器是否阻止了定时器，或刷新页面重试</p>
-<p><strong>Q: 清空队列后仍显示有请求</strong></p>
-<p>A: 可能有新请求进入，手动刷新查看最新状态</p>
-<p><strong>Q: 队列状态显示异常</strong></p>
-<p>A: 可能是Redis数据不一致，可以尝试清空队列解决</p>
-<h3 id="联系支持"><a href="#联系支持" class="headerlink" title="联系支持"></a>联系支持</h3><p>如遇到技术问题，请联系系统管理员或查看系统日志获取详细错误信息。</p>
 ]]></content>
   </entry>
 </search>
