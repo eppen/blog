@@ -4,25 +4,27 @@
   <meta charset="utf-8">
   
   
-  <title>0 A.D. 中文游戏攻略上线 | Hua Liang&#39;s Blog</title>
+  <title>MES 2026 年 6 月工作小结 | Hua Liang&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="0 A.D.（读作 “zero ey dee”）是一款免费开源的古代即时战略（RTS）游戏：采集资源、建设城镇、训练军队，在古典时代文明之间展开对决。游戏强调历史氛围，当前 Release 28 已包含 15 个文明（含新加入的日耳曼）。 我整理了一份 非官方中文攻略，单独托管在子站，方便查阅与后续更新： 👉 https:&#x2F;&#x2F;0ad.eppencn.com&#x2F; 源码在 GitHub：eppen">
+  <meta name="description" content="6 月（约 340+ 次提交、合并 PR #277–#310）是平台能力铺开的一个月：落地 mes-ai Agent 平台 与 mes-energy 模块，图表看板与 AI 向导增强，并同步推进 Eos 权限、OTP、在线消息与个人工作台。改动较均衡地落在 mes-core &#x2F; mes-web &#x2F; mes-ai &#x2F; mes-energy &#x2F; mes-ch">
 <meta property="og:type" content="article">
-<meta property="og:title" content="0 A.D. 中文游戏攻略上线">
-<meta property="og:url" content="https://eppencn.com/2026/06/19/0-ad-strategy-guide/index.html">
+<meta property="og:title" content="MES 2026 年 6 月工作小结">
+<meta property="og:url" content="https://eppencn.com/2026/08/01/mes-monthly-2026-06/index.html">
 <meta property="og:site_name" content="Hua Liang&#39;s Blog">
-<meta property="og:description" content="0 A.D.（读作 “zero ey dee”）是一款免费开源的古代即时战略（RTS）游戏：采集资源、建设城镇、训练军队，在古典时代文明之间展开对决。游戏强调历史氛围，当前 Release 28 已包含 15 个文明（含新加入的日耳曼）。 我整理了一份 非官方中文攻略，单独托管在子站，方便查阅与后续更新： 👉 https:&#x2F;&#x2F;0ad.eppencn.com&#x2F; 源码在 GitHub：eppen">
+<meta property="og:description" content="6 月（约 340+ 次提交、合并 PR #277–#310）是平台能力铺开的一个月：落地 mes-ai Agent 平台 与 mes-energy 模块，图表看板与 AI 向导增强，并同步推进 Eos 权限、OTP、在线消息与个人工作台。改动较均衡地落在 mes-core &#x2F; mes-web &#x2F; mes-ai &#x2F; mes-energy &#x2F; mes-ch">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://eppencn.com/2026/06/19/0-ad-strategy-guide/cover.png">
-<meta property="article:published_time" content="2026-06-19T14:30:00.000Z">
-<meta property="article:modified_time" content="2026-07-31T05:38:31.607Z">
+<meta property="og:image" content="https://eppencn.com/2026/08/01/mes-monthly-2026-06/cover.png">
+<meta property="article:published_time" content="2026-08-01T03:16:00.000Z">
+<meta property="article:modified_time" content="2026-08-01T03:17:28.667Z">
 <meta property="article:author" content="eppen">
-<meta property="article:tag" content="Game">
-<meta property="article:tag" content="RTS">
-<meta property="article:tag" content="0AD">
-<meta property="article:tag" content="OpenSource">
+<meta property="article:tag" content="MES">
+<meta property="article:tag" content="mes-ai">
+<meta property="article:tag" content="工作小结">
+<meta property="article:tag" content="mes-energy">
+<meta property="article:tag" content="mes-chart">
+<meta property="article:tag" content="月报">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://eppencn.com/2026/06/19/0-ad-strategy-guide/cover.png">
+<meta name="twitter:image" content="https://eppencn.com/2026/08/01/mes-monthly-2026-06/cover.png">
   
     <link rel="alternate" href="/atom.xml" title="Hua Liang's Blog" type="application/atom+xml">
   
@@ -78,10 +80,10 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-0-ad-strategy-guide" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-mes-monthly-2026-06" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/06/19/0-ad-strategy-guide/" class="article-date">
-  <time class="dt-published" datetime="2026-06-19T14:30:00.000Z" itemprop="datePublished">2026-06-19</time>
+    <a href="/2026/08/01/mes-monthly-2026-06/" class="article-date">
+  <time class="dt-published" datetime="2026-08-01T03:16:00.000Z" itemprop="datePublished">2026-08-01</time>
 </a>
     
   </div>
@@ -92,7 +94,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      0 A.D. 中文游戏攻略上线
+      MES 2026 年 6 月工作小结
     </h1>
   
 
@@ -100,80 +102,64 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <img src="/2026/06/19/0-ad-strategy-guide/cover.png" class="">
+        <img src="/2026/08/01/mes-monthly-2026-06/cover.png" class="">
 
-<p><a target="_blank" rel="noopener" href="https://play0ad.com/">0 A.D.</a>（读作 “zero ey dee”）是一款免费开源的古代即时战略（RTS）游戏：采集资源、建设城镇、训练军队，在古典时代文明之间展开对决。游戏强调历史氛围，当前 Release 28 已包含 <strong>15 个文明</strong>（含新加入的日耳曼）。</p>
-<p>我整理了一份 <strong>非官方中文攻略</strong>，单独托管在子站，方便查阅与后续更新：</p>
-<p><strong>👉 <a target="_blank" rel="noopener" href="https://0ad.eppencn.com/">https://0ad.eppencn.com/</a></strong></p>
-<p>源码在 GitHub：<a target="_blank" rel="noopener" href="https://github.com/eppen/0ad-strategy-guide">eppen&#x2F;0ad-strategy-guide</a></p>
-<h2 id="攻略里有什么"><a href="#攻略里有什么" class="headerlink" title="攻略里有什么"></a>攻略里有什么</h2><table>
+<p>6 月（约 <strong>340+ 次提交</strong>、合并 PR <strong>#277–#310</strong>）是平台能力铺开的一个月：落地 <strong>mes-ai Agent 平台</strong> 与 <strong>mes-energy</strong> 模块，图表看板与 AI 向导增强，并同步推进 Eos 权限、OTP、在线消息与个人工作台。改动较均衡地落在 <code>mes-core</code> &#x2F; <code>mes-web</code> &#x2F; <code>mes-ai</code> &#x2F; <code>mes-energy</code> &#x2F; <code>mes-chart</code>。</p>
+<h2 id="一、MES-AI-Agent-平台（下旬主线，-305）"><a href="#一、MES-AI-Agent-平台（下旬主线，-305）" class="headerlink" title="一、MES-AI Agent 平台（下旬主线，#305）"></a>一、MES-AI Agent 平台（下旬主线，#305）</h2><ul>
+<li>新增 mes-ai 模块骨架：Agent 管理、聊天流式输出、thinking 步骤跟踪。</li>
+<li>SQL 工具执行与表格流式渲染、能耗 Agent SQL&#x2F;输出格式迭代。</li>
+<li>Schema Tool、菜单权限与助手推荐问题&#x2F;欢迎语等体验补齐。</li>
+</ul>
+<h2 id="二、能耗模块-mes-energy（中下旬）"><a href="#二、能耗模块-mes-energy（中下旬）" class="headerlink" title="二、能耗模块 mes-energy（中下旬）"></a>二、能耗模块 mes-energy（中下旬）</h2><ul>
+<li>独立 <code>mes-energy</code> 并接入 web 依赖；峰谷（TOU）时段配置、日统计、分页&#x2F;汇总&#x2F;导出。</li>
+<li>电表数据源管理、手动录入、相邻时段合并、能耗看板菜单与电压等级过滤等。</li>
+</ul>
+<h2 id="三、图表看板与-AI-向导（-304）"><a href="#三、图表看板与-AI-向导（-304）" class="headerlink" title="三、图表看板与 AI 向导（#304）"></a>三、图表看板与 AI 向导（#304）</h2><ul>
+<li>看板设计：布局预设、槽位、组件面板、主题与最大化查看。</li>
+<li>SQL 编辑（CodeMirror）、安全校验与试跑；AI 配置&#x2F;SQL 审查、图层面板主题说明。</li>
+</ul>
+<h2 id="四、权限、认证与消息"><a href="#四、权限、认证与消息" class="headerlink" title="四、权限、认证与消息"></a>四、权限、认证与消息</h2><ul>
+<li><strong>Eos 角色管理</strong>（#299）：对象级权限配置、菜单同步、权限详情与 UI 重构。</li>
+<li><strong>OTP 二期</strong>（#289&#x2F;#294）；runas 用户切换修复（#277）；权限 token 切换（#309）。</li>
+<li>在线消息通知（#307）与列表慢查询优化（#308）；系统菜单导航慢查询（#306）。</li>
+</ul>
+<h2 id="五、其它业务与工程"><a href="#五、其它业务与工程" class="headerlink" title="五、其它业务与工程"></a>五、其它业务与工程</h2><ul>
+<li><strong>个人工作台</strong>（#310）；首页用户下拉菜单（#295）。</li>
+<li>储罐体积&#x2F;导入导出（#298）；班组装置同步（#302）；交接班 shiftlog（#286&#x2F;#287）。</li>
+<li>Flowable&#x2F;请假流程与 Docker 配置；jqGrid 多表头紧凑样式；mes-core 单测补强。</li>
+<li>SysLog 注解与敏感字段、QRTZ&#x2F;监控相关增强。</li>
+</ul>
+<h2 id="六、月度节奏"><a href="#六、月度节奏" class="headerlink" title="六、月度节奏"></a>六、月度节奏</h2><table>
 <thead>
 <tr>
-<th>章节</th>
-<th>内容</th>
+<th>阶段</th>
+<th>重点</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>入门指南</td>
-<td>安装、界面、首局 15 分钟流程</td>
+<td>上旬</td>
+<td>runas&#x2F;OTP、交接班、jqGrid、mes-core 测试、反馈看板</td>
 </tr>
 <tr>
-<td>核心机制</td>
-<td>资源、领土、公民兵、胜负条件</td>
+<td>中旬</td>
+<td>Eos 角色权限、储罐体积、图表看板设计、mes-energy &#x2F; mes-ai 起步</td>
 </tr>
 <tr>
-<td>经济发展</td>
-<td>dropsite 布局、贸易、升阶段</td>
-</tr>
-<tr>
-<td>军事战术</td>
-<td>兵种克制、阵型、攻城与海战</td>
-</tr>
-<tr>
-<td>三阶段进阶</td>
-<td>Village → Town → City 节奏</td>
-</tr>
-<tr>
-<td>文明详解</td>
-<td>15 个文明特色与推荐打法</td>
-</tr>
-<tr>
-<td>多人对战</td>
-<td>联机、排位、常见套路</td>
-</tr>
-<tr>
-<td>进阶技巧</td>
-<td>微操、反制、AI 与 Mod</td>
+<td>下旬</td>
+<td>AI Agent 平台合入、图表 AI 向导、能耗 TOU、消息与慢查询、个人工作台</td>
 </tr>
 </tbody></table>
-<h2 id="为什么单独建站"><a href="#为什么单独建站" class="headerlink" title="为什么单独建站"></a>为什么单独建站</h2><ul>
-<li><strong>MkDocs Material</strong> 更适合长文档：侧边导航、全文搜索、章节跳转。</li>
-<li>主站 <a href="https://eppencn.com/">eppencn.com</a> 继续用 Hexo 写博客；攻略子站专注游戏内容，互不干扰。</li>
-<li>游戏版本会随 Wildfire Games 更新平衡，攻略仓库独立迭代更快。</li>
-</ul>
-<h2 id="适合谁"><a href="#适合谁" class="headerlink" title="适合谁"></a>适合谁</h2><ul>
-<li>刚下载游戏、不知道先造什么的新手</li>
-<li>被 AI 早攻、不知道怎么升 Town 的单机玩家</li>
-<li>想查某个文明（如孔雀象兵流、迦太基雇佣兵）怎么打的休闲玩家</li>
-</ul>
-<h2 id="快速上手（3-条）"><a href="#快速上手（3-条）" class="headerlink" title="快速上手（3 条）"></a>快速上手（3 条）</h2><ol>
-<li>资源点旁建 <strong>仓库 &#x2F; 农庄</strong>，别让平民走太远。</li>
-<li><strong>7 分钟内升 Town</strong>，先塔后兵。</li>
-<li>步兵 + 远程 + 攻城器 <strong>混合编队</strong>，别散开送。</li>
-</ol>
-<h2 id="关于-AI"><a href="#关于-AI" class="headerlink" title="关于 AI"></a>关于 AI</h2><p>Skirmish 模式可添加电脑对手（如 Petra AI），难度从 Sandbox 到 Very Hard。攻略中的节奏与打法主要针对 <strong>Normal AI</strong>，也适用于多人入门。</p>
 <hr>
-<p>欢迎 Issue &#x2F; PR 纠错或补充文明打法。游戏本体版权归 <a target="_blank" rel="noopener" href="https://play0ad.com/">Wildfire Games</a>，攻略文本采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>。</p>
-<p><strong>再次入口：<a target="_blank" rel="noopener" href="https://0ad.eppencn.com/">0ad.eppencn.com</a></strong></p>
+<p><strong>一句话</strong>：6 月搭好了 AI Agent、能耗与图表看板三块新底座，并在 Eos 权限与登录安全上完成一轮可用交付，为 7 月能耗智能体与生产运行闭环打基础。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/06/19/0-ad-strategy-guide/" data-id="cms9t6e1p0000fwv52e53h3i1" data-title="0 A.D. 中文游戏攻略上线" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/08/01/mes-monthly-2026-06/" data-id="cms9t6e2m000gfwv50a043xfx" data-title="MES 2026 年 6 月工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/0AD/" rel="tag">0AD</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenSource/" rel="tag">OpenSource</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RTS/" rel="tag">RTS</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-energy/" rel="tag">mes-energy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li></ul>
 
     </footer>
   </div>
@@ -181,19 +167,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2026/06/19/cursor-agent-no-version-directories-fix/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Cursor Agent CLI 报错 No version directories found 的排查与修复
-        
-      </div>
-    </a>
   
-  
-    <a href="/2026/03/15/use-deepseek-as-model-in-claude-code-cli/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2026/08/01/mes-monthly-2026-07/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">在 Claude Code CLI 中使用 DeepSeek 作为模型</div>
+      <div class="article-nav-title">MES 2026 年 7 月工作小结</div>
     </a>
   
 </nav>
