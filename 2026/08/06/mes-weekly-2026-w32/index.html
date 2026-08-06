@@ -4,16 +4,26 @@
   <meta charset="utf-8">
   
   
-  <title>Tag: CLI | Hua Liang&#39;s Blog</title>
+  <title>MES 2026 年第 32 周工作小结 | Hua Liang&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hua Liang&#39;s Blog">
-<meta property="og:url" content="https://eppencn.com/tags/CLI/index.html">
+  <meta name="description" content="本周（8&#x2F;3–8&#x2F;6，约 50 次提交、合并 PR #360、#374）主线在 AI 图表内联渲染与相对月份推理修复，同时推进运行日志可观测性和 ExternalApi 集成。主力模块 mes-ai（167 文件触达），次为 mes-chart（15 文件）。 一、AI 图表内联与看板增强（#360）在 AI 聊天中落地面向 SQL 工具的内联图表渲染，并增强看板筛选能力：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MES 2026 年第 32 周工作小结">
+<meta property="og:url" content="https://eppencn.com/2026/08/06/mes-weekly-2026-w32/index.html">
 <meta property="og:site_name" content="Hua Liang&#39;s Blog">
+<meta property="og:description" content="本周（8&#x2F;3–8&#x2F;6，约 50 次提交、合并 PR #360、#374）主线在 AI 图表内联渲染与相对月份推理修复，同时推进运行日志可观测性和 ExternalApi 集成。主力模块 mes-ai（167 文件触达），次为 mes-chart（15 文件）。 一、AI 图表内联与看板增强（#360）在 AI 聊天中落地面向 SQL 工具的内联图表渲染，并增强看板筛选能力：">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://eppencn.com/2026/08/06/mes-weekly-2026-w32/cover.png">
+<meta property="article:published_time" content="2026-08-06T15:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-06T07:25:55.431Z">
 <meta property="article:author" content="eppen">
-<meta property="article:tag" content="liuhualiang,Hua Liang,blog,hexo,github,pages">
+<meta property="article:tag" content="MES">
+<meta property="article:tag" content="工作小结">
+<meta property="article:tag" content="mes-ai">
+<meta property="article:tag" content="mes-chart">
+<meta property="article:tag" content="周报">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eppencn.com/2026/08/06/mes-weekly-2026-w32/cover.png">
   
     <link rel="alternate" href="/atom.xml" title="Hua Liang's Blog" type="application/atom+xml">
   
@@ -69,58 +79,92 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2026" class="archive-year">2026</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2026/06/19/cursor-agent-no-version-directories-fix/" class="archive-article-date">
-  <time class="dt-published" datetime="2026-06-19T15:30:00.000Z" itemprop="datePublished">Jun 19</time>
+        <section id="main"><article id="post-mes-weekly-2026-w32" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/08/06/mes-weekly-2026-w32/" class="article-date">
+  <time class="dt-published" datetime="2026-08-06T15:00:00.000Z" itemprop="datePublished">2026-08-06</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/06/19/cursor-agent-no-version-directories-fix/">Cursor Agent CLI 报错 No version directories found 的排查与修复</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      MES 2026 年第 32 周工作小结
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2026/03/15/use-deepseek-as-model-in-claude-code-cli/" class="archive-article-date">
-  <time class="dt-published" datetime="2026-03-15T10:39:08.000Z" itemprop="datePublished">Mar 15</time>
-</a>
+    <div class="e-content article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/03/15/use-deepseek-as-model-in-claude-code-cli/">在 Claude Code CLI 中使用 DeepSeek 作为模型</a>
-    </h1>
-  
+        <img src="/2026/08/06/mes-weekly-2026-w32/cover.png" class="">
 
-    </header>
+<p>本周（8&#x2F;3–8&#x2F;6，约 <strong>50 次提交</strong>、合并 PR <strong>#360、#374</strong>）主线在 <strong>AI 图表内联渲染</strong>与<strong>相对月份推理修复</strong>，同时推进运行日志可观测性和 ExternalApi 集成。主力模块 <code>mes-ai</code>（167 文件触达），次为 <code>mes-chart</code>（15 文件）。</p>
+<h2 id="一、AI-图表内联与看板增强（-360）"><a href="#一、AI-图表内联与看板增强（-360）" class="headerlink" title="一、AI 图表内联与看板增强（#360）"></a>一、AI 图表内联与看板增强（#360）</h2><p>在 AI 聊天中落地面向 SQL 工具的内联图表渲染，并增强看板筛选能力：</p>
+<ul>
+<li><strong>SqlToolChartPolicy</strong>：新增图表配置编辑入口，支持为 SQL 工具指定折线&#x2F;柱状&#x2F;表格等图表类型，查询结果直接在对话中渲染</li>
+<li><strong>看板增强</strong>：Tab 筛选与可见性管理、月份过滤支持、<code>renderFilterBar</code> 异步时序修复</li>
+<li><strong>健壮性修复</strong>：<code>ClassCastException</code>（图表配置为标量值时）、<code>NumberUtil</code> 统一替代自定义数值解析方法</li>
+</ul>
+<h2 id="二、相对月份查询修复（-985、-992）"><a href="#二、相对月份查询修复（-985、-992）" class="headerlink" title="二、相对月份查询修复（#985、#992）"></a>二、相对月份查询修复（#985、#992）</h2><p>针对性修复”上个月”等相对月份提示词输出错误日历月份的问题：</p>
+<ul>
+<li><code>RelativeMonthOverviewNormalizer</code>：正则从 <code>RELATIVE_MONTH_PHRASES</code> 集中化短语列表动态构建，消除分散常量</li>
+<li><code>AgentReactExecutor</code>：注入已解析年月提示，防止 Agent 在强制结单前过早输出 JSON 导致月份错误</li>
+<li>新增单测覆盖多种相对月份表述场景</li>
+</ul>
+<h2 id="三、AI-运行日志可观测性（-374）"><a href="#三、AI-运行日志可观测性（-374）" class="headerlink" title="三、AI 运行日志可观测性（#374）"></a>三、AI 运行日志可观测性（#374）</h2><ul>
+<li>运行日志列表新增<strong>会话详情弹窗</strong>，支持按 sessionId 匹配 assistant 消息并展示</li>
+<li><code>AiChatRunLogEntity</code> 关联 <code>SysUserEntity</code>，日志列表展示用户信息（用户名&#x2F;姓名）</li>
+<li><code>AgentChatController</code> 会话管理功能增强：分页、搜索、会话切换</li>
+<li><code>AgentAnswerParser</code> 新增 <code>intentional_choices</code> JSON 解析</li>
+</ul>
+<h2 id="四、ExternalApi-工具增强"><a href="#四、ExternalApi-工具增强" class="headerlink" title="四、ExternalApi 工具增强"></a>四、ExternalApi 工具增强</h2><ul>
+<li>URI 构造与编码重构，<code>urlEncode</code> 冗余方法移除</li>
+<li>测试用例覆盖 URI 特殊字符编码场景</li>
+<li>文档补充：高德天气工具、通用 External API 接入示例</li>
+</ul>
+<h2 id="五、文档与基础设施"><a href="#五、文档与基础设施" class="headerlink" title="五、文档与基础设施"></a>五、文档与基础设施</h2><ul>
+<li>MES vs Dify &#x2F; AgentScope 对比文档大幅更新，详列成本&#x2F;标注反馈闭环等维度差距</li>
+<li>mes-ai 工具配置复杂度分析文档</li>
+<li>新增 <code>mes-count-loc</code> Skill</li>
+<li><code>.mcp.json</code> 加入 <code>.gitignore</code>，清理过期 LLM 文档和已吸收的单次 SQL 补丁</li>
+</ul>
+<h2 id="六、物料查询"><a href="#六、物料查询" class="headerlink" title="六、物料查询"></a>六、物料查询</h2><ul>
+<li>新增物料 ZZTJ 日进出 SQL 工具种子及文档索引</li>
+<li>物料单位 IO 明细查询增加含量、类别筛选参数</li>
+</ul>
+<hr>
+<p><strong>一句话</strong>：本周以 AI 图表内联和相对月份修复落地为主，运行日志可观测性明显提升，ExternalApi 和物料查询逐步补全。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://eppencn.com/2026/08/06/mes-weekly-2026-w32/" data-id="cmsh706be000x94v53j0z4h8o" data-title="MES 2026 年第 32 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/08/01/mes-monthly-2026-05/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MES 2026 年 5 月工作小结</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 
 </section>
@@ -232,5 +276,5 @@
 
 
   </div>
-</body>
+<!-- hexo injector body_end start --><div class="adsense-wrap" style="margin:24px 0;text-align:center;min-height:90px;overflow:hidden;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2045994937692573" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><!-- hexo injector body_end end --></body>
 </html>

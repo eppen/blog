@@ -271,6 +271,98 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Cursor Agent CLI 报错 No version directories found 的排查与修复</title>
+    <url>/2026/06/19/cursor-agent-no-version-directories-fix/</url>
+    <content><![CDATA[<p>在 Windows 终端执行 <code>agent</code> 或 <code>cursor-agent</code> 时，可能遇到如下错误：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">C:\Users\liuhualiang\AppData\Local\cursor-agent\agent.ps1 : No version directories found in C:\Users\liuhualiang\AppData\Local\cursor-agent</span><br><span class="line">所在位置 行:1 字符: 1</span><br><span class="line">+ agent</span><br><span class="line">+ ~~~~~</span><br><span class="line">    + CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException</span><br><span class="line">    + FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException,agent.ps1</span><br></pre></td></tr></table></figure>
+
+<p>本文记录该问题的现象、根因、修复方式与临时绕过方法。</p>
+<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><ul>
+<li><code>agent</code>、<code>cursor-agent</code> 命令均无法启动</li>
+<li>报错提示在 <code>%LOCALAPPDATA%\cursor-agent</code> 下找不到版本目录</li>
+<li>但手动查看 <code>versions</code> 子目录，实际存在多个版本文件夹，例如：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">C:\Users\liuhualiang\AppData\Local\cursor-agent\versions\</span><br><span class="line">├── 2026.06.12-19-59-36-f6aba9a</span><br><span class="line">├── 2026.06.15-03-48-54-da23e37</span><br><span class="line">└── 2026.06.16-20-30-07-a07d3ac</span><br></pre></td></tr></table></figure>
+
+<h2 id="根因"><a href="#根因" class="headerlink" title="根因"></a>根因</h2><p><code>agent.ps1</code> 与 <code>cursor-agent.ps1</code> 启动时会扫描 <code>versions</code> 目录，并用正则过滤合法版本名：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>该正则只匹配<strong>旧格式</strong>：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">YYYY.MM.DD-commit</span><br></pre></td></tr></table></figure>
+
+<p>例如：<code>2026.06.16-a07d3ac</code></p>
+<p>而 Cursor Agent 更新后的目录名变为<strong>新格式</strong>，中间多了构建时间：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">YYYY.MM.DD-HH-MM-SS-commit</span><br></pre></td></tr></table></figure>
+
+<p>例如：<code>2026.06.16-20-30-07-a07d3ac</code></p>
+<p>因此所有现有版本目录都被过滤掉，脚本误判为「没有版本目录」。</p>
+<h2 id="修复方法"><a href="#修复方法" class="headerlink" title="修复方法"></a>修复方法</h2><p>编辑以下两个文件（内容相同，需同步修改）：</p>
+<ul>
+<li><code>%LOCALAPPDATA%\cursor-agent\agent.ps1</code></li>
+<li><code>%LOCALAPPDATA%\cursor-agent\cursor-agent.ps1</code></li>
+</ul>
+<h3 id="1-更新版本目录匹配正则"><a href="#1-更新版本目录匹配正则" class="headerlink" title="1. 更新版本目录匹配正则"></a>1. 更新版本目录匹配正则</h3><p>将原来的：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>改为同时兼容新旧格式：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;(-\d&#123;1,2&#125;-\d&#123;1,2&#125;-\d&#123;1,2&#125;)?-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-改进版本排序逻辑（可选但推荐）"><a href="#2-改进版本排序逻辑（可选但推荐）" class="headerlink" title="2. 改进版本排序逻辑（可选但推荐）"></a>2. 改进版本排序逻辑（可选但推荐）</h3><p><code>Parse-VersionString</code> 函数原先只按日期 <code>YYYY.MM.DD</code> 排序。若同一天存在多个构建，建议解析时间戳后再比较：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Parse-VersionString</span></span> &#123;</span><br><span class="line">    <span class="keyword">param</span> (</span><br><span class="line">        [<span class="built_in">string</span>]<span class="variable">$versionString</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="variable">$segments</span> = <span class="variable">$versionString</span>.Split(<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">    <span class="variable">$datePart</span> = <span class="variable">$segments</span>[<span class="number">0</span>]</span><br><span class="line">    <span class="variable">$parts</span> = <span class="variable">$datePart</span>.Split(<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$parts</span>.Length <span class="operator">-ne</span> <span class="number">3</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="string">&quot;Invalid version format. Expected format: YYYY.MM.DD[-HH-MM-SS]-commit&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$year</span> = <span class="variable">$parts</span>[<span class="number">0</span>]</span><br><span class="line">    <span class="variable">$month</span> = <span class="variable">$parts</span>[<span class="number">1</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    <span class="variable">$day</span> = <span class="variable">$parts</span>[<span class="number">2</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    <span class="variable">$timeSuffix</span> = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$segments</span>.Length <span class="operator">-ge</span> <span class="number">5</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">1</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">2</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">3</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span>) &#123;</span><br><span class="line">        <span class="variable">$timeSuffix</span> = <span class="variable">$segments</span>[<span class="number">1</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>) + <span class="variable">$segments</span>[<span class="number">2</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>) + <span class="variable">$segments</span>[<span class="number">3</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">long</span>](<span class="variable">$year</span> + <span class="variable">$month</span> + <span class="variable">$day</span> + <span class="variable">$timeSuffix</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-验证修复"><a href="#3-验证修复" class="headerlink" title="3. 验证修复"></a>3. 验证修复</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">agent <span class="literal">--version</span></span><br><span class="line">agent status</span><br></pre></td></tr></table></figure>
+
+<p>预期输出示例：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">2026.06.16-20-30-07-a07d3ac</span><br><span class="line">✓ Logged in as your@email.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="临时绕过（不修改脚本）"><a href="#临时绕过（不修改脚本）" class="headerlink" title="临时绕过（不修改脚本）"></a>临时绕过（不修改脚本）</h2><p>若暂时不想改启动脚本，可直接调用最新版本目录下的 <code>node.exe</code> 与 <code>index.js</code>：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$v</span> = <span class="string">&quot;C:\Users\liuhualiang\AppData\Local\cursor-agent\versions\2026.06.16-20-30-07-a07d3ac&quot;</span></span><br><span class="line">&amp; <span class="string">&quot;<span class="variable">$v</span>\node.exe&quot;</span> <span class="string">&quot;<span class="variable">$v</span>\index.js&quot;</span> status</span><br><span class="line">&amp; <span class="string">&quot;<span class="variable">$v</span>\node.exe&quot;</span> <span class="string">&quot;<span class="variable">$v</span>\index.js&quot;</span> <span class="literal">--help</span></span><br></pre></td></tr></table></figure>
+
+<p>将 <code>$v</code> 替换为 <code>versions</code> 下实际存在的最新目录名即可。</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<li><strong>更新可能覆盖修复</strong>：执行 <code>agent update</code> 或 Cursor 自动更新 Agent CLI 后，<code>agent.ps1</code> 可能被还原，问题会复现，需重新应用上述修改。</li>
+<li><strong>IDE CLI 与 Agent CLI 是两套工具</strong>：<ul>
+<li><code>cursor</code>：Cursor IDE 自带 CLI（打开文件、diff、tunnel 等），路径通常在 <code>%LOCALAPPDATA%\Programs\cursor\resources\app\bin\</code></li>
+<li><code>agent</code> &#x2F; <code>cursor-agent</code>：终端 Agent CLI，安装在 <code>%LOCALAPPDATA%\cursor-agent\</code></li>
+</ul>
+</li>
+<li><strong><code>cursor agent</code> 子命令</strong>：IDE CLI 也注册了 <code>agent</code> 子命令，但日常使用的 <code>agent</code> 命令通常来自 PATH 中的 <code>cursor-agent</code> 包装脚本。</li>
+</ol>
+<h2 id="相关环境信息（排查参考）"><a href="#相关环境信息（排查参考）" class="headerlink" title="相关环境信息（排查参考）"></a>相关环境信息（排查参考）</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cursor IDE 版本</td>
+<td>3.8.11</td>
+</tr>
+<tr>
+<td>Agent CLI 版本</td>
+<td>2026.06.16-20-30-07-a07d3ac</td>
+</tr>
+<tr>
+<td>操作系统</td>
+<td>Windows 10&#x2F;11 x64</td>
+</tr>
+<tr>
+<td>安装路径</td>
+<td><code>%LOCALAPPDATA%\cursor-agent\</code></td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><code>No version directories found</code> 并非版本文件缺失，而是 <strong>PowerShell 启动脚本的版本名正则未跟上 Cursor Agent 新的目录命名规范</strong>。更新正则后即可恢复正常；若再次被更新覆盖，按本文步骤重新修复即可。</p>
+]]></content>
+      <tags>
+        <tag>Cursor</tag>
+        <tag>CLI</tag>
+        <tag>Agent</tag>
+        <tag>Windows</tag>
+        <tag>PowerShell</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>classical chinese translation</title>
     <url>/2025/06/23/classical-chinese-translation/</url>
     <content><![CDATA[<h1 id="文言文现代翻译助手-内容说明"><a href="#文言文现代翻译助手-内容说明" class="headerlink" title="文言文现代翻译助手 - 内容说明"></a>文言文现代翻译助手 - 内容说明</h1><h2 id="📖-插件简介"><a href="#📖-插件简介" class="headerlink" title="📖 插件简介"></a>📖 插件简介</h2><p>文言文现代翻译助手是一款专为古典文学爱好者和学习者设计的Chrome浏览器插件。它能够智能识别网页中的文言文内容，并通过先进的AI技术将其翻译为现代汉语，帮助用户更好地理解古典文献。</p>
@@ -422,95 +514,67 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Cursor Agent CLI 报错 No version directories found 的排查与修复</title>
-    <url>/2026/06/19/cursor-agent-no-version-directories-fix/</url>
-    <content><![CDATA[<p>在 Windows 终端执行 <code>agent</code> 或 <code>cursor-agent</code> 时，可能遇到如下错误：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">C:\Users\liuhualiang\AppData\Local\cursor-agent\agent.ps1 : No version directories found in C:\Users\liuhualiang\AppData\Local\cursor-agent</span><br><span class="line">所在位置 行:1 字符: 1</span><br><span class="line">+ agent</span><br><span class="line">+ ~~~~~</span><br><span class="line">    + CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException</span><br><span class="line">    + FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException,agent.ps1</span><br></pre></td></tr></table></figure>
-
-<p>本文记录该问题的现象、根因、修复方式与临时绕过方法。</p>
-<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><ul>
-<li><code>agent</code>、<code>cursor-agent</code> 命令均无法启动</li>
-<li>报错提示在 <code>%LOCALAPPDATA%\cursor-agent</code> 下找不到版本目录</li>
-<li>但手动查看 <code>versions</code> 子目录，实际存在多个版本文件夹，例如：</li>
-</ul>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">C:\Users\liuhualiang\AppData\Local\cursor-agent\versions\</span><br><span class="line">├── 2026.06.12-19-59-36-f6aba9a</span><br><span class="line">├── 2026.06.15-03-48-54-da23e37</span><br><span class="line">└── 2026.06.16-20-30-07-a07d3ac</span><br></pre></td></tr></table></figure>
-
-<h2 id="根因"><a href="#根因" class="headerlink" title="根因"></a>根因</h2><p><code>agent.ps1</code> 与 <code>cursor-agent.ps1</code> 启动时会扫描 <code>versions</code> 目录，并用正则过滤合法版本名：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>该正则只匹配<strong>旧格式</strong>：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">YYYY.MM.DD-commit</span><br></pre></td></tr></table></figure>
-
-<p>例如：<code>2026.06.16-a07d3ac</code></p>
-<p>而 Cursor Agent 更新后的目录名变为<strong>新格式</strong>，中间多了构建时间：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">YYYY.MM.DD-HH-MM-SS-commit</span><br></pre></td></tr></table></figure>
-
-<p>例如：<code>2026.06.16-20-30-07-a07d3ac</code></p>
-<p>因此所有现有版本目录都被过滤掉，脚本误判为「没有版本目录」。</p>
-<h2 id="修复方法"><a href="#修复方法" class="headerlink" title="修复方法"></a>修复方法</h2><p>编辑以下两个文件（内容相同，需同步修改）：</p>
-<ul>
-<li><code>%LOCALAPPDATA%\cursor-agent\agent.ps1</code></li>
-<li><code>%LOCALAPPDATA%\cursor-agent\cursor-agent.ps1</code></li>
-</ul>
-<h3 id="1-更新版本目录匹配正则"><a href="#1-更新版本目录匹配正则" class="headerlink" title="1. 更新版本目录匹配正则"></a>1. 更新版本目录匹配正则</h3><p>将原来的：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>改为同时兼容新旧格式：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;(-\d&#123;1,2&#125;-\d&#123;1,2&#125;-\d&#123;1,2&#125;)?-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-改进版本排序逻辑（可选但推荐）"><a href="#2-改进版本排序逻辑（可选但推荐）" class="headerlink" title="2. 改进版本排序逻辑（可选但推荐）"></a>2. 改进版本排序逻辑（可选但推荐）</h3><p><code>Parse-VersionString</code> 函数原先只按日期 <code>YYYY.MM.DD</code> 排序。若同一天存在多个构建，建议解析时间戳后再比较：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Parse-VersionString</span></span> &#123;</span><br><span class="line">    <span class="keyword">param</span> (</span><br><span class="line">        [<span class="built_in">string</span>]<span class="variable">$versionString</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="variable">$segments</span> = <span class="variable">$versionString</span>.Split(<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">    <span class="variable">$datePart</span> = <span class="variable">$segments</span>[<span class="number">0</span>]</span><br><span class="line">    <span class="variable">$parts</span> = <span class="variable">$datePart</span>.Split(<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$parts</span>.Length <span class="operator">-ne</span> <span class="number">3</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="string">&quot;Invalid version format. Expected format: YYYY.MM.DD[-HH-MM-SS]-commit&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$year</span> = <span class="variable">$parts</span>[<span class="number">0</span>]</span><br><span class="line">    <span class="variable">$month</span> = <span class="variable">$parts</span>[<span class="number">1</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    <span class="variable">$day</span> = <span class="variable">$parts</span>[<span class="number">2</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    <span class="variable">$timeSuffix</span> = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$segments</span>.Length <span class="operator">-ge</span> <span class="number">5</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">1</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">2</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">3</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span>) &#123;</span><br><span class="line">        <span class="variable">$timeSuffix</span> = <span class="variable">$segments</span>[<span class="number">1</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>) + <span class="variable">$segments</span>[<span class="number">2</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>) + <span class="variable">$segments</span>[<span class="number">3</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">long</span>](<span class="variable">$year</span> + <span class="variable">$month</span> + <span class="variable">$day</span> + <span class="variable">$timeSuffix</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-验证修复"><a href="#3-验证修复" class="headerlink" title="3. 验证修复"></a>3. 验证修复</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">agent <span class="literal">--version</span></span><br><span class="line">agent status</span><br></pre></td></tr></table></figure>
-
-<p>预期输出示例：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">2026.06.16-20-30-07-a07d3ac</span><br><span class="line">✓ Logged in as your@email.com</span><br></pre></td></tr></table></figure>
-
-<h2 id="临时绕过（不修改脚本）"><a href="#临时绕过（不修改脚本）" class="headerlink" title="临时绕过（不修改脚本）"></a>临时绕过（不修改脚本）</h2><p>若暂时不想改启动脚本，可直接调用最新版本目录下的 <code>node.exe</code> 与 <code>index.js</code>：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$v</span> = <span class="string">&quot;C:\Users\liuhualiang\AppData\Local\cursor-agent\versions\2026.06.16-20-30-07-a07d3ac&quot;</span></span><br><span class="line">&amp; <span class="string">&quot;<span class="variable">$v</span>\node.exe&quot;</span> <span class="string">&quot;<span class="variable">$v</span>\index.js&quot;</span> status</span><br><span class="line">&amp; <span class="string">&quot;<span class="variable">$v</span>\node.exe&quot;</span> <span class="string">&quot;<span class="variable">$v</span>\index.js&quot;</span> <span class="literal">--help</span></span><br></pre></td></tr></table></figure>
-
-<p>将 <code>$v</code> 替换为 <code>versions</code> 下实际存在的最新目录名即可。</p>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
-<li><strong>更新可能覆盖修复</strong>：执行 <code>agent update</code> 或 Cursor 自动更新 Agent CLI 后，<code>agent.ps1</code> 可能被还原，问题会复现，需重新应用上述修改。</li>
-<li><strong>IDE CLI 与 Agent CLI 是两套工具</strong>：<ul>
-<li><code>cursor</code>：Cursor IDE 自带 CLI（打开文件、diff、tunnel 等），路径通常在 <code>%LOCALAPPDATA%\Programs\cursor\resources\app\bin\</code></li>
-<li><code>agent</code> &#x2F; <code>cursor-agent</code>：终端 Agent CLI，安装在 <code>%LOCALAPPDATA%\cursor-agent\</code></li>
-</ul>
-</li>
-<li><strong><code>cursor agent</code> 子命令</strong>：IDE CLI 也注册了 <code>agent</code> 子命令，但日常使用的 <code>agent</code> 命令通常来自 PATH 中的 <code>cursor-agent</code> 包装脚本。</li>
-</ol>
-<h2 id="相关环境信息（排查参考）"><a href="#相关环境信息（排查参考）" class="headerlink" title="相关环境信息（排查参考）"></a>相关环境信息（排查参考）</h2><table>
+    <title>health</title>
+    <url>/2025/06/12/health/</url>
+    <content><![CDATA[<table>
 <thead>
 <tr>
-<th>项目</th>
-<th>值</th>
+<th>Habit</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>Cursor IDE 版本</td>
-<td>3.8.11</td>
+<td>1</td>
+<td>Regular Physical Activity: Engage in 150 min&#x2F;week of moderate aerobic exercise or 75 min&#x2F;week of vigorous exercise, plus strength training twice weekly.</td>
 </tr>
 <tr>
-<td>Agent CLI 版本</td>
-<td>2026.06.16-20-30-07-a07d3ac</td>
+<td>2</td>
+<td>Balanced Diet: Consume fruits, vegetables, whole grains, lean proteins, and healthy fats; limit processed foods, sugar, and salt.</td>
 </tr>
 <tr>
-<td>操作系统</td>
-<td>Windows 10&#x2F;11 x64</td>
+<td>3</td>
+<td>Regular Health Screenings: Monitor blood pressure, cholesterol, and blood sugar; follow age-appropriate check-up schedules.</td>
 </tr>
 <tr>
-<td>安装路径</td>
-<td><code>%LOCALAPPDATA%\cursor-agent\</code></td>
+<td>4</td>
+<td>Prostate Health: Be aware of prostate issues; consider screening from age 50 or earlier if at risk.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Avoid Tobacco, Limit Alcohol: Quit smoking; limit alcohol to two drinks&#x2F;day.</td>
 </tr>
 </tbody></table>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><code>No version directories found</code> 并非版本文件缺失，而是 <strong>PowerShell 启动脚本的版本名正则未跟上 Cursor Agent 新的目录命名规范</strong>。更新正则后即可恢复正常；若再次被更新覆盖，按本文步骤重新修复即可。</p>
+<table>
+<thead>
+<tr>
+<th>习惯</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>定期体育锻炼：每周进行 150 分钟的中等强度有氧运动或 75 分钟&#x2F;周的剧烈运动，外加每周两次的力量训练。</td>
+</tr>
+<tr>
+<td>2</td>
+<td>均衡饮食：食用水果、蔬菜、全谷物、瘦肉蛋白和健康脂肪;限制加工食品、糖和盐。</td>
+</tr>
+<tr>
+<td>3</td>
+<td>定期健康检查：监测血压、胆固醇和血糖;遵循适合年龄的体检时间表。</td>
+</tr>
+<tr>
+<td>4</td>
+<td>前列腺健康：注意前列腺问题;如果有风险，考虑从 50 岁或更早开始进行筛查。</td>
+</tr>
+<tr>
+<td>5</td>
+<td>避免吸烟，限制饮酒：戒烟;将酒精限制在每天两杯。</td>
+</tr>
+</tbody></table>
 ]]></content>
       <tags>
-        <tag>Cursor</tag>
-        <tag>CLI</tag>
-        <tag>Agent</tag>
-        <tag>Windows</tag>
-        <tag>PowerShell</tag>
+        <tag>health</tag>
       </tags>
   </entry>
   <entry>
@@ -1200,6 +1264,110 @@
       </tags>
   </entry>
   <entry>
+    <title>kingbase</title>
+    <url>/2024/09/02/kingbase/</url>
+    <content><![CDATA[<h1 id="kingbase使用问题"><a href="#kingbase使用问题" class="headerlink" title="kingbase使用问题"></a>kingbase使用问题</h1><h2 id="乱码问题"><a href="#乱码问题" class="headerlink" title="乱码问题"></a>乱码问题</h2><p>创建gb18030的数据库，可以解决。</p>
+<img src="/2024/09/02/kingbase/1725264522588.png" class="" width="1725264522588">
+
+<img src="/2024/09/02/kingbase/1725264492761.png" class="" width="1725264492761">
+
+<p>更换驱动</p>
+<img src="/2024/09/02/kingbase/1725264867078.png" class="" width="1725264867078">
+
+<h2 id="不支持10"><a href="#不支持10" class="headerlink" title="不支持10"></a>不支持10</h2><img src="/2024/09/02/kingbase/1725264959146.png" class="" width="1725264959146">
+
+<h2 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pgjdbc: autodetected server-encoding to be ISO-8859-1, if the message is not readable, please check database logs and/or host, port, dbname, user, password, pg_hba.conf</span><br></pre></td></tr></table></figure>
+
+<h2 id="错误-1"><a href="#错误-1" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">See nested exception: org.postgresql.util.PSQLException: ERROR: 关系 &quot;qrtz_triggers&quot; 不存在</span><br></pre></td></tr></table></figure>
+
+<img src="/2024/09/02/kingbase/1725267331659.png" class="" width="1725267331659">
+
+<h2 id="查询数据库编码"><a href="#查询数据库编码" class="headerlink" title="查询数据库编码"></a>查询数据库编码</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT pg_encoding_to_char(encoding) FROM pg_database WHERE datname = &#x27;your_database_name&#x27;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="对模式xx权限不够"><a href="#对模式xx权限不够" class="headerlink" title="对模式xx权限不够"></a>对模式xx权限不够</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Caused by: org.postgresql.util.PSQLException: ERROR: 对模式 cems 权限不够</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2026/07/06/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><span id="more"></span>
+
+<h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>MES 2026 年 5 月工作小结</title>
+    <url>/2026/08/01/mes-monthly-2026-05/</url>
+    <content><![CDATA[<img src="/2026/08/01/mes-monthly-2026-05/cover.png" class="">
+
+<p>5 月（约 <strong>220+ 次提交</strong>、合并 PR <strong>#239–#281</strong>）主线落在业务现场能力：交接班 Docx 模型导入、液体码头&#x2F;船舶作业增强、仪表位号与报表关联，以及 RTDB&#x2F;ISYS 采集链路。改动最集中的是 <code>mes-operation</code>、<code>mes-measure</code>、<code>mes-vessel-operation</code>，辅以 <code>mes-web</code> &#x2F; <code>mes-rtdb</code>。</p>
+<h2 id="一、交接班-ShiftLog（中下旬主线）"><a href="#一、交接班-ShiftLog（中下旬主线）" class="headerlink" title="一、交接班 ShiftLog（中下旬主线）"></a>一、交接班 ShiftLog（中下旬主线）</h2><ul>
+<li>Docx 模型导入与解析预览（#263）：锚点注入、单元格模式、输入类型与公式处理。</li>
+<li>跳过孤儿锚点（#270）、批量删除与归属校验、调度日志预览。</li>
+<li>Docx 解析器持续增强（#278）：条目类型、标签推断、TABLE_STR_BC 批量生成等。</li>
+<li>月末补齐 docx_code 唯一性校验（#281）。</li>
+</ul>
+<h2 id="二、船舶-液体码头作业"><a href="#二、船舶-液体码头作业" class="headerlink" title="二、船舶 &#x2F; 液体码头作业"></a>二、船舶 &#x2F; 液体码头作业</h2><ul>
+<li>内外贸字段、管线名称、货种筛选与泊位告警（#239&#x2F;#241&#x2F;#246&#x2F;#248）。</li>
+<li>收发油罐按物料多选（#244）；船名模糊检索等终端体验。</li>
+<li>船舶动态导入：到港时间格式与提示信息修复（#258&#x2F;#276）。</li>
+<li>排船页接入真实 LLM 辅助（#275）。</li>
+</ul>
+<h2 id="三、仪表位号与报表"><a href="#三、仪表位号与报表" class="headerlink" title="三、仪表位号与报表"></a>三、仪表位号与报表</h2><ul>
+<li>手动采集按钮（#254）；位号配置、导入导出、唯一性与时间处理（#267）。</li>
+<li>关联报表模板展示与批量查询、模板维度（#252&#x2F;#265）。</li>
+<li>报表&#x2F;位号侧过滤与 jqGrid 行范围选择。</li>
+</ul>
+<h2 id="四、实时库与工程体验"><a href="#四、实时库与工程体验" class="headerlink" title="四、实时库与工程体验"></a>四、实时库与工程体验</h2><ul>
+<li>RTDB ISYS SDK RMI 回调（#271）；ISYS 配置与 HTTP 客户端增强。</li>
+<li>SpringDoc OpenAPI &#x2F; Swagger UI 接入。</li>
+<li>多 Tab 溢出箭头滚动（#273）、滚动条样式、模态间菜单切换；菜单关键词逗号 OR 搜索（#269）。</li>
+<li>反馈排程关闭&#x2F;驳回态隐藏按钮等细节（#250）。</li>
+</ul>
+<h2 id="五、月度节奏"><a href="#五、月度节奏" class="headerlink" title="五、月度节奏"></a>五、月度节奏</h2><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上旬</td>
+<td>液体码头罐&#x2F;管线&#x2F;货种、位号手动采集、报表模板维度</td>
+</tr>
+<tr>
+<td>中旬</td>
+<td>交接班 Docx 导入起步、位号关联报表、菜单搜索与 UI 修复</td>
+</tr>
+<tr>
+<td>下旬</td>
+<td>ShiftLog 解析深化、RTDB RMI、排船 AI、到港时间导入、docx 唯一性</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>一句话</strong>：5 月把交接班 Docx 导入做成可用链路，并加强液体码头作业与仪表采集&#x2F;报表关联；实时库回调与若干前端体验同步落地，为 6 月平台化（AI&#x2F;能耗&#x2F;图表）腾出业务底座。</p>
+]]></content>
+      <tags>
+        <tag>MES</tag>
+        <tag>交接班</tag>
+        <tag>船舶作业</tag>
+        <tag>工作小结</tag>
+        <tag>月报</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>EOS 菜单树 NodeID 与 ObjectID 说明</title>
     <url>/2026/07/31/eos-role-tree-nodeid-objectid/</url>
     <content><![CDATA[<p>本文档说明 eosrole 页面「配置 EOS 菜单权限」树节点中 <strong>NodeID</strong>（前端 zTree 的 <code>id</code>）与 <strong>ObjectID</strong>（前端 <code>objectId</code>）的含义、数据库来源、后端组装与前端使用方式。</p>
@@ -1726,141 +1894,33 @@
       </tags>
   </entry>
   <entry>
-    <title>health</title>
-    <url>/2025/06/12/health/</url>
-    <content><![CDATA[<table>
-<thead>
-<tr>
-<th>Habit</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>Regular Physical Activity: Engage in 150 min&#x2F;week of moderate aerobic exercise or 75 min&#x2F;week of vigorous exercise, plus strength training twice weekly.</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Balanced Diet: Consume fruits, vegetables, whole grains, lean proteins, and healthy fats; limit processed foods, sugar, and salt.</td>
-</tr>
-<tr>
-<td>3</td>
-<td>Regular Health Screenings: Monitor blood pressure, cholesterol, and blood sugar; follow age-appropriate check-up schedules.</td>
-</tr>
-<tr>
-<td>4</td>
-<td>Prostate Health: Be aware of prostate issues; consider screening from age 50 or earlier if at risk.</td>
-</tr>
-<tr>
-<td>5</td>
-<td>Avoid Tobacco, Limit Alcohol: Quit smoking; limit alcohol to two drinks&#x2F;day.</td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th>习惯</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>定期体育锻炼：每周进行 150 分钟的中等强度有氧运动或 75 分钟&#x2F;周的剧烈运动，外加每周两次的力量训练。</td>
-</tr>
-<tr>
-<td>2</td>
-<td>均衡饮食：食用水果、蔬菜、全谷物、瘦肉蛋白和健康脂肪;限制加工食品、糖和盐。</td>
-</tr>
-<tr>
-<td>3</td>
-<td>定期健康检查：监测血压、胆固醇和血糖;遵循适合年龄的体检时间表。</td>
-</tr>
-<tr>
-<td>4</td>
-<td>前列腺健康：注意前列腺问题;如果有风险，考虑从 50 岁或更早开始进行筛查。</td>
-</tr>
-<tr>
-<td>5</td>
-<td>避免吸烟，限制饮酒：戒烟;将酒精限制在每天两杯。</td>
-</tr>
-</tbody></table>
-]]></content>
-      <tags>
-        <tag>health</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>kingbase</title>
-    <url>/2024/09/02/kingbase/</url>
-    <content><![CDATA[<h1 id="kingbase使用问题"><a href="#kingbase使用问题" class="headerlink" title="kingbase使用问题"></a>kingbase使用问题</h1><h2 id="乱码问题"><a href="#乱码问题" class="headerlink" title="乱码问题"></a>乱码问题</h2><p>创建gb18030的数据库，可以解决。</p>
-<img src="/2024/09/02/kingbase/1725264522588.png" class="" width="1725264522588">
+    <title>MES 2026 年 7 月工作小结</title>
+    <url>/2026/08/01/mes-monthly-2026-07/</url>
+    <content><![CDATA[<img src="/2026/08/01/mes-monthly-2026-07/cover.png" class="">
 
-<img src="/2024/09/02/kingbase/1725264492761.png" class="" width="1725264492761">
-
-<p>更换驱动</p>
-<img src="/2024/09/02/kingbase/1725264867078.png" class="" width="1725264867078">
-
-<h2 id="不支持10"><a href="#不支持10" class="headerlink" title="不支持10"></a>不支持10</h2><img src="/2024/09/02/kingbase/1725264959146.png" class="" width="1725264959146">
-
-<h2 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pgjdbc: autodetected server-encoding to be ISO-8859-1, if the message is not readable, please check database logs and/or host, port, dbname, user, password, pg_hba.conf</span><br></pre></td></tr></table></figure>
-
-<h2 id="错误-1"><a href="#错误-1" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">See nested exception: org.postgresql.util.PSQLException: ERROR: 关系 &quot;qrtz_triggers&quot; 不存在</span><br></pre></td></tr></table></figure>
-
-<img src="/2024/09/02/kingbase/1725267331659.png" class="" width="1725267331659">
-
-<h2 id="查询数据库编码"><a href="#查询数据库编码" class="headerlink" title="查询数据库编码"></a>查询数据库编码</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT pg_encoding_to_char(encoding) FROM pg_database WHERE datname = &#x27;your_database_name&#x27;;</span><br></pre></td></tr></table></figure>
-
-<h2 id="对模式xx权限不够"><a href="#对模式xx权限不够" class="headerlink" title="对模式xx权限不够"></a>对模式xx权限不够</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Caused by: org.postgresql.util.PSQLException: ERROR: 对模式 cems 权限不够</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2026/07/06/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><span id="more"></span>
-
-<h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>MES 2026 年 5 月工作小结</title>
-    <url>/2026/08/01/mes-monthly-2026-05/</url>
-    <content><![CDATA[<img src="/2026/08/01/mes-monthly-2026-05/cover.png" class="">
-
-<p>5 月（约 <strong>220+ 次提交</strong>、合并 PR <strong>#239–#281</strong>）主线落在业务现场能力：交接班 Docx 模型导入、液体码头&#x2F;船舶作业增强、仪表位号与报表关联，以及 RTDB&#x2F;ISYS 采集链路。改动最集中的是 <code>mes-operation</code>、<code>mes-measure</code>、<code>mes-vessel-operation</code>，辅以 <code>mes-web</code> &#x2F; <code>mes-rtdb</code>。</p>
-<h2 id="一、交接班-ShiftLog（中下旬主线）"><a href="#一、交接班-ShiftLog（中下旬主线）" class="headerlink" title="一、交接班 ShiftLog（中下旬主线）"></a>一、交接班 ShiftLog（中下旬主线）</h2><ul>
-<li>Docx 模型导入与解析预览（#263）：锚点注入、单元格模式、输入类型与公式处理。</li>
-<li>跳过孤儿锚点（#270）、批量删除与归属校验、调度日志预览。</li>
-<li>Docx 解析器持续增强（#278）：条目类型、标签推断、TABLE_STR_BC 批量生成等。</li>
-<li>月末补齐 docx_code 唯一性校验（#281）。</li>
+<p>7 月（约 <strong>400+ 次提交</strong>、合并 PR <strong>#312–#367</strong>）主线是把 <strong>mes-ai</strong> 从可用原型推进到能耗&#x2F;生产运行可落地，并顺带补齐权限、调度、图表与安全。改动最集中的模块是 <code>mes-ai</code>，其次 <code>mes-web</code> &#x2F; <code>mes-security</code> &#x2F; <code>mes-chart</code>。</p>
+<h2 id="一、MES-AI-平台能力（全月主线）"><a href="#一、MES-AI-平台能力（全月主线）" class="headerlink" title="一、MES-AI 平台能力（全月主线）"></a>一、MES-AI 平台能力（全月主线）</h2><ul>
+<li><strong>多 Agent &#x2F; 路由</strong>：协作 MVP、首页浮动助手接入 <code>mes_router</code>、窗口最大化、会话与统计增强。</li>
+<li><strong>工具调用（FC&#x2F;ReAct）</strong>：空工具调用恢复与 nudge、互斥意图、few-shot &#x2F; <code>handler_config</code> 常见错误提示、同参重复调用治理、运行日志可观测与重试。</li>
+<li><strong>SQL 工具链</strong>：参数槽位抽取、日期区间（含半月）、列标签&#x2F;排序、存储过程工具、结果图表与表格渲染（列组、着色、汇总行、<code>excludeFromUiTable</code>）。</li>
+<li><strong>模型与配置</strong>：thinking 模式、采样参数、工具业务分类、硬编码治理（默认模型可配置等）。</li>
+<li><strong>管理端</strong>：工具&#x2F;Agent 列表与编辑、级联删除、聊天停止、用户改消息、反馈&#x2F;复测标记、页面规范（按钮&#x2F;<code>msg</code>）。</li>
 </ul>
-<h2 id="二、船舶-液体码头作业"><a href="#二、船舶-液体码头作业" class="headerlink" title="二、船舶 &#x2F; 液体码头作业"></a>二、船舶 &#x2F; 液体码头作业</h2><ul>
-<li>内外贸字段、管线名称、货种筛选与泊位告警（#239&#x2F;#241&#x2F;#246&#x2F;#248）。</li>
-<li>收发油罐按物料多选（#244）；船名模糊检索等终端体验。</li>
-<li>船舶动态导入：到港时间格式与提示信息修复（#258&#x2F;#276）。</li>
-<li>排船页接入真实 LLM 辅助（#275）。</li>
+<h2 id="二、业务智能体落地"><a href="#二、业务智能体落地" class="headerlink" title="二、业务智能体落地"></a>二、业务智能体落地</h2><ul>
+<li><strong>能耗分析</strong>：同比环比、日表多装置查询、<code>Z_View_NHFX_*</code>、列显隐与意图策略、图表双轴等多轮打磨。</li>
+<li><strong>生产运行 &#x2F; 工程师日志</strong>：填报状态意图与工具互斥、工程师&#x2F;部门长问题频次与运行日志查询工具；月末落地 <strong>Eos 工程师日志</strong> 定时提交模块（#366）。</li>
+<li><strong>生产运行 FC 智能体</strong>（#324）及相关 SQL&#x2F;提示持续迭代。</li>
 </ul>
-<h2 id="三、仪表位号与报表"><a href="#三、仪表位号与报表" class="headerlink" title="三、仪表位号与报表"></a>三、仪表位号与报表</h2><ul>
-<li>手动采集按钮（#254）；位号配置、导入导出、唯一性与时间处理（#267）。</li>
-<li>关联报表模板展示与批量查询、模板维度（#252&#x2F;#265）。</li>
-<li>报表&#x2F;位号侧过滤与 jqGrid 行范围选择。</li>
+<h2 id="三、权限与安全"><a href="#三、权限与安全" class="headerlink" title="三、权限与安全"></a>三、权限与安全</h2><ul>
+<li>Eos 角色对象权限、单权限替换模式、eosrole 一次完成 EOS+MES 用户授权。</li>
+<li>JSON 请求加密、XSS 过滤与 AI&#x2F;Chart 定点抽检。</li>
+<li>mes-chart 安全与可维护性改造。</li>
 </ul>
-<h2 id="四、实时库与工程体验"><a href="#四、实时库与工程体验" class="headerlink" title="四、实时库与工程体验"></a>四、实时库与工程体验</h2><ul>
-<li>RTDB ISYS SDK RMI 回调（#271）；ISYS 配置与 HTTP 客户端增强。</li>
-<li>SpringDoc OpenAPI &#x2F; Swagger UI 接入。</li>
-<li>多 Tab 溢出箭头滚动（#273）、滚动条样式、模态间菜单切换；菜单关键词逗号 OR 搜索（#269）。</li>
-<li>反馈排程关闭&#x2F;驳回态隐藏按钮等细节（#250）。</li>
+<h2 id="四、基础设施与其它业务"><a href="#四、基础设施与其它业务" class="headerlink" title="四、基础设施与其它业务"></a>四、基础设施与其它业务</h2><ul>
+<li><strong>Quartz</strong>：P0&#x2F;P1&#x2F;P2 工程化、超时控制、失败告警、任务日志状态。</li>
+<li><strong>工作台</strong> P0–P2（#327）。</li>
+<li><strong>船舶</strong>：<code>vesselOperationDynamicId</code> 终端强制&#x2F;校验。</li>
+<li>Excel&#x2F;JXLS、用户导出、在线消息详情、jqGrid 全局错误处理、本地 LLM profile 等。</li>
 </ul>
 <h2 id="五、月度节奏"><a href="#五、月度节奏" class="headerlink" title="五、月度节奏"></a>五、月度节奏</h2><table>
 <thead>
@@ -1871,26 +1931,25 @@
 </thead>
 <tbody><tr>
 <td>上旬</td>
-<td>液体码头罐&#x2F;管线&#x2F;货种、位号手动采集、报表模板维度</td>
+<td>Eos 权限、本地 LLM、AI 管理端基础、聊天停止、生产运行 FC</td>
 </tr>
 <tr>
 <td>中旬</td>
-<td>交接班 Docx 导入起步、位号关联报表、菜单搜索与 UI 修复</td>
+<td>运行可观测、意图互斥、槽位抽取、加密&#x2F;XSS、协作与图表</td>
 </tr>
 <tr>
 <td>下旬</td>
-<td>ShiftLog 解析深化、RTDB RMI、排船 AI、到港时间导入、docx 唯一性</td>
+<td>多 Agent 路由入口、Quartz、能耗 SQL&#x2F;表格体系、工程师日志模块、硬编码治理</td>
 </tr>
 </tbody></table>
 <hr>
-<p><strong>一句话</strong>：5 月把交接班 Docx 导入做成可用链路，并加强液体码头作业与仪表采集&#x2F;报表关联；实时库回调与若干前端体验同步落地，为 6 月平台化（AI&#x2F;能耗&#x2F;图表）腾出业务底座。</p>
+<p><strong>一句话</strong>：7 月把 MES-AI 做成「能路由、能调工具、能出表&#x2F;图、能追日志」的平台，并在能耗分析与生产运行上形成可演示的业务闭环；权限、调度、图表安全同步加固。</p>
 ]]></content>
       <tags>
         <tag>MES</tag>
-        <tag>交接班</tag>
-        <tag>船舶作业</tag>
         <tag>工作小结</tag>
         <tag>月报</tag>
+        <tag>mes-ai</tag>
       </tags>
   </entry>
   <entry>
@@ -1953,6 +2012,186 @@
         <tag>mes-ai</tag>
         <tag>mes-energy</tag>
         <tag>mes-chart</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MES 本周工作小结（2026-07-28 ~ 08-01）</title>
+    <url>/2026/08/01/mes-weekly-2026-w31/</url>
+    <content><![CDATA[<img src="/2026/08/01/mes-weekly-2026-w31/cover.png" class="">
+
+<p>本周（7&#x2F;28–8&#x2F;1）工作以 <strong>MES-AI 能耗分析与对话表格展示</strong> 为主线，并落地了 Eos 工程师日志、船舶作业校验与一批文档。约 74 次提交，合并 10 个 PR（#357–#367）。</p>
+<h2 id="一、MES-AI-能耗智能体（主线）"><a href="#一、MES-AI-能耗智能体（主线）" class="headerlink" title="一、MES-AI 能耗智能体（主线）"></a>一、MES-AI 能耗智能体（主线）</h2><ul>
+<li><strong>SQL 工具与参数</strong>：完善能耗工具参数解析（#357）、同比环比工具、装置&#x2F;时段槽位提取；多轮按运行日志纠偏（装置识别、明细 vs 汇总、单位标注等）。</li>
+<li><strong>日表查询</strong>：新增 <code>energy_nhfx_day</code> &#x2F; <code>Z_View_NHFX_TABLE</code> 日表多装置查询（#363），持续修 JSON、错误处理与设计物耗字段表述。</li>
+<li><strong>表格与图表</strong>：复合表头&#x2F;列组（#358）、单元格着色（#359）、汇总行与派生率（#361）、双图（多日&#x2F;多装置）、<code>excludeFromUiTable</code> 隐藏辅助结果（#365）。</li>
+<li><strong>稳定性</strong>：<code>StoredProcToolHandler</code> 围绕 Fastjson 未闭合字符串等问题迭代，后简化控制字符预处理逻辑。</li>
+<li><strong>硬编码治理</strong>：默认模型可配置、Embedding base-url 清理等 P0 项合入（#367）。</li>
+</ul>
+<h2 id="二、AI-管理端与规范"><a href="#二、AI-管理端与规范" class="headerlink" title="二、AI 管理端与规范"></a>二、AI 管理端与规范</h2><ul>
+<li>AI 列表&#x2F;编辑页统一按钮样式、导航、成功提示改用 <code>msg</code>（#364）。</li>
+<li>Cursor 规则与页面约定对齐（成功&#x2F;失败提示、按钮风格）。</li>
+</ul>
+<h2 id="三、Eos-安全任务"><a href="#三、Eos-安全任务" class="headerlink" title="三、Eos &#x2F; 安全任务"></a>三、Eos &#x2F; 安全任务</h2><ul>
+<li>新增 <strong>Eos 工程师日志</strong> 模块（OpenService 客户端、定时任务、装置配置、测试）（#366）。</li>
+<li>日常用 skill&#x2F;脚本按 token 批量生成各装置工程师日志。</li>
+<li>补充&#x2F;更新 EOS 角色-菜单、角色树 nodeId&#x2F;objectId 文档。</li>
+</ul>
+<h2 id="四、船舶作业"><a href="#四、船舶作业" class="headerlink" title="四、船舶作业"></a>四、船舶作业</h2><ul>
+<li>终端侧强制&#x2F;校验 <code>vesselOperationDynamicId</code>（#362）。</li>
+<li>完善到离港接口与 <code>mes-measure-vessel</code> ↔ <code>mes-vessel-operation</code> 调用说明文档。</li>
+</ul>
+<h2 id="五、其他"><a href="#五、其他" class="headerlink" title="五、其他"></a>五、其他</h2><ul>
+<li>mesdata 存储过程&#x2F;函数梳理、能耗模型数据核对、日志错误报告更新。</li>
+<li>README 与若干 AI&#x2F;业务 PDF 文档整理。</li>
+</ul>
+<h2 id="六、周末进行中"><a href="#六、周末进行中" class="headerlink" title="六、周末进行中"></a>六、周末进行中</h2><p>本地仍有未合入改动：<code>ai-chat-render.js</code>、若干 AI HTML，以及 <code>index.html</code> &#x2F; <code>main.css</code>（偏首页&#x2F;样式微调）。</p>
+<hr>
+<p><strong>一句话</strong>：本周把能耗 AI 从「能查」推进到「表格好看、图表可用、结果可控、配置可治理」，并完成工程师日志自动化与船舶动态 ID 校验。</p>
+]]></content>
+      <tags>
+        <tag>MES</tag>
+        <tag>工作小结</tag>
+        <tag>mes-ai</tag>
+        <tag>能耗分析</tag>
+        <tag>Eos</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MES 2026 年第 32 周工作小结</title>
+    <url>/2026/08/06/mes-weekly-2026-w32/</url>
+    <content><![CDATA[<img src="/2026/08/06/mes-weekly-2026-w32/cover.png" class="">
+
+<p>本周（8&#x2F;3–8&#x2F;6，约 <strong>50 次提交</strong>、合并 PR <strong>#360、#374</strong>）主线在 <strong>AI 图表内联渲染</strong>与<strong>相对月份推理修复</strong>，同时推进运行日志可观测性和 ExternalApi 集成。主力模块 <code>mes-ai</code>（167 文件触达），次为 <code>mes-chart</code>（15 文件）。</p>
+<h2 id="一、AI-图表内联与看板增强（-360）"><a href="#一、AI-图表内联与看板增强（-360）" class="headerlink" title="一、AI 图表内联与看板增强（#360）"></a>一、AI 图表内联与看板增强（#360）</h2><p>在 AI 聊天中落地面向 SQL 工具的内联图表渲染，并增强看板筛选能力：</p>
+<ul>
+<li><strong>SqlToolChartPolicy</strong>：新增图表配置编辑入口，支持为 SQL 工具指定折线&#x2F;柱状&#x2F;表格等图表类型，查询结果直接在对话中渲染</li>
+<li><strong>看板增强</strong>：Tab 筛选与可见性管理、月份过滤支持、<code>renderFilterBar</code> 异步时序修复</li>
+<li><strong>健壮性修复</strong>：<code>ClassCastException</code>（图表配置为标量值时）、<code>NumberUtil</code> 统一替代自定义数值解析方法</li>
+</ul>
+<h2 id="二、相对月份查询修复（-985、-992）"><a href="#二、相对月份查询修复（-985、-992）" class="headerlink" title="二、相对月份查询修复（#985、#992）"></a>二、相对月份查询修复（#985、#992）</h2><p>针对性修复”上个月”等相对月份提示词输出错误日历月份的问题：</p>
+<ul>
+<li><code>RelativeMonthOverviewNormalizer</code>：正则从 <code>RELATIVE_MONTH_PHRASES</code> 集中化短语列表动态构建，消除分散常量</li>
+<li><code>AgentReactExecutor</code>：注入已解析年月提示，防止 Agent 在强制结单前过早输出 JSON 导致月份错误</li>
+<li>新增单测覆盖多种相对月份表述场景</li>
+</ul>
+<h2 id="三、AI-运行日志可观测性（-374）"><a href="#三、AI-运行日志可观测性（-374）" class="headerlink" title="三、AI 运行日志可观测性（#374）"></a>三、AI 运行日志可观测性（#374）</h2><ul>
+<li>运行日志列表新增<strong>会话详情弹窗</strong>，支持按 sessionId 匹配 assistant 消息并展示</li>
+<li><code>AiChatRunLogEntity</code> 关联 <code>SysUserEntity</code>，日志列表展示用户信息（用户名&#x2F;姓名）</li>
+<li><code>AgentChatController</code> 会话管理功能增强：分页、搜索、会话切换</li>
+<li><code>AgentAnswerParser</code> 新增 <code>intentional_choices</code> JSON 解析</li>
+</ul>
+<h2 id="四、ExternalApi-工具增强"><a href="#四、ExternalApi-工具增强" class="headerlink" title="四、ExternalApi 工具增强"></a>四、ExternalApi 工具增强</h2><ul>
+<li>URI 构造与编码重构，<code>urlEncode</code> 冗余方法移除</li>
+<li>测试用例覆盖 URI 特殊字符编码场景</li>
+<li>文档补充：高德天气工具、通用 External API 接入示例</li>
+</ul>
+<h2 id="五、文档与基础设施"><a href="#五、文档与基础设施" class="headerlink" title="五、文档与基础设施"></a>五、文档与基础设施</h2><ul>
+<li>MES vs Dify &#x2F; AgentScope 对比文档大幅更新，详列成本&#x2F;标注反馈闭环等维度差距</li>
+<li>mes-ai 工具配置复杂度分析文档</li>
+<li>新增 <code>mes-count-loc</code> Skill</li>
+<li><code>.mcp.json</code> 加入 <code>.gitignore</code>，清理过期 LLM 文档和已吸收的单次 SQL 补丁</li>
+</ul>
+<h2 id="六、物料查询"><a href="#六、物料查询" class="headerlink" title="六、物料查询"></a>六、物料查询</h2><ul>
+<li>新增物料 ZZTJ 日进出 SQL 工具种子及文档索引</li>
+<li>物料单位 IO 明细查询增加含量、类别筛选参数</li>
+</ul>
+<hr>
+<p><strong>一句话</strong>：本周以 AI 图表内联和相对月份修复落地为主，运行日志可观测性明显提升，ExternalApi 和物料查询逐步补全。</p>
+]]></content>
+      <tags>
+        <tag>MES</tag>
+        <tag>工作小结</tag>
+        <tag>mes-ai</tag>
+        <tag>mes-chart</tag>
+        <tag>周报</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在 Claude Code CLI 中使用 DeepSeek 作为模型</title>
+    <url>/2026/03/15/use-deepseek-as-model-in-claude-code-cli/</url>
+    <content><![CDATA[<p>Claude Code 是 Anthropic 的 AI 编程助手，默认只使用 Anthropic 的模型。通过环境变量 <code>ANTHROPIC_BASE_URL</code> 可以切换 API 端点，DeepSeek 官方提供了 <strong>Anthropic API 兼容</strong> 的接口，因此可以直接把 Claude Code CLI 接到 DeepSeek，无需代理或第三方路由。</p>
+<p>本文介绍如何配置 Claude Code CLI，使其使用 DeepSeek 作为后端模型。</p>
+<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><ul>
+<li>已安装 <a href="https://claude.ai/code">Claude Code</a>（官方安装：<code>curl -fsSL https://claude.ai/install.sh | bash</code>）</li>
+<li>已注册 <a href="https://platform.deepseek.com/">DeepSeek 开放平台</a> 并获取 <strong>API Key</strong>（<a href="https://platform.deepseek.com/api-keys">API Keys 页面</a>）</li>
+</ul>
+<h2 id="方式一：官方-Anthropic-兼容-API（推荐）"><a href="#方式一：官方-Anthropic-兼容-API（推荐）" class="headerlink" title="方式一：官方 Anthropic 兼容 API（推荐）"></a>方式一：官方 Anthropic 兼容 API（推荐）</h2><p>DeepSeek 提供与 Anthropic Messages API 兼容的端点，只需改环境变量即可让 Claude Code 走 DeepSeek。</p>
+<h3 id="1-配置环境变量"><a href="#1-配置环境变量" class="headerlink" title="1. 配置环境变量"></a>1. 配置环境变量</h3><p>在终端中执行（将 <code>YOUR_DEEPSEEK_API_KEY</code> 换成你的 DeepSeek API Key）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># DeepSeek Anthropic 兼容 API 端点</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定使用的模型（见下方「模型选择」）</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：避免长输出时客户端超时（单位毫秒，例如 10 分钟）</span></span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：禁用非必要流量（仅在使用第三方 API 时建议）</span></span><br><span class="line"><span class="built_in">export</span> CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-启动-Claude-Code"><a href="#2-启动-Claude-Code" class="headerlink" title="2. 启动 Claude Code"></a>2. 启动 Claude Code</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> your-project</span><br><span class="line">claude</span><br></pre></td></tr></table></figure>
+
+<p>之后 Claude Code 的请求会发往 DeepSeek，使用你配置的模型。</p>
+<h3 id="3-写入-Shell-配置（长期使用）"><a href="#3-写入-Shell-配置（长期使用）" class="headerlink" title="3. 写入 Shell 配置（长期使用）"></a>3. 写入 Shell 配置（长期使用）</h3><p>避免每次手动 export，可写入 <code>~/.bashrc</code>、<code>~/.zshrc</code> 或 Fish 的 <code>config.fish</code>。</p>
+<p><strong>Bash &#x2F; Zsh 示例：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># DeepSeek + Claude Code</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br></pre></td></tr></table></figure>
+
+<p><strong>Fish 示例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function claude-deepseek</span><br><span class="line">    set -x ANTHROPIC_BASE_URL https://api.deepseek.com/anthropic</span><br><span class="line">    set -x ANTHROPIC_AUTH_TOKEN &quot;YOUR_DEEPSEEK_API_KEY&quot;</span><br><span class="line">    set -x ANTHROPIC_MODEL deepseek-chat</span><br><span class="line">    set -x ANTHROPIC_SMALL_FAST_MODEL deepseek-chat</span><br><span class="line">    set -x API_TIMEOUT_MS 600000</span><br><span class="line">    claude $argv</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>之后在 Fish 中执行 <code>claude-deepseek</code> 即用 DeepSeek；其他终端保持默认则仍用 Anthropic。</p>
+<h2 id="模型选择"><a href="#模型选择" class="headerlink" title="模型选择"></a>模型选择</h2><p>DeepSeek 在 Anthropic 兼容接口中常用模型名：</p>
+<table>
+<thead>
+<tr>
+<th>模型名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>deepseek-chat</code></td>
+<td>通用对话，响应快，适合日常编码与问答</td>
+</tr>
+<tr>
+<td><code>deepseek-reasoner</code></td>
+<td>推理模式，步骤更详细，适合复杂分析与多步推理</td>
+</tr>
+</tbody></table>
+<p>通过修改 <code>ANTHROPIC_MODEL</code> 和 <code>ANTHROPIC_SMALL_FAST_MODEL</code> 即可切换。若传入 DeepSeek 不支持的模型名，接口会自动映射到 <code>deepseek-chat</code>。</p>
+<h2 id="方式二：通过-Claude-Code-Router-OpenRouter"><a href="#方式二：通过-Claude-Code-Router-OpenRouter" class="headerlink" title="方式二：通过 Claude Code Router + OpenRouter"></a>方式二：通过 Claude Code Router + OpenRouter</h2><p>若希望在同一套 Claude Code 里切换多种模型（如 Claude、GPT、DeepSeek），可使用 <a href="https://github.com/musistudio/claude-code-router">Claude Code Router</a>，通过 OpenRouter 统一接入。</p>
+<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 已安装 Claude Code 的前提下</span></span><br><span class="line">npm install -g @musistudio/claude-code-router</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-获取-OpenRouter-API-Key"><a href="#2-获取-OpenRouter-API-Key" class="headerlink" title="2. 获取 OpenRouter API Key"></a>2. 获取 OpenRouter API Key</h3><p>在 <a href="https://openrouter.ai/">OpenRouter</a> 注册并创建 API Key，按用量计费，可选用 DeepSeek 等模型。</p>
+<h3 id="3-配置文件"><a href="#3-配置文件" class="headerlink" title="3. 配置文件"></a>3. 配置文件</h3><p>创建并编辑 <code>~/.claude-code-router/config.json</code>：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;LOG&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;LOG_LEVEL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;info&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Providers&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_base_url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://openrouter.ai/api/v1/chat/completions&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;YOUR_OPENROUTER_API_KEY&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;transformer&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;use&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span> <span class="string">&quot;tooluse&quot;</span><span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;models&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;anthropic/claude-sonnet-4&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;openai/gpt-4o&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;deepseek/deepseek-chat&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Router&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;default&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;background&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;think&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>将 <code>YOUR_OPENROUTER_API_KEY</code> 换成你的 OpenRouter API Key。<code>transformer</code> 中的 <code>&quot;tooluse&quot;</code> 需保留，否则 Claude Code 的工具调用（编辑文件、执行命令等）会异常。</p>
+<h3 id="4-启动方式"><a href="#4-启动方式" class="headerlink" title="4. 启动方式"></a>4. 启动方式</h3><p>用 Router 启动 Claude Code（不再直接运行 <code>claude</code>）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ccr code</span><br></pre></td></tr></table></figure>
+
+<p>会话中可切换模型，例如：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">/model openrouter,deepseek/deepseek-chat</span><br><span class="line">/status</span><br></pre></td></tr></table></figure>
+
+<h2 id="Anthropic-API-兼容性说明（方式一）"><a href="#Anthropic-API-兼容性说明（方式一）" class="headerlink" title="Anthropic API 兼容性说明（方式一）"></a>Anthropic API 兼容性说明（方式一）</h2><p>DeepSeek 的 Anthropic 兼容接口支持：</p>
+<ul>
+<li><strong>常用参数</strong>：<code>max_tokens</code>、<code>stop_sequences</code>、<code>stream</code>、<code>system</code>、<code>temperature</code>（0.0～2.0）、<code>top_p</code></li>
+<li><strong>工具调用</strong>：<code>tools</code>、<code>tool_choice</code>，适合 Claude Code 的编辑与执行等能力</li>
+<li><strong>内容类型</strong>：文本、thinking 类内容</li>
+</ul>
+<p>以下能力在 DeepSeek 端<strong>不支持</strong>或不生效：</p>
+<ul>
+<li>消息中的图片、文档等 multimodal 类型</li>
+<li>部分 MCP 相关类型（如 <code>mcp_tool_use</code>、<code>mcp_tool_result</code>）</li>
+<li>部分 Anthropic 专有字段（如 <code>anthropic-beta</code>、<code>container</code>、<code>metadata</code> 等）</li>
+</ul>
+<p>仅使用「写代码、改文件、跑命令」等常见能力时，方式一即可满足需求。</p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><p><strong>Q: 必须用 Python 吗？</strong><br>A: 不必。方式一只是改环境变量，任意终端&#x2F;shell 均可；方式二需要 Node.js 来跑 <code>ccr</code>。</p>
+<p><strong>Q: DeepSeek 免费吗？</strong><br>A: 注册会有一定免费额度，超出后按官方定价计费，详见 <a href="https://platform.deepseek.com/">DeepSeek 定价页</a>。</p>
+<p><strong>Q: 如何确认当前用的是 DeepSeek？</strong><br>A: 方式一：看环境变量 <code>ANTHROPIC_BASE_URL</code> 是否为 <code>https://api.deepseek.com/anthropic</code>。方式二：在会话里输入 <code>/status</code> 查看当前模型。</p>
+<p><strong>Q: 长输出被截断或超时？</strong><br>A: 增大 <code>API_TIMEOUT_MS</code>（例如 <code>600000</code> 表示 10 分钟）。</p>
+<hr>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a href="https://api-docs.deepseek.com/zh-cn/guides/anthropic_api">DeepSeek 官方：Anthropic API 兼容说明</a></li>
+<li><a href="https://code.claude.com/docs/en/settings#environment-variables">Claude Code 环境变量说明</a></li>
+<li><a href="https://github.com/musistudio/claude-code-router">Claude Code Router</a></li>
+<li><a href="https://platform.deepseek.com/api-keys">DeepSeek 开放平台 &#x2F; API Keys</a></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>CLI</tag>
+        <tag>Claude Code</tag>
+        <tag>DeepSeek</tag>
+        <tag>AI</tag>
       </tags>
   </entry>
   <entry>
@@ -2045,195 +2284,6 @@
 
 <img src="/2024/08/24/my-first-blog/1724523222999.png" class="" width="1724523222999"><img src="/2024/08/24/my-first-blog/1724523235531.png" class="" width="1724523235531">
 ]]></content>
-  </entry>
-  <entry>
-    <title>MES 本周工作小结（2026-07-28 ~ 08-01）</title>
-    <url>/2026/08/01/mes-weekly-2026-w31/</url>
-    <content><![CDATA[<img src="/2026/08/01/mes-weekly-2026-w31/cover.png" class="">
-
-<p>本周（7&#x2F;28–8&#x2F;1）工作以 <strong>MES-AI 能耗分析与对话表格展示</strong> 为主线，并落地了 Eos 工程师日志、船舶作业校验与一批文档。约 74 次提交，合并 10 个 PR（#357–#367）。</p>
-<h2 id="一、MES-AI-能耗智能体（主线）"><a href="#一、MES-AI-能耗智能体（主线）" class="headerlink" title="一、MES-AI 能耗智能体（主线）"></a>一、MES-AI 能耗智能体（主线）</h2><ul>
-<li><strong>SQL 工具与参数</strong>：完善能耗工具参数解析（#357）、同比环比工具、装置&#x2F;时段槽位提取；多轮按运行日志纠偏（装置识别、明细 vs 汇总、单位标注等）。</li>
-<li><strong>日表查询</strong>：新增 <code>energy_nhfx_day</code> &#x2F; <code>Z_View_NHFX_TABLE</code> 日表多装置查询（#363），持续修 JSON、错误处理与设计物耗字段表述。</li>
-<li><strong>表格与图表</strong>：复合表头&#x2F;列组（#358）、单元格着色（#359）、汇总行与派生率（#361）、双图（多日&#x2F;多装置）、<code>excludeFromUiTable</code> 隐藏辅助结果（#365）。</li>
-<li><strong>稳定性</strong>：<code>StoredProcToolHandler</code> 围绕 Fastjson 未闭合字符串等问题迭代，后简化控制字符预处理逻辑。</li>
-<li><strong>硬编码治理</strong>：默认模型可配置、Embedding base-url 清理等 P0 项合入（#367）。</li>
-</ul>
-<h2 id="二、AI-管理端与规范"><a href="#二、AI-管理端与规范" class="headerlink" title="二、AI 管理端与规范"></a>二、AI 管理端与规范</h2><ul>
-<li>AI 列表&#x2F;编辑页统一按钮样式、导航、成功提示改用 <code>msg</code>（#364）。</li>
-<li>Cursor 规则与页面约定对齐（成功&#x2F;失败提示、按钮风格）。</li>
-</ul>
-<h2 id="三、Eos-安全任务"><a href="#三、Eos-安全任务" class="headerlink" title="三、Eos &#x2F; 安全任务"></a>三、Eos &#x2F; 安全任务</h2><ul>
-<li>新增 <strong>Eos 工程师日志</strong> 模块（OpenService 客户端、定时任务、装置配置、测试）（#366）。</li>
-<li>日常用 skill&#x2F;脚本按 token 批量生成各装置工程师日志。</li>
-<li>补充&#x2F;更新 EOS 角色-菜单、角色树 nodeId&#x2F;objectId 文档。</li>
-</ul>
-<h2 id="四、船舶作业"><a href="#四、船舶作业" class="headerlink" title="四、船舶作业"></a>四、船舶作业</h2><ul>
-<li>终端侧强制&#x2F;校验 <code>vesselOperationDynamicId</code>（#362）。</li>
-<li>完善到离港接口与 <code>mes-measure-vessel</code> ↔ <code>mes-vessel-operation</code> 调用说明文档。</li>
-</ul>
-<h2 id="五、其他"><a href="#五、其他" class="headerlink" title="五、其他"></a>五、其他</h2><ul>
-<li>mesdata 存储过程&#x2F;函数梳理、能耗模型数据核对、日志错误报告更新。</li>
-<li>README 与若干 AI&#x2F;业务 PDF 文档整理。</li>
-</ul>
-<h2 id="六、周末进行中"><a href="#六、周末进行中" class="headerlink" title="六、周末进行中"></a>六、周末进行中</h2><p>本地仍有未合入改动：<code>ai-chat-render.js</code>、若干 AI HTML，以及 <code>index.html</code> &#x2F; <code>main.css</code>（偏首页&#x2F;样式微调）。</p>
-<hr>
-<p><strong>一句话</strong>：本周把能耗 AI 从「能查」推进到「表格好看、图表可用、结果可控、配置可治理」，并完成工程师日志自动化与船舶动态 ID 校验。</p>
-]]></content>
-      <tags>
-        <tag>MES</tag>
-        <tag>工作小结</tag>
-        <tag>mes-ai</tag>
-        <tag>能耗分析</tag>
-        <tag>Eos</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MES 2026 年 7 月工作小结</title>
-    <url>/2026/08/01/mes-monthly-2026-07/</url>
-    <content><![CDATA[<img src="/2026/08/01/mes-monthly-2026-07/cover.png" class="">
-
-<p>7 月（约 <strong>400+ 次提交</strong>、合并 PR <strong>#312–#367</strong>）主线是把 <strong>mes-ai</strong> 从可用原型推进到能耗&#x2F;生产运行可落地，并顺带补齐权限、调度、图表与安全。改动最集中的模块是 <code>mes-ai</code>，其次 <code>mes-web</code> &#x2F; <code>mes-security</code> &#x2F; <code>mes-chart</code>。</p>
-<h2 id="一、MES-AI-平台能力（全月主线）"><a href="#一、MES-AI-平台能力（全月主线）" class="headerlink" title="一、MES-AI 平台能力（全月主线）"></a>一、MES-AI 平台能力（全月主线）</h2><ul>
-<li><strong>多 Agent &#x2F; 路由</strong>：协作 MVP、首页浮动助手接入 <code>mes_router</code>、窗口最大化、会话与统计增强。</li>
-<li><strong>工具调用（FC&#x2F;ReAct）</strong>：空工具调用恢复与 nudge、互斥意图、few-shot &#x2F; <code>handler_config</code> 常见错误提示、同参重复调用治理、运行日志可观测与重试。</li>
-<li><strong>SQL 工具链</strong>：参数槽位抽取、日期区间（含半月）、列标签&#x2F;排序、存储过程工具、结果图表与表格渲染（列组、着色、汇总行、<code>excludeFromUiTable</code>）。</li>
-<li><strong>模型与配置</strong>：thinking 模式、采样参数、工具业务分类、硬编码治理（默认模型可配置等）。</li>
-<li><strong>管理端</strong>：工具&#x2F;Agent 列表与编辑、级联删除、聊天停止、用户改消息、反馈&#x2F;复测标记、页面规范（按钮&#x2F;<code>msg</code>）。</li>
-</ul>
-<h2 id="二、业务智能体落地"><a href="#二、业务智能体落地" class="headerlink" title="二、业务智能体落地"></a>二、业务智能体落地</h2><ul>
-<li><strong>能耗分析</strong>：同比环比、日表多装置查询、<code>Z_View_NHFX_*</code>、列显隐与意图策略、图表双轴等多轮打磨。</li>
-<li><strong>生产运行 &#x2F; 工程师日志</strong>：填报状态意图与工具互斥、工程师&#x2F;部门长问题频次与运行日志查询工具；月末落地 <strong>Eos 工程师日志</strong> 定时提交模块（#366）。</li>
-<li><strong>生产运行 FC 智能体</strong>（#324）及相关 SQL&#x2F;提示持续迭代。</li>
-</ul>
-<h2 id="三、权限与安全"><a href="#三、权限与安全" class="headerlink" title="三、权限与安全"></a>三、权限与安全</h2><ul>
-<li>Eos 角色对象权限、单权限替换模式、eosrole 一次完成 EOS+MES 用户授权。</li>
-<li>JSON 请求加密、XSS 过滤与 AI&#x2F;Chart 定点抽检。</li>
-<li>mes-chart 安全与可维护性改造。</li>
-</ul>
-<h2 id="四、基础设施与其它业务"><a href="#四、基础设施与其它业务" class="headerlink" title="四、基础设施与其它业务"></a>四、基础设施与其它业务</h2><ul>
-<li><strong>Quartz</strong>：P0&#x2F;P1&#x2F;P2 工程化、超时控制、失败告警、任务日志状态。</li>
-<li><strong>工作台</strong> P0–P2（#327）。</li>
-<li><strong>船舶</strong>：<code>vesselOperationDynamicId</code> 终端强制&#x2F;校验。</li>
-<li>Excel&#x2F;JXLS、用户导出、在线消息详情、jqGrid 全局错误处理、本地 LLM profile 等。</li>
-</ul>
-<h2 id="五、月度节奏"><a href="#五、月度节奏" class="headerlink" title="五、月度节奏"></a>五、月度节奏</h2><table>
-<thead>
-<tr>
-<th>阶段</th>
-<th>重点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>上旬</td>
-<td>Eos 权限、本地 LLM、AI 管理端基础、聊天停止、生产运行 FC</td>
-</tr>
-<tr>
-<td>中旬</td>
-<td>运行可观测、意图互斥、槽位抽取、加密&#x2F;XSS、协作与图表</td>
-</tr>
-<tr>
-<td>下旬</td>
-<td>多 Agent 路由入口、Quartz、能耗 SQL&#x2F;表格体系、工程师日志模块、硬编码治理</td>
-</tr>
-</tbody></table>
-<hr>
-<p><strong>一句话</strong>：7 月把 MES-AI 做成「能路由、能调工具、能出表&#x2F;图、能追日志」的平台，并在能耗分析与生产运行上形成可演示的业务闭环；权限、调度、图表安全同步加固。</p>
-]]></content>
-      <tags>
-        <tag>MES</tag>
-        <tag>工作小结</tag>
-        <tag>月报</tag>
-        <tag>mes-ai</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>在 Claude Code CLI 中使用 DeepSeek 作为模型</title>
-    <url>/2026/03/15/use-deepseek-as-model-in-claude-code-cli/</url>
-    <content><![CDATA[<p>Claude Code 是 Anthropic 的 AI 编程助手，默认只使用 Anthropic 的模型。通过环境变量 <code>ANTHROPIC_BASE_URL</code> 可以切换 API 端点，DeepSeek 官方提供了 <strong>Anthropic API 兼容</strong> 的接口，因此可以直接把 Claude Code CLI 接到 DeepSeek，无需代理或第三方路由。</p>
-<p>本文介绍如何配置 Claude Code CLI，使其使用 DeepSeek 作为后端模型。</p>
-<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><ul>
-<li>已安装 <a href="https://claude.ai/code">Claude Code</a>（官方安装：<code>curl -fsSL https://claude.ai/install.sh | bash</code>）</li>
-<li>已注册 <a href="https://platform.deepseek.com/">DeepSeek 开放平台</a> 并获取 <strong>API Key</strong>（<a href="https://platform.deepseek.com/api-keys">API Keys 页面</a>）</li>
-</ul>
-<h2 id="方式一：官方-Anthropic-兼容-API（推荐）"><a href="#方式一：官方-Anthropic-兼容-API（推荐）" class="headerlink" title="方式一：官方 Anthropic 兼容 API（推荐）"></a>方式一：官方 Anthropic 兼容 API（推荐）</h2><p>DeepSeek 提供与 Anthropic Messages API 兼容的端点，只需改环境变量即可让 Claude Code 走 DeepSeek。</p>
-<h3 id="1-配置环境变量"><a href="#1-配置环境变量" class="headerlink" title="1. 配置环境变量"></a>1. 配置环境变量</h3><p>在终端中执行（将 <code>YOUR_DEEPSEEK_API_KEY</code> 换成你的 DeepSeek API Key）：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># DeepSeek Anthropic 兼容 API 端点</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定使用的模型（见下方「模型选择」）</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：避免长输出时客户端超时（单位毫秒，例如 10 分钟）</span></span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：禁用非必要流量（仅在使用第三方 API 时建议）</span></span><br><span class="line"><span class="built_in">export</span> CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-启动-Claude-Code"><a href="#2-启动-Claude-Code" class="headerlink" title="2. 启动 Claude Code"></a>2. 启动 Claude Code</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> your-project</span><br><span class="line">claude</span><br></pre></td></tr></table></figure>
-
-<p>之后 Claude Code 的请求会发往 DeepSeek，使用你配置的模型。</p>
-<h3 id="3-写入-Shell-配置（长期使用）"><a href="#3-写入-Shell-配置（长期使用）" class="headerlink" title="3. 写入 Shell 配置（长期使用）"></a>3. 写入 Shell 配置（长期使用）</h3><p>避免每次手动 export，可写入 <code>~/.bashrc</code>、<code>~/.zshrc</code> 或 Fish 的 <code>config.fish</code>。</p>
-<p><strong>Bash &#x2F; Zsh 示例：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># DeepSeek + Claude Code</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br></pre></td></tr></table></figure>
-
-<p><strong>Fish 示例：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function claude-deepseek</span><br><span class="line">    set -x ANTHROPIC_BASE_URL https://api.deepseek.com/anthropic</span><br><span class="line">    set -x ANTHROPIC_AUTH_TOKEN &quot;YOUR_DEEPSEEK_API_KEY&quot;</span><br><span class="line">    set -x ANTHROPIC_MODEL deepseek-chat</span><br><span class="line">    set -x ANTHROPIC_SMALL_FAST_MODEL deepseek-chat</span><br><span class="line">    set -x API_TIMEOUT_MS 600000</span><br><span class="line">    claude $argv</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<p>之后在 Fish 中执行 <code>claude-deepseek</code> 即用 DeepSeek；其他终端保持默认则仍用 Anthropic。</p>
-<h2 id="模型选择"><a href="#模型选择" class="headerlink" title="模型选择"></a>模型选择</h2><p>DeepSeek 在 Anthropic 兼容接口中常用模型名：</p>
-<table>
-<thead>
-<tr>
-<th>模型名</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>deepseek-chat</code></td>
-<td>通用对话，响应快，适合日常编码与问答</td>
-</tr>
-<tr>
-<td><code>deepseek-reasoner</code></td>
-<td>推理模式，步骤更详细，适合复杂分析与多步推理</td>
-</tr>
-</tbody></table>
-<p>通过修改 <code>ANTHROPIC_MODEL</code> 和 <code>ANTHROPIC_SMALL_FAST_MODEL</code> 即可切换。若传入 DeepSeek 不支持的模型名，接口会自动映射到 <code>deepseek-chat</code>。</p>
-<h2 id="方式二：通过-Claude-Code-Router-OpenRouter"><a href="#方式二：通过-Claude-Code-Router-OpenRouter" class="headerlink" title="方式二：通过 Claude Code Router + OpenRouter"></a>方式二：通过 Claude Code Router + OpenRouter</h2><p>若希望在同一套 Claude Code 里切换多种模型（如 Claude、GPT、DeepSeek），可使用 <a href="https://github.com/musistudio/claude-code-router">Claude Code Router</a>，通过 OpenRouter 统一接入。</p>
-<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 已安装 Claude Code 的前提下</span></span><br><span class="line">npm install -g @musistudio/claude-code-router</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-获取-OpenRouter-API-Key"><a href="#2-获取-OpenRouter-API-Key" class="headerlink" title="2. 获取 OpenRouter API Key"></a>2. 获取 OpenRouter API Key</h3><p>在 <a href="https://openrouter.ai/">OpenRouter</a> 注册并创建 API Key，按用量计费，可选用 DeepSeek 等模型。</p>
-<h3 id="3-配置文件"><a href="#3-配置文件" class="headerlink" title="3. 配置文件"></a>3. 配置文件</h3><p>创建并编辑 <code>~/.claude-code-router/config.json</code>：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;LOG&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;LOG_LEVEL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;info&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Providers&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_base_url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://openrouter.ai/api/v1/chat/completions&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;YOUR_OPENROUTER_API_KEY&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;transformer&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;use&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span> <span class="string">&quot;tooluse&quot;</span><span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;models&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;anthropic/claude-sonnet-4&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;openai/gpt-4o&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;deepseek/deepseek-chat&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Router&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;default&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;background&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;think&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>将 <code>YOUR_OPENROUTER_API_KEY</code> 换成你的 OpenRouter API Key。<code>transformer</code> 中的 <code>&quot;tooluse&quot;</code> 需保留，否则 Claude Code 的工具调用（编辑文件、执行命令等）会异常。</p>
-<h3 id="4-启动方式"><a href="#4-启动方式" class="headerlink" title="4. 启动方式"></a>4. 启动方式</h3><p>用 Router 启动 Claude Code（不再直接运行 <code>claude</code>）：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ccr code</span><br></pre></td></tr></table></figure>
-
-<p>会话中可切换模型，例如：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">/model openrouter,deepseek/deepseek-chat</span><br><span class="line">/status</span><br></pre></td></tr></table></figure>
-
-<h2 id="Anthropic-API-兼容性说明（方式一）"><a href="#Anthropic-API-兼容性说明（方式一）" class="headerlink" title="Anthropic API 兼容性说明（方式一）"></a>Anthropic API 兼容性说明（方式一）</h2><p>DeepSeek 的 Anthropic 兼容接口支持：</p>
-<ul>
-<li><strong>常用参数</strong>：<code>max_tokens</code>、<code>stop_sequences</code>、<code>stream</code>、<code>system</code>、<code>temperature</code>（0.0～2.0）、<code>top_p</code></li>
-<li><strong>工具调用</strong>：<code>tools</code>、<code>tool_choice</code>，适合 Claude Code 的编辑与执行等能力</li>
-<li><strong>内容类型</strong>：文本、thinking 类内容</li>
-</ul>
-<p>以下能力在 DeepSeek 端<strong>不支持</strong>或不生效：</p>
-<ul>
-<li>消息中的图片、文档等 multimodal 类型</li>
-<li>部分 MCP 相关类型（如 <code>mcp_tool_use</code>、<code>mcp_tool_result</code>）</li>
-<li>部分 Anthropic 专有字段（如 <code>anthropic-beta</code>、<code>container</code>、<code>metadata</code> 等）</li>
-</ul>
-<p>仅使用「写代码、改文件、跑命令」等常见能力时，方式一即可满足需求。</p>
-<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><p><strong>Q: 必须用 Python 吗？</strong><br>A: 不必。方式一只是改环境变量，任意终端&#x2F;shell 均可；方式二需要 Node.js 来跑 <code>ccr</code>。</p>
-<p><strong>Q: DeepSeek 免费吗？</strong><br>A: 注册会有一定免费额度，超出后按官方定价计费，详见 <a href="https://platform.deepseek.com/">DeepSeek 定价页</a>。</p>
-<p><strong>Q: 如何确认当前用的是 DeepSeek？</strong><br>A: 方式一：看环境变量 <code>ANTHROPIC_BASE_URL</code> 是否为 <code>https://api.deepseek.com/anthropic</code>。方式二：在会话里输入 <code>/status</code> 查看当前模型。</p>
-<p><strong>Q: 长输出被截断或超时？</strong><br>A: 增大 <code>API_TIMEOUT_MS</code>（例如 <code>600000</code> 表示 10 分钟）。</p>
-<hr>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
-<li><a href="https://api-docs.deepseek.com/zh-cn/guides/anthropic_api">DeepSeek 官方：Anthropic API 兼容说明</a></li>
-<li><a href="https://code.claude.com/docs/en/settings#environment-variables">Claude Code 环境变量说明</a></li>
-<li><a href="https://github.com/musistudio/claude-code-router">Claude Code Router</a></li>
-<li><a href="https://platform.deepseek.com/api-keys">DeepSeek 开放平台 &#x2F; API Keys</a></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>CLI</tag>
-        <tag>Claude Code</tag>
-        <tag>DeepSeek</tag>
-        <tag>AI</tag>
-      </tags>
   </entry>
   <entry>
     <title>使用tailscale组网 使用家里打印机</title>
@@ -2804,56 +2854,6 @@
       </tags>
   </entry>
   <entry>
-    <title>魔方</title>
-    <url>/2025/07/12/%E9%AD%94%E6%96%B9/</url>
-    <content><![CDATA[<h3 id="第一层"><a href="#第一层" class="headerlink" title="第一层"></a>第一层</h3><ol>
-<li><strong>白底十字</strong>：找到黄色中心块朝上，将四个白色棱块拼在黄色周围形成“黄芯白花”。然后对齐侧面中心块颜色，旋转180度到底部。</li>
-<li><strong>底角归位</strong>：将带有白色的角块放在目标位置上方，使用公式 <code>R U R&#39; U&#39;</code> （右手公式）直到白色面朝下。</li>
-</ol>
-<h3 id="第二层"><a href="#第二层" class="headerlink" title="第二层"></a>第二层</h3><p><strong>左手公式</strong>：<code>U&#39; L&#39; U L U F U&#39; F&#39;</code><br>（口诀：远切回回，接孩子放学 - 左手版）</p>
-<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752365841117.png" class="" width="1752365841117">
-
-<p><strong>右手公式</strong>：<code>U R U&#39; R&#39; U&#39; F&#39; U F</code><br>（口诀：远切回回，接孩子放学 - 右手版）</p>
-<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752367368372.png" class="" width="1752367368372">
-
-<h2 id="最后一层"><a href="#最后一层" class="headerlink" title="最后一层"></a>最后一层</h2><h3 id="1-顶层十字"><a href="#1-顶层十字" class="headerlink" title="1. 顶层十字"></a>1. 顶层十字</h3><p><strong>公式</strong>：<code>F R U R&#39; U&#39; F&#39;</code><br>（顺时针转前层，做一次右手公式 <code>R U R&#39; U&#39;</code>，逆时针转回前层）</p>
-<ul>
-<li><strong>直角（拐弯）</strong>：放在<strong>左上角</strong>（9点钟方向），做一次公式。</li>
-<li><strong>一字</strong>：横着放，做一次公式。</li>
-<li><strong>点</strong>：做一次公式变成直角，再按直角做。</li>
-</ul>
-<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752368255349.png" class="" width="1752368255349">
-
-<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752368275584.png" class="" width="1752368275584">
-
-<p>弄十字</p>
-<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752368048454.png" class="" width="1752368048454">
-
-<h3 id="2-顶层全色（小鱼）"><a href="#2-顶层全色（小鱼）" class="headerlink" title="2. 顶层全色（小鱼）"></a>2. 顶层全色（小鱼）</h3><p>如果不成鱼形，多做几次公式直到出现“小鱼”形状。</p>
-<p><strong>标准小鱼公式（右手）</strong>：<code>R U R&#39; U R U2 R&#39;</code></p>
-<p>左手</p>
-<h3 id="3-顶层角块归位（找双眼）"><a href="#3-顶层角块归位（找双眼）" class="headerlink" title="3. 顶层角块归位（找双眼）"></a>3. 顶层角块归位（找双眼）</h3><p>寻找是否有两个角块在同一面颜色相同（<strong>双眼&#x2F;车灯</strong>）。</p>
-<ul>
-<li><strong>有双眼</strong>：将双眼朝向<strong>背面</strong>（Back），做公式。</li>
-<li><strong>无双眼</strong>：任意方向做一次公式，就会出现双眼。</li>
-</ul>
-<p>**公式 (T-Perm 或 A-Perm 变体)**：<br><code>R B&#39; R F2 R&#39; B R F2 R2</code><br>或者<br><code>R U R&#39; U&#39; R&#39; F R2 U&#39; R&#39; U&#39; R U R&#39; F&#39;</code></p>
-<h3 id="4-最后一层-对棱调换（三棱换）"><a href="#4-最后一层-对棱调换（三棱换）" class="headerlink" title="4. 最后一层 对棱调换（三棱换）"></a>4. 最后一层 对棱调换（三棱换）</h3><p><strong>H Perm</strong> ：解决两对相邻棱块交换（<code>M2 U M2 U2 M2 U M2</code>）</p>
-<p>**U Perm (三棱换)**：<br>有一个面已经完成之后</p>
-<p>转方向，底朝自己，完成的那面朝<strong>背面</strong>（Back）</p>
-<p><strong>公式</strong>：<code>R U&#39; R U R U R U&#39; R&#39; U&#39; R2</code></p>
-<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752334150214.png" class="" width="1752334150214">
-
-<h3 id="最后一层-对棱调换"><a href="#最后一层-对棱调换" class="headerlink" title="最后一层 对棱调换"></a>最后一层 对棱调换</h3><p><strong>H Perm</strong> ：解决两对相邻棱块交换（<code>M2 U M2 U2 M2 U M2</code>）</p>
-<p>相邻棱交换</p>
-<p>有一个面已经完成之后</p>
-<p>转方向，底朝自己，完成的那面朝右手方向</p>
-<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752366641031.png" class="" width="1752366641031">
-
-<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752334486991.png" class="" width="1752334486991">
-]]></content>
-  </entry>
-  <entry>
     <title>队列监控页面使用指南</title>
     <url>/2025/06/12/%E9%98%9F%E5%88%97%E7%9B%91%E6%8E%A7%E9%A1%B5%E9%9D%A2%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</url>
     <content><![CDATA[<h1 id="队列监控页面使用指南"><a href="#队列监控页面使用指南" class="headerlink" title="队列监控页面使用指南"></a>队列监控页面使用指南</h1><h2 id="页面访问"><a href="#页面访问" class="headerlink" title="页面访问"></a>页面访问</h2><p>队列监控页面位于：<code>/views/modules/mm/queue.html</code></p>
@@ -2955,6 +2955,56 @@
 <p><strong>Q: 队列状态显示异常</strong></p>
 <p>A: 可能是Redis数据不一致，可以尝试清空队列解决</p>
 <h3 id="联系支持"><a href="#联系支持" class="headerlink" title="联系支持"></a>联系支持</h3><p>如遇到技术问题，请联系系统管理员或查看系统日志获取详细错误信息。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>魔方</title>
+    <url>/2025/07/12/%E9%AD%94%E6%96%B9/</url>
+    <content><![CDATA[<h3 id="第一层"><a href="#第一层" class="headerlink" title="第一层"></a>第一层</h3><ol>
+<li><strong>白底十字</strong>：找到黄色中心块朝上，将四个白色棱块拼在黄色周围形成“黄芯白花”。然后对齐侧面中心块颜色，旋转180度到底部。</li>
+<li><strong>底角归位</strong>：将带有白色的角块放在目标位置上方，使用公式 <code>R U R&#39; U&#39;</code> （右手公式）直到白色面朝下。</li>
+</ol>
+<h3 id="第二层"><a href="#第二层" class="headerlink" title="第二层"></a>第二层</h3><p><strong>左手公式</strong>：<code>U&#39; L&#39; U L U F U&#39; F&#39;</code><br>（口诀：远切回回，接孩子放学 - 左手版）</p>
+<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752365841117.png" class="" width="1752365841117">
+
+<p><strong>右手公式</strong>：<code>U R U&#39; R&#39; U&#39; F&#39; U F</code><br>（口诀：远切回回，接孩子放学 - 右手版）</p>
+<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752367368372.png" class="" width="1752367368372">
+
+<h2 id="最后一层"><a href="#最后一层" class="headerlink" title="最后一层"></a>最后一层</h2><h3 id="1-顶层十字"><a href="#1-顶层十字" class="headerlink" title="1. 顶层十字"></a>1. 顶层十字</h3><p><strong>公式</strong>：<code>F R U R&#39; U&#39; F&#39;</code><br>（顺时针转前层，做一次右手公式 <code>R U R&#39; U&#39;</code>，逆时针转回前层）</p>
+<ul>
+<li><strong>直角（拐弯）</strong>：放在<strong>左上角</strong>（9点钟方向），做一次公式。</li>
+<li><strong>一字</strong>：横着放，做一次公式。</li>
+<li><strong>点</strong>：做一次公式变成直角，再按直角做。</li>
+</ul>
+<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752368255349.png" class="" width="1752368255349">
+
+<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752368275584.png" class="" width="1752368275584">
+
+<p>弄十字</p>
+<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752368048454.png" class="" width="1752368048454">
+
+<h3 id="2-顶层全色（小鱼）"><a href="#2-顶层全色（小鱼）" class="headerlink" title="2. 顶层全色（小鱼）"></a>2. 顶层全色（小鱼）</h3><p>如果不成鱼形，多做几次公式直到出现“小鱼”形状。</p>
+<p><strong>标准小鱼公式（右手）</strong>：<code>R U R&#39; U R U2 R&#39;</code></p>
+<p>左手</p>
+<h3 id="3-顶层角块归位（找双眼）"><a href="#3-顶层角块归位（找双眼）" class="headerlink" title="3. 顶层角块归位（找双眼）"></a>3. 顶层角块归位（找双眼）</h3><p>寻找是否有两个角块在同一面颜色相同（<strong>双眼&#x2F;车灯</strong>）。</p>
+<ul>
+<li><strong>有双眼</strong>：将双眼朝向<strong>背面</strong>（Back），做公式。</li>
+<li><strong>无双眼</strong>：任意方向做一次公式，就会出现双眼。</li>
+</ul>
+<p>**公式 (T-Perm 或 A-Perm 变体)**：<br><code>R B&#39; R F2 R&#39; B R F2 R2</code><br>或者<br><code>R U R&#39; U&#39; R&#39; F R2 U&#39; R&#39; U&#39; R U R&#39; F&#39;</code></p>
+<h3 id="4-最后一层-对棱调换（三棱换）"><a href="#4-最后一层-对棱调换（三棱换）" class="headerlink" title="4. 最后一层 对棱调换（三棱换）"></a>4. 最后一层 对棱调换（三棱换）</h3><p><strong>H Perm</strong> ：解决两对相邻棱块交换（<code>M2 U M2 U2 M2 U M2</code>）</p>
+<p>**U Perm (三棱换)**：<br>有一个面已经完成之后</p>
+<p>转方向，底朝自己，完成的那面朝<strong>背面</strong>（Back）</p>
+<p><strong>公式</strong>：<code>R U&#39; R U R U R U&#39; R&#39; U&#39; R2</code></p>
+<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752334150214.png" class="" width="1752334150214">
+
+<h3 id="最后一层-对棱调换"><a href="#最后一层-对棱调换" class="headerlink" title="最后一层 对棱调换"></a>最后一层 对棱调换</h3><p><strong>H Perm</strong> ：解决两对相邻棱块交换（<code>M2 U M2 U2 M2 U M2</code>）</p>
+<p>相邻棱交换</p>
+<p>有一个面已经完成之后</p>
+<p>转方向，底朝自己，完成的那面朝右手方向</p>
+<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752366641031.png" class="" width="1752366641031">
+
+<img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752334486991.png" class="" width="1752334486991">
 ]]></content>
   </entry>
 </search>
