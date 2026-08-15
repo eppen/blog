@@ -4,20 +4,26 @@
   <meta charset="utf-8">
   
   
-  <title>使用tailscale组网 使用家里打印机 | Hua Liang&#39;s Blog</title>
+  <title>MES 2026 年第 33 周工作小结 | Hua Liang&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="在 Ubuntu 上开启子网广播 第一步确定家里的网段： 通常是 192.168.1.0&#x2F;24 或 192.168.0.0&#x2F;24 开启 IP 转发（内核层面）：运行以下命令： Bash 123echo &#x27;net.ipv4.ip_forward &#x3D; 1&#x27; | sudo tee -a &#x2F;etc&#x2F;sysctl.d&#x2F;99-tailscale.confecho &#x27;net.ipv">
+  <meta name="description" content="本周（8&#x2F;8–8&#x2F;15，活跃提交 8&#x2F;11–8&#x2F;14，约 74 次提交、合并 PR #376–#381）主线在 AI 能耗分析图表能力（存储过程出图、趋势&#x2F;饼图、同比环比），同步推进看板嵌套饼图与下钻、联锁强制投用，以及 Eos 菜单拖拽与权限修复。主力模块 mes-ai（约 141 文件触达），次为 mes-chart（约 70 文件）。 一">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用tailscale组网 使用家里打印机">
-<meta property="og:url" content="https://eppencn.com/2026/03/15/%E4%BD%BF%E7%94%A8tailscale%E7%BB%84%E7%BD%91-%E4%BD%BF%E7%94%A8%E5%AE%B6%E9%87%8C%E6%89%93%E5%8D%B0%E6%9C%BA/index.html">
+<meta property="og:title" content="MES 2026 年第 33 周工作小结">
+<meta property="og:url" content="https://eppencn.com/2026/08/15/mes-weekly-2026-w33/index.html">
 <meta property="og:site_name" content="Hua Liang&#39;s Blog">
-<meta property="og:description" content="在 Ubuntu 上开启子网广播 第一步确定家里的网段： 通常是 192.168.1.0&#x2F;24 或 192.168.0.0&#x2F;24 开启 IP 转发（内核层面）：运行以下命令： Bash 123echo &#x27;net.ipv4.ip_forward &#x3D; 1&#x27; | sudo tee -a &#x2F;etc&#x2F;sysctl.d&#x2F;99-tailscale.confecho &#x27;net.ipv">
+<meta property="og:description" content="本周（8&#x2F;8–8&#x2F;15，活跃提交 8&#x2F;11–8&#x2F;14，约 74 次提交、合并 PR #376–#381）主线在 AI 能耗分析图表能力（存储过程出图、趋势&#x2F;饼图、同比环比），同步推进看板嵌套饼图与下钻、联锁强制投用，以及 Eos 菜单拖拽与权限修复。主力模块 mes-ai（约 141 文件触达），次为 mes-chart（约 70 文件）。 一">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-03-15T05:57:37.000Z">
-<meta property="article:modified_time" content="2026-07-06T08:12:07.565Z">
+<meta property="og:image" content="https://eppencn.com/2026/08/15/mes-weekly-2026-w33/cover.png">
+<meta property="article:published_time" content="2026-08-15T01:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-15T00:48:08.215Z">
 <meta property="article:author" content="eppen">
-<meta property="article:tag" content="liuhualiang,Hua Liang,blog,hexo,github,pages">
+<meta property="article:tag" content="MES">
+<meta property="article:tag" content="mes-ai">
+<meta property="article:tag" content="mes-chart">
+<meta property="article:tag" content="工作小结">
+<meta property="article:tag" content="周报">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eppencn.com/2026/08/15/mes-weekly-2026-w33/cover.png">
   
     <link rel="alternate" href="/atom.xml" title="Hua Liang's Blog" type="application/atom+xml">
   
@@ -73,10 +79,10 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-使用tailscale组网-使用家里打印机" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-mes-weekly-2026-w33" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/03/15/%E4%BD%BF%E7%94%A8tailscale%E7%BB%84%E7%BD%91-%E4%BD%BF%E7%94%A8%E5%AE%B6%E9%87%8C%E6%89%93%E5%8D%B0%E6%9C%BA/" class="article-date">
-  <time class="dt-published" datetime="2026-03-15T05:57:37.000Z" itemprop="datePublished">2026-03-15</time>
+    <a href="/2026/08/15/mes-weekly-2026-w33/" class="article-date">
+  <time class="dt-published" datetime="2026-08-15T01:00:00.000Z" itemprop="datePublished">2026-08-15</time>
 </a>
     
   </div>
@@ -87,7 +93,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      使用tailscale组网 使用家里打印机
+      MES 2026 年第 33 周工作小结
     </h1>
   
 
@@ -95,54 +101,60 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>在 Ubuntu 上开启子网广播</p>
-<h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p><strong>确定家里的网段：</strong> 通常是 <code>192.168.1.0/24</code> 或 <code>192.168.0.0/24</code></p>
-<p><strong>开启 IP 转发（内核层面）：</strong><br>运行以下命令：</p>
-<p><strong>Bash</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;net.ipv4.ip_forward = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">echo &#x27;net.ipv6.conf.all.forwarding = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">sudo sysctl -p /etc/sysctl.d/99-tailscale.conf</span><br></pre></td></tr></table></figure>
+        <img src="/2026/08/15/mes-weekly-2026-w33/cover.png" class="">
 
-
-<p><strong>启动子网路由：</strong><br>运行以下命令（将 <code>192.168.1.0/24</code> 替换为你家里的实际网段）：</p>
-<p><strong>Bash</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tailscale up --advertise-routes=192.168.1.0/24</span><br></pre></td></tr></table></figure>
-
-
-
-
-<h3 id="第二步：在-Tailscale-控制面板允许路由"><a href="#第二步：在-Tailscale-控制面板允许路由" class="headerlink" title="第二步：在 Tailscale 控制面板允许路由"></a>第二步：在 Tailscale 控制面板允许路由</h3><p>为了安全，Tailscale 默认不会自动启用路由，需要你手动点一下：</p>
-<ol>
-<li>打开 <a target="_blank" rel="noopener" href="https://login.tailscale.com/admin/machines">Tailscale Admin Console</a>。</li>
-<li>找到你的 <strong>Ubuntu</strong> 设备。</li>
-<li>点击右侧的三个点 <code>...</code> -&gt;  <strong>Edit route settings</strong> 。</li>
-<li>在 <strong>Subnet routes</strong> 下，勾选你刚才添加的网段，点击确认。</li>
-</ol>
+<p>本周（8&#x2F;8–8&#x2F;15，活跃提交 8&#x2F;11–8&#x2F;14，约 <strong>74 次提交</strong>、合并 PR <strong>#376–#381</strong>）主线在 <strong>AI 能耗分析图表能力</strong>（存储过程出图、趋势&#x2F;饼图、同比环比），同步推进看板嵌套饼图与下钻、联锁强制投用，以及 Eos 菜单拖拽与权限修复。主力模块 <code>mes-ai</code>（约 141 文件触达），次为 <code>mes-chart</code>（约 70 文件）。</p>
+<h2 id="一、AI-存储过程图表与能耗分析（-378、-379、-381）"><a href="#一、AI-存储过程图表与能耗分析（-378、-379、-381）" class="headerlink" title="一、AI 存储过程图表与能耗分析（#378、#379、#381）"></a>一、AI 存储过程图表与能耗分析（#378、#379、#381）</h2><p>把能耗类 SQL 工具从「表格结果」推进到「对话内可渲染图表」：</p>
+<ul>
+<li><strong>存储过程工具支持图表输出</strong>：<code>SqlToolChartBuilder</code> 增强 tooltip、系列类型与默认配色同步；能耗分析工具补充 chart intent 与月份处理</li>
+<li><strong>能耗趋势</strong>：多线图、单位过滤、趋势查询与标签修正；去掉不适用的 <code>exclusive_group</code></li>
+<li><strong>能耗饼图 &#x2F; 统计图</strong>：嵌套饼、RATE 展示对齐图形查询路由；柱状图顶部数值展示；图表快照导出 <code>snapshotChartsToImages</code></li>
+<li><strong>同比 &#x2F; 环比</strong>：能耗分析存储过程增强 MoM&#x2F;YoY、按消耗类型细化；<code>excludeFromUiTable</code> 与 remarks 收敛；修复同比列缺失与单位后缀（#380）</li>
+</ul>
+<h2 id="二、智能体会话与聊天体验（-377）"><a href="#二、智能体会话与聊天体验（-377）" class="headerlink" title="二、智能体会话与聊天体验（#377）"></a>二、智能体会话与聊天体验（#377）</h2><ul>
+<li>会话历史检索增强，运行日志详情内嵌图表渲染</li>
+<li>会话搜索、等待态指示、图表 resize</li>
+<li>适配 deepseek-v4-flash；SQL JSON 输出保留 NULL；列可见性策略补充空内容与行去重</li>
+<li>聊天表格 &#x2F; Agent 卡片样式与布局修复；运行日志列表性能相关合入</li>
+</ul>
+<h2 id="三、看板-chart：嵌套饼图与交互"><a href="#三、看板-chart：嵌套饼图与交互" class="headerlink" title="三、看板 chart：嵌套饼图与交互"></a>三、看板 chart：嵌套饼图与交互</h2><ul>
+<li>嵌套饼图配置、绑定与零值过滤；动态系列类型与饼图坐标轴清理</li>
+<li>能耗图表下钻、高亮；看板菜单树展开&#x2F;折叠</li>
+<li>图表包导入导出；画布高度计算修复</li>
+</ul>
+<h2 id="四、联锁强制投用与权限安全（-376）"><a href="#四、联锁强制投用与权限安全（-376）" class="headerlink" title="四、联锁强制投用与权限安全（#376）"></a>四、联锁强制投用与权限安全（#376）</h2><ul>
+<li>联锁监控纳入 <code>isForce</code>（强制投用）条件与查询方法</li>
+<li>Eos 菜单树支持拖拽重排；菜单缓存防误改</li>
+<li>权限批量删除处理重构修复</li>
+</ul>
+<h2 id="五、其它"><a href="#五、其它" class="headerlink" title="五、其它"></a>五、其它</h2><ul>
+<li>容器运行图表配色同步</li>
+<li>审批组面板样式调整</li>
+<li>清理 <code>/rtdb/pi</code> 相关废弃存储过程与函数</li>
+<li>H2 任务计划与 code review 文档更新</li>
+</ul>
+<hr>
+<p><strong>一句话</strong>：本周以 AI 能耗存储过程出图与同比环比分析落地为主，看板嵌套饼图&#x2F;下钻跟上，联锁强制投用与 Eos 菜单拖拽补齐平台侧能力。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/03/15/%E4%BD%BF%E7%94%A8tailscale%E7%BB%84%E7%BD%91-%E4%BD%BF%E7%94%A8%E5%AE%B6%E9%87%8C%E6%89%93%E5%8D%B0%E6%9C%BA/" data-id="cmstnqlrc001v70v5089gfts3" data-title="使用tailscale组网 使用家里打印机" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/08/15/mes-weekly-2026-w33/" data-id="cmstnqlra001r70v5avmb6p2p" data-title="MES 2026 年第 33 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2026/03/15/use-deepseek-as-model-in-claude-code-cli/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          在 Claude Code CLI 中使用 DeepSeek 作为模型
-        
-      </div>
-    </a>
   
-  
-    <a href="/2025/12/10/2026-work-calendar/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2026/08/06/mes-weekly-2026-w32/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">2026 work calendar</div>
+      <div class="article-nav-title">MES 2026 年第 32 周工作小结</div>
     </a>
   
 </nav>

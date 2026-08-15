@@ -271,98 +271,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Cursor Agent CLI 报错 No version directories found 的排查与修复</title>
-    <url>/2026/06/19/cursor-agent-no-version-directories-fix/</url>
-    <content><![CDATA[<p>在 Windows 终端执行 <code>agent</code> 或 <code>cursor-agent</code> 时，可能遇到如下错误：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">C:\Users\liuhualiang\AppData\Local\cursor-agent\agent.ps1 : No version directories found in C:\Users\liuhualiang\AppData\Local\cursor-agent</span><br><span class="line">所在位置 行:1 字符: 1</span><br><span class="line">+ agent</span><br><span class="line">+ ~~~~~</span><br><span class="line">    + CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException</span><br><span class="line">    + FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException,agent.ps1</span><br></pre></td></tr></table></figure>
-
-<p>本文记录该问题的现象、根因、修复方式与临时绕过方法。</p>
-<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><ul>
-<li><code>agent</code>、<code>cursor-agent</code> 命令均无法启动</li>
-<li>报错提示在 <code>%LOCALAPPDATA%\cursor-agent</code> 下找不到版本目录</li>
-<li>但手动查看 <code>versions</code> 子目录，实际存在多个版本文件夹，例如：</li>
-</ul>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">C:\Users\liuhualiang\AppData\Local\cursor-agent\versions\</span><br><span class="line">├── 2026.06.12-19-59-36-f6aba9a</span><br><span class="line">├── 2026.06.15-03-48-54-da23e37</span><br><span class="line">└── 2026.06.16-20-30-07-a07d3ac</span><br></pre></td></tr></table></figure>
-
-<h2 id="根因"><a href="#根因" class="headerlink" title="根因"></a>根因</h2><p><code>agent.ps1</code> 与 <code>cursor-agent.ps1</code> 启动时会扫描 <code>versions</code> 目录，并用正则过滤合法版本名：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>该正则只匹配<strong>旧格式</strong>：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">YYYY.MM.DD-commit</span><br></pre></td></tr></table></figure>
-
-<p>例如：<code>2026.06.16-a07d3ac</code></p>
-<p>而 Cursor Agent 更新后的目录名变为<strong>新格式</strong>，中间多了构建时间：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">YYYY.MM.DD-HH-MM-SS-commit</span><br></pre></td></tr></table></figure>
-
-<p>例如：<code>2026.06.16-20-30-07-a07d3ac</code></p>
-<p>因此所有现有版本目录都被过滤掉，脚本误判为「没有版本目录」。</p>
-<h2 id="修复方法"><a href="#修复方法" class="headerlink" title="修复方法"></a>修复方法</h2><p>编辑以下两个文件（内容相同，需同步修改）：</p>
-<ul>
-<li><code>%LOCALAPPDATA%\cursor-agent\agent.ps1</code></li>
-<li><code>%LOCALAPPDATA%\cursor-agent\cursor-agent.ps1</code></li>
-</ul>
-<h3 id="1-更新版本目录匹配正则"><a href="#1-更新版本目录匹配正则" class="headerlink" title="1. 更新版本目录匹配正则"></a>1. 更新版本目录匹配正则</h3><p>将原来的：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>改为同时兼容新旧格式：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;(-\d&#123;1,2&#125;-\d&#123;1,2&#125;-\d&#123;1,2&#125;)?-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-改进版本排序逻辑（可选但推荐）"><a href="#2-改进版本排序逻辑（可选但推荐）" class="headerlink" title="2. 改进版本排序逻辑（可选但推荐）"></a>2. 改进版本排序逻辑（可选但推荐）</h3><p><code>Parse-VersionString</code> 函数原先只按日期 <code>YYYY.MM.DD</code> 排序。若同一天存在多个构建，建议解析时间戳后再比较：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Parse-VersionString</span></span> &#123;</span><br><span class="line">    <span class="keyword">param</span> (</span><br><span class="line">        [<span class="built_in">string</span>]<span class="variable">$versionString</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="variable">$segments</span> = <span class="variable">$versionString</span>.Split(<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">    <span class="variable">$datePart</span> = <span class="variable">$segments</span>[<span class="number">0</span>]</span><br><span class="line">    <span class="variable">$parts</span> = <span class="variable">$datePart</span>.Split(<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$parts</span>.Length <span class="operator">-ne</span> <span class="number">3</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="string">&quot;Invalid version format. Expected format: YYYY.MM.DD[-HH-MM-SS]-commit&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$year</span> = <span class="variable">$parts</span>[<span class="number">0</span>]</span><br><span class="line">    <span class="variable">$month</span> = <span class="variable">$parts</span>[<span class="number">1</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    <span class="variable">$day</span> = <span class="variable">$parts</span>[<span class="number">2</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    <span class="variable">$timeSuffix</span> = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$segments</span>.Length <span class="operator">-ge</span> <span class="number">5</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">1</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">2</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">3</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span>) &#123;</span><br><span class="line">        <span class="variable">$timeSuffix</span> = <span class="variable">$segments</span>[<span class="number">1</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>) + <span class="variable">$segments</span>[<span class="number">2</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>) + <span class="variable">$segments</span>[<span class="number">3</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">long</span>](<span class="variable">$year</span> + <span class="variable">$month</span> + <span class="variable">$day</span> + <span class="variable">$timeSuffix</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-验证修复"><a href="#3-验证修复" class="headerlink" title="3. 验证修复"></a>3. 验证修复</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">agent <span class="literal">--version</span></span><br><span class="line">agent status</span><br></pre></td></tr></table></figure>
-
-<p>预期输出示例：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">2026.06.16-20-30-07-a07d3ac</span><br><span class="line">✓ Logged in as your@email.com</span><br></pre></td></tr></table></figure>
-
-<h2 id="临时绕过（不修改脚本）"><a href="#临时绕过（不修改脚本）" class="headerlink" title="临时绕过（不修改脚本）"></a>临时绕过（不修改脚本）</h2><p>若暂时不想改启动脚本，可直接调用最新版本目录下的 <code>node.exe</code> 与 <code>index.js</code>：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$v</span> = <span class="string">&quot;C:\Users\liuhualiang\AppData\Local\cursor-agent\versions\2026.06.16-20-30-07-a07d3ac&quot;</span></span><br><span class="line">&amp; <span class="string">&quot;<span class="variable">$v</span>\node.exe&quot;</span> <span class="string">&quot;<span class="variable">$v</span>\index.js&quot;</span> status</span><br><span class="line">&amp; <span class="string">&quot;<span class="variable">$v</span>\node.exe&quot;</span> <span class="string">&quot;<span class="variable">$v</span>\index.js&quot;</span> <span class="literal">--help</span></span><br></pre></td></tr></table></figure>
-
-<p>将 <code>$v</code> 替换为 <code>versions</code> 下实际存在的最新目录名即可。</p>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
-<li><strong>更新可能覆盖修复</strong>：执行 <code>agent update</code> 或 Cursor 自动更新 Agent CLI 后，<code>agent.ps1</code> 可能被还原，问题会复现，需重新应用上述修改。</li>
-<li><strong>IDE CLI 与 Agent CLI 是两套工具</strong>：<ul>
-<li><code>cursor</code>：Cursor IDE 自带 CLI（打开文件、diff、tunnel 等），路径通常在 <code>%LOCALAPPDATA%\Programs\cursor\resources\app\bin\</code></li>
-<li><code>agent</code> &#x2F; <code>cursor-agent</code>：终端 Agent CLI，安装在 <code>%LOCALAPPDATA%\cursor-agent\</code></li>
-</ul>
-</li>
-<li><strong><code>cursor agent</code> 子命令</strong>：IDE CLI 也注册了 <code>agent</code> 子命令，但日常使用的 <code>agent</code> 命令通常来自 PATH 中的 <code>cursor-agent</code> 包装脚本。</li>
-</ol>
-<h2 id="相关环境信息（排查参考）"><a href="#相关环境信息（排查参考）" class="headerlink" title="相关环境信息（排查参考）"></a>相关环境信息（排查参考）</h2><table>
-<thead>
-<tr>
-<th>项目</th>
-<th>值</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Cursor IDE 版本</td>
-<td>3.8.11</td>
-</tr>
-<tr>
-<td>Agent CLI 版本</td>
-<td>2026.06.16-20-30-07-a07d3ac</td>
-</tr>
-<tr>
-<td>操作系统</td>
-<td>Windows 10&#x2F;11 x64</td>
-</tr>
-<tr>
-<td>安装路径</td>
-<td><code>%LOCALAPPDATA%\cursor-agent\</code></td>
-</tr>
-</tbody></table>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><code>No version directories found</code> 并非版本文件缺失，而是 <strong>PowerShell 启动脚本的版本名正则未跟上 Cursor Agent 新的目录命名规范</strong>。更新正则后即可恢复正常；若再次被更新覆盖，按本文步骤重新修复即可。</p>
-]]></content>
-      <tags>
-        <tag>Cursor</tag>
-        <tag>CLI</tag>
-        <tag>Agent</tag>
-        <tag>Windows</tag>
-        <tag>PowerShell</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>classical chinese translation</title>
     <url>/2025/06/23/classical-chinese-translation/</url>
     <content><![CDATA[<h1 id="文言文现代翻译助手-内容说明"><a href="#文言文现代翻译助手-内容说明" class="headerlink" title="文言文现代翻译助手 - 内容说明"></a>文言文现代翻译助手 - 内容说明</h1><h2 id="📖-插件简介"><a href="#📖-插件简介" class="headerlink" title="📖 插件简介"></a>📖 插件简介</h2><p>文言文现代翻译助手是一款专为古典文学爱好者和学习者设计的Chrome浏览器插件。它能够智能识别网页中的文言文内容，并通过先进的AI技术将其翻译为现代汉语，帮助用户更好地理解古典文献。</p>
@@ -512,6 +420,634 @@
 <hr>
 <p><em>本文档将持续更新，反映插件的最新功能和改进。感谢您使用文言文现代翻译助手！</em></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>Cursor Agent CLI 报错 No version directories found 的排查与修复</title>
+    <url>/2026/06/19/cursor-agent-no-version-directories-fix/</url>
+    <content><![CDATA[<p>在 Windows 终端执行 <code>agent</code> 或 <code>cursor-agent</code> 时，可能遇到如下错误：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">C:\Users\liuhualiang\AppData\Local\cursor-agent\agent.ps1 : No version directories found in C:\Users\liuhualiang\AppData\Local\cursor-agent</span><br><span class="line">所在位置 行:1 字符: 1</span><br><span class="line">+ agent</span><br><span class="line">+ ~~~~~</span><br><span class="line">    + CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException</span><br><span class="line">    + FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException,agent.ps1</span><br></pre></td></tr></table></figure>
+
+<p>本文记录该问题的现象、根因、修复方式与临时绕过方法。</p>
+<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><ul>
+<li><code>agent</code>、<code>cursor-agent</code> 命令均无法启动</li>
+<li>报错提示在 <code>%LOCALAPPDATA%\cursor-agent</code> 下找不到版本目录</li>
+<li>但手动查看 <code>versions</code> 子目录，实际存在多个版本文件夹，例如：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">C:\Users\liuhualiang\AppData\Local\cursor-agent\versions\</span><br><span class="line">├── 2026.06.12-19-59-36-f6aba9a</span><br><span class="line">├── 2026.06.15-03-48-54-da23e37</span><br><span class="line">└── 2026.06.16-20-30-07-a07d3ac</span><br></pre></td></tr></table></figure>
+
+<h2 id="根因"><a href="#根因" class="headerlink" title="根因"></a>根因</h2><p><code>agent.ps1</code> 与 <code>cursor-agent.ps1</code> 启动时会扫描 <code>versions</code> 目录，并用正则过滤合法版本名：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>该正则只匹配<strong>旧格式</strong>：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">YYYY.MM.DD-commit</span><br></pre></td></tr></table></figure>
+
+<p>例如：<code>2026.06.16-a07d3ac</code></p>
+<p>而 Cursor Agent 更新后的目录名变为<strong>新格式</strong>，中间多了构建时间：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">YYYY.MM.DD-HH-MM-SS-commit</span><br></pre></td></tr></table></figure>
+
+<p>例如：<code>2026.06.16-20-30-07-a07d3ac</code></p>
+<p>因此所有现有版本目录都被过滤掉，脚本误判为「没有版本目录」。</p>
+<h2 id="修复方法"><a href="#修复方法" class="headerlink" title="修复方法"></a>修复方法</h2><p>编辑以下两个文件（内容相同，需同步修改）：</p>
+<ul>
+<li><code>%LOCALAPPDATA%\cursor-agent\agent.ps1</code></li>
+<li><code>%LOCALAPPDATA%\cursor-agent\cursor-agent.ps1</code></li>
+</ul>
+<h3 id="1-更新版本目录匹配正则"><a href="#1-更新版本目录匹配正则" class="headerlink" title="1. 更新版本目录匹配正则"></a>1. 更新版本目录匹配正则</h3><p>将原来的：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>改为同时兼容新旧格式：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;(-\d&#123;1,2&#125;-\d&#123;1,2&#125;-\d&#123;1,2&#125;)?-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-改进版本排序逻辑（可选但推荐）"><a href="#2-改进版本排序逻辑（可选但推荐）" class="headerlink" title="2. 改进版本排序逻辑（可选但推荐）"></a>2. 改进版本排序逻辑（可选但推荐）</h3><p><code>Parse-VersionString</code> 函数原先只按日期 <code>YYYY.MM.DD</code> 排序。若同一天存在多个构建，建议解析时间戳后再比较：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Parse-VersionString</span></span> &#123;</span><br><span class="line">    <span class="keyword">param</span> (</span><br><span class="line">        [<span class="built_in">string</span>]<span class="variable">$versionString</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="variable">$segments</span> = <span class="variable">$versionString</span>.Split(<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">    <span class="variable">$datePart</span> = <span class="variable">$segments</span>[<span class="number">0</span>]</span><br><span class="line">    <span class="variable">$parts</span> = <span class="variable">$datePart</span>.Split(<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$parts</span>.Length <span class="operator">-ne</span> <span class="number">3</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="string">&quot;Invalid version format. Expected format: YYYY.MM.DD[-HH-MM-SS]-commit&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$year</span> = <span class="variable">$parts</span>[<span class="number">0</span>]</span><br><span class="line">    <span class="variable">$month</span> = <span class="variable">$parts</span>[<span class="number">1</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    <span class="variable">$day</span> = <span class="variable">$parts</span>[<span class="number">2</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    <span class="variable">$timeSuffix</span> = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$segments</span>.Length <span class="operator">-ge</span> <span class="number">5</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">1</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">2</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">3</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span>) &#123;</span><br><span class="line">        <span class="variable">$timeSuffix</span> = <span class="variable">$segments</span>[<span class="number">1</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>) + <span class="variable">$segments</span>[<span class="number">2</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>) + <span class="variable">$segments</span>[<span class="number">3</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">long</span>](<span class="variable">$year</span> + <span class="variable">$month</span> + <span class="variable">$day</span> + <span class="variable">$timeSuffix</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-验证修复"><a href="#3-验证修复" class="headerlink" title="3. 验证修复"></a>3. 验证修复</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">agent <span class="literal">--version</span></span><br><span class="line">agent status</span><br></pre></td></tr></table></figure>
+
+<p>预期输出示例：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">2026.06.16-20-30-07-a07d3ac</span><br><span class="line">✓ Logged in as your@email.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="临时绕过（不修改脚本）"><a href="#临时绕过（不修改脚本）" class="headerlink" title="临时绕过（不修改脚本）"></a>临时绕过（不修改脚本）</h2><p>若暂时不想改启动脚本，可直接调用最新版本目录下的 <code>node.exe</code> 与 <code>index.js</code>：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$v</span> = <span class="string">&quot;C:\Users\liuhualiang\AppData\Local\cursor-agent\versions\2026.06.16-20-30-07-a07d3ac&quot;</span></span><br><span class="line">&amp; <span class="string">&quot;<span class="variable">$v</span>\node.exe&quot;</span> <span class="string">&quot;<span class="variable">$v</span>\index.js&quot;</span> status</span><br><span class="line">&amp; <span class="string">&quot;<span class="variable">$v</span>\node.exe&quot;</span> <span class="string">&quot;<span class="variable">$v</span>\index.js&quot;</span> <span class="literal">--help</span></span><br></pre></td></tr></table></figure>
+
+<p>将 <code>$v</code> 替换为 <code>versions</code> 下实际存在的最新目录名即可。</p>
+<h2 id="一键修复工具"><a href="#一键修复工具" class="headerlink" title="一键修复工具"></a>一键修复工具</h2><p>仓库内提供了自动修复脚本，下次 <code>agent update</code> 覆盖修复后可直接运行：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 首次安装（写入 %USERPROFILE%\bin 并加入 PATH）</span></span><br><span class="line">powershell <span class="literal">-ExecutionPolicy</span> Bypass <span class="operator">-File</span> D:\blog\github\scripts\<span class="built_in">install-fix</span><span class="literal">-cursor-agent</span>.ps1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修复</span></span><br><span class="line">fix<span class="literal">-cursor-agent</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 仅检查是否需要修复（退出码 2 表示需要修复）</span></span><br><span class="line">fix<span class="literal">-cursor-agent</span> <span class="literal">-CheckOnly</span></span><br></pre></td></tr></table></figure>
+
+<p>脚本位置：</p>
+<ul>
+<li><code>D:\blog\github\scripts\fix-cursor-agent.ps1</code></li>
+<li><code>D:\blog\github\scripts\fix-cursor-agent.cmd</code></li>
+<li><code>D:\blog\github\scripts\install-fix-cursor-agent.ps1</code></li>
+</ul>
+<p>修复前会自动备份为 <code>agent.ps1.bak-YYYYMMDD-HHMMSS</code>，并尝试执行 <code>agent --version</code> 验证。</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<li><strong>更新可能覆盖修复</strong>：执行 <code>agent update</code> 或 Cursor 自动更新 Agent CLI 后，<code>agent.ps1</code> 可能被还原，问题会复现，需重新应用上述修改。</li>
+<li><strong>IDE CLI 与 Agent CLI 是两套工具</strong>：<ul>
+<li><code>cursor</code>：Cursor IDE 自带 CLI（打开文件、diff、tunnel 等），路径通常在 <code>%LOCALAPPDATA%\Programs\cursor\resources\app\bin\</code></li>
+<li><code>agent</code> &#x2F; <code>cursor-agent</code>：终端 Agent CLI，安装在 <code>%LOCALAPPDATA%\cursor-agent\</code></li>
+</ul>
+</li>
+<li><strong><code>cursor agent</code> 子命令</strong>：IDE CLI 也注册了 <code>agent</code> 子命令，但日常使用的 <code>agent</code> 命令通常来自 PATH 中的 <code>cursor-agent</code> 包装脚本。</li>
+</ol>
+<h2 id="相关环境信息（排查参考）"><a href="#相关环境信息（排查参考）" class="headerlink" title="相关环境信息（排查参考）"></a>相关环境信息（排查参考）</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cursor IDE 版本</td>
+<td>3.8.11</td>
+</tr>
+<tr>
+<td>Agent CLI 版本</td>
+<td>2026.06.16-20-30-07-a07d3ac</td>
+</tr>
+<tr>
+<td>操作系统</td>
+<td>Windows 10&#x2F;11 x64</td>
+</tr>
+<tr>
+<td>安装路径</td>
+<td><code>%LOCALAPPDATA%\cursor-agent\</code></td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><code>No version directories found</code> 并非版本文件缺失，而是 <strong>PowerShell 启动脚本的版本名正则未跟上 Cursor Agent 新的目录命名规范</strong>。更新正则后即可恢复正常；若再次被更新覆盖，按本文步骤重新修复即可。</p>
+]]></content>
+      <tags>
+        <tag>Cursor</tag>
+        <tag>CLI</tag>
+        <tag>Agent</tag>
+        <tag>Windows</tag>
+        <tag>PowerShell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>EOS 菜单树 NodeID 与 ObjectID 说明</title>
+    <url>/2026/07/31/eos-role-tree-nodeid-objectid/</url>
+    <content><![CDATA[<p>本文档说明 eosrole 页面「配置 EOS 菜单权限」树节点中 <strong>NodeID</strong>（前端 zTree 的 <code>id</code>）与 <strong>ObjectID</strong>（前端 <code>objectId</code>）的含义、数据库来源、后端组装与前端使用方式。</p>
+<blockquote>
+<p>关联文档：<a href="/2026/07/31/eos-role-menu-relationship/">EOS 菜单与角色关联关系说明</a></p>
+<p><strong>2026-07-31 更新</strong>：权限树接口额外返回 <code>menuType</code> &#x2F; <code>sysMenuId</code>；保存 body 含 MES 按钮与 ERP 操作扩展字段。</p>
+</blockquote>
+<h2 id="结论摘要"><a href="#结论摘要" class="headerlink" title="结论摘要"></a>结论摘要</h2><table>
+<thead>
+<tr>
+<th>前端字段</th>
+<th>含义</th>
+<th>数据库来源</th>
+<th>主要用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>zTree <code>id</code></td>
+<td>菜单节点 ID</td>
+<td><code>messys.Tree.NodeID</code></td>
+<td>树结构、父子关系（<code>pId</code>）；前端勾选态缓存键</td>
+</tr>
+<tr>
+<td>zTree <code>objectId</code></td>
+<td>EOS 权限对象 ID</td>
+<td><code>messys.Tree.ObjectID</code> &#x3D; <code>messys.ObjectRegister.ObjectID</code></td>
+<td>角色菜单授权（<code>STPermission.ObjectID</code>，「执行」）</td>
+</tr>
+<tr>
+<td>zTree <code>menuType</code></td>
+<td>菜单类型</td>
+<td><code>EosMenuTypeHelper.resolveMenuType</code></td>
+<td><code>mes</code> &#x2F; <code>erp</code> &#x2F; <code>folder</code>，决定右侧详情面板</td>
+</tr>
+<tr>
+<td>zTree <code>sysMenuId</code></td>
+<td>MES 菜单 ID</td>
+<td>优先 <code>sys_menu_eos_node</code>，否则 <code>NodeDesc=MES_MENU:</code></td>
+<td>MES 菜单&#x2F;按钮写入 <code>sys_role_menu</code></td>
+</tr>
+</tbody></table>
+<p><strong>NodeID 与 ObjectID 是两套独立编号体系</strong>，不可混用。角色菜单「执行」授权必须使用 <strong>ObjectID</strong>；NodeID 用于树层级与 detail 查询参数。</p>
+<hr>
+<h2 id="1-NodeID-是什么"><a href="#1-NodeID-是什么" class="headerlink" title="1. NodeID 是什么"></a>1. NodeID 是什么</h2><p><code>NodeID</code> 是 EOS 菜单树 <code>messys.dbo.Tree</code> 的主键，标识一个菜单&#x2F;目录节点在树中的位置。</p>
+<p>在 MES 前端 zTree 中，NodeID 映射为节点的 **<code>id</code>**（<code>idKey: &quot;id&quot;</code>），<code>ParentID</code> 映射为 **<code>pId</code>**，用于渲染树形结构与展开&#x2F;折叠。前端勾选态 <code>permissionCheckedNodeIds</code> 也按 NodeID 缓存。</p>
+<p><strong>NodeID 不写入 STPermission</strong>。权限表引用的是 ObjectID。detail 接口用 <code>nodeId</code> 定位节点后再解析业务 ObjectID。</p>
+<hr>
+<h2 id="2-NodeID-从哪来"><a href="#2-NodeID-从哪来" class="headerlink" title="2. NodeID 从哪来"></a>2. NodeID 从哪来</h2><h3 id="2-1-数据库表"><a href="#2-1-数据库表" class="headerlink" title="2.1 数据库表"></a>2.1 数据库表</h3><table>
+<thead>
+<tr>
+<th>表</th>
+<th>库</th>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Tree</code></td>
+<td>messys</td>
+<td><code>NodeID</code></td>
+<td>菜单节点主键</td>
+</tr>
+<tr>
+<td><code>Tree</code></td>
+<td>messys</td>
+<td><code>ParentID</code></td>
+<td>父节点 NodeID（根为 0）</td>
+</tr>
+<tr>
+<td><code>UniqueNO</code></td>
+<td>messys</td>
+<td><code>No</code></td>
+<td>下一个可用 NodeID（<code>NName=&#39;tree&#39;</code>）</td>
+</tr>
+</tbody></table>
+<h3 id="2-2-MES-新建节点时的分配逻辑"><a href="#2-2-MES-新建节点时的分配逻辑" class="headerlink" title="2.2 MES 新建节点时的分配逻辑"></a>2.2 MES 新建节点时的分配逻辑</h3><p>MES 通过 <code>TreeServiceImpl.getNextNodeIdForTree()</code> 从 <code>UniqueNO</code> 表取号：</p>
+<ol>
+<li>悲观锁查询 <code>UniqueNO</code> 中 <code>NName=&#39;tree&#39;</code> 的记录（<code>PESSIMISTIC_WRITE</code>）</li>
+<li>取当前 <code>No</code> 作为新 NodeID</li>
+<li>将 <code>No + 1</code> 写回，占用该编号</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// TreeServiceImpl.getNextNodeIdForTree()</span></span><br><span class="line"><span class="type">UniqueNOEntity</span> <span class="variable">row</span> <span class="operator">=</span> uniqueNODao.findByNnameForUpdate(UNIQUE_NO_NAME_TREE);</span><br><span class="line"><span class="type">int</span> <span class="variable">currentNo</span> <span class="operator">=</span> row.getNo();</span><br><span class="line">row.setNo(currentNo + <span class="number">1</span>);</span><br><span class="line">uniqueNODao.save(row);</span><br><span class="line"><span class="keyword">return</span> Long.valueOf(currentNo);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-触发-NodeID-分配的操作"><a href="#2-3-触发-NodeID-分配的操作" class="headerlink" title="2.3 触发 NodeID 分配的操作"></a>2.3 触发 NodeID 分配的操作</h3><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>新增菜单节点</td>
+<td><code>TreeServiceImpl.addNode</code></td>
+<td>先 <code>getNextNodeIdForTree()</code>，再写 Tree</td>
+</tr>
+<tr>
+<td>sys_menu 同步</td>
+<td><code>TreeServiceImpl.syncFromSysMenu</code></td>
+<td>每个同步节点分配新 NodeID</td>
+</tr>
+<tr>
+<td>复制菜单</td>
+<td><code>TreeServiceImpl.copyMenu</code></td>
+<td>源节点及子树每个节点各分配新 NodeID</td>
+</tr>
+<tr>
+<td>交接班菜单批量创建</td>
+<td><code>createShiftLogDispatchMenus</code> → <code>addNode</code></td>
+<td>同上</td>
+</tr>
+</tbody></table>
+<h3 id="2-4-EOS-原生-历史数据"><a href="#2-4-EOS-原生-历史数据" class="headerlink" title="2.4 EOS 原生 &#x2F; 历史数据"></a>2.4 EOS 原生 &#x2F; 历史数据</h3><p>在 MES 介入之前，NodeID 可能由 EOS 客户端或其他工具写入 <code>Tree</code>，同样依赖 <code>UniqueNO</code> 序列或历史遗留编号。MES 只保证<strong>新增&#x2F;同步&#x2F;复制</strong>时走 <code>getNextNodeIdForTree()</code> 逻辑。</p>
+<h3 id="2-5-NodeID-在-Functions-中的用途"><a href="#2-5-NodeID-在-Functions-中的用途" class="headerlink" title="2.5 NodeID 在 Functions 中的用途"></a>2.5 NodeID 在 Functions 中的用途</h3><p><code>Tree.Functions</code> 字段保存菜单跳转 URL，其中 <strong><code>menuId</code> 参数值为 NodeID</strong>（不是 ObjectID）。例如同步 sys_menu 时：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;baseUrl&#125;/&#123;url&#125;?token=%Token%&amp;menuId=&#123;NodeID&#125;</span><br></pre></td></tr></table></figure>
+
+<p>复制菜单时，<code>TreeServiceImpl</code> 会将 <code>Functions</code> 里的 <code>menuId=旧NodeID</code> 替换为 <code>menuId=新NodeID</code>。</p>
+<h3 id="2-6-NodeID-生命周期"><a href="#2-6-NodeID-生命周期" class="headerlink" title="2.6 NodeID 生命周期"></a>2.6 NodeID 生命周期</h3><ul>
+<li><strong>查询</strong>：<code>treeDao.findAll(...)</code>、<code>queryObject(nodeid)</code> 等</li>
+<li><strong>删除</strong>：<code>delete</code> &#x2F; <code>deleteBatch</code> 按 NodeID 删除 Tree，并先 <code>ObjectRegisterDao.deleteByOwnerId(NodeID)</code> 清理关联对象</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">  A[UniqueNO&lt;br/&gt;NName=tree] --&gt;|取 No 作为 NodeID| B[Tree.NodeID]</span><br><span class="line">  B --&gt; C[listTreeForPermission&lt;br/&gt;返回 id=NodeID]</span><br><span class="line">  C --&gt; D[zTree id / pId&lt;br/&gt;树结构展示]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-ObjectID-是什么"><a href="#3-ObjectID-是什么" class="headerlink" title="3. ObjectID 是什么"></a>3. ObjectID 是什么</h2><p><code>ObjectID</code> 是 EOS 对象注册表 <code>messys.dbo.ObjectRegister</code> 的主键。每个可授权对象在 <code>ObjectRegister</code> 中注册一条记录；菜单&#x2F;目录节点对应 <strong>TypeID &#x3D; 7</strong>，并通过 <strong>OwnerID &#x3D; Tree.NodeID</strong> 与菜单树关联。</p>
+<p>MES 维护菜单时会将 ObjectID <strong>冗余写入</strong> <code>Tree.ObjectID</code>，便于权限树接口一次查询带出。</p>
+<p>在角色菜单授权场景下，前端勾选菜单后提交的是 <strong>objectId 列表</strong>，写入 <code>mesdata.dbo.STPermission.ObjectID</code>（配合 <code>UserID</code>&#x3D;角色 OID、<code>Oprate</code>&#x3D;「执行」、<code>Permission</code>&#x3D;1）。</p>
+<hr>
+<h2 id="4-ObjectID-从哪来"><a href="#4-ObjectID-从哪来" class="headerlink" title="4. ObjectID 从哪来"></a>4. ObjectID 从哪来</h2><h3 id="4-1-数据库表"><a href="#4-1-数据库表" class="headerlink" title="4.1 数据库表"></a>4.1 数据库表</h3><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>库&#x2F;表</th>
+<th>字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>权威主键</td>
+<td>messys <code>ObjectRegister</code></td>
+<td><code>ObjectID</code></td>
+<td>全局对象 ID（自增：MAX+1）</td>
+</tr>
+<tr>
+<td>关联</td>
+<td>messys <code>ObjectRegister</code></td>
+<td><code>OwnerID</code></td>
+<td>&#x3D; <code>Tree.NodeID</code></td>
+</tr>
+<tr>
+<td>类型</td>
+<td>messys <code>ObjectRegister</code></td>
+<td><code>TypeID</code></td>
+<td>MES 新建菜单固定为 <strong>7</strong>（菜单&#x2F;目录）</td>
+</tr>
+<tr>
+<td>冗余</td>
+<td>messys <code>Tree</code></td>
+<td><code>ObjectID</code></td>
+<td>与 <code>ObjectRegister.ObjectID</code> 一致</td>
+</tr>
+<tr>
+<td>授权</td>
+<td>mesdata <code>STPermission</code></td>
+<td><code>ObjectID</code></td>
+<td>引用 <code>ObjectRegister.ObjectID</code></td>
+</tr>
+</tbody></table>
+<p>关系：<code>Tree.NodeID</code> ← <code>ObjectRegister.OwnerID</code>；<code>Tree.ObjectID</code> &#x3D; <code>ObjectRegister.ObjectID</code>。</p>
+<h3 id="4-2-MES-新建节点时的分配逻辑"><a href="#4-2-MES-新建节点时的分配逻辑" class="headerlink" title="4.2 MES 新建节点时的分配逻辑"></a>4.2 MES 新建节点时的分配逻辑</h3><p><code>TreeServiceImpl.saveObjectRegisterForTree()</code>：</p>
+<ol>
+<li><code>ObjectRegisterDao.findMaxObjectId()</code> 取 MAX(ObjectID) + 1</li>
+<li>插入 <code>ObjectRegister</code>（<code>TypeID=7</code>，<code>OwnerID=NodeID</code>，<code>Object</code>&#x3D;菜单名）</li>
+<li>将返回的 <code>ObjectID</code> 写入 <code>Tree.ObjectID</code></li>
+</ol>
+<p>与 NodeID 分配在同一事务内完成（如 <code>addNode</code> 先取 NodeID，再创建 ObjectRegister）。</p>
+<h3 id="4-3-触发-ObjectID-分配的操作"><a href="#4-3-触发-ObjectID-分配的操作" class="headerlink" title="4.3 触发 ObjectID 分配的操作"></a>4.3 触发 ObjectID 分配的操作</h3><p>与 NodeID 分配的操作相同（新增、同步、复制）。<strong>复制菜单时 NodeID 与 ObjectID 均重新分配</strong>，不会沿用源节点的 ObjectID。</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>ObjectID 来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MES 新增 EOS 菜单节点</td>
+<td><code>saveObjectRegisterForTree</code> 新分配</td>
+</tr>
+<tr>
+<td>从 sys_menu 同步</td>
+<td>每个同步节点一条新 ObjectRegister</td>
+</tr>
+<tr>
+<td>复制菜单</td>
+<td>新 NodeID + 新 ObjectRegister + 新 ObjectID</td>
+</tr>
+<tr>
+<td>EOS 原生&#x2F;历史数据</td>
+<td>可能由 EOS 客户端写入；<code>Tree.ObjectID</code> 可能已存在</td>
+</tr>
+<tr>
+<td>失败兜底</td>
+<td><code>object == null</code> 时 <code>Tree.ObjectID = 0</code>（无有效授权对象）</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">  A[分配 NodeID] --&gt; B[插入 ObjectRegister&lt;br/&gt;ObjectID=MAX+1]</span><br><span class="line">  B --&gt; C[Tree.ObjectID = ObjectID]</span><br><span class="line">  C --&gt; D[listTreeForPermission&lt;br/&gt;返回 objectId]</span><br><span class="line">  D --&gt; E[前端勾选提交 objectIds]</span><br><span class="line">  E --&gt; F[STPermission 写入]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-NodeID-与-ObjectID-对照"><a href="#5-NodeID-与-ObjectID-对照" class="headerlink" title="5. NodeID 与 ObjectID 对照"></a>5. NodeID 与 ObjectID 对照</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Tree.NodeID       ──►  zTree.id         （树结构、ParentID 父子关系）</span><br><span class="line">Tree.ObjectID     ──►  zTree.objectId   （STPermission「执行」授权键）</span><br><span class="line"></span><br><span class="line">ObjectRegister.OwnerID  = Tree.NodeID</span><br><span class="line">ObjectRegister.ObjectID = Tree.ObjectID</span><br><span class="line">ObjectRegister.TypeID   = 7（菜单/目录）</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>NodeID</th>
+<th>ObjectID</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>所属表</td>
+<td><code>messys.Tree</code> 主键</td>
+<td><code>messys.ObjectRegister</code> 主键，冗余在 <code>Tree.ObjectID</code></td>
+</tr>
+<tr>
+<td>分配方式</td>
+<td><code>UniqueNO</code>（NName&#x3D;’tree’）递增</td>
+<td><code>MAX(ObjectID)+1</code></td>
+</tr>
+<tr>
+<td>前端 zTree 字段</td>
+<td><code>id</code></td>
+<td><code>objectId</code></td>
+</tr>
+<tr>
+<td>是否用于 STPermission「执行」</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>复制菜单</td>
+<td>重新分配</td>
+<td>重新分配</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="5-1-业务-ObjectID-与-NodeID-的非-OwnerID-关联"><a href="#5-1-业务-ObjectID-与-NodeID-的非-OwnerID-关联" class="headerlink" title="5.1 业务 ObjectID 与 NodeID 的非 OwnerID 关联"></a>5.1 业务 ObjectID 与 NodeID 的非 OwnerID 关联</h2><p>菜单授权与 ERP 按钮授权使用<strong>不同的 ObjectID</strong>，且业务对象的 <code>OwnerID</code> <strong>不一定</strong>等于 <code>Tree.NodeID</code>。</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>ObjectID 示例</th>
+<th>TypeID</th>
+<th>OwnerID</th>
+<th>STPermission 用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>菜单对象</td>
+<td>468</td>
+<td>7</td>
+<td>430</td>
+<td><code>Oprate=执行</code>, Permission&#x3D;1</td>
+</tr>
+<tr>
+<td>业务对象</td>
+<td>965</td>
+<td>1</td>
+<td>null</td>
+<td><code>Oprate=EX61:...</code>, Permission&#x3D;0</td>
+</tr>
+</tbody></table>
+<p><strong>解析路径</strong>（<code>EosMenuObjectResolver.resolveBusinessObjects</code>）：</p>
+<ol>
+<li><code>ObjectRegister.OwnerID = NodeID</code> 且 <code>TypeID != 7</code></li>
+<li><code>Tree.Functions</code> 括号内单据名 + 菜单对象名 → <code>DjDy.DjCName</code> → <code>ObjectRegister.Object = DjCName</code> 且 <code>TypeID != 7</code></li>
+<li>回退：<code>Tree.ObjectID</code> 对应 ObjectRegister（<strong>可能含 TypeID&#x3D;7</strong>）</li>
+</ol>
+<p><strong>禁止</strong>仅用 <code>OwnerID=NodeID</code> 或 <code>Tree.ObjectID</code> 推断按钮授权 ObjectID。复合页可能返回多个业务 ObjectID；同一 ObjectID 上可有多个 <code>EXxx:</code> 按钮 Oprate。</p>
+<p><code>listAvailableOperations</code>：标准操作 + ExFunction <code>EXxx:</code> + 库中已有非「执行」Oprate。</p>
+<p>示例（NodeID&#x3D;430）：菜单树 <code>objectId=468</code> 用于勾选「执行」；按钮 <code>EX61:组织架构分发</code> 写在 ObjectID&#x3D;965。</p>
+<hr>
+<h2 id="6-后端组装与-API"><a href="#6-后端组装与-API" class="headerlink" title="6. 后端组装与 API"></a>6. 后端组装与 API</h2><h3 id="6-1-权限菜单树"><a href="#6-1-权限菜单树" class="headerlink" title="6.1 权限菜单树"></a>6.1 权限菜单树</h3><ul>
+<li><strong>接口</strong>：<code>GET /eosrole/menu/tree</code>（或 <code>@RequestMapping</code>）</li>
+<li><strong>实现</strong>：<code>EosRoleController.menuTree()</code> → <code>TreeService.listTreeForPermission()</code></li>
+<li><strong>返回字段</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>来源</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>id</code></td>
+<td><code>Tree.NodeID</code></td>
+<td>zTree 节点 ID</td>
+</tr>
+<tr>
+<td><code>pId</code></td>
+<td><code>Tree.ParentID</code>（0 → -1）</td>
+<td>父节点</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>Tree.NodeCaption</code></td>
+<td>显示名</td>
+</tr>
+<tr>
+<td><code>objectId</code></td>
+<td><code>Tree.ObjectID</code></td>
+<td>STPermission「执行」键</td>
+</tr>
+<tr>
+<td><code>menuType</code></td>
+<td><code>EosMenuTypeHelper.resolveMenuType</code></td>
+<td><code>mes</code> &#x2F; <code>erp</code> &#x2F; <code>folder</code></td>
+</tr>
+<tr>
+<td><code>sysMenuId</code></td>
+<td><code>sys_menu_eos_node</code>，缺失时 NodeDesc fallback</td>
+<td>仅 MES 节点有值</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// TreeServiceImpl.listTreeForPermission()</span></span><br><span class="line">m.put(<span class="string">&quot;id&quot;</span>, e.getNodeid());</span><br><span class="line">m.put(<span class="string">&quot;pId&quot;</span>, e.getParentid() == <span class="literal">null</span> || e.getParentid() == <span class="number">0</span> ? -<span class="number">1</span> : e.getParentid());</span><br><span class="line">m.put(<span class="string">&quot;name&quot;</span>, e.getNodecaption() != <span class="literal">null</span> ? e.getNodecaption().trim() : <span class="string">&quot;&quot;</span>);</span><br><span class="line">m.put(<span class="string">&quot;objectId&quot;</span>, e.getObjectid());</span><br><span class="line">m.put(<span class="string">&quot;menuType&quot;</span>, EosMenuTypeHelper.resolveMenuType(e));</span><br><span class="line">m.put(<span class="string">&quot;sysMenuId&quot;</span>, sysMenuIdLookup.get(e.getNodeid()));</span><br></pre></td></tr></table></figure>
+
+<p>与 <code>listTreeForSelect()</code>（eostree 选目录）的区别：后者<strong>不含</strong> <code>objectId</code> &#x2F; <code>menuType</code> &#x2F; <code>sysMenuId</code>，仅 <code>id</code> &#x2F; <code>pId</code> &#x2F; <code>name</code>。</p>
+<h3 id="6-2-权限查询与保存"><a href="#6-2-权限查询与保存" class="headerlink" title="6.2 权限查询与保存"></a>6.2 权限查询与保存</h3><table>
+<thead>
+<tr>
+<th>接口</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GET /eosrole/permission/&#123;roleId&#125;</code></td>
+<td>返回已授权 <strong>objectId</strong> 列表（「执行」+ Permission&#x3D;1）</td>
+</tr>
+<tr>
+<td><code>GET /eosrole/permission/detail/&#123;roleId&#125;?nodeId=</code></td>
+<td>按 NodeID 加载对象&#x2F;按钮详情（MES 或 ERP）</td>
+</tr>
+<tr>
+<td><code>GET /eosrole/permission/mes-menu-ids/&#123;roleId&#125;</code></td>
+<td>返回 MES <code>sys_role_menu</code> 全部 menuId</td>
+</tr>
+<tr>
+<td><code>POST /eosrole/permission/save</code></td>
+<td>菜单执行 + ERP 操作 + MES 按钮</td>
+</tr>
+</tbody></table>
+<p><code>EosRolePermissionServiceImpl.queryMenuObjectIds</code> 过滤条件：<code>Oprate=执行</code> 且 <code>Permission=1</code>（<strong>当前未按 TypeID&#x3D;7 过滤</strong>）。</p>
+<p>save body（<code>EosRolePermissionSaveRequest</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>roleIds</code></td>
+<td>EOS 角色 OID</td>
+</tr>
+<tr>
+<td><code>objectIds</code></td>
+<td>勾选菜单的 Tree.ObjectID → STPermission「执行」</td>
+</tr>
+<tr>
+<td><code>mode</code></td>
+<td><code>append</code> &#x2F; <code>replace</code></td>
+</tr>
+<tr>
+<td><code>mesMenuIds</code></td>
+<td>MES 目录&#x2F;菜单 menu_id → <code>sys_role_menu</code></td>
+</tr>
+<tr>
+<td><code>mesButtonMenuIds</code></td>
+<td>MES 按钮 menu_id → <code>sys_role_menu</code></td>
+</tr>
+<tr>
+<td><code>operationPermissions</code></td>
+<td>ERP <code>&#123;objectId, oprate, granted&#125;</code></td>
+</tr>
+<tr>
+<td><code>operationReplaceObjectIds</code></td>
+<td>replace 时清理非「执行」行的业务 ObjectID</td>
+</tr>
+</tbody></table>
+<p>保存委托：先 <code>EosRolePermissionServiceImpl</code> 写「执行」，再 <code>EosRoleObjectPermissionServiceImpl.saveMesAndObjectPermissions</code> 写 ERP&#x2F;MES。</p>
+<hr>
+<h2 id="7-前端使用（eosrole-js）"><a href="#7-前端使用（eosrole-js）" class="headerlink" title="7. 前端使用（eosrole.js）"></a>7. 前端使用（eosrole.js）</h2><h3 id="7-1-zTree-配置"><a href="#7-1-zTree-配置" class="headerlink" title="7.1 zTree 配置"></a>7.1 zTree 配置</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> permissionTreeSetting = &#123;</span><br><span class="line">    <span class="attr">data</span>: &#123;</span><br><span class="line">        <span class="attr">simpleData</span>: &#123;</span><br><span class="line">            <span class="attr">enable</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">idKey</span>: <span class="string">&quot;id&quot;</span>,      <span class="comment">// = NodeID</span></span><br><span class="line">            <span class="attr">pIdKey</span>: <span class="string">&quot;pId&quot;</span>,   <span class="comment">// = ParentID</span></span><br><span class="line">            <span class="attr">rootPId</span>: -<span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">check</span>: &#123; <span class="attr">enable</span>: <span class="literal">true</span>, <span class="attr">nocheckInherit</span>: <span class="literal">true</span> &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-加载与回显"><a href="#7-2-加载与回显" class="headerlink" title="7.2 加载与回显"></a>7.2 加载与回显</h3><ol>
+<li><code>loadPermissionMenuTree</code> → 请求 <code>/eosrole/menu/tree</code>，用 <code>treeList</code> 初始化 zTree（含 <code>menuType</code> &#x2F; <code>sysMenuId</code>）</li>
+<li>单角色 + replace 模式：<ul>
+<li><code>/eosrole/permission/&#123;roleId&#125;</code> → 按 <strong>objectId</strong> 勾选菜单树（不是 <code>id</code>）</li>
+<li><code>/eosrole/permission/mes-menu-ids/&#123;roleId&#125;</code> → 拆分 MES 菜单 ID &#x2F; 按钮 ID 到 <code>permissionMesMenuIds</code> 等</li>
+</ul>
+</li>
+<li>点击节点 → <code>/eosrole/permission/detail/&#123;roleId&#125;?nodeId=</code>：<ul>
+<li><code>menuType=mes</code>：展示 MES 按钮勾选</li>
+<li><code>menuType=erp</code>：展示 ERP 操作「禁止」勾选</li>
+<li><code>menuType=folder</code>：目录摘要</li>
+</ul>
+</li>
+</ol>
+<p>勾选 MES 节点时把 <code>sysMenuId</code> 加入 <code>permissionMesMenuIds</code>；取消勾选时清理对应按钮态。</p>
+<h3 id="7-3-保存"><a href="#7-3-保存" class="headerlink" title="7.3 保存"></a>7.3 保存</h3><p><code>savePermission</code> 收集并提交：</p>
+<table>
+<thead>
+<tr>
+<th>收集方法</th>
+<th>字段</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>collectPermissionObjectIds()</code></td>
+<td><code>objectIds</code>（勾选节点的 <strong>objectId</strong>，不是 <code>id</code>）</td>
+</tr>
+<tr>
+<td><code>collectMesMenuIdsForSave()</code></td>
+<td><code>mesMenuIds</code></td>
+</tr>
+<tr>
+<td><code>collectMesButtonMenuIdsForSave()</code></td>
+<td><code>mesButtonMenuIds</code></td>
+</tr>
+<tr>
+<td><code>collectOperationPermissionsForSave()</code></td>
+<td><code>operationPermissions</code></td>
+</tr>
+<tr>
+<td><code>collectOperationReplaceObjectIdsForSave()</code></td>
+<td><code>operationReplaceObjectIds</code></td>
+</tr>
+</tbody></table>
+<p>连同 <code>roleIds</code>、<code>mode</code> 一并 POST 到 <code>/eosrole/permission/save</code>。</p>
+<hr>
+<h2 id="8-验证-SQL"><a href="#8-验证-SQL" class="headerlink" title="8. 验证 SQL"></a>8. 验证 SQL</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- NodeID 与 ObjectID 对照</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    t.NodeID,</span><br><span class="line">    RTRIM(t.NodeCaption) <span class="keyword">AS</span> MenuCaption,</span><br><span class="line">    t.ParentID,</span><br><span class="line">    t.ObjectID           <span class="keyword">AS</span> TreeObjectID,</span><br><span class="line">    o.ObjectID           <span class="keyword">AS</span> RegObjectID,</span><br><span class="line">    o.TypeID,</span><br><span class="line">    o.OwnerID</span><br><span class="line"><span class="keyword">FROM</span> messys.dbo.Tree t</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> messys.dbo.ObjectRegister o <span class="keyword">ON</span> o.OwnerID <span class="operator">=</span> t.NodeID</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> t.NodeID;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- UniqueNO 当前序列</span></span><br><span class="line"><span class="keyword">SELECT</span> NName, <span class="keyword">No</span> <span class="keyword">FROM</span> messys.dbo.UniqueNO <span class="keyword">WHERE</span> NName <span class="operator">=</span> <span class="string">&#x27;tree&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="9-相关代码路径"><a href="#9-相关代码路径" class="headerlink" title="9. 相关代码路径"></a>9. 相关代码路径</h2><table>
+<thead>
+<tr>
+<th>环节</th>
+<th>路径</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NodeID 分配</td>
+<td><code>TreeServiceImpl.getNextNodeIdForTree()</code></td>
+</tr>
+<tr>
+<td>ObjectID 分配</td>
+<td><code>TreeServiceImpl.saveObjectRegisterForTree()</code></td>
+</tr>
+<tr>
+<td>新增&#x2F;同步&#x2F;复制</td>
+<td><code>TreeServiceImpl.addNode</code> &#x2F; <code>syncFromSysMenu</code> &#x2F; <code>copyMenu</code></td>
+</tr>
+<tr>
+<td>权限树 API</td>
+<td><code>TreeServiceImpl.listTreeForPermission()</code>、<code>EosRoleController</code></td>
+</tr>
+<tr>
+<td>菜单类型 &#x2F; sysMenuId</td>
+<td><code>EosMenuTypeHelper</code>、<code>SysMenuEosNodeService</code></td>
+</tr>
+<tr>
+<td>菜单「执行」读写</td>
+<td><code>EosRolePermissionServiceImpl</code></td>
+</tr>
+<tr>
+<td>ERP&#x2F;MES 扩展保存</td>
+<td><code>EosRoleObjectPermissionServiceImpl</code></td>
+</tr>
+<tr>
+<td>业务 ObjectID 解析</td>
+<td><code>EosMenuObjectResolver</code></td>
+</tr>
+<tr>
+<td>实体</td>
+<td><code>TreeEntity</code>、<code>ObjectRegisterEntity</code>、<code>StPermissionEntity</code></td>
+</tr>
+<tr>
+<td>前端</td>
+<td><code>static/js/modules/security/eosrole.js</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="10-修订记录"><a href="#10-修订记录" class="headerlink" title="10. 修订记录"></a>10. 修订记录</h2><table>
+<thead>
+<tr>
+<th>日期</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2026-06-16</td>
+<td>初版：梳理 Tree NodeID 与 ObjectID 从数据库到前端权限树的完整链路</td>
+</tr>
+<tr>
+<td>2026-06-16</td>
+<td>补充 NodeID 在 Tree.Functions URL 中作为 menuId 参数的说明</td>
+</tr>
+<tr>
+<td>2026-07-01</td>
+<td>补充业务 ObjectID 与 NodeID 非 OwnerID 关联及 eosrole 解析路径</td>
+</tr>
+<tr>
+<td>2026-07-31</td>
+<td>按最新实现修订：权限树补 <code>menuType</code>&#x2F;<code>sysMenuId</code>；save&#x2F;前端补 MES 与 ERP 扩展字段；代码路径补 ObjectPermission &#x2F; Resolver</td>
+</tr>
+</tbody></table>
+]]></content>
+      <tags>
+        <tag>MES</tag>
+        <tag>EOS</tag>
+        <tag>权限</tag>
+        <tag>zTree</tag>
+        <tag>SQL Server</tag>
+      </tags>
   </entry>
   <entry>
     <title>health</title>
@@ -1259,9 +1795,29 @@
         <tag>MES</tag>
         <tag>EOS</tag>
         <tag>权限</tag>
-        <tag>RBAC</tag>
         <tag>SQL Server</tag>
+        <tag>RBAC</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2026/07/06/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><span id="more"></span>
+
+<h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>kingbase</title>
@@ -1286,671 +1842,6 @@
 
 <h2 id="对模式xx权限不够"><a href="#对模式xx权限不够" class="headerlink" title="对模式xx权限不够"></a>对模式xx权限不够</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Caused by: org.postgresql.util.PSQLException: ERROR: 对模式 cems 权限不够</span><br></pre></td></tr></table></figure>
 ]]></content>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2026/07/06/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><span id="more"></span>
-
-<h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>MES 2026 年 5 月工作小结</title>
-    <url>/2026/08/01/mes-monthly-2026-05/</url>
-    <content><![CDATA[<img src="/2026/08/01/mes-monthly-2026-05/cover.png" class="">
-
-<p>5 月（约 <strong>220+ 次提交</strong>、合并 PR <strong>#239–#281</strong>）主线落在业务现场能力：交接班 Docx 模型导入、液体码头&#x2F;船舶作业增强、仪表位号与报表关联，以及 RTDB&#x2F;ISYS 采集链路。改动最集中的是 <code>mes-operation</code>、<code>mes-measure</code>、<code>mes-vessel-operation</code>，辅以 <code>mes-web</code> &#x2F; <code>mes-rtdb</code>。</p>
-<h2 id="一、交接班-ShiftLog（中下旬主线）"><a href="#一、交接班-ShiftLog（中下旬主线）" class="headerlink" title="一、交接班 ShiftLog（中下旬主线）"></a>一、交接班 ShiftLog（中下旬主线）</h2><ul>
-<li>Docx 模型导入与解析预览（#263）：锚点注入、单元格模式、输入类型与公式处理。</li>
-<li>跳过孤儿锚点（#270）、批量删除与归属校验、调度日志预览。</li>
-<li>Docx 解析器持续增强（#278）：条目类型、标签推断、TABLE_STR_BC 批量生成等。</li>
-<li>月末补齐 docx_code 唯一性校验（#281）。</li>
-</ul>
-<h2 id="二、船舶-液体码头作业"><a href="#二、船舶-液体码头作业" class="headerlink" title="二、船舶 &#x2F; 液体码头作业"></a>二、船舶 &#x2F; 液体码头作业</h2><ul>
-<li>内外贸字段、管线名称、货种筛选与泊位告警（#239&#x2F;#241&#x2F;#246&#x2F;#248）。</li>
-<li>收发油罐按物料多选（#244）；船名模糊检索等终端体验。</li>
-<li>船舶动态导入：到港时间格式与提示信息修复（#258&#x2F;#276）。</li>
-<li>排船页接入真实 LLM 辅助（#275）。</li>
-</ul>
-<h2 id="三、仪表位号与报表"><a href="#三、仪表位号与报表" class="headerlink" title="三、仪表位号与报表"></a>三、仪表位号与报表</h2><ul>
-<li>手动采集按钮（#254）；位号配置、导入导出、唯一性与时间处理（#267）。</li>
-<li>关联报表模板展示与批量查询、模板维度（#252&#x2F;#265）。</li>
-<li>报表&#x2F;位号侧过滤与 jqGrid 行范围选择。</li>
-</ul>
-<h2 id="四、实时库与工程体验"><a href="#四、实时库与工程体验" class="headerlink" title="四、实时库与工程体验"></a>四、实时库与工程体验</h2><ul>
-<li>RTDB ISYS SDK RMI 回调（#271）；ISYS 配置与 HTTP 客户端增强。</li>
-<li>SpringDoc OpenAPI &#x2F; Swagger UI 接入。</li>
-<li>多 Tab 溢出箭头滚动（#273）、滚动条样式、模态间菜单切换；菜单关键词逗号 OR 搜索（#269）。</li>
-<li>反馈排程关闭&#x2F;驳回态隐藏按钮等细节（#250）。</li>
-</ul>
-<h2 id="五、月度节奏"><a href="#五、月度节奏" class="headerlink" title="五、月度节奏"></a>五、月度节奏</h2><table>
-<thead>
-<tr>
-<th>阶段</th>
-<th>重点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>上旬</td>
-<td>液体码头罐&#x2F;管线&#x2F;货种、位号手动采集、报表模板维度</td>
-</tr>
-<tr>
-<td>中旬</td>
-<td>交接班 Docx 导入起步、位号关联报表、菜单搜索与 UI 修复</td>
-</tr>
-<tr>
-<td>下旬</td>
-<td>ShiftLog 解析深化、RTDB RMI、排船 AI、到港时间导入、docx 唯一性</td>
-</tr>
-</tbody></table>
-<hr>
-<p><strong>一句话</strong>：5 月把交接班 Docx 导入做成可用链路，并加强液体码头作业与仪表采集&#x2F;报表关联；实时库回调与若干前端体验同步落地，为 6 月平台化（AI&#x2F;能耗&#x2F;图表）腾出业务底座。</p>
-]]></content>
-      <tags>
-        <tag>MES</tag>
-        <tag>交接班</tag>
-        <tag>船舶作业</tag>
-        <tag>工作小结</tag>
-        <tag>月报</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>EOS 菜单树 NodeID 与 ObjectID 说明</title>
-    <url>/2026/07/31/eos-role-tree-nodeid-objectid/</url>
-    <content><![CDATA[<p>本文档说明 eosrole 页面「配置 EOS 菜单权限」树节点中 <strong>NodeID</strong>（前端 zTree 的 <code>id</code>）与 <strong>ObjectID</strong>（前端 <code>objectId</code>）的含义、数据库来源、后端组装与前端使用方式。</p>
-<blockquote>
-<p>关联文档：<a href="/2026/07/31/eos-role-menu-relationship/">EOS 菜单与角色关联关系说明</a></p>
-<p><strong>2026-07-31 更新</strong>：权限树接口额外返回 <code>menuType</code> &#x2F; <code>sysMenuId</code>；保存 body 含 MES 按钮与 ERP 操作扩展字段。</p>
-</blockquote>
-<h2 id="结论摘要"><a href="#结论摘要" class="headerlink" title="结论摘要"></a>结论摘要</h2><table>
-<thead>
-<tr>
-<th>前端字段</th>
-<th>含义</th>
-<th>数据库来源</th>
-<th>主要用途</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>zTree <code>id</code></td>
-<td>菜单节点 ID</td>
-<td><code>messys.Tree.NodeID</code></td>
-<td>树结构、父子关系（<code>pId</code>）；前端勾选态缓存键</td>
-</tr>
-<tr>
-<td>zTree <code>objectId</code></td>
-<td>EOS 权限对象 ID</td>
-<td><code>messys.Tree.ObjectID</code> &#x3D; <code>messys.ObjectRegister.ObjectID</code></td>
-<td>角色菜单授权（<code>STPermission.ObjectID</code>，「执行」）</td>
-</tr>
-<tr>
-<td>zTree <code>menuType</code></td>
-<td>菜单类型</td>
-<td><code>EosMenuTypeHelper.resolveMenuType</code></td>
-<td><code>mes</code> &#x2F; <code>erp</code> &#x2F; <code>folder</code>，决定右侧详情面板</td>
-</tr>
-<tr>
-<td>zTree <code>sysMenuId</code></td>
-<td>MES 菜单 ID</td>
-<td>优先 <code>sys_menu_eos_node</code>，否则 <code>NodeDesc=MES_MENU:</code></td>
-<td>MES 菜单&#x2F;按钮写入 <code>sys_role_menu</code></td>
-</tr>
-</tbody></table>
-<p><strong>NodeID 与 ObjectID 是两套独立编号体系</strong>，不可混用。角色菜单「执行」授权必须使用 <strong>ObjectID</strong>；NodeID 用于树层级与 detail 查询参数。</p>
-<hr>
-<h2 id="1-NodeID-是什么"><a href="#1-NodeID-是什么" class="headerlink" title="1. NodeID 是什么"></a>1. NodeID 是什么</h2><p><code>NodeID</code> 是 EOS 菜单树 <code>messys.dbo.Tree</code> 的主键，标识一个菜单&#x2F;目录节点在树中的位置。</p>
-<p>在 MES 前端 zTree 中，NodeID 映射为节点的 **<code>id</code>**（<code>idKey: &quot;id&quot;</code>），<code>ParentID</code> 映射为 **<code>pId</code>**，用于渲染树形结构与展开&#x2F;折叠。前端勾选态 <code>permissionCheckedNodeIds</code> 也按 NodeID 缓存。</p>
-<p><strong>NodeID 不写入 STPermission</strong>。权限表引用的是 ObjectID。detail 接口用 <code>nodeId</code> 定位节点后再解析业务 ObjectID。</p>
-<hr>
-<h2 id="2-NodeID-从哪来"><a href="#2-NodeID-从哪来" class="headerlink" title="2. NodeID 从哪来"></a>2. NodeID 从哪来</h2><h3 id="2-1-数据库表"><a href="#2-1-数据库表" class="headerlink" title="2.1 数据库表"></a>2.1 数据库表</h3><table>
-<thead>
-<tr>
-<th>表</th>
-<th>库</th>
-<th>字段</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>Tree</code></td>
-<td>messys</td>
-<td><code>NodeID</code></td>
-<td>菜单节点主键</td>
-</tr>
-<tr>
-<td><code>Tree</code></td>
-<td>messys</td>
-<td><code>ParentID</code></td>
-<td>父节点 NodeID（根为 0）</td>
-</tr>
-<tr>
-<td><code>UniqueNO</code></td>
-<td>messys</td>
-<td><code>No</code></td>
-<td>下一个可用 NodeID（<code>NName=&#39;tree&#39;</code>）</td>
-</tr>
-</tbody></table>
-<h3 id="2-2-MES-新建节点时的分配逻辑"><a href="#2-2-MES-新建节点时的分配逻辑" class="headerlink" title="2.2 MES 新建节点时的分配逻辑"></a>2.2 MES 新建节点时的分配逻辑</h3><p>MES 通过 <code>TreeServiceImpl.getNextNodeIdForTree()</code> 从 <code>UniqueNO</code> 表取号：</p>
-<ol>
-<li>悲观锁查询 <code>UniqueNO</code> 中 <code>NName=&#39;tree&#39;</code> 的记录（<code>PESSIMISTIC_WRITE</code>）</li>
-<li>取当前 <code>No</code> 作为新 NodeID</li>
-<li>将 <code>No + 1</code> 写回，占用该编号</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// TreeServiceImpl.getNextNodeIdForTree()</span></span><br><span class="line"><span class="type">UniqueNOEntity</span> <span class="variable">row</span> <span class="operator">=</span> uniqueNODao.findByNnameForUpdate(UNIQUE_NO_NAME_TREE);</span><br><span class="line"><span class="type">int</span> <span class="variable">currentNo</span> <span class="operator">=</span> row.getNo();</span><br><span class="line">row.setNo(currentNo + <span class="number">1</span>);</span><br><span class="line">uniqueNODao.save(row);</span><br><span class="line"><span class="keyword">return</span> Long.valueOf(currentNo);</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-3-触发-NodeID-分配的操作"><a href="#2-3-触发-NodeID-分配的操作" class="headerlink" title="2.3 触发 NodeID 分配的操作"></a>2.3 触发 NodeID 分配的操作</h3><table>
-<thead>
-<tr>
-<th>操作</th>
-<th>方法</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>新增菜单节点</td>
-<td><code>TreeServiceImpl.addNode</code></td>
-<td>先 <code>getNextNodeIdForTree()</code>，再写 Tree</td>
-</tr>
-<tr>
-<td>sys_menu 同步</td>
-<td><code>TreeServiceImpl.syncFromSysMenu</code></td>
-<td>每个同步节点分配新 NodeID</td>
-</tr>
-<tr>
-<td>复制菜单</td>
-<td><code>TreeServiceImpl.copyMenu</code></td>
-<td>源节点及子树每个节点各分配新 NodeID</td>
-</tr>
-<tr>
-<td>交接班菜单批量创建</td>
-<td><code>createShiftLogDispatchMenus</code> → <code>addNode</code></td>
-<td>同上</td>
-</tr>
-</tbody></table>
-<h3 id="2-4-EOS-原生-历史数据"><a href="#2-4-EOS-原生-历史数据" class="headerlink" title="2.4 EOS 原生 &#x2F; 历史数据"></a>2.4 EOS 原生 &#x2F; 历史数据</h3><p>在 MES 介入之前，NodeID 可能由 EOS 客户端或其他工具写入 <code>Tree</code>，同样依赖 <code>UniqueNO</code> 序列或历史遗留编号。MES 只保证<strong>新增&#x2F;同步&#x2F;复制</strong>时走 <code>getNextNodeIdForTree()</code> 逻辑。</p>
-<h3 id="2-5-NodeID-在-Functions-中的用途"><a href="#2-5-NodeID-在-Functions-中的用途" class="headerlink" title="2.5 NodeID 在 Functions 中的用途"></a>2.5 NodeID 在 Functions 中的用途</h3><p><code>Tree.Functions</code> 字段保存菜单跳转 URL，其中 <strong><code>menuId</code> 参数值为 NodeID</strong>（不是 ObjectID）。例如同步 sys_menu 时：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;baseUrl&#125;/&#123;url&#125;?token=%Token%&amp;menuId=&#123;NodeID&#125;</span><br></pre></td></tr></table></figure>
-
-<p>复制菜单时，<code>TreeServiceImpl</code> 会将 <code>Functions</code> 里的 <code>menuId=旧NodeID</code> 替换为 <code>menuId=新NodeID</code>。</p>
-<h3 id="2-6-NodeID-生命周期"><a href="#2-6-NodeID-生命周期" class="headerlink" title="2.6 NodeID 生命周期"></a>2.6 NodeID 生命周期</h3><ul>
-<li><strong>查询</strong>：<code>treeDao.findAll(...)</code>、<code>queryObject(nodeid)</code> 等</li>
-<li><strong>删除</strong>：<code>delete</code> &#x2F; <code>deleteBatch</code> 按 NodeID 删除 Tree，并先 <code>ObjectRegisterDao.deleteByOwnerId(NodeID)</code> 清理关联对象</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">  A[UniqueNO&lt;br/&gt;NName=tree] --&gt;|取 No 作为 NodeID| B[Tree.NodeID]</span><br><span class="line">  B --&gt; C[listTreeForPermission&lt;br/&gt;返回 id=NodeID]</span><br><span class="line">  C --&gt; D[zTree id / pId&lt;br/&gt;树结构展示]</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="3-ObjectID-是什么"><a href="#3-ObjectID-是什么" class="headerlink" title="3. ObjectID 是什么"></a>3. ObjectID 是什么</h2><p><code>ObjectID</code> 是 EOS 对象注册表 <code>messys.dbo.ObjectRegister</code> 的主键。每个可授权对象在 <code>ObjectRegister</code> 中注册一条记录；菜单&#x2F;目录节点对应 <strong>TypeID &#x3D; 7</strong>，并通过 <strong>OwnerID &#x3D; Tree.NodeID</strong> 与菜单树关联。</p>
-<p>MES 维护菜单时会将 ObjectID <strong>冗余写入</strong> <code>Tree.ObjectID</code>，便于权限树接口一次查询带出。</p>
-<p>在角色菜单授权场景下，前端勾选菜单后提交的是 <strong>objectId 列表</strong>，写入 <code>mesdata.dbo.STPermission.ObjectID</code>（配合 <code>UserID</code>&#x3D;角色 OID、<code>Oprate</code>&#x3D;「执行」、<code>Permission</code>&#x3D;1）。</p>
-<hr>
-<h2 id="4-ObjectID-从哪来"><a href="#4-ObjectID-从哪来" class="headerlink" title="4. ObjectID 从哪来"></a>4. ObjectID 从哪来</h2><h3 id="4-1-数据库表"><a href="#4-1-数据库表" class="headerlink" title="4.1 数据库表"></a>4.1 数据库表</h3><table>
-<thead>
-<tr>
-<th>层级</th>
-<th>库&#x2F;表</th>
-<th>字段</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>权威主键</td>
-<td>messys <code>ObjectRegister</code></td>
-<td><code>ObjectID</code></td>
-<td>全局对象 ID（自增：MAX+1）</td>
-</tr>
-<tr>
-<td>关联</td>
-<td>messys <code>ObjectRegister</code></td>
-<td><code>OwnerID</code></td>
-<td>&#x3D; <code>Tree.NodeID</code></td>
-</tr>
-<tr>
-<td>类型</td>
-<td>messys <code>ObjectRegister</code></td>
-<td><code>TypeID</code></td>
-<td>MES 新建菜单固定为 <strong>7</strong>（菜单&#x2F;目录）</td>
-</tr>
-<tr>
-<td>冗余</td>
-<td>messys <code>Tree</code></td>
-<td><code>ObjectID</code></td>
-<td>与 <code>ObjectRegister.ObjectID</code> 一致</td>
-</tr>
-<tr>
-<td>授权</td>
-<td>mesdata <code>STPermission</code></td>
-<td><code>ObjectID</code></td>
-<td>引用 <code>ObjectRegister.ObjectID</code></td>
-</tr>
-</tbody></table>
-<p>关系：<code>Tree.NodeID</code> ← <code>ObjectRegister.OwnerID</code>；<code>Tree.ObjectID</code> &#x3D; <code>ObjectRegister.ObjectID</code>。</p>
-<h3 id="4-2-MES-新建节点时的分配逻辑"><a href="#4-2-MES-新建节点时的分配逻辑" class="headerlink" title="4.2 MES 新建节点时的分配逻辑"></a>4.2 MES 新建节点时的分配逻辑</h3><p><code>TreeServiceImpl.saveObjectRegisterForTree()</code>：</p>
-<ol>
-<li><code>ObjectRegisterDao.findMaxObjectId()</code> 取 MAX(ObjectID) + 1</li>
-<li>插入 <code>ObjectRegister</code>（<code>TypeID=7</code>，<code>OwnerID=NodeID</code>，<code>Object</code>&#x3D;菜单名）</li>
-<li>将返回的 <code>ObjectID</code> 写入 <code>Tree.ObjectID</code></li>
-</ol>
-<p>与 NodeID 分配在同一事务内完成（如 <code>addNode</code> 先取 NodeID，再创建 ObjectRegister）。</p>
-<h3 id="4-3-触发-ObjectID-分配的操作"><a href="#4-3-触发-ObjectID-分配的操作" class="headerlink" title="4.3 触发 ObjectID 分配的操作"></a>4.3 触发 ObjectID 分配的操作</h3><p>与 NodeID 分配的操作相同（新增、同步、复制）。<strong>复制菜单时 NodeID 与 ObjectID 均重新分配</strong>，不会沿用源节点的 ObjectID。</p>
-<table>
-<thead>
-<tr>
-<th>场景</th>
-<th>ObjectID 来源</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>MES 新增 EOS 菜单节点</td>
-<td><code>saveObjectRegisterForTree</code> 新分配</td>
-</tr>
-<tr>
-<td>从 sys_menu 同步</td>
-<td>每个同步节点一条新 ObjectRegister</td>
-</tr>
-<tr>
-<td>复制菜单</td>
-<td>新 NodeID + 新 ObjectRegister + 新 ObjectID</td>
-</tr>
-<tr>
-<td>EOS 原生&#x2F;历史数据</td>
-<td>可能由 EOS 客户端写入；<code>Tree.ObjectID</code> 可能已存在</td>
-</tr>
-<tr>
-<td>失败兜底</td>
-<td><code>object == null</code> 时 <code>Tree.ObjectID = 0</code>（无有效授权对象）</td>
-</tr>
-</tbody></table>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">  A[分配 NodeID] --&gt; B[插入 ObjectRegister&lt;br/&gt;ObjectID=MAX+1]</span><br><span class="line">  B --&gt; C[Tree.ObjectID = ObjectID]</span><br><span class="line">  C --&gt; D[listTreeForPermission&lt;br/&gt;返回 objectId]</span><br><span class="line">  D --&gt; E[前端勾选提交 objectIds]</span><br><span class="line">  E --&gt; F[STPermission 写入]</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="5-NodeID-与-ObjectID-对照"><a href="#5-NodeID-与-ObjectID-对照" class="headerlink" title="5. NodeID 与 ObjectID 对照"></a>5. NodeID 与 ObjectID 对照</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Tree.NodeID       ──►  zTree.id         （树结构、ParentID 父子关系）</span><br><span class="line">Tree.ObjectID     ──►  zTree.objectId   （STPermission「执行」授权键）</span><br><span class="line"></span><br><span class="line">ObjectRegister.OwnerID  = Tree.NodeID</span><br><span class="line">ObjectRegister.ObjectID = Tree.ObjectID</span><br><span class="line">ObjectRegister.TypeID   = 7（菜单/目录）</span><br></pre></td></tr></table></figure>
-
-<table>
-<thead>
-<tr>
-<th>对比项</th>
-<th>NodeID</th>
-<th>ObjectID</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>所属表</td>
-<td><code>messys.Tree</code> 主键</td>
-<td><code>messys.ObjectRegister</code> 主键，冗余在 <code>Tree.ObjectID</code></td>
-</tr>
-<tr>
-<td>分配方式</td>
-<td><code>UniqueNO</code>（NName&#x3D;’tree’）递增</td>
-<td><code>MAX(ObjectID)+1</code></td>
-</tr>
-<tr>
-<td>前端 zTree 字段</td>
-<td><code>id</code></td>
-<td><code>objectId</code></td>
-</tr>
-<tr>
-<td>是否用于 STPermission「执行」</td>
-<td>否</td>
-<td>是</td>
-</tr>
-<tr>
-<td>复制菜单</td>
-<td>重新分配</td>
-<td>重新分配</td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="5-1-业务-ObjectID-与-NodeID-的非-OwnerID-关联"><a href="#5-1-业务-ObjectID-与-NodeID-的非-OwnerID-关联" class="headerlink" title="5.1 业务 ObjectID 与 NodeID 的非 OwnerID 关联"></a>5.1 业务 ObjectID 与 NodeID 的非 OwnerID 关联</h2><p>菜单授权与 ERP 按钮授权使用<strong>不同的 ObjectID</strong>，且业务对象的 <code>OwnerID</code> <strong>不一定</strong>等于 <code>Tree.NodeID</code>。</p>
-<table>
-<thead>
-<tr>
-<th>场景</th>
-<th>ObjectID 示例</th>
-<th>TypeID</th>
-<th>OwnerID</th>
-<th>STPermission 用途</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>菜单对象</td>
-<td>468</td>
-<td>7</td>
-<td>430</td>
-<td><code>Oprate=执行</code>, Permission&#x3D;1</td>
-</tr>
-<tr>
-<td>业务对象</td>
-<td>965</td>
-<td>1</td>
-<td>null</td>
-<td><code>Oprate=EX61:...</code>, Permission&#x3D;0</td>
-</tr>
-</tbody></table>
-<p><strong>解析路径</strong>（<code>EosMenuObjectResolver.resolveBusinessObjects</code>）：</p>
-<ol>
-<li><code>ObjectRegister.OwnerID = NodeID</code> 且 <code>TypeID != 7</code></li>
-<li><code>Tree.Functions</code> 括号内单据名 + 菜单对象名 → <code>DjDy.DjCName</code> → <code>ObjectRegister.Object = DjCName</code> 且 <code>TypeID != 7</code></li>
-<li>回退：<code>Tree.ObjectID</code> 对应 ObjectRegister（<strong>可能含 TypeID&#x3D;7</strong>）</li>
-</ol>
-<p><strong>禁止</strong>仅用 <code>OwnerID=NodeID</code> 或 <code>Tree.ObjectID</code> 推断按钮授权 ObjectID。复合页可能返回多个业务 ObjectID；同一 ObjectID 上可有多个 <code>EXxx:</code> 按钮 Oprate。</p>
-<p><code>listAvailableOperations</code>：标准操作 + ExFunction <code>EXxx:</code> + 库中已有非「执行」Oprate。</p>
-<p>示例（NodeID&#x3D;430）：菜单树 <code>objectId=468</code> 用于勾选「执行」；按钮 <code>EX61:组织架构分发</code> 写在 ObjectID&#x3D;965。</p>
-<hr>
-<h2 id="6-后端组装与-API"><a href="#6-后端组装与-API" class="headerlink" title="6. 后端组装与 API"></a>6. 后端组装与 API</h2><h3 id="6-1-权限菜单树"><a href="#6-1-权限菜单树" class="headerlink" title="6.1 权限菜单树"></a>6.1 权限菜单树</h3><ul>
-<li><strong>接口</strong>：<code>GET /eosrole/menu/tree</code>（或 <code>@RequestMapping</code>）</li>
-<li><strong>实现</strong>：<code>EosRoleController.menuTree()</code> → <code>TreeService.listTreeForPermission()</code></li>
-<li><strong>返回字段</strong>：</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>来源</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>id</code></td>
-<td><code>Tree.NodeID</code></td>
-<td>zTree 节点 ID</td>
-</tr>
-<tr>
-<td><code>pId</code></td>
-<td><code>Tree.ParentID</code>（0 → -1）</td>
-<td>父节点</td>
-</tr>
-<tr>
-<td><code>name</code></td>
-<td><code>Tree.NodeCaption</code></td>
-<td>显示名</td>
-</tr>
-<tr>
-<td><code>objectId</code></td>
-<td><code>Tree.ObjectID</code></td>
-<td>STPermission「执行」键</td>
-</tr>
-<tr>
-<td><code>menuType</code></td>
-<td><code>EosMenuTypeHelper.resolveMenuType</code></td>
-<td><code>mes</code> &#x2F; <code>erp</code> &#x2F; <code>folder</code></td>
-</tr>
-<tr>
-<td><code>sysMenuId</code></td>
-<td><code>sys_menu_eos_node</code>，缺失时 NodeDesc fallback</td>
-<td>仅 MES 节点有值</td>
-</tr>
-</tbody></table>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// TreeServiceImpl.listTreeForPermission()</span></span><br><span class="line">m.put(<span class="string">&quot;id&quot;</span>, e.getNodeid());</span><br><span class="line">m.put(<span class="string">&quot;pId&quot;</span>, e.getParentid() == <span class="literal">null</span> || e.getParentid() == <span class="number">0</span> ? -<span class="number">1</span> : e.getParentid());</span><br><span class="line">m.put(<span class="string">&quot;name&quot;</span>, e.getNodecaption() != <span class="literal">null</span> ? e.getNodecaption().trim() : <span class="string">&quot;&quot;</span>);</span><br><span class="line">m.put(<span class="string">&quot;objectId&quot;</span>, e.getObjectid());</span><br><span class="line">m.put(<span class="string">&quot;menuType&quot;</span>, EosMenuTypeHelper.resolveMenuType(e));</span><br><span class="line">m.put(<span class="string">&quot;sysMenuId&quot;</span>, sysMenuIdLookup.get(e.getNodeid()));</span><br></pre></td></tr></table></figure>
-
-<p>与 <code>listTreeForSelect()</code>（eostree 选目录）的区别：后者<strong>不含</strong> <code>objectId</code> &#x2F; <code>menuType</code> &#x2F; <code>sysMenuId</code>，仅 <code>id</code> &#x2F; <code>pId</code> &#x2F; <code>name</code>。</p>
-<h3 id="6-2-权限查询与保存"><a href="#6-2-权限查询与保存" class="headerlink" title="6.2 权限查询与保存"></a>6.2 权限查询与保存</h3><table>
-<thead>
-<tr>
-<th>接口</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>GET /eosrole/permission/&#123;roleId&#125;</code></td>
-<td>返回已授权 <strong>objectId</strong> 列表（「执行」+ Permission&#x3D;1）</td>
-</tr>
-<tr>
-<td><code>GET /eosrole/permission/detail/&#123;roleId&#125;?nodeId=</code></td>
-<td>按 NodeID 加载对象&#x2F;按钮详情（MES 或 ERP）</td>
-</tr>
-<tr>
-<td><code>GET /eosrole/permission/mes-menu-ids/&#123;roleId&#125;</code></td>
-<td>返回 MES <code>sys_role_menu</code> 全部 menuId</td>
-</tr>
-<tr>
-<td><code>POST /eosrole/permission/save</code></td>
-<td>菜单执行 + ERP 操作 + MES 按钮</td>
-</tr>
-</tbody></table>
-<p><code>EosRolePermissionServiceImpl.queryMenuObjectIds</code> 过滤条件：<code>Oprate=执行</code> 且 <code>Permission=1</code>（<strong>当前未按 TypeID&#x3D;7 过滤</strong>）。</p>
-<p>save body（<code>EosRolePermissionSaveRequest</code>）：</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>roleIds</code></td>
-<td>EOS 角色 OID</td>
-</tr>
-<tr>
-<td><code>objectIds</code></td>
-<td>勾选菜单的 Tree.ObjectID → STPermission「执行」</td>
-</tr>
-<tr>
-<td><code>mode</code></td>
-<td><code>append</code> &#x2F; <code>replace</code></td>
-</tr>
-<tr>
-<td><code>mesMenuIds</code></td>
-<td>MES 目录&#x2F;菜单 menu_id → <code>sys_role_menu</code></td>
-</tr>
-<tr>
-<td><code>mesButtonMenuIds</code></td>
-<td>MES 按钮 menu_id → <code>sys_role_menu</code></td>
-</tr>
-<tr>
-<td><code>operationPermissions</code></td>
-<td>ERP <code>&#123;objectId, oprate, granted&#125;</code></td>
-</tr>
-<tr>
-<td><code>operationReplaceObjectIds</code></td>
-<td>replace 时清理非「执行」行的业务 ObjectID</td>
-</tr>
-</tbody></table>
-<p>保存委托：先 <code>EosRolePermissionServiceImpl</code> 写「执行」，再 <code>EosRoleObjectPermissionServiceImpl.saveMesAndObjectPermissions</code> 写 ERP&#x2F;MES。</p>
-<hr>
-<h2 id="7-前端使用（eosrole-js）"><a href="#7-前端使用（eosrole-js）" class="headerlink" title="7. 前端使用（eosrole.js）"></a>7. 前端使用（eosrole.js）</h2><h3 id="7-1-zTree-配置"><a href="#7-1-zTree-配置" class="headerlink" title="7.1 zTree 配置"></a>7.1 zTree 配置</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> permissionTreeSetting = &#123;</span><br><span class="line">    <span class="attr">data</span>: &#123;</span><br><span class="line">        <span class="attr">simpleData</span>: &#123;</span><br><span class="line">            <span class="attr">enable</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">idKey</span>: <span class="string">&quot;id&quot;</span>,      <span class="comment">// = NodeID</span></span><br><span class="line">            <span class="attr">pIdKey</span>: <span class="string">&quot;pId&quot;</span>,   <span class="comment">// = ParentID</span></span><br><span class="line">            <span class="attr">rootPId</span>: -<span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">check</span>: &#123; <span class="attr">enable</span>: <span class="literal">true</span>, <span class="attr">nocheckInherit</span>: <span class="literal">true</span> &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h3 id="7-2-加载与回显"><a href="#7-2-加载与回显" class="headerlink" title="7.2 加载与回显"></a>7.2 加载与回显</h3><ol>
-<li><code>loadPermissionMenuTree</code> → 请求 <code>/eosrole/menu/tree</code>，用 <code>treeList</code> 初始化 zTree（含 <code>menuType</code> &#x2F; <code>sysMenuId</code>）</li>
-<li>单角色 + replace 模式：<ul>
-<li><code>/eosrole/permission/&#123;roleId&#125;</code> → 按 <strong>objectId</strong> 勾选菜单树（不是 <code>id</code>）</li>
-<li><code>/eosrole/permission/mes-menu-ids/&#123;roleId&#125;</code> → 拆分 MES 菜单 ID &#x2F; 按钮 ID 到 <code>permissionMesMenuIds</code> 等</li>
-</ul>
-</li>
-<li>点击节点 → <code>/eosrole/permission/detail/&#123;roleId&#125;?nodeId=</code>：<ul>
-<li><code>menuType=mes</code>：展示 MES 按钮勾选</li>
-<li><code>menuType=erp</code>：展示 ERP 操作「禁止」勾选</li>
-<li><code>menuType=folder</code>：目录摘要</li>
-</ul>
-</li>
-</ol>
-<p>勾选 MES 节点时把 <code>sysMenuId</code> 加入 <code>permissionMesMenuIds</code>；取消勾选时清理对应按钮态。</p>
-<h3 id="7-3-保存"><a href="#7-3-保存" class="headerlink" title="7.3 保存"></a>7.3 保存</h3><p><code>savePermission</code> 收集并提交：</p>
-<table>
-<thead>
-<tr>
-<th>收集方法</th>
-<th>字段</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>collectPermissionObjectIds()</code></td>
-<td><code>objectIds</code>（勾选节点的 <strong>objectId</strong>，不是 <code>id</code>）</td>
-</tr>
-<tr>
-<td><code>collectMesMenuIdsForSave()</code></td>
-<td><code>mesMenuIds</code></td>
-</tr>
-<tr>
-<td><code>collectMesButtonMenuIdsForSave()</code></td>
-<td><code>mesButtonMenuIds</code></td>
-</tr>
-<tr>
-<td><code>collectOperationPermissionsForSave()</code></td>
-<td><code>operationPermissions</code></td>
-</tr>
-<tr>
-<td><code>collectOperationReplaceObjectIdsForSave()</code></td>
-<td><code>operationReplaceObjectIds</code></td>
-</tr>
-</tbody></table>
-<p>连同 <code>roleIds</code>、<code>mode</code> 一并 POST 到 <code>/eosrole/permission/save</code>。</p>
-<hr>
-<h2 id="8-验证-SQL"><a href="#8-验证-SQL" class="headerlink" title="8. 验证 SQL"></a>8. 验证 SQL</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- NodeID 与 ObjectID 对照</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    t.NodeID,</span><br><span class="line">    RTRIM(t.NodeCaption) <span class="keyword">AS</span> MenuCaption,</span><br><span class="line">    t.ParentID,</span><br><span class="line">    t.ObjectID           <span class="keyword">AS</span> TreeObjectID,</span><br><span class="line">    o.ObjectID           <span class="keyword">AS</span> RegObjectID,</span><br><span class="line">    o.TypeID,</span><br><span class="line">    o.OwnerID</span><br><span class="line"><span class="keyword">FROM</span> messys.dbo.Tree t</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> messys.dbo.ObjectRegister o <span class="keyword">ON</span> o.OwnerID <span class="operator">=</span> t.NodeID</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> t.NodeID;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- UniqueNO 当前序列</span></span><br><span class="line"><span class="keyword">SELECT</span> NName, <span class="keyword">No</span> <span class="keyword">FROM</span> messys.dbo.UniqueNO <span class="keyword">WHERE</span> NName <span class="operator">=</span> <span class="string">&#x27;tree&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="9-相关代码路径"><a href="#9-相关代码路径" class="headerlink" title="9. 相关代码路径"></a>9. 相关代码路径</h2><table>
-<thead>
-<tr>
-<th>环节</th>
-<th>路径</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>NodeID 分配</td>
-<td><code>TreeServiceImpl.getNextNodeIdForTree()</code></td>
-</tr>
-<tr>
-<td>ObjectID 分配</td>
-<td><code>TreeServiceImpl.saveObjectRegisterForTree()</code></td>
-</tr>
-<tr>
-<td>新增&#x2F;同步&#x2F;复制</td>
-<td><code>TreeServiceImpl.addNode</code> &#x2F; <code>syncFromSysMenu</code> &#x2F; <code>copyMenu</code></td>
-</tr>
-<tr>
-<td>权限树 API</td>
-<td><code>TreeServiceImpl.listTreeForPermission()</code>、<code>EosRoleController</code></td>
-</tr>
-<tr>
-<td>菜单类型 &#x2F; sysMenuId</td>
-<td><code>EosMenuTypeHelper</code>、<code>SysMenuEosNodeService</code></td>
-</tr>
-<tr>
-<td>菜单「执行」读写</td>
-<td><code>EosRolePermissionServiceImpl</code></td>
-</tr>
-<tr>
-<td>ERP&#x2F;MES 扩展保存</td>
-<td><code>EosRoleObjectPermissionServiceImpl</code></td>
-</tr>
-<tr>
-<td>业务 ObjectID 解析</td>
-<td><code>EosMenuObjectResolver</code></td>
-</tr>
-<tr>
-<td>实体</td>
-<td><code>TreeEntity</code>、<code>ObjectRegisterEntity</code>、<code>StPermissionEntity</code></td>
-</tr>
-<tr>
-<td>前端</td>
-<td><code>static/js/modules/security/eosrole.js</code></td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="10-修订记录"><a href="#10-修订记录" class="headerlink" title="10. 修订记录"></a>10. 修订记录</h2><table>
-<thead>
-<tr>
-<th>日期</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>2026-06-16</td>
-<td>初版：梳理 Tree NodeID 与 ObjectID 从数据库到前端权限树的完整链路</td>
-</tr>
-<tr>
-<td>2026-06-16</td>
-<td>补充 NodeID 在 Tree.Functions URL 中作为 menuId 参数的说明</td>
-</tr>
-<tr>
-<td>2026-07-01</td>
-<td>补充业务 ObjectID 与 NodeID 非 OwnerID 关联及 eosrole 解析路径</td>
-</tr>
-<tr>
-<td>2026-07-31</td>
-<td>按最新实现修订：权限树补 <code>menuType</code>&#x2F;<code>sysMenuId</code>；save&#x2F;前端补 MES 与 ERP 扩展字段；代码路径补 ObjectPermission &#x2F; Resolver</td>
-</tr>
-</tbody></table>
-]]></content>
-      <tags>
-        <tag>MES</tag>
-        <tag>EOS</tag>
-        <tag>权限</tag>
-        <tag>SQL Server</tag>
-        <tag>zTree</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MES 2026 年 7 月工作小结</title>
-    <url>/2026/08/01/mes-monthly-2026-07/</url>
-    <content><![CDATA[<img src="/2026/08/01/mes-monthly-2026-07/cover.png" class="">
-
-<p>7 月（约 <strong>400+ 次提交</strong>、合并 PR <strong>#312–#367</strong>）主线是把 <strong>mes-ai</strong> 从可用原型推进到能耗&#x2F;生产运行可落地，并顺带补齐权限、调度、图表与安全。改动最集中的模块是 <code>mes-ai</code>，其次 <code>mes-web</code> &#x2F; <code>mes-security</code> &#x2F; <code>mes-chart</code>。</p>
-<h2 id="一、MES-AI-平台能力（全月主线）"><a href="#一、MES-AI-平台能力（全月主线）" class="headerlink" title="一、MES-AI 平台能力（全月主线）"></a>一、MES-AI 平台能力（全月主线）</h2><ul>
-<li><strong>多 Agent &#x2F; 路由</strong>：协作 MVP、首页浮动助手接入 <code>mes_router</code>、窗口最大化、会话与统计增强。</li>
-<li><strong>工具调用（FC&#x2F;ReAct）</strong>：空工具调用恢复与 nudge、互斥意图、few-shot &#x2F; <code>handler_config</code> 常见错误提示、同参重复调用治理、运行日志可观测与重试。</li>
-<li><strong>SQL 工具链</strong>：参数槽位抽取、日期区间（含半月）、列标签&#x2F;排序、存储过程工具、结果图表与表格渲染（列组、着色、汇总行、<code>excludeFromUiTable</code>）。</li>
-<li><strong>模型与配置</strong>：thinking 模式、采样参数、工具业务分类、硬编码治理（默认模型可配置等）。</li>
-<li><strong>管理端</strong>：工具&#x2F;Agent 列表与编辑、级联删除、聊天停止、用户改消息、反馈&#x2F;复测标记、页面规范（按钮&#x2F;<code>msg</code>）。</li>
-</ul>
-<h2 id="二、业务智能体落地"><a href="#二、业务智能体落地" class="headerlink" title="二、业务智能体落地"></a>二、业务智能体落地</h2><ul>
-<li><strong>能耗分析</strong>：同比环比、日表多装置查询、<code>Z_View_NHFX_*</code>、列显隐与意图策略、图表双轴等多轮打磨。</li>
-<li><strong>生产运行 &#x2F; 工程师日志</strong>：填报状态意图与工具互斥、工程师&#x2F;部门长问题频次与运行日志查询工具；月末落地 <strong>Eos 工程师日志</strong> 定时提交模块（#366）。</li>
-<li><strong>生产运行 FC 智能体</strong>（#324）及相关 SQL&#x2F;提示持续迭代。</li>
-</ul>
-<h2 id="三、权限与安全"><a href="#三、权限与安全" class="headerlink" title="三、权限与安全"></a>三、权限与安全</h2><ul>
-<li>Eos 角色对象权限、单权限替换模式、eosrole 一次完成 EOS+MES 用户授权。</li>
-<li>JSON 请求加密、XSS 过滤与 AI&#x2F;Chart 定点抽检。</li>
-<li>mes-chart 安全与可维护性改造。</li>
-</ul>
-<h2 id="四、基础设施与其它业务"><a href="#四、基础设施与其它业务" class="headerlink" title="四、基础设施与其它业务"></a>四、基础设施与其它业务</h2><ul>
-<li><strong>Quartz</strong>：P0&#x2F;P1&#x2F;P2 工程化、超时控制、失败告警、任务日志状态。</li>
-<li><strong>工作台</strong> P0–P2（#327）。</li>
-<li><strong>船舶</strong>：<code>vesselOperationDynamicId</code> 终端强制&#x2F;校验。</li>
-<li>Excel&#x2F;JXLS、用户导出、在线消息详情、jqGrid 全局错误处理、本地 LLM profile 等。</li>
-</ul>
-<h2 id="五、月度节奏"><a href="#五、月度节奏" class="headerlink" title="五、月度节奏"></a>五、月度节奏</h2><table>
-<thead>
-<tr>
-<th>阶段</th>
-<th>重点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>上旬</td>
-<td>Eos 权限、本地 LLM、AI 管理端基础、聊天停止、生产运行 FC</td>
-</tr>
-<tr>
-<td>中旬</td>
-<td>运行可观测、意图互斥、槽位抽取、加密&#x2F;XSS、协作与图表</td>
-</tr>
-<tr>
-<td>下旬</td>
-<td>多 Agent 路由入口、Quartz、能耗 SQL&#x2F;表格体系、工程师日志模块、硬编码治理</td>
-</tr>
-</tbody></table>
-<hr>
-<p><strong>一句话</strong>：7 月把 MES-AI 做成「能路由、能调工具、能出表&#x2F;图、能追日志」的平台，并在能耗分析与生产运行上形成可演示的业务闭环；权限、调度、图表安全同步加固。</p>
-]]></content>
-      <tags>
-        <tag>MES</tag>
-        <tag>工作小结</tag>
-        <tag>月报</tag>
-        <tag>mes-ai</tag>
-      </tags>
   </entry>
   <entry>
     <title>MES 2026 年 6 月工作小结</title>
@@ -2007,11 +1898,130 @@
 ]]></content>
       <tags>
         <tag>MES</tag>
-        <tag>工作小结</tag>
-        <tag>月报</tag>
         <tag>mes-ai</tag>
         <tag>mes-energy</tag>
         <tag>mes-chart</tag>
+        <tag>工作小结</tag>
+        <tag>月报</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MES 2026 年 5 月工作小结</title>
+    <url>/2026/08/01/mes-monthly-2026-05/</url>
+    <content><![CDATA[<img src="/2026/08/01/mes-monthly-2026-05/cover.png" class="">
+
+<p>5 月（约 <strong>220+ 次提交</strong>、合并 PR <strong>#239–#281</strong>）主线落在业务现场能力：交接班 Docx 模型导入、液体码头&#x2F;船舶作业增强、仪表位号与报表关联，以及 RTDB&#x2F;ISYS 采集链路。改动最集中的是 <code>mes-operation</code>、<code>mes-measure</code>、<code>mes-vessel-operation</code>，辅以 <code>mes-web</code> &#x2F; <code>mes-rtdb</code>。</p>
+<h2 id="一、交接班-ShiftLog（中下旬主线）"><a href="#一、交接班-ShiftLog（中下旬主线）" class="headerlink" title="一、交接班 ShiftLog（中下旬主线）"></a>一、交接班 ShiftLog（中下旬主线）</h2><ul>
+<li>Docx 模型导入与解析预览（#263）：锚点注入、单元格模式、输入类型与公式处理。</li>
+<li>跳过孤儿锚点（#270）、批量删除与归属校验、调度日志预览。</li>
+<li>Docx 解析器持续增强（#278）：条目类型、标签推断、TABLE_STR_BC 批量生成等。</li>
+<li>月末补齐 docx_code 唯一性校验（#281）。</li>
+</ul>
+<h2 id="二、船舶-液体码头作业"><a href="#二、船舶-液体码头作业" class="headerlink" title="二、船舶 &#x2F; 液体码头作业"></a>二、船舶 &#x2F; 液体码头作业</h2><ul>
+<li>内外贸字段、管线名称、货种筛选与泊位告警（#239&#x2F;#241&#x2F;#246&#x2F;#248）。</li>
+<li>收发油罐按物料多选（#244）；船名模糊检索等终端体验。</li>
+<li>船舶动态导入：到港时间格式与提示信息修复（#258&#x2F;#276）。</li>
+<li>排船页接入真实 LLM 辅助（#275）。</li>
+</ul>
+<h2 id="三、仪表位号与报表"><a href="#三、仪表位号与报表" class="headerlink" title="三、仪表位号与报表"></a>三、仪表位号与报表</h2><ul>
+<li>手动采集按钮（#254）；位号配置、导入导出、唯一性与时间处理（#267）。</li>
+<li>关联报表模板展示与批量查询、模板维度（#252&#x2F;#265）。</li>
+<li>报表&#x2F;位号侧过滤与 jqGrid 行范围选择。</li>
+</ul>
+<h2 id="四、实时库与工程体验"><a href="#四、实时库与工程体验" class="headerlink" title="四、实时库与工程体验"></a>四、实时库与工程体验</h2><ul>
+<li>RTDB ISYS SDK RMI 回调（#271）；ISYS 配置与 HTTP 客户端增强。</li>
+<li>SpringDoc OpenAPI &#x2F; Swagger UI 接入。</li>
+<li>多 Tab 溢出箭头滚动（#273）、滚动条样式、模态间菜单切换；菜单关键词逗号 OR 搜索（#269）。</li>
+<li>反馈排程关闭&#x2F;驳回态隐藏按钮等细节（#250）。</li>
+</ul>
+<h2 id="五、月度节奏"><a href="#五、月度节奏" class="headerlink" title="五、月度节奏"></a>五、月度节奏</h2><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上旬</td>
+<td>液体码头罐&#x2F;管线&#x2F;货种、位号手动采集、报表模板维度</td>
+</tr>
+<tr>
+<td>中旬</td>
+<td>交接班 Docx 导入起步、位号关联报表、菜单搜索与 UI 修复</td>
+</tr>
+<tr>
+<td>下旬</td>
+<td>ShiftLog 解析深化、RTDB RMI、排船 AI、到港时间导入、docx 唯一性</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>一句话</strong>：5 月把交接班 Docx 导入做成可用链路，并加强液体码头作业与仪表采集&#x2F;报表关联；实时库回调与若干前端体验同步落地，为 6 月平台化（AI&#x2F;能耗&#x2F;图表）腾出业务底座。</p>
+]]></content>
+      <tags>
+        <tag>MES</tag>
+        <tag>工作小结</tag>
+        <tag>月报</tag>
+        <tag>交接班</tag>
+        <tag>船舶作业</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MES 2026 年 7 月工作小结</title>
+    <url>/2026/08/01/mes-monthly-2026-07/</url>
+    <content><![CDATA[<img src="/2026/08/01/mes-monthly-2026-07/cover.png" class="">
+
+<p>7 月（约 <strong>400+ 次提交</strong>、合并 PR <strong>#312–#367</strong>）主线是把 <strong>mes-ai</strong> 从可用原型推进到能耗&#x2F;生产运行可落地，并顺带补齐权限、调度、图表与安全。改动最集中的模块是 <code>mes-ai</code>，其次 <code>mes-web</code> &#x2F; <code>mes-security</code> &#x2F; <code>mes-chart</code>。</p>
+<h2 id="一、MES-AI-平台能力（全月主线）"><a href="#一、MES-AI-平台能力（全月主线）" class="headerlink" title="一、MES-AI 平台能力（全月主线）"></a>一、MES-AI 平台能力（全月主线）</h2><ul>
+<li><strong>多 Agent &#x2F; 路由</strong>：协作 MVP、首页浮动助手接入 <code>mes_router</code>、窗口最大化、会话与统计增强。</li>
+<li><strong>工具调用（FC&#x2F;ReAct）</strong>：空工具调用恢复与 nudge、互斥意图、few-shot &#x2F; <code>handler_config</code> 常见错误提示、同参重复调用治理、运行日志可观测与重试。</li>
+<li><strong>SQL 工具链</strong>：参数槽位抽取、日期区间（含半月）、列标签&#x2F;排序、存储过程工具、结果图表与表格渲染（列组、着色、汇总行、<code>excludeFromUiTable</code>）。</li>
+<li><strong>模型与配置</strong>：thinking 模式、采样参数、工具业务分类、硬编码治理（默认模型可配置等）。</li>
+<li><strong>管理端</strong>：工具&#x2F;Agent 列表与编辑、级联删除、聊天停止、用户改消息、反馈&#x2F;复测标记、页面规范（按钮&#x2F;<code>msg</code>）。</li>
+</ul>
+<h2 id="二、业务智能体落地"><a href="#二、业务智能体落地" class="headerlink" title="二、业务智能体落地"></a>二、业务智能体落地</h2><ul>
+<li><strong>能耗分析</strong>：同比环比、日表多装置查询、<code>Z_View_NHFX_*</code>、列显隐与意图策略、图表双轴等多轮打磨。</li>
+<li><strong>生产运行 &#x2F; 工程师日志</strong>：填报状态意图与工具互斥、工程师&#x2F;部门长问题频次与运行日志查询工具；月末落地 <strong>Eos 工程师日志</strong> 定时提交模块（#366）。</li>
+<li><strong>生产运行 FC 智能体</strong>（#324）及相关 SQL&#x2F;提示持续迭代。</li>
+</ul>
+<h2 id="三、权限与安全"><a href="#三、权限与安全" class="headerlink" title="三、权限与安全"></a>三、权限与安全</h2><ul>
+<li>Eos 角色对象权限、单权限替换模式、eosrole 一次完成 EOS+MES 用户授权。</li>
+<li>JSON 请求加密、XSS 过滤与 AI&#x2F;Chart 定点抽检。</li>
+<li>mes-chart 安全与可维护性改造。</li>
+</ul>
+<h2 id="四、基础设施与其它业务"><a href="#四、基础设施与其它业务" class="headerlink" title="四、基础设施与其它业务"></a>四、基础设施与其它业务</h2><ul>
+<li><strong>Quartz</strong>：P0&#x2F;P1&#x2F;P2 工程化、超时控制、失败告警、任务日志状态。</li>
+<li><strong>工作台</strong> P0–P2（#327）。</li>
+<li><strong>船舶</strong>：<code>vesselOperationDynamicId</code> 终端强制&#x2F;校验。</li>
+<li>Excel&#x2F;JXLS、用户导出、在线消息详情、jqGrid 全局错误处理、本地 LLM profile 等。</li>
+</ul>
+<h2 id="五、月度节奏"><a href="#五、月度节奏" class="headerlink" title="五、月度节奏"></a>五、月度节奏</h2><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上旬</td>
+<td>Eos 权限、本地 LLM、AI 管理端基础、聊天停止、生产运行 FC</td>
+</tr>
+<tr>
+<td>中旬</td>
+<td>运行可观测、意图互斥、槽位抽取、加密&#x2F;XSS、协作与图表</td>
+</tr>
+<tr>
+<td>下旬</td>
+<td>多 Agent 路由入口、Quartz、能耗 SQL&#x2F;表格体系、工程师日志模块、硬编码治理</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>一句话</strong>：7 月把 MES-AI 做成「能路由、能调工具、能出表&#x2F;图、能追日志」的平台，并在能耗分析与生产运行上形成可演示的业务闭环；权限、调度、图表安全同步加固。</p>
+]]></content>
+      <tags>
+        <tag>MES</tag>
+        <tag>mes-ai</tag>
+        <tag>工作小结</tag>
+        <tag>月报</tag>
       </tags>
   </entry>
   <entry>
@@ -2050,8 +2060,8 @@
 ]]></content>
       <tags>
         <tag>MES</tag>
-        <tag>工作小结</tag>
         <tag>mes-ai</tag>
+        <tag>工作小结</tag>
         <tag>能耗分析</tag>
         <tag>Eos</tag>
       </tags>
@@ -2100,9 +2110,55 @@
 ]]></content>
       <tags>
         <tag>MES</tag>
-        <tag>工作小结</tag>
         <tag>mes-ai</tag>
         <tag>mes-chart</tag>
+        <tag>工作小结</tag>
+        <tag>周报</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MES 2026 年第 33 周工作小结</title>
+    <url>/2026/08/15/mes-weekly-2026-w33/</url>
+    <content><![CDATA[<img src="/2026/08/15/mes-weekly-2026-w33/cover.png" class="">
+
+<p>本周（8&#x2F;8–8&#x2F;15，活跃提交 8&#x2F;11–8&#x2F;14，约 <strong>74 次提交</strong>、合并 PR <strong>#376–#381</strong>）主线在 <strong>AI 能耗分析图表能力</strong>（存储过程出图、趋势&#x2F;饼图、同比环比），同步推进看板嵌套饼图与下钻、联锁强制投用，以及 Eos 菜单拖拽与权限修复。主力模块 <code>mes-ai</code>（约 141 文件触达），次为 <code>mes-chart</code>（约 70 文件）。</p>
+<h2 id="一、AI-存储过程图表与能耗分析（-378、-379、-381）"><a href="#一、AI-存储过程图表与能耗分析（-378、-379、-381）" class="headerlink" title="一、AI 存储过程图表与能耗分析（#378、#379、#381）"></a>一、AI 存储过程图表与能耗分析（#378、#379、#381）</h2><p>把能耗类 SQL 工具从「表格结果」推进到「对话内可渲染图表」：</p>
+<ul>
+<li><strong>存储过程工具支持图表输出</strong>：<code>SqlToolChartBuilder</code> 增强 tooltip、系列类型与默认配色同步；能耗分析工具补充 chart intent 与月份处理</li>
+<li><strong>能耗趋势</strong>：多线图、单位过滤、趋势查询与标签修正；去掉不适用的 <code>exclusive_group</code></li>
+<li><strong>能耗饼图 &#x2F; 统计图</strong>：嵌套饼、RATE 展示对齐图形查询路由；柱状图顶部数值展示；图表快照导出 <code>snapshotChartsToImages</code></li>
+<li><strong>同比 &#x2F; 环比</strong>：能耗分析存储过程增强 MoM&#x2F;YoY、按消耗类型细化；<code>excludeFromUiTable</code> 与 remarks 收敛；修复同比列缺失与单位后缀（#380）</li>
+</ul>
+<h2 id="二、智能体会话与聊天体验（-377）"><a href="#二、智能体会话与聊天体验（-377）" class="headerlink" title="二、智能体会话与聊天体验（#377）"></a>二、智能体会话与聊天体验（#377）</h2><ul>
+<li>会话历史检索增强，运行日志详情内嵌图表渲染</li>
+<li>会话搜索、等待态指示、图表 resize</li>
+<li>适配 deepseek-v4-flash；SQL JSON 输出保留 NULL；列可见性策略补充空内容与行去重</li>
+<li>聊天表格 &#x2F; Agent 卡片样式与布局修复；运行日志列表性能相关合入</li>
+</ul>
+<h2 id="三、看板-chart：嵌套饼图与交互"><a href="#三、看板-chart：嵌套饼图与交互" class="headerlink" title="三、看板 chart：嵌套饼图与交互"></a>三、看板 chart：嵌套饼图与交互</h2><ul>
+<li>嵌套饼图配置、绑定与零值过滤；动态系列类型与饼图坐标轴清理</li>
+<li>能耗图表下钻、高亮；看板菜单树展开&#x2F;折叠</li>
+<li>图表包导入导出；画布高度计算修复</li>
+</ul>
+<h2 id="四、联锁强制投用与权限安全（-376）"><a href="#四、联锁强制投用与权限安全（-376）" class="headerlink" title="四、联锁强制投用与权限安全（#376）"></a>四、联锁强制投用与权限安全（#376）</h2><ul>
+<li>联锁监控纳入 <code>isForce</code>（强制投用）条件与查询方法</li>
+<li>Eos 菜单树支持拖拽重排；菜单缓存防误改</li>
+<li>权限批量删除处理重构修复</li>
+</ul>
+<h2 id="五、其它"><a href="#五、其它" class="headerlink" title="五、其它"></a>五、其它</h2><ul>
+<li>容器运行图表配色同步</li>
+<li>审批组面板样式调整</li>
+<li>清理 <code>/rtdb/pi</code> 相关废弃存储过程与函数</li>
+<li>H2 任务计划与 code review 文档更新</li>
+</ul>
+<hr>
+<p><strong>一句话</strong>：本周以 AI 能耗存储过程出图与同比环比分析落地为主，看板嵌套饼图&#x2F;下钻跟上，联锁强制投用与 Eos 菜单拖拽补齐平台侧能力。</p>
+]]></content>
+      <tags>
+        <tag>MES</tag>
+        <tag>mes-ai</tag>
+        <tag>mes-chart</tag>
+        <tag>工作小结</tag>
         <tag>周报</tag>
       </tags>
   </entry>
@@ -2193,6 +2249,48 @@
         <tag>DeepSeek</tag>
         <tag>AI</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>查看电脑的电池状态</title>
+    <url>/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/</url>
+    <content><![CDATA[<p>没有特殊软件的情况下，使用powershell命令生成电池使用情况报告</p>
+<p>在 PowerShell（管理员模式）输入 powercfg &#x2F;batteryreport，系统会生成一个 HTML 报告，包含电池设计容量、当前满电容量、充放电历史等信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">powercfg /batteryreport</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行后生成一个html文件 batteryreport.html</p>
+<p>使用浏览器打开这个html文件  </p>
+<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070792534.png" class="" width="1748070792534">
+
+
+<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070821322.png" class="" width="1748070821322">
+
+]]></content>
+  </entry>
+  <entry>
+    <title>使用tailscale组网 使用家里打印机</title>
+    <url>/2026/03/15/%E4%BD%BF%E7%94%A8tailscale%E7%BB%84%E7%BD%91-%E4%BD%BF%E7%94%A8%E5%AE%B6%E9%87%8C%E6%89%93%E5%8D%B0%E6%9C%BA/</url>
+    <content><![CDATA[<p>在 Ubuntu 上开启子网广播</p>
+<h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p><strong>确定家里的网段：</strong> 通常是 <code>192.168.1.0/24</code> 或 <code>192.168.0.0/24</code></p>
+<p><strong>开启 IP 转发（内核层面）：</strong><br>运行以下命令：</p>
+<p><strong>Bash</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;net.ipv4.ip_forward = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">echo &#x27;net.ipv6.conf.all.forwarding = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">sudo sysctl -p /etc/sysctl.d/99-tailscale.conf</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>启动子网路由：</strong><br>运行以下命令（将 <code>192.168.1.0/24</code> 替换为你家里的实际网段）：</p>
+<p><strong>Bash</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo tailscale up --advertise-routes=192.168.1.0/24</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="第二步：在-Tailscale-控制面板允许路由"><a href="#第二步：在-Tailscale-控制面板允许路由" class="headerlink" title="第二步：在 Tailscale 控制面板允许路由"></a>第二步：在 Tailscale 控制面板允许路由</h3><p>为了安全，Tailscale 默认不会自动启用路由，需要你手动点一下：</p>
+<ol>
+<li>打开 <a href="https://login.tailscale.com/admin/machines">Tailscale Admin Console</a>。</li>
+<li>找到你的 <strong>Ubuntu</strong> 设备。</li>
+<li>点击右侧的三个点 <code>...</code> -&gt;  <strong>Edit route settings</strong> 。</li>
+<li>在 <strong>Subnet routes</strong> 下，勾选你刚才添加的网段，点击确认。</li>
+</ol>
+]]></content>
   </entry>
   <entry>
     <title>使用github和hexo构建个人博客门户</title>
@@ -2286,119 +2384,10 @@
 ]]></content>
   </entry>
   <entry>
-    <title>使用tailscale组网 使用家里打印机</title>
-    <url>/2026/03/15/%E4%BD%BF%E7%94%A8tailscale%E7%BB%84%E7%BD%91-%E4%BD%BF%E7%94%A8%E5%AE%B6%E9%87%8C%E6%89%93%E5%8D%B0%E6%9C%BA/</url>
-    <content><![CDATA[<p>在 Ubuntu 上开启子网广播</p>
-<h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p><strong>确定家里的网段：</strong> 通常是 <code>192.168.1.0/24</code> 或 <code>192.168.0.0/24</code></p>
-<p><strong>开启 IP 转发（内核层面）：</strong><br>运行以下命令：</p>
-<p><strong>Bash</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;net.ipv4.ip_forward = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">echo &#x27;net.ipv6.conf.all.forwarding = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">sudo sysctl -p /etc/sysctl.d/99-tailscale.conf</span><br></pre></td></tr></table></figure>
-
-
-<p><strong>启动子网路由：</strong><br>运行以下命令（将 <code>192.168.1.0/24</code> 替换为你家里的实际网段）：</p>
-<p><strong>Bash</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo tailscale up --advertise-routes=192.168.1.0/24</span><br></pre></td></tr></table></figure>
-
-
-
-
-<h3 id="第二步：在-Tailscale-控制面板允许路由"><a href="#第二步：在-Tailscale-控制面板允许路由" class="headerlink" title="第二步：在 Tailscale 控制面板允许路由"></a>第二步：在 Tailscale 控制面板允许路由</h3><p>为了安全，Tailscale 默认不会自动启用路由，需要你手动点一下：</p>
-<ol>
-<li>打开 <a href="https://login.tailscale.com/admin/machines">Tailscale Admin Console</a>。</li>
-<li>找到你的 <strong>Ubuntu</strong> 设备。</li>
-<li>点击右侧的三个点 <code>...</code> -&gt;  <strong>Edit route settings</strong> 。</li>
-<li>在 <strong>Subnet routes</strong> 下，勾选你刚才添加的网段，点击确认。</li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
-    <title>查看电脑的电池状态</title>
-    <url>/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/</url>
-    <content><![CDATA[<p>没有特殊软件的情况下，使用powershell命令生成电池使用情况报告</p>
-<p>在 PowerShell（管理员模式）输入 powercfg &#x2F;batteryreport，系统会生成一个 HTML 报告，包含电池设计容量、当前满电容量、充放电历史等信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">powercfg /batteryreport</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>运行后生成一个html文件 batteryreport.html</p>
-<p>使用浏览器打开这个html文件  </p>
-<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070792534.png" class="" width="1748070792534">
-
-
-<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070821322.png" class="" width="1748070821322">
-
-]]></content>
-  </entry>
-  <entry>
     <title>浙石化序</title>
     <url>/2025/07/07/%E6%B5%99%E7%9F%B3%E5%8C%96%E5%BA%8F/</url>
     <content><![CDATA[<p>浙东形胜，三衢古郡，舟山新府。襟东海而带杭湾，控岛链而引巨舶。物华天宝，原油映碧海之光;人杰地灵，工匠聚寰宇之智。雄州雾列，塔器参天;货积云屯，管道织地。时维仲夏，序属清和，掌舵人邀宾朋于鱼山，展宏图于海隅。群贤毕至，少长成集，观此化工新城，敢竭鄙诚，恭疏短引。<br>若夫巨浸茫茫，沧波浩荡。昔者荒礁寂寥，渔火零星;今朝钢构峥，银灯璀璨。削峰填壑，六载功成;跨海连洲，百里势就。银罐如林，贮寰球之黑金;铁轨似弦，奏工业之强音。裂解装置耸若剑阁，催化高塔峻比雷峰。火炬凌雪，夜燃不灭之<br>炬;码头枕浪，朝发万吨之舟。<br>至若生产之盛，则见管道蟠空，银蛇舞壑;仪表星罗，明眸察微。中央控室，决胜千里之外;智能系统，运筹方寸之间。<br>原油分馏，轻质化而为汽柴;分子重构，烯烃聚而成塑胶。芳烃织锦衣之梦，PX解化纤之渴。硫黄变废为宝，尾气点石成金。<br>节能减排，树绿色标杆;循环利用，开生态新篇。若乃创新之道，院十工作站藏龙卧虎，博十后基地起凤腾蛟。专利千项，破外邦之垄断;标准百家，立行业之丰泉。纳米催化，巧夺造化;智能炼厂，智领未来。校企联姻，产学研一体;中外合作，技贸融三通。斯诚东海之硅谷，实乃化工之殿<br>早:嗟乎!石化兴衰，关乎国运。昔闻大庆精神，铁人泣血;今见浙石气象，海匠呕心。老牌炼厂，困陈规而式微;新兴基地，乘东风而崛起。屈子求索，路漫漫其修远;愚公移山，志巍巍而不改。岂效守成之辈，坐享其成?敢为天下先，方兄英雄色。<br>掌舵人，精神抖擞，壮志凌云。掌千亿之资，立百年之业。创新驱动，布新局如弈棋;安全为本，守红线若履冰。绿色低碳，岂止合规达标?数字智能，更求行业引领。呜呯!碧海蓝天，岂与黑烟共存?金山银山，终须绿水相伴。所赖转型及时，未雨绸缪。<br>敢竭鄙怀，恭疏短引。一言均赋，四韵俱成:鱼山螺岛起宏图，钢构连云海气殊。裂解千钧轻似羽，合成万象妙如珠。智能已破重洋术，绿色新开双碳途。莫道化工皆浊物，今看白舞银炉。</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>瘦身密码（一）：中国式发福图鉴——14亿人的体重失控现场</title>
-    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B8%AD%E5%9B%BD%E5%BC%8F%E5%8F%91%E7%A6%8F%E5%9B%BE%E9%89%B4/</url>
-    <content><![CDATA[<p>近三十年，中国人以惊人速度「胖」了起来。据《中国居民营养与慢性病状况报告（2020）》，成年居民超重率 34.3%、肥胖率 16.4%——<strong>每 2 个成年人就有 1 人面临超重&#x2F;肥胖威胁</strong>。</p>
-<p>更令人警醒的是增速：1989 年中国超重人口约 1.67 亿，2009 年增至 5.29 亿，20 年间每天约增加 4.9 万人，年均增长率 10.8%，超过同期 GDP 增速。《柳叶刀》估算，2021 年全球超重&#x2F;肥胖成年人 21.1 亿，中国以 4.02 亿居首；预计到 2050 年，全球将有超过一半成年人超重&#x2F;肥胖。</p>
-<p>若以腰围衡量腹型肥胖，2009 年中国腹型肥胖人口约 6.7 亿，超过欧美总和。李新华等团队在《柳叶刀》发表的研究显示，2004～2018 年间，18～69 岁人群标准化平均 BMI 从 22.7 升至 24.4 kg&#x2F;m²，肥胖患病率（BMI≥30）从 3.1% 升至 8.1%。2018 年肥胖人数约 8500 万，是 2004 年的三倍。</p>
-<h2 id="谁更容易发胖？"><a href="#谁更容易发胖？" class="headerlink" title="谁更容易发胖？"></a>谁更容易发胖？</h2><p>肥胖增长并非均匀分布，城乡、性别、年龄各有特点：</p>
-<table>
-<thead>
-<tr>
-<th>维度</th>
-<th>主要趋势</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>城乡</strong></td>
-<td>2010 年前城市高于农村；此后农村女性 BMI 增速快于城市，2018 年农村女性已超过城市</td>
-</tr>
-<tr>
-<td><strong>性别</strong></td>
-<td>2004 年男性低于女性，2018 年完全逆转，男性增速更快</td>
-</tr>
-<tr>
-<td><strong>年龄</strong></td>
-<td>女性随年龄升高至 50 岁；男性 30～49 岁为高峰</td>
-</tr>
-<tr>
-<td><strong>儿童</strong></td>
-<td>与 1985 年比，2014 年 7～18 岁学生肥胖患病率增长 54.8 倍</td>
-</tr>
-<tr>
-<td><strong>老年人</strong></td>
-<td>2011～2015 年超重率 29.2%→33.2%，中心性肥胖 58.3%→63.9%</td>
-</tr>
-</tbody></table>
-<h2 id="肥胖正在吃掉你的存款"><a href="#肥胖正在吃掉你的存款" class="headerlink" title="肥胖正在吃掉你的存款"></a>肥胖正在吃掉你的存款</h2><p>肥胖已从个人问题演变为国家危机。2024 年 6 月，国家卫生健康委联合 16 部门启动「体重管理年」活动，推动慢病防治关口前移。</p>
-<p><strong>健康代价：</strong></p>
-<ul>
-<li>近 20 年高血压患病率 19%→28%，糖尿病约 3%→13%</li>
-<li>2018 年糖尿病及前期患病率合计约 51%，知晓率、治疗率、控制率均偏低</li>
-<li>预测 2030 年成人超重&#x2F;肥胖率或达 70.5%</li>
-</ul>
-<p><strong>经济代价：</strong></p>
-<ul>
-<li>2030 年归因于超重&#x2F;肥胖的医疗费用预计约 4180 亿元，约占全国医疗费用 22%</li>
-<li>超重&#x2F;肥胖对全球经济影响占 GDP 2.4%，2035 年预计升至更高</li>
-<li>肥胖还带来间接损失：工作效率下降、请假增多、就业机会受影响（「体型歧视」）</li>
-</ul>
-<p>研究还发现，肥胖与收入的关系并非线性——<strong>中等收入人群肥胖风险反而最高</strong>；农村高收入男性、高教育男性肥胖关联更强，而女性高教育与肥胖呈负相关。</p>
-<h2 id="腰围比体重更值得警惕"><a href="#腰围比体重更值得警惕" class="headerlink" title="腰围比体重更值得警惕"></a>腰围比体重更值得警惕</h2><p>BMI 虽常用，但有盲区：不区分肌肉与脂肪、不反映脂肪分布。腹型肥胖（苹果型）风险远高于梨型：</p>
-<ul>
-<li>男性腰围 ≥90 cm、女性 ≥85 cm，即存在腹型肥胖风险</li>
-<li>内脏脂肪升高甘油三酯、胆固醇，促动脉粥样硬化</li>
-<li>干扰胰岛素作用，显著增加 2 型糖尿病风险</li>
-<li>与结直肠癌、子宫内膜癌等多种癌症相关</li>
-<li>压迫横膈膜，引发睡眠呼吸暂停；加重关节负担</li>
-</ul>
-<p><strong>建议：</strong> 除定期测 BMI 外，务必关注腰围和腰臀比（亚洲男性上限 0.9，女性 0.8）。</p>
-<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>肥胖威胁的不只是外形，更是心血管、代谢、呼吸、骨骼乃至心理的全方位健康。2024 年「体重管理年」与「九体医学健康中国计划」的推进，标志着体重管理正从「一刀切节食」走向<strong>个体化、科学化、中西医协同</strong>的新阶段。</p>
-<p>下一篇，我们将拆解「脂肪工厂」——脂肪从何而来，以及什么才是科学的减肥马拉松。</p>
-]]></content>
-      <tags>
-        <tag>健康</tag>
-        <tag>体重管理</tag>
-        <tag>九体医学</tag>
-      </tags>
   </entry>
   <entry>
     <title>瘦身密码（三）：九体医学入门——解锁你的体质密码</title>
@@ -2500,6 +2489,178 @@
         <tag>健康</tag>
         <tag>九体医学</tag>
         <tag>中医体质</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>瘦身密码（一）：中国式发福图鉴——14亿人的体重失控现场</title>
+    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B8%AD%E5%9B%BD%E5%BC%8F%E5%8F%91%E7%A6%8F%E5%9B%BE%E9%89%B4/</url>
+    <content><![CDATA[<p>近三十年，中国人以惊人速度「胖」了起来。据《中国居民营养与慢性病状况报告（2020）》，成年居民超重率 34.3%、肥胖率 16.4%——<strong>每 2 个成年人就有 1 人面临超重&#x2F;肥胖威胁</strong>。</p>
+<p>更令人警醒的是增速：1989 年中国超重人口约 1.67 亿，2009 年增至 5.29 亿，20 年间每天约增加 4.9 万人，年均增长率 10.8%，超过同期 GDP 增速。《柳叶刀》估算，2021 年全球超重&#x2F;肥胖成年人 21.1 亿，中国以 4.02 亿居首；预计到 2050 年，全球将有超过一半成年人超重&#x2F;肥胖。</p>
+<p>若以腰围衡量腹型肥胖，2009 年中国腹型肥胖人口约 6.7 亿，超过欧美总和。李新华等团队在《柳叶刀》发表的研究显示，2004～2018 年间，18～69 岁人群标准化平均 BMI 从 22.7 升至 24.4 kg&#x2F;m²，肥胖患病率（BMI≥30）从 3.1% 升至 8.1%。2018 年肥胖人数约 8500 万，是 2004 年的三倍。</p>
+<h2 id="谁更容易发胖？"><a href="#谁更容易发胖？" class="headerlink" title="谁更容易发胖？"></a>谁更容易发胖？</h2><p>肥胖增长并非均匀分布，城乡、性别、年龄各有特点：</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>主要趋势</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>城乡</strong></td>
+<td>2010 年前城市高于农村；此后农村女性 BMI 增速快于城市，2018 年农村女性已超过城市</td>
+</tr>
+<tr>
+<td><strong>性别</strong></td>
+<td>2004 年男性低于女性，2018 年完全逆转，男性增速更快</td>
+</tr>
+<tr>
+<td><strong>年龄</strong></td>
+<td>女性随年龄升高至 50 岁；男性 30～49 岁为高峰</td>
+</tr>
+<tr>
+<td><strong>儿童</strong></td>
+<td>与 1985 年比，2014 年 7～18 岁学生肥胖患病率增长 54.8 倍</td>
+</tr>
+<tr>
+<td><strong>老年人</strong></td>
+<td>2011～2015 年超重率 29.2%→33.2%，中心性肥胖 58.3%→63.9%</td>
+</tr>
+</tbody></table>
+<h2 id="肥胖正在吃掉你的存款"><a href="#肥胖正在吃掉你的存款" class="headerlink" title="肥胖正在吃掉你的存款"></a>肥胖正在吃掉你的存款</h2><p>肥胖已从个人问题演变为国家危机。2024 年 6 月，国家卫生健康委联合 16 部门启动「体重管理年」活动，推动慢病防治关口前移。</p>
+<p><strong>健康代价：</strong></p>
+<ul>
+<li>近 20 年高血压患病率 19%→28%，糖尿病约 3%→13%</li>
+<li>2018 年糖尿病及前期患病率合计约 51%，知晓率、治疗率、控制率均偏低</li>
+<li>预测 2030 年成人超重&#x2F;肥胖率或达 70.5%</li>
+</ul>
+<p><strong>经济代价：</strong></p>
+<ul>
+<li>2030 年归因于超重&#x2F;肥胖的医疗费用预计约 4180 亿元，约占全国医疗费用 22%</li>
+<li>超重&#x2F;肥胖对全球经济影响占 GDP 2.4%，2035 年预计升至更高</li>
+<li>肥胖还带来间接损失：工作效率下降、请假增多、就业机会受影响（「体型歧视」）</li>
+</ul>
+<p>研究还发现，肥胖与收入的关系并非线性——<strong>中等收入人群肥胖风险反而最高</strong>；农村高收入男性、高教育男性肥胖关联更强，而女性高教育与肥胖呈负相关。</p>
+<h2 id="腰围比体重更值得警惕"><a href="#腰围比体重更值得警惕" class="headerlink" title="腰围比体重更值得警惕"></a>腰围比体重更值得警惕</h2><p>BMI 虽常用，但有盲区：不区分肌肉与脂肪、不反映脂肪分布。腹型肥胖（苹果型）风险远高于梨型：</p>
+<ul>
+<li>男性腰围 ≥90 cm、女性 ≥85 cm，即存在腹型肥胖风险</li>
+<li>内脏脂肪升高甘油三酯、胆固醇，促动脉粥样硬化</li>
+<li>干扰胰岛素作用，显著增加 2 型糖尿病风险</li>
+<li>与结直肠癌、子宫内膜癌等多种癌症相关</li>
+<li>压迫横膈膜，引发睡眠呼吸暂停；加重关节负担</li>
+</ul>
+<p><strong>建议：</strong> 除定期测 BMI 外，务必关注腰围和腰臀比（亚洲男性上限 0.9，女性 0.8）。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>肥胖威胁的不只是外形，更是心血管、代谢、呼吸、骨骼乃至心理的全方位健康。2024 年「体重管理年」与「九体医学健康中国计划」的推进，标志着体重管理正从「一刀切节食」走向<strong>个体化、科学化、中西医协同</strong>的新阶段。</p>
+<p>下一篇，我们将拆解「脂肪工厂」——脂肪从何而来，以及什么才是科学的减肥马拉松。</p>
+]]></content>
+      <tags>
+        <tag>健康</tag>
+        <tag>九体医学</tag>
+        <tag>体重管理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>瘦身密码（五）：甜蜜陷阱——肥胖引爆的八大健康地雷</title>
+    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%82%A5%E8%83%96%E5%85%AB%E5%A4%A7%E5%81%A5%E5%BA%B7%E5%9C%B0%E9%9B%B7/</url>
+    <content><![CDATA[<p>肥胖是健康的「隐形杀手」——影响的不只是外形，而是心血管、代谢、内分泌、呼吸、骨骼、生殖乃至心理的全系统连锁反应。以下梳理书中重点阐述的<strong>八大健康地雷</strong>及应对思路。</p>
+<hr>
+<h2 id="1-糖尿病：胰岛素遇上甜甜圈"><a href="#1-糖尿病：胰岛素遇上甜甜圈" class="headerlink" title="1. 糖尿病：胰岛素遇上甜甜圈"></a>1. 糖尿病：胰岛素遇上甜甜圈</h2><p>中国 20～79 岁人群糖尿病患病率约 10.6%，患病人数约 1.41 亿。肥胖与糖尿病如影随形：</p>
+<ul>
+<li>体重每增加 1 kg，糖尿病风险至少升 5%</li>
+<li>约 50% 肥胖者将来可能患 2 型糖尿病</li>
+<li>糖尿病患者中约 2&#x2F;3 超重或肥胖</li>
+</ul>
+<p><strong>机制</strong>：内脏脂肪像「棉袄」包裹细胞，胰岛素（钥匙）难以与受体（锁）结合，葡萄糖进不了细胞 → <strong>胰岛素抵抗</strong> → 代偿性高胰岛素 → 食欲增加 → 更胖 → 最终血糖失控。</p>
+<p><strong>逆转密码</strong>：</p>
+<ul>
+<li>少吃深加工食品、奶茶炸鸡；多吃蔬菜、粗粮</li>
+<li>中低强度有氧运动，餐后 30～60 分钟，每次 ≥30 分钟，约 200～300 千卡</li>
+<li>超重人群 35～70 岁应每 3 年筛查血糖</li>
+<li>九体医学统计：气虚质、阴虚质、痰湿质最易患糖尿病</li>
+</ul>
+<hr>
+<h2 id="2-冠心病：糖脂风暴下的冠状动脉"><a href="#2-冠心病：糖脂风暴下的冠状动脉" class="headerlink" title="2. 冠心病：糖脂风暴下的冠状动脉"></a>2. 冠心病：糖脂风暴下的冠状动脉</h2><p>冠心病患者超重&#x2F;肥胖率超 50%。BMI 越高，冠心病发病率越高；肥胖者患病概率约为常人 2～3 倍，超平均体重 40% 者死亡风险翻倍。</p>
+<p><strong>机制</strong>：肥胖 → 血脂紊乱 → 动脉粥样硬化斑块 → 冠脉狭窄 → 心肌缺血。心脏如同小发动机驱动重型卡车，长期超负荷终将「罢工」。</p>
+<p><strong>逆转密码</strong>：减重 + 控脂 + 戒烟限酒 + 规律运动；编写细胞层面的「燃脂程序」，减轻心脏负担。</p>
+<hr>
+<h2 id="3-睡眠呼吸暂停：内脏脂肪的午夜叛乱"><a href="#3-睡眠呼吸暂停：内脏脂肪的午夜叛乱" class="headerlink" title="3. 睡眠呼吸暂停：内脏脂肪的午夜叛乱"></a>3. 睡眠呼吸暂停：内脏脂肪的午夜叛乱</h2><p>腹型肥胖者脂肪堆积在呼吸道周围，气道变窄，睡眠时呼吸暂停 → 缺氧 → 睡眠质量差 → 日间嗜睡 → 活动减少 → 更胖，形成<strong>死亡循环</strong>。</p>
+<p><strong>逆转密码</strong>：减重是核心；侧睡、避免睡前饮酒；严重者需呼吸机等医学干预。</p>
+<hr>
+<h2 id="4-脂肪肝：内脏的「垃圾处理厂」瘫痪"><a href="#4-脂肪肝：内脏的「垃圾处理厂」瘫痪" class="headerlink" title="4. 脂肪肝：内脏的「垃圾处理厂」瘫痪"></a>4. 脂肪肝：内脏的「垃圾处理厂」瘫痪</h2><p>超重&#x2F;肥胖者并发症中，脂肪肝最常见之一。肝脏本应将脂肪打包运出，糖尿病与肥胖使这一过程效率降低，脂肪在肝内堆积。</p>
+<p><strong>常见认知陷阱</strong>（书中强调）：</p>
+<ul>
+<li>「不胖就不会脂肪肝」——瘦人脂肪肝也不少见</li>
+<li>「无症状就不用管」——可进展为肝纤维化</li>
+<li>「只吃素就能好」——关键在于总能量与代谢</li>
+<li>「护肝片够用了」——病因不除，难以逆转</li>
+</ul>
+<p><strong>逆转密码</strong>：减重 5%～10% 常可显著改善肝脂肪变；控糖控脂 + 运动。</p>
+<hr>
+<h2 id="5-骨关节炎：关节的载荷安全阈值"><a href="#5-骨关节炎：关节的载荷安全阈值" class="headerlink" title="5. 骨关节炎：关节的载荷安全阈值"></a>5. 骨关节炎：关节的载荷安全阈值</h2><p>体重每增加 1 kg，膝关节承受压力约增加 3～4 kg。肥胖 → 慢性炎症 → 软骨磨损加速。</p>
+<p><strong>逆转密码</strong>：减重减轻关节负荷；水中运动、肌力训练增强关节稳定性。</p>
+<hr>
+<h2 id="6-多囊卵巢综合征：激素风暴"><a href="#6-多囊卵巢综合征：激素风暴" class="headerlink" title="6. 多囊卵巢综合征：激素风暴"></a>6. 多囊卵巢综合征：激素风暴</h2><p>肥胖与多囊卵巢相互加剧：脂肪组织干扰激素平衡，胰岛素抵抗推高雄激素，影响排卵与生育。</p>
+<p><strong>逆转密码</strong>：减重 5%～10% 可显著改善月经与排卵；生活方式干预是一线治疗。</p>
+<hr>
+<h2 id="7-乳腺癌：癌变风险的土壤"><a href="#7-乳腺癌：癌变风险的土壤" class="headerlink" title="7. 乳腺癌：癌变风险的土壤"></a>7. 乳腺癌：癌变风险的土壤</h2><p>肥胖改变雌激素等激素水平，脂肪组织释放炎症因子，为癌细胞生长提供「土壤」。腹型肥胖与多种妇科、消化道肿瘤风险相关。</p>
+<p><strong>逆转密码</strong>：保持健康体重、规律筛查、减少久坐。</p>
+<hr>
+<h2 id="8-心理沼泽：身材焦虑与情绪雪崩"><a href="#8-心理沼泽：身材焦虑与情绪雪崩" class="headerlink" title="8. 心理沼泽：身材焦虑与情绪雪崩"></a>8. 心理沼泽：身材焦虑与情绪雪崩</h2><p>肥胖与心理相互纠缠：</p>
+<ul>
+<li>自尊心、自我形象受损</li>
+<li>焦虑 → 暴食 → 更胖 → 更焦虑</li>
+<li>脂肪组织炎症因子可能影响大脑情绪通路</li>
+<li>社会偏见与「体型歧视」加重心理负担</li>
+<li>极端节食或暴食交替，饮食成为情绪的「翻译器」</li>
+</ul>
+<p><strong>逆转密码</strong>：接纳与改变并行；寻求心理咨询；用运动、社交替代情绪性进食；体重管理应是关爱自己，而非自我惩罚。</p>
+<hr>
+<h2 id="九体视角下的并发症预防"><a href="#九体视角下的并发症预防" class="headerlink" title="九体视角下的并发症预防"></a>九体视角下的并发症预防</h2><p>不同体质易患不同慢病，调理应有的放矢：</p>
+<table>
+<thead>
+<tr>
+<th>体质</th>
+<th>相关风险</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>痰湿质</td>
+<td>肥胖、高血压、糖尿病、高血脂</td>
+</tr>
+<tr>
+<td>气虚质</td>
+<td>感冒、内脏下垂、乏力</td>
+</tr>
+<tr>
+<td>阳虚质</td>
+<td>畏寒、腹泻、痹证</td>
+</tr>
+<tr>
+<td>阴虚质</td>
+<td>失眠、咽痛、「三高」</td>
+</tr>
+<tr>
+<td>血瘀质</td>
+<td>肿瘤、痛证、卒中</td>
+</tr>
+<tr>
+<td>气郁质</td>
+<td>甲状腺、乳腺疾病、情绪障碍</td>
+</tr>
+</tbody></table>
+<p><strong>体质可调</strong>——在并发症尚未形成前调体，是最好的「逆转密码」。</p>
+<hr>
+<h2 id="系列结语"><a href="#系列结语" class="headerlink" title="系列结语"></a>系列结语</h2><p>《瘦身密码》传递的核心信息可以概括为三句话：</p>
+<ol>
+<li><strong>中国肥胖形势严峻</strong>，腰围与 BMI 同样值得每日关注</li>
+<li><strong>科学减肥是马拉松</strong>，忌节食、代餐、极端断食</li>
+<li><strong>九体医学提供个体化路径</strong>——先识体质，再管体重，方能健康瘦身不反弹</li>
+</ol>
+<p>2024 年国家「体重管理年」已经启程。愿我们都不再以「换大码裤子」为常态，而是在读懂自己身体密码的基础上，走出属于自己的健康之路。</p>
+]]></content>
+      <tags>
+        <tag>健康</tag>
+        <tag>肥胖</tag>
+        <tag>慢性病</tag>
       </tags>
   </entry>
   <entry>
@@ -2635,109 +2796,108 @@
       </tags>
   </entry>
   <entry>
-    <title>瘦身密码（五）：甜蜜陷阱——肥胖引爆的八大健康地雷</title>
-    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%82%A5%E8%83%96%E5%85%AB%E5%A4%A7%E5%81%A5%E5%BA%B7%E5%9C%B0%E9%9B%B7/</url>
-    <content><![CDATA[<p>肥胖是健康的「隐形杀手」——影响的不只是外形，而是心血管、代谢、内分泌、呼吸、骨骼、生殖乃至心理的全系统连锁反应。以下梳理书中重点阐述的<strong>八大健康地雷</strong>及应对思路。</p>
-<hr>
-<h2 id="1-糖尿病：胰岛素遇上甜甜圈"><a href="#1-糖尿病：胰岛素遇上甜甜圈" class="headerlink" title="1. 糖尿病：胰岛素遇上甜甜圈"></a>1. 糖尿病：胰岛素遇上甜甜圈</h2><p>中国 20～79 岁人群糖尿病患病率约 10.6%，患病人数约 1.41 亿。肥胖与糖尿病如影随形：</p>
-<ul>
-<li>体重每增加 1 kg，糖尿病风险至少升 5%</li>
-<li>约 50% 肥胖者将来可能患 2 型糖尿病</li>
-<li>糖尿病患者中约 2&#x2F;3 超重或肥胖</li>
+    <title>队列监控页面使用指南</title>
+    <url>/2025/06/12/%E9%98%9F%E5%88%97%E7%9B%91%E6%8E%A7%E9%A1%B5%E9%9D%A2%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</url>
+    <content><![CDATA[<h1 id="队列监控页面使用指南"><a href="#队列监控页面使用指南" class="headerlink" title="队列监控页面使用指南"></a>队列监控页面使用指南</h1><h2 id="页面访问"><a href="#页面访问" class="headerlink" title="页面访问"></a>页面访问</h2><p>队列监控页面位于：<code>/views/modules/mm/queue.html</code></p>
+<h2 id="页面功能"><a href="#页面功能" class="headerlink" title="页面功能"></a>页面功能</h2><h3 id="1-概览统计"><a href="#1-概览统计" class="headerlink" title="1. 概览统计"></a>1. 概览统计</h3><p>页面顶部显示四个关键指标：</p>
+<p>-<strong>活跃队列总数</strong>：当前有请求等待的队列数量</p>
+<p>-<strong>等待请求总数</strong>：所有队列中等待执行的请求总数</p>
+<p>-<strong>执行中请求</strong>：当前正在执行的请求数量</p>
+<p>-<strong>最大队列长度</strong>：所有队列中最长的队列长度</p>
+<h3 id="2-自动刷新功能"><a href="#2-自动刷新功能" class="headerlink" title="2. 自动刷新功能"></a>2. 自动刷新功能</h3><ul>
+<li>点击”开启自动刷新”按钮启用自动刷新（每5秒刷新一次）</li>
+<li>点击”停止自动刷新”按钮关闭自动刷新</li>
+<li>可随时点击”手动刷新”按钮立即更新数据</li>
 </ul>
-<p><strong>机制</strong>：内脏脂肪像「棉袄」包裹细胞，胰岛素（钥匙）难以与受体（锁）结合，葡萄糖进不了细胞 → <strong>胰岛素抵抗</strong> → 代偿性高胰岛素 → 食欲增加 → 更胖 → 最终血糖失控。</p>
-<p><strong>逆转密码</strong>：</p>
+<h3 id="3-队列列表"><a href="#3-队列列表" class="headerlink" title="3. 队列列表"></a>3. 队列列表</h3><p>显示所有租户的队列状态，包括：</p>
+<p>-<strong>租户ID</strong>：队列所属的租户标识</p>
+<p>-<strong>队列长度</strong>：当前队列中的请求数量</p>
+<p>-<strong>当前执行请求</strong>：正在执行的请求UUID（显示前16位）</p>
+<p>-<strong>状态</strong>：队列当前状态</p>
 <ul>
-<li>少吃深加工食品、奶茶炸鸡；多吃蔬菜、粗粮</li>
-<li>中低强度有氧运动，餐后 30～60 分钟，每次 ≥30 分钟，约 200～300 千卡</li>
-<li>超重人群 35～70 岁应每 3 年筛查血糖</li>
-<li>九体医学统计：气虚质、阴虚质、痰湿质最易患糖尿病</li>
+<li>🟢 空闲：队列为空</li>
+<li>🟡 执行中：有请求正在执行</li>
+<li>🔴 异常：队列有请求但没有执行中的请求</li>
 </ul>
-<hr>
-<h2 id="2-冠心病：糖脂风暴下的冠状动脉"><a href="#2-冠心病：糖脂风暴下的冠状动脉" class="headerlink" title="2. 冠心病：糖脂风暴下的冠状动脉"></a>2. 冠心病：糖脂风暴下的冠状动脉</h2><p>冠心病患者超重&#x2F;肥胖率超 50%。BMI 越高，冠心病发病率越高；肥胖者患病概率约为常人 2～3 倍，超平均体重 40% 者死亡风险翻倍。</p>
-<p><strong>机制</strong>：肥胖 → 血脂紊乱 → 动脉粥样硬化斑块 → 冠脉狭窄 → 心肌缺血。心脏如同小发动机驱动重型卡车，长期超负荷终将「罢工」。</p>
-<p><strong>逆转密码</strong>：减重 + 控脂 + 戒烟限酒 + 规律运动；编写细胞层面的「燃脂程序」，减轻心脏负担。</p>
-<hr>
-<h2 id="3-睡眠呼吸暂停：内脏脂肪的午夜叛乱"><a href="#3-睡眠呼吸暂停：内脏脂肪的午夜叛乱" class="headerlink" title="3. 睡眠呼吸暂停：内脏脂肪的午夜叛乱"></a>3. 睡眠呼吸暂停：内脏脂肪的午夜叛乱</h2><p>腹型肥胖者脂肪堆积在呼吸道周围，气道变窄，睡眠时呼吸暂停 → 缺氧 → 睡眠质量差 → 日间嗜睡 → 活动减少 → 更胖，形成<strong>死亡循环</strong>。</p>
-<p><strong>逆转密码</strong>：减重是核心；侧睡、避免睡前饮酒；严重者需呼吸机等医学干预。</p>
-<hr>
-<h2 id="4-脂肪肝：内脏的「垃圾处理厂」瘫痪"><a href="#4-脂肪肝：内脏的「垃圾处理厂」瘫痪" class="headerlink" title="4. 脂肪肝：内脏的「垃圾处理厂」瘫痪"></a>4. 脂肪肝：内脏的「垃圾处理厂」瘫痪</h2><p>超重&#x2F;肥胖者并发症中，脂肪肝最常见之一。肝脏本应将脂肪打包运出，糖尿病与肥胖使这一过程效率降低，脂肪在肝内堆积。</p>
-<p><strong>常见认知陷阱</strong>（书中强调）：</p>
+<p>-<strong>操作</strong>：可执行的操作按钮</p>
+<h3 id="4-状态说明"><a href="#4-状态说明" class="headerlink" title="4. 状态说明"></a>4. 状态说明</h3><h4 id="队列状态图标说明"><a href="#队列状态图标说明" class="headerlink" title="队列状态图标说明"></a>队列状态图标说明</h4><p>-**绿色标签 (0)**：队列为空，无等待请求</p>
+<p>-**黄色标签 (数字)**：队列中有等待的请求</p>
+<p>-<strong>蓝色标签</strong>：当前执行的请求ID</p>
+<p>-<strong>灰色文字</strong>：无执行请求</p>
+<h4 id="状态类型"><a href="#状态类型" class="headerlink" title="状态类型"></a>状态类型</h4><p>-<strong>空闲</strong>：队列无任何请求</p>
+<p>-<strong>执行中</strong>：有请求正在执行，可能还有其他请求在等待</p>
+<p>-<strong>异常</strong>：队列中有请求但没有正在执行的请求（可能需要清理）</p>
+<h3 id="5-操作功能"><a href="#5-操作功能" class="headerlink" title="5. 操作功能"></a>5. 操作功能</h3><h4 id="查看详情"><a href="#查看详情" class="headerlink" title="查看详情"></a>查看详情</h4><ul>
+<li><p>点击操作列的”详情”按钮或选中行后点击”查看详情”</p>
+</li>
+<li><p>弹出详情窗口显示：</p>
 <ul>
-<li>「不胖就不会脂肪肝」——瘦人脂肪肝也不少见</li>
-<li>「无症状就不用管」——可进展为肝纤维化</li>
-<li>「只吃素就能好」——关键在于总能量与代谢</li>
-<li>「护肝片够用了」——病因不除，难以逆转</li>
+<li>租户ID和队列长度</li>
+<li>当前执行请求的完整UUID</li>
+<li>队列中所有请求的列表（按执行顺序排列）</li>
+<li>第一个请求标记为”执行中”，其余为”等待中”</li>
 </ul>
-<p><strong>逆转密码</strong>：减重 5%～10% 常可显著改善肝脂肪变；控糖控脂 + 运动。</p>
-<hr>
-<h2 id="5-骨关节炎：关节的载荷安全阈值"><a href="#5-骨关节炎：关节的载荷安全阈值" class="headerlink" title="5. 骨关节炎：关节的载荷安全阈值"></a>5. 骨关节炎：关节的载荷安全阈值</h2><p>体重每增加 1 kg，膝关节承受压力约增加 3～4 kg。肥胖 → 慢性炎症 → 软骨磨损加速。</p>
-<p><strong>逆转密码</strong>：减重减轻关节负荷；水中运动、肌力训练增强关节稳定性。</p>
-<hr>
-<h2 id="6-多囊卵巢综合征：激素风暴"><a href="#6-多囊卵巢综合征：激素风暴" class="headerlink" title="6. 多囊卵巢综合征：激素风暴"></a>6. 多囊卵巢综合征：激素风暴</h2><p>肥胖与多囊卵巢相互加剧：脂肪组织干扰激素平衡，胰岛素抵抗推高雄激素，影响排卵与生育。</p>
-<p><strong>逆转密码</strong>：减重 5%～10% 可显著改善月经与排卵；生活方式干预是一线治疗。</p>
-<hr>
-<h2 id="7-乳腺癌：癌变风险的土壤"><a href="#7-乳腺癌：癌变风险的土壤" class="headerlink" title="7. 乳腺癌：癌变风险的土壤"></a>7. 乳腺癌：癌变风险的土壤</h2><p>肥胖改变雌激素等激素水平，脂肪组织释放炎症因子，为癌细胞生长提供「土壤」。腹型肥胖与多种妇科、消化道肿瘤风险相关。</p>
-<p><strong>逆转密码</strong>：保持健康体重、规律筛查、减少久坐。</p>
-<hr>
-<h2 id="8-心理沼泽：身材焦虑与情绪雪崩"><a href="#8-心理沼泽：身材焦虑与情绪雪崩" class="headerlink" title="8. 心理沼泽：身材焦虑与情绪雪崩"></a>8. 心理沼泽：身材焦虑与情绪雪崩</h2><p>肥胖与心理相互纠缠：</p>
-<ul>
-<li>自尊心、自我形象受损</li>
-<li>焦虑 → 暴食 → 更胖 → 更焦虑</li>
-<li>脂肪组织炎症因子可能影响大脑情绪通路</li>
-<li>社会偏见与「体型歧视」加重心理负担</li>
-<li>极端节食或暴食交替，饮食成为情绪的「翻译器」</li>
+</li>
 </ul>
-<p><strong>逆转密码</strong>：接纳与改变并行；寻求心理咨询；用运动、社交替代情绪性进食；体重管理应是关爱自己，而非自我惩罚。</p>
-<hr>
-<h2 id="九体视角下的并发症预防"><a href="#九体视角下的并发症预防" class="headerlink" title="九体视角下的并发症预防"></a>九体视角下的并发症预防</h2><p>不同体质易患不同慢病，调理应有的放矢：</p>
-<table>
-<thead>
-<tr>
-<th>体质</th>
-<th>相关风险</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>痰湿质</td>
-<td>肥胖、高血压、糖尿病、高血脂</td>
-</tr>
-<tr>
-<td>气虚质</td>
-<td>感冒、内脏下垂、乏力</td>
-</tr>
-<tr>
-<td>阳虚质</td>
-<td>畏寒、腹泻、痹证</td>
-</tr>
-<tr>
-<td>阴虚质</td>
-<td>失眠、咽痛、「三高」</td>
-</tr>
-<tr>
-<td>血瘀质</td>
-<td>肿瘤、痛证、卒中</td>
-</tr>
-<tr>
-<td>气郁质</td>
-<td>甲状腺、乳腺疾病、情绪障碍</td>
-</tr>
-</tbody></table>
-<p><strong>体质可调</strong>——在并发症尚未形成前调体，是最好的「逆转密码」。</p>
-<hr>
-<h2 id="系列结语"><a href="#系列结语" class="headerlink" title="系列结语"></a>系列结语</h2><p>《瘦身密码》传递的核心信息可以概括为三句话：</p>
-<ol>
-<li><strong>中国肥胖形势严峻</strong>，腰围与 BMI 同样值得每日关注</li>
-<li><strong>科学减肥是马拉松</strong>，忌节食、代餐、极端断食</li>
-<li><strong>九体医学提供个体化路径</strong>——先识体质，再管体重，方能健康瘦身不反弹</li>
-</ol>
-<p>2024 年国家「体重管理年」已经启程。愿我们都不再以「换大码裤子」为常态，而是在读懂自己身体密码的基础上，走出属于自己的健康之路。</p>
+<h4 id="清空队列"><a href="#清空队列" class="headerlink" title="清空队列"></a>清空队列</h4><ul>
+<li>只有当队列长度大于0时才显示”清空”按钮</li>
+<li>点击后会弹出确认对话框</li>
+<li>确认后将清除队列中所有等待的请求</li>
+<li>⚠️ <strong>注意</strong>：此操作会中断所有等待的请求，请谨慎使用</li>
+</ul>
+<h3 id="6-搜索和筛选"><a href="#6-搜索和筛选" class="headerlink" title="6. 搜索和筛选"></a>6. 搜索和筛选</h3><ul>
+<li>可以通过租户ID搜索特定的队列</li>
+<li>点击”重置”按钮清空搜索条件并显示所有队列</li>
+</ul>
+<h2 id="权限说明"><a href="#权限说明" class="headerlink" title="权限说明"></a>权限说明</h2><p>页面需要以下权限：</p>
+<p>-<code>queueManagement:view</code> - 查看队列状态</p>
+<p>-<code>queueManagement:clear</code> - 清空队列</p>
+<p>没有相应权限的用户将无法看到对应的操作按钮。</p>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><h3 id="1-日常监控"><a href="#1-日常监控" class="headerlink" title="1. 日常监控"></a>1. 日常监控</h3><ul>
+<li>开启自动刷新功能，实时监控队列状态</li>
+<li>关注”等待请求总数”和”最大队列长度”指标</li>
+<li>当看到红色异常状态时及时处理</li>
+</ul>
+<h3 id="2-问题排查"><a href="#2-问题排查" class="headerlink" title="2. 问题排查"></a>2. 问题排查</h3><ul>
+<li>当业务反馈操作缓慢时，查看对应租户的队列长度</li>
+<li>通过队列详情查看具体的请求排队情况</li>
+<li>分析队列积压的原因</li>
+</ul>
+<h3 id="3-紧急处理"><a href="#3-紧急处理" class="headerlink" title="3. 紧急处理"></a>3. 紧急处理</h3><ul>
+<li>当队列出现异常积压时，可以使用清空功能</li>
+<li>清空前建议先查看详情了解具体情况</li>
+<li>清空后通知相关用户重新提交请求</li>
+</ul>
+<h2 id="技术说明"><a href="#技术说明" class="headerlink" title="技术说明"></a>技术说明</h2><h3 id="数据刷新机制"><a href="#数据刷新机制" class="headerlink" title="数据刷新机制"></a>数据刷新机制</h3><ul>
+<li>手动刷新：立即获取最新数据</li>
+<li>自动刷新：每5秒钟自动获取最新数据</li>
+<li>页面加载时自动执行一次查询</li>
+</ul>
+<h3 id="统计计算规则"><a href="#统计计算规则" class="headerlink" title="统计计算规则"></a>统计计算规则</h3><p>-<strong>活跃队列</strong>：队列长度 &gt; 0 的队列数量</p>
+<p>-<strong>等待请求</strong>：所有队列长度之和 - 执行中请求数</p>
+<p>-<strong>执行中请求</strong>：有 currentExecutingRequest 的队列数量</p>
+<p>-<strong>最大队列长度</strong>：所有队列中长度的最大值</p>
+<h3 id="前端技术栈"><a href="#前端技术栈" class="headerlink" title="前端技术栈"></a>前端技术栈</h3><ul>
+<li>Vue.js：数据绑定和组件化</li>
+<li>jQuery jqGrid：表格展示</li>
+<li>Bootstrap：UI框架</li>
+<li>自定义CSS：样式美化</li>
+</ul>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>1.<strong>性能考虑</strong>：队列监控会频繁访问Redis，大量租户时注意性能影响</p>
+<p>2.<strong>权限控制</strong>：确保只有授权用户才能访问监控页面</p>
+<p>3.<strong>操作审计</strong>：清空队列等关键操作会记录系统日志</p>
+<p>4.<strong>浏览器兼容</strong>：建议使用现代浏览器以获得最佳体验</p>
+<p>5.<strong>移动端适配</strong>：页面已优化移动端显示效果</p>
+<h2 id="故障处理"><a href="#故障处理" class="headerlink" title="故障处理"></a>故障处理</h2><h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><p><strong>Q: 页面显示”获取队列状态失败”</strong></p>
+<p>A: 检查Redis连接状态和后端服务是否正常</p>
+<p><strong>Q: 自动刷新不工作</strong></p>
+<p>A: 检查浏览器是否阻止了定时器，或刷新页面重试</p>
+<p><strong>Q: 清空队列后仍显示有请求</strong></p>
+<p>A: 可能有新请求进入，手动刷新查看最新状态</p>
+<p><strong>Q: 队列状态显示异常</strong></p>
+<p>A: 可能是Redis数据不一致，可以尝试清空队列解决</p>
+<h3 id="联系支持"><a href="#联系支持" class="headerlink" title="联系支持"></a>联系支持</h3><p>如遇到技术问题，请联系系统管理员或查看系统日志获取详细错误信息。</p>
 ]]></content>
-      <tags>
-        <tag>健康</tag>
-        <tag>肥胖</tag>
-        <tag>慢性病</tag>
-      </tags>
   </entry>
   <entry>
     <title>瘦身密码（二）：脂肪工厂的运作密码——科学减肥是场马拉松</title>
@@ -2852,110 +3012,6 @@
         <tag>体重管理</tag>
         <tag>科学减肥</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>队列监控页面使用指南</title>
-    <url>/2025/06/12/%E9%98%9F%E5%88%97%E7%9B%91%E6%8E%A7%E9%A1%B5%E9%9D%A2%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</url>
-    <content><![CDATA[<h1 id="队列监控页面使用指南"><a href="#队列监控页面使用指南" class="headerlink" title="队列监控页面使用指南"></a>队列监控页面使用指南</h1><h2 id="页面访问"><a href="#页面访问" class="headerlink" title="页面访问"></a>页面访问</h2><p>队列监控页面位于：<code>/views/modules/mm/queue.html</code></p>
-<h2 id="页面功能"><a href="#页面功能" class="headerlink" title="页面功能"></a>页面功能</h2><h3 id="1-概览统计"><a href="#1-概览统计" class="headerlink" title="1. 概览统计"></a>1. 概览统计</h3><p>页面顶部显示四个关键指标：</p>
-<p>-<strong>活跃队列总数</strong>：当前有请求等待的队列数量</p>
-<p>-<strong>等待请求总数</strong>：所有队列中等待执行的请求总数</p>
-<p>-<strong>执行中请求</strong>：当前正在执行的请求数量</p>
-<p>-<strong>最大队列长度</strong>：所有队列中最长的队列长度</p>
-<h3 id="2-自动刷新功能"><a href="#2-自动刷新功能" class="headerlink" title="2. 自动刷新功能"></a>2. 自动刷新功能</h3><ul>
-<li>点击”开启自动刷新”按钮启用自动刷新（每5秒刷新一次）</li>
-<li>点击”停止自动刷新”按钮关闭自动刷新</li>
-<li>可随时点击”手动刷新”按钮立即更新数据</li>
-</ul>
-<h3 id="3-队列列表"><a href="#3-队列列表" class="headerlink" title="3. 队列列表"></a>3. 队列列表</h3><p>显示所有租户的队列状态，包括：</p>
-<p>-<strong>租户ID</strong>：队列所属的租户标识</p>
-<p>-<strong>队列长度</strong>：当前队列中的请求数量</p>
-<p>-<strong>当前执行请求</strong>：正在执行的请求UUID（显示前16位）</p>
-<p>-<strong>状态</strong>：队列当前状态</p>
-<ul>
-<li>🟢 空闲：队列为空</li>
-<li>🟡 执行中：有请求正在执行</li>
-<li>🔴 异常：队列有请求但没有执行中的请求</li>
-</ul>
-<p>-<strong>操作</strong>：可执行的操作按钮</p>
-<h3 id="4-状态说明"><a href="#4-状态说明" class="headerlink" title="4. 状态说明"></a>4. 状态说明</h3><h4 id="队列状态图标说明"><a href="#队列状态图标说明" class="headerlink" title="队列状态图标说明"></a>队列状态图标说明</h4><p>-**绿色标签 (0)**：队列为空，无等待请求</p>
-<p>-**黄色标签 (数字)**：队列中有等待的请求</p>
-<p>-<strong>蓝色标签</strong>：当前执行的请求ID</p>
-<p>-<strong>灰色文字</strong>：无执行请求</p>
-<h4 id="状态类型"><a href="#状态类型" class="headerlink" title="状态类型"></a>状态类型</h4><p>-<strong>空闲</strong>：队列无任何请求</p>
-<p>-<strong>执行中</strong>：有请求正在执行，可能还有其他请求在等待</p>
-<p>-<strong>异常</strong>：队列中有请求但没有正在执行的请求（可能需要清理）</p>
-<h3 id="5-操作功能"><a href="#5-操作功能" class="headerlink" title="5. 操作功能"></a>5. 操作功能</h3><h4 id="查看详情"><a href="#查看详情" class="headerlink" title="查看详情"></a>查看详情</h4><ul>
-<li><p>点击操作列的”详情”按钮或选中行后点击”查看详情”</p>
-</li>
-<li><p>弹出详情窗口显示：</p>
-<ul>
-<li>租户ID和队列长度</li>
-<li>当前执行请求的完整UUID</li>
-<li>队列中所有请求的列表（按执行顺序排列）</li>
-<li>第一个请求标记为”执行中”，其余为”等待中”</li>
-</ul>
-</li>
-</ul>
-<h4 id="清空队列"><a href="#清空队列" class="headerlink" title="清空队列"></a>清空队列</h4><ul>
-<li>只有当队列长度大于0时才显示”清空”按钮</li>
-<li>点击后会弹出确认对话框</li>
-<li>确认后将清除队列中所有等待的请求</li>
-<li>⚠️ <strong>注意</strong>：此操作会中断所有等待的请求，请谨慎使用</li>
-</ul>
-<h3 id="6-搜索和筛选"><a href="#6-搜索和筛选" class="headerlink" title="6. 搜索和筛选"></a>6. 搜索和筛选</h3><ul>
-<li>可以通过租户ID搜索特定的队列</li>
-<li>点击”重置”按钮清空搜索条件并显示所有队列</li>
-</ul>
-<h2 id="权限说明"><a href="#权限说明" class="headerlink" title="权限说明"></a>权限说明</h2><p>页面需要以下权限：</p>
-<p>-<code>queueManagement:view</code> - 查看队列状态</p>
-<p>-<code>queueManagement:clear</code> - 清空队列</p>
-<p>没有相应权限的用户将无法看到对应的操作按钮。</p>
-<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><h3 id="1-日常监控"><a href="#1-日常监控" class="headerlink" title="1. 日常监控"></a>1. 日常监控</h3><ul>
-<li>开启自动刷新功能，实时监控队列状态</li>
-<li>关注”等待请求总数”和”最大队列长度”指标</li>
-<li>当看到红色异常状态时及时处理</li>
-</ul>
-<h3 id="2-问题排查"><a href="#2-问题排查" class="headerlink" title="2. 问题排查"></a>2. 问题排查</h3><ul>
-<li>当业务反馈操作缓慢时，查看对应租户的队列长度</li>
-<li>通过队列详情查看具体的请求排队情况</li>
-<li>分析队列积压的原因</li>
-</ul>
-<h3 id="3-紧急处理"><a href="#3-紧急处理" class="headerlink" title="3. 紧急处理"></a>3. 紧急处理</h3><ul>
-<li>当队列出现异常积压时，可以使用清空功能</li>
-<li>清空前建议先查看详情了解具体情况</li>
-<li>清空后通知相关用户重新提交请求</li>
-</ul>
-<h2 id="技术说明"><a href="#技术说明" class="headerlink" title="技术说明"></a>技术说明</h2><h3 id="数据刷新机制"><a href="#数据刷新机制" class="headerlink" title="数据刷新机制"></a>数据刷新机制</h3><ul>
-<li>手动刷新：立即获取最新数据</li>
-<li>自动刷新：每5秒钟自动获取最新数据</li>
-<li>页面加载时自动执行一次查询</li>
-</ul>
-<h3 id="统计计算规则"><a href="#统计计算规则" class="headerlink" title="统计计算规则"></a>统计计算规则</h3><p>-<strong>活跃队列</strong>：队列长度 &gt; 0 的队列数量</p>
-<p>-<strong>等待请求</strong>：所有队列长度之和 - 执行中请求数</p>
-<p>-<strong>执行中请求</strong>：有 currentExecutingRequest 的队列数量</p>
-<p>-<strong>最大队列长度</strong>：所有队列中长度的最大值</p>
-<h3 id="前端技术栈"><a href="#前端技术栈" class="headerlink" title="前端技术栈"></a>前端技术栈</h3><ul>
-<li>Vue.js：数据绑定和组件化</li>
-<li>jQuery jqGrid：表格展示</li>
-<li>Bootstrap：UI框架</li>
-<li>自定义CSS：样式美化</li>
-</ul>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>1.<strong>性能考虑</strong>：队列监控会频繁访问Redis，大量租户时注意性能影响</p>
-<p>2.<strong>权限控制</strong>：确保只有授权用户才能访问监控页面</p>
-<p>3.<strong>操作审计</strong>：清空队列等关键操作会记录系统日志</p>
-<p>4.<strong>浏览器兼容</strong>：建议使用现代浏览器以获得最佳体验</p>
-<p>5.<strong>移动端适配</strong>：页面已优化移动端显示效果</p>
-<h2 id="故障处理"><a href="#故障处理" class="headerlink" title="故障处理"></a>故障处理</h2><h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><p><strong>Q: 页面显示”获取队列状态失败”</strong></p>
-<p>A: 检查Redis连接状态和后端服务是否正常</p>
-<p><strong>Q: 自动刷新不工作</strong></p>
-<p>A: 检查浏览器是否阻止了定时器，或刷新页面重试</p>
-<p><strong>Q: 清空队列后仍显示有请求</strong></p>
-<p>A: 可能有新请求进入，手动刷新查看最新状态</p>
-<p><strong>Q: 队列状态显示异常</strong></p>
-<p>A: 可能是Redis数据不一致，可以尝试清空队列解决</p>
-<h3 id="联系支持"><a href="#联系支持" class="headerlink" title="联系支持"></a>联系支持</h3><p>如遇到技术问题，请联系系统管理员或查看系统日志获取详细错误信息。</p>
-]]></content>
   </entry>
   <entry>
     <title>魔方</title>
