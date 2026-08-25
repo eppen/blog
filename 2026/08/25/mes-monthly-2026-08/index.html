@@ -4,16 +4,26 @@
   <meta charset="utf-8">
   
   
-  <title>Tag: 科学减肥 | Hua Liang&#39;s Blog</title>
+  <title>MES 2026 年 8 月工作小结 | Hua Liang&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hua Liang&#39;s Blog">
-<meta property="og:url" content="https://eppencn.com/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/index.html">
+  <meta name="description" content="8 月（截至 8&#x2F;25，约 320 次提交、合并 PR #360 &#x2F; #368–#381，另有多条功能分支直接合入）主线是把 mes-ai 从「能出表&#x2F;图」推进到 配方化 SQL 查询、双区间对比与 AgentScope 子运行时，并同步加深看板下钻、工艺符号面板与 EOS 权限移除能力。改动最集中的模块是 mes-ai，其次 mes-chart &#x2F; m">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MES 2026 年 8 月工作小结">
+<meta property="og:url" content="https://eppencn.com/2026/08/25/mes-monthly-2026-08/index.html">
 <meta property="og:site_name" content="Hua Liang&#39;s Blog">
+<meta property="og:description" content="8 月（截至 8&#x2F;25，约 320 次提交、合并 PR #360 &#x2F; #368–#381，另有多条功能分支直接合入）主线是把 mes-ai 从「能出表&#x2F;图」推进到 配方化 SQL 查询、双区间对比与 AgentScope 子运行时，并同步加深看板下钻、工艺符号面板与 EOS 权限移除能力。改动最集中的模块是 mes-ai，其次 mes-chart &#x2F; m">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://eppencn.com/2026/08/25/mes-monthly-2026-08/cover.png">
+<meta property="article:published_time" content="2026-08-25T03:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-25T02:48:29.400Z">
 <meta property="article:author" content="eppen">
-<meta property="article:tag" content="liuhualiang,Hua Liang,blog,hexo,github,pages">
+<meta property="article:tag" content="MES">
+<meta property="article:tag" content="mes-ai">
+<meta property="article:tag" content="mes-chart">
+<meta property="article:tag" content="工作小结">
+<meta property="article:tag" content="月报">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eppencn.com/2026/08/25/mes-monthly-2026-08/cover.png">
   
     <link rel="alternate" href="/atom.xml" title="Hua Liang's Blog" type="application/atom+xml">
   
@@ -69,39 +79,97 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2026" class="archive-year">2026</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%84%82%E8%82%AA%E5%B7%A5%E5%8E%82%E4%B8%8E%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" class="archive-article-date">
-  <time class="dt-published" datetime="2026-07-06T08:35:00.000Z" itemprop="datePublished">Jul 6</time>
+        <section id="main"><article id="post-mes-monthly-2026-08" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/08/25/mes-monthly-2026-08/" class="article-date">
+  <time class="dt-published" datetime="2026-08-25T03:00:00.000Z" itemprop="datePublished">2026-08-25</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%84%82%E8%82%AA%E5%B7%A5%E5%8E%82%E4%B8%8E%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/">瘦身密码（二）：脂肪工厂的运作密码——科学减肥是场马拉松</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      MES 2026 年 8 月工作小结
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <img src="/2026/08/25/mes-monthly-2026-08/cover.png" class="">
+
+<p>8 月（截至 8&#x2F;25，约 <strong>320 次提交</strong>、合并 PR <strong>#360 &#x2F; #368–#381</strong>，另有多条功能分支直接合入）主线是把 <strong>mes-ai</strong> 从「能出表&#x2F;图」推进到 <strong>配方化 SQL 查询、双区间对比与 AgentScope 子运行时</strong>，并同步加深看板下钻、工艺符号面板与 EOS 权限移除能力。改动最集中的模块是 <code>mes-ai</code>，其次 <code>mes-chart</code> &#x2F; <code>mes-web</code> &#x2F; <code>mes-visual</code> &#x2F; <code>mes-security</code>；月末打上 <code>release-2026-08-25</code>。</p>
+<h2 id="一、MES-AI：sql-compose、双区间图与-AgentScope"><a href="#一、MES-AI：sql-compose、双区间图与-AgentScope" class="headerlink" title="一、MES-AI：sql_compose、双区间图与 AgentScope"></a>一、MES-AI：sql_compose、双区间图与 AgentScope</h2><ul>
+<li><strong>sql_compose</strong>：配方化查询生成、别名&#x2F;LIKE&#x2F;单位校验、产耗默认负号、双区间对比图与 <code>[区间1]</code>&#x2F;<code>[区间2]</code> 列标签；「回溯起算」日期解析与 TOP&#x2F;CTE 安全注入。</li>
+<li><strong>AgentScope</strong>：新增 <code>mes-agentscope</code> 子模块，子 Agent 配置、权限模式、表格块与图表抽取、token usage 写入运行日志；管理端与协作编排联动。</li>
+<li><strong>对话体验</strong>：Markdown&#x2F;语法高亮、思考步骤、会话搜索与历史内嵌图表、运行日志反馈&#x2F;复测、相对月份 SQL 参数、选项回答与工具移交编辑。</li>
+<li><strong>能耗工具链</strong>：日表多装置、同比环比&#x2F;趋势&#x2F;饼图、存储过程工具出图、<code>excludeFromUiTable</code>、列组与汇总行、多日均值查询、当前时间预调用。</li>
+</ul>
+<h2 id="二、看板与可视化"><a href="#二、看板与可视化" class="headerlink" title="二、看板与可视化"></a>二、看板与可视化</h2><ul>
+<li><strong>下钻</strong>：饼图&#x2F;柱图弹层明细 → 行级二级详情；能耗模块明细 SQL 与多看板下钻文档补齐；多柱图支持。</li>
+<li><strong>嵌套饼图</strong>：色相微调、固定品类配色、零值过滤与高亮；看板树展开、月份筛选与图表包导入导出。</li>
+<li><strong>工艺工程</strong>：ISA 5.1 仪表符号面板、P&amp;ID 工艺符号面板与生成脚本；设计图&#x2F;图形资产页交互规范。</li>
+<li><strong>项目甘特</strong>：可拖拽分栏、布局与基线&#x2F;排程相关增强（<code>mes-project</code>）。</li>
+</ul>
+<h2 id="三、权限安全与其它业务"><a href="#三、权限安全与其它业务" class="headerlink" title="三、权限安全与其它业务"></a>三、权限安全与其它业务</h2><ul>
+<li><strong>EOS</strong>：角色权限移除授权模式、孤立目录剪枝、菜单树拖拽重排、角色管理 UI 与菜单详情刷新交互。</li>
+<li><strong>船舶 &#x2F; 工作台</strong>：码头船舶待办 Provider；联锁强制投用率相关查询。</li>
+<li><strong>计量</strong>：恒值监测状态持久化与告警联动、仪表型号管理、监测规则按电表批量查询。</li>
+<li><strong>基础设施</strong>：Docker 本地直连端口映射、Flowable schema 自动升级；UI 查询区对齐与成功 <code>msg</code>&#x2F;失败 <code>alert</code> 规范落地。</li>
+</ul>
+<h2 id="四、月度节奏"><a href="#四、月度节奏" class="headerlink" title="四、月度节奏"></a>四、月度节奏</h2><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上旬</td>
+<td>协作子 Agent &#x2F; 工具移交、相对月份参数、运行日志反馈复测、对话内图表合入（#360）</td>
+</tr>
+<tr>
+<td>中旬</td>
+<td>存储过程出图、能耗趋势&#x2F;饼图&#x2F;同比、嵌套饼与下钻、Eos 菜单拖拽与权限修复（#376–#381）</td>
+</tr>
+<tr>
+<td>下旬</td>
+<td>sql_compose 与双区间图、AgentScope、看板二级下钻、P&amp;ID 符号面板、EOS 移除授权；发版 <code>release-2026-08-25</code></td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>一句话</strong>：8 月把 MES-AI 推到「能配方写 SQL、能双区间出图、能挂 AgentScope」，看板下钻与工艺符号面板同步成型，并在月末完成 <code>release-2026-08-25</code> 发版收口。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://eppencn.com/2026/08/25/mes-monthly-2026-08/" data-id="cmt82hvz90024agv5bifg99rn" data-title="MES 2026 年 8 月工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/08/15/mes-weekly-2026-w33/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MES 2026 年第 33 周工作小结</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 
 </section>
@@ -213,5 +281,5 @@
 
 
   </div>
-</body>
+<!-- hexo injector body_end start --><div class="adsense-wrap" style="margin:24px 0;text-align:center;min-height:90px;overflow:hidden;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2045994937692573" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><!-- hexo injector body_end end --></body>
 </html>
