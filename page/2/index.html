@@ -71,6 +71,560 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-eos-role-tree-nodeid-objectid" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/07/31/eos-role-tree-nodeid-objectid/" class="article-date">
+  <time class="dt-published" datetime="2026-07-31T03:41:00.000Z" itemprop="datePublished">2026-07-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/07/31/eos-role-tree-nodeid-objectid/">EOS 菜单树 NodeID 与 ObjectID 说明</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>本文档说明 eosrole 页面「配置 EOS 菜单权限」树节点中 <strong>NodeID</strong>（前端 zTree 的 <code>id</code>）与 <strong>ObjectID</strong>（前端 <code>objectId</code>）的含义、数据库来源、后端组装与前端使用方式。</p>
+<blockquote>
+<p>关联文档：<a href="/2026/07/31/eos-role-menu-relationship/">EOS 菜单与角色关联关系说明</a></p>
+<p><strong>2026-07-31 更新</strong>：权限树接口额外返回 <code>menuType</code> &#x2F; <code>sysMenuId</code>；保存 body 含 MES 按钮与 ERP 操作扩展字段。</p>
+</blockquote>
+<h2 id="结论摘要"><a href="#结论摘要" class="headerlink" title="结论摘要"></a>结论摘要</h2><table>
+<thead>
+<tr>
+<th>前端字段</th>
+<th>含义</th>
+<th>数据库来源</th>
+<th>主要用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>zTree <code>id</code></td>
+<td>菜单节点 ID</td>
+<td><code>messys.Tree.NodeID</code></td>
+<td>树结构、父子关系（<code>pId</code>）；前端勾选态缓存键</td>
+</tr>
+<tr>
+<td>zTree <code>objectId</code></td>
+<td>EOS 权限对象 ID</td>
+<td><code>messys.Tree.ObjectID</code> &#x3D; <code>messys.ObjectRegister.ObjectID</code></td>
+<td>角色菜单授权（<code>STPermission.ObjectID</code>，「执行」）</td>
+</tr>
+<tr>
+<td>zTree <code>menuType</code></td>
+<td>菜单类型</td>
+<td><code>EosMenuTypeHelper.resolveMenuType</code></td>
+<td><code>mes</code> &#x2F; <code>erp</code> &#x2F; <code>folder</code>，决定右侧详情面板</td>
+</tr>
+<tr>
+<td>zTree <code>sysMenuId</code></td>
+<td>MES 菜单 ID</td>
+<td>优先 <code>sys_menu_eos_node</code>，否则 <code>NodeDesc=MES_MENU:</code></td>
+<td>MES 菜单&#x2F;按钮写入 <code>sys_role_menu</code></td>
+</tr>
+</tbody></table>
+<p><strong>NodeID 与 ObjectID 是两套独立编号体系</strong>，不可混用。角色菜单「执行」授权必须使用 <strong>ObjectID</strong>；NodeID 用于树层级与 detail 查询参数。</p>
+<hr>
+<h2 id="1-NodeID-是什么"><a href="#1-NodeID-是什么" class="headerlink" title="1. NodeID 是什么"></a>1. NodeID 是什么</h2><p><code>NodeID</code> 是 EOS 菜单树 <code>messys.dbo.Tree</code> 的主键，标识一个菜单&#x2F;目录节点在树中的位置。</p>
+<p>在 MES 前端 zTree 中，NodeID 映射为节点的 **<code>id</code>**（<code>idKey: &quot;id&quot;</code>），<code>ParentID</code> 映射为 **<code>pId</code>**，用于渲染树形结构与展开&#x2F;折叠。前端勾选态 <code>permissionCheckedNodeIds</code> 也按 NodeID 缓存。</p>
+<p><strong>NodeID 不写入 STPermission</strong>。权限表引用的是 ObjectID。detail 接口用 <code>nodeId</code> 定位节点后再解析业务 ObjectID。</p>
+<hr>
+<h2 id="2-NodeID-从哪来"><a href="#2-NodeID-从哪来" class="headerlink" title="2. NodeID 从哪来"></a>2. NodeID 从哪来</h2><h3 id="2-1-数据库表"><a href="#2-1-数据库表" class="headerlink" title="2.1 数据库表"></a>2.1 数据库表</h3><table>
+<thead>
+<tr>
+<th>表</th>
+<th>库</th>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Tree</code></td>
+<td>messys</td>
+<td><code>NodeID</code></td>
+<td>菜单节点主键</td>
+</tr>
+<tr>
+<td><code>Tree</code></td>
+<td>messys</td>
+<td><code>ParentID</code></td>
+<td>父节点 NodeID（根为 0）</td>
+</tr>
+<tr>
+<td><code>UniqueNO</code></td>
+<td>messys</td>
+<td><code>No</code></td>
+<td>下一个可用 NodeID（<code>NName=&#39;tree&#39;</code>）</td>
+</tr>
+</tbody></table>
+<h3 id="2-2-MES-新建节点时的分配逻辑"><a href="#2-2-MES-新建节点时的分配逻辑" class="headerlink" title="2.2 MES 新建节点时的分配逻辑"></a>2.2 MES 新建节点时的分配逻辑</h3><p>MES 通过 <code>TreeServiceImpl.getNextNodeIdForTree()</code> 从 <code>UniqueNO</code> 表取号：</p>
+<ol>
+<li>悲观锁查询 <code>UniqueNO</code> 中 <code>NName=&#39;tree&#39;</code> 的记录（<code>PESSIMISTIC_WRITE</code>）</li>
+<li>取当前 <code>No</code> 作为新 NodeID</li>
+<li>将 <code>No + 1</code> 写回，占用该编号</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TreeServiceImpl.getNextNodeIdForTree()</span></span><br><span class="line"><span class="type">UniqueNOEntity</span> <span class="variable">row</span> <span class="operator">=</span> uniqueNODao.findByNnameForUpdate(UNIQUE_NO_NAME_TREE);</span><br><span class="line"><span class="type">int</span> <span class="variable">currentNo</span> <span class="operator">=</span> row.getNo();</span><br><span class="line">row.setNo(currentNo + <span class="number">1</span>);</span><br><span class="line">uniqueNODao.save(row);</span><br><span class="line"><span class="keyword">return</span> Long.valueOf(currentNo);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-触发-NodeID-分配的操作"><a href="#2-3-触发-NodeID-分配的操作" class="headerlink" title="2.3 触发 NodeID 分配的操作"></a>2.3 触发 NodeID 分配的操作</h3><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>新增菜单节点</td>
+<td><code>TreeServiceImpl.addNode</code></td>
+<td>先 <code>getNextNodeIdForTree()</code>，再写 Tree</td>
+</tr>
+<tr>
+<td>sys_menu 同步</td>
+<td><code>TreeServiceImpl.syncFromSysMenu</code></td>
+<td>每个同步节点分配新 NodeID</td>
+</tr>
+<tr>
+<td>复制菜单</td>
+<td><code>TreeServiceImpl.copyMenu</code></td>
+<td>源节点及子树每个节点各分配新 NodeID</td>
+</tr>
+<tr>
+<td>交接班菜单批量创建</td>
+<td><code>createShiftLogDispatchMenus</code> → <code>addNode</code></td>
+<td>同上</td>
+</tr>
+</tbody></table>
+<h3 id="2-4-EOS-原生-历史数据"><a href="#2-4-EOS-原生-历史数据" class="headerlink" title="2.4 EOS 原生 &#x2F; 历史数据"></a>2.4 EOS 原生 &#x2F; 历史数据</h3><p>在 MES 介入之前，NodeID 可能由 EOS 客户端或其他工具写入 <code>Tree</code>，同样依赖 <code>UniqueNO</code> 序列或历史遗留编号。MES 只保证<strong>新增&#x2F;同步&#x2F;复制</strong>时走 <code>getNextNodeIdForTree()</code> 逻辑。</p>
+<h3 id="2-5-NodeID-在-Functions-中的用途"><a href="#2-5-NodeID-在-Functions-中的用途" class="headerlink" title="2.5 NodeID 在 Functions 中的用途"></a>2.5 NodeID 在 Functions 中的用途</h3><p><code>Tree.Functions</code> 字段保存菜单跳转 URL，其中 <strong><code>menuId</code> 参数值为 NodeID</strong>（不是 ObjectID）。例如同步 sys_menu 时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;baseUrl&#125;/&#123;url&#125;?token=%Token%&amp;menuId=&#123;NodeID&#125;</span><br></pre></td></tr></table></figure>
+
+<p>复制菜单时，<code>TreeServiceImpl</code> 会将 <code>Functions</code> 里的 <code>menuId=旧NodeID</code> 替换为 <code>menuId=新NodeID</code>。</p>
+<h3 id="2-6-NodeID-生命周期"><a href="#2-6-NodeID-生命周期" class="headerlink" title="2.6 NodeID 生命周期"></a>2.6 NodeID 生命周期</h3><ul>
+<li><strong>查询</strong>：<code>treeDao.findAll(...)</code>、<code>queryObject(nodeid)</code> 等</li>
+<li><strong>删除</strong>：<code>delete</code> &#x2F; <code>deleteBatch</code> 按 NodeID 删除 Tree，并先 <code>ObjectRegisterDao.deleteByOwnerId(NodeID)</code> 清理关联对象</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">  A[UniqueNO&lt;br/&gt;NName=tree] --&gt;|取 No 作为 NodeID| B[Tree.NodeID]</span><br><span class="line">  B --&gt; C[listTreeForPermission&lt;br/&gt;返回 id=NodeID]</span><br><span class="line">  C --&gt; D[zTree id / pId&lt;br/&gt;树结构展示]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-ObjectID-是什么"><a href="#3-ObjectID-是什么" class="headerlink" title="3. ObjectID 是什么"></a>3. ObjectID 是什么</h2><p><code>ObjectID</code> 是 EOS 对象注册表 <code>messys.dbo.ObjectRegister</code> 的主键。每个可授权对象在 <code>ObjectRegister</code> 中注册一条记录；菜单&#x2F;目录节点对应 <strong>TypeID &#x3D; 7</strong>，并通过 <strong>OwnerID &#x3D; Tree.NodeID</strong> 与菜单树关联。</p>
+<p>MES 维护菜单时会将 ObjectID <strong>冗余写入</strong> <code>Tree.ObjectID</code>，便于权限树接口一次查询带出。</p>
+<p>在角色菜单授权场景下，前端勾选菜单后提交的是 <strong>objectId 列表</strong>，写入 <code>mesdata.dbo.STPermission.ObjectID</code>（配合 <code>UserID</code>&#x3D;角色 OID、<code>Oprate</code>&#x3D;「执行」、<code>Permission</code>&#x3D;1）。</p>
+<hr>
+<h2 id="4-ObjectID-从哪来"><a href="#4-ObjectID-从哪来" class="headerlink" title="4. ObjectID 从哪来"></a>4. ObjectID 从哪来</h2><h3 id="4-1-数据库表"><a href="#4-1-数据库表" class="headerlink" title="4.1 数据库表"></a>4.1 数据库表</h3><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>库&#x2F;表</th>
+<th>字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>权威主键</td>
+<td>messys <code>ObjectRegister</code></td>
+<td><code>ObjectID</code></td>
+<td>全局对象 ID（自增：MAX+1）</td>
+</tr>
+<tr>
+<td>关联</td>
+<td>messys <code>ObjectRegister</code></td>
+<td><code>OwnerID</code></td>
+<td>&#x3D; <code>Tree.NodeID</code></td>
+</tr>
+<tr>
+<td>类型</td>
+<td>messys <code>ObjectRegister</code></td>
+<td><code>TypeID</code></td>
+<td>MES 新建菜单固定为 <strong>7</strong>（菜单&#x2F;目录）</td>
+</tr>
+<tr>
+<td>冗余</td>
+<td>messys <code>Tree</code></td>
+<td><code>ObjectID</code></td>
+<td>与 <code>ObjectRegister.ObjectID</code> 一致</td>
+</tr>
+<tr>
+<td>授权</td>
+<td>mesdata <code>STPermission</code></td>
+<td><code>ObjectID</code></td>
+<td>引用 <code>ObjectRegister.ObjectID</code></td>
+</tr>
+</tbody></table>
+<p>关系：<code>Tree.NodeID</code> ← <code>ObjectRegister.OwnerID</code>；<code>Tree.ObjectID</code> &#x3D; <code>ObjectRegister.ObjectID</code>。</p>
+<h3 id="4-2-MES-新建节点时的分配逻辑"><a href="#4-2-MES-新建节点时的分配逻辑" class="headerlink" title="4.2 MES 新建节点时的分配逻辑"></a>4.2 MES 新建节点时的分配逻辑</h3><p><code>TreeServiceImpl.saveObjectRegisterForTree()</code>：</p>
+<ol>
+<li><code>ObjectRegisterDao.findMaxObjectId()</code> 取 MAX(ObjectID) + 1</li>
+<li>插入 <code>ObjectRegister</code>（<code>TypeID=7</code>，<code>OwnerID=NodeID</code>，<code>Object</code>&#x3D;菜单名）</li>
+<li>将返回的 <code>ObjectID</code> 写入 <code>Tree.ObjectID</code></li>
+</ol>
+<p>与 NodeID 分配在同一事务内完成（如 <code>addNode</code> 先取 NodeID，再创建 ObjectRegister）。</p>
+<h3 id="4-3-触发-ObjectID-分配的操作"><a href="#4-3-触发-ObjectID-分配的操作" class="headerlink" title="4.3 触发 ObjectID 分配的操作"></a>4.3 触发 ObjectID 分配的操作</h3><p>与 NodeID 分配的操作相同（新增、同步、复制）。<strong>复制菜单时 NodeID 与 ObjectID 均重新分配</strong>，不会沿用源节点的 ObjectID。</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>ObjectID 来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MES 新增 EOS 菜单节点</td>
+<td><code>saveObjectRegisterForTree</code> 新分配</td>
+</tr>
+<tr>
+<td>从 sys_menu 同步</td>
+<td>每个同步节点一条新 ObjectRegister</td>
+</tr>
+<tr>
+<td>复制菜单</td>
+<td>新 NodeID + 新 ObjectRegister + 新 ObjectID</td>
+</tr>
+<tr>
+<td>EOS 原生&#x2F;历史数据</td>
+<td>可能由 EOS 客户端写入；<code>Tree.ObjectID</code> 可能已存在</td>
+</tr>
+<tr>
+<td>失败兜底</td>
+<td><code>object == null</code> 时 <code>Tree.ObjectID = 0</code>（无有效授权对象）</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">  A[分配 NodeID] --&gt; B[插入 ObjectRegister&lt;br/&gt;ObjectID=MAX+1]</span><br><span class="line">  B --&gt; C[Tree.ObjectID = ObjectID]</span><br><span class="line">  C --&gt; D[listTreeForPermission&lt;br/&gt;返回 objectId]</span><br><span class="line">  D --&gt; E[前端勾选提交 objectIds]</span><br><span class="line">  E --&gt; F[STPermission 写入]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-NodeID-与-ObjectID-对照"><a href="#5-NodeID-与-ObjectID-对照" class="headerlink" title="5. NodeID 与 ObjectID 对照"></a>5. NodeID 与 ObjectID 对照</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Tree.NodeID       ──►  zTree.id         （树结构、ParentID 父子关系）</span><br><span class="line">Tree.ObjectID     ──►  zTree.objectId   （STPermission「执行」授权键）</span><br><span class="line"></span><br><span class="line">ObjectRegister.OwnerID  = Tree.NodeID</span><br><span class="line">ObjectRegister.ObjectID = Tree.ObjectID</span><br><span class="line">ObjectRegister.TypeID   = 7（菜单/目录）</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>NodeID</th>
+<th>ObjectID</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>所属表</td>
+<td><code>messys.Tree</code> 主键</td>
+<td><code>messys.ObjectRegister</code> 主键，冗余在 <code>Tree.ObjectID</code></td>
+</tr>
+<tr>
+<td>分配方式</td>
+<td><code>UniqueNO</code>（NName&#x3D;’tree’）递增</td>
+<td><code>MAX(ObjectID)+1</code></td>
+</tr>
+<tr>
+<td>前端 zTree 字段</td>
+<td><code>id</code></td>
+<td><code>objectId</code></td>
+</tr>
+<tr>
+<td>是否用于 STPermission「执行」</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>复制菜单</td>
+<td>重新分配</td>
+<td>重新分配</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="5-1-业务-ObjectID-与-NodeID-的非-OwnerID-关联"><a href="#5-1-业务-ObjectID-与-NodeID-的非-OwnerID-关联" class="headerlink" title="5.1 业务 ObjectID 与 NodeID 的非 OwnerID 关联"></a>5.1 业务 ObjectID 与 NodeID 的非 OwnerID 关联</h2><p>菜单授权与 ERP 按钮授权使用<strong>不同的 ObjectID</strong>，且业务对象的 <code>OwnerID</code> <strong>不一定</strong>等于 <code>Tree.NodeID</code>。</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>ObjectID 示例</th>
+<th>TypeID</th>
+<th>OwnerID</th>
+<th>STPermission 用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>菜单对象</td>
+<td>468</td>
+<td>7</td>
+<td>430</td>
+<td><code>Oprate=执行</code>, Permission&#x3D;1</td>
+</tr>
+<tr>
+<td>业务对象</td>
+<td>965</td>
+<td>1</td>
+<td>null</td>
+<td><code>Oprate=EX61:...</code>, Permission&#x3D;0</td>
+</tr>
+</tbody></table>
+<p><strong>解析路径</strong>（<code>EosMenuObjectResolver.resolveBusinessObjects</code>）：</p>
+<ol>
+<li><code>ObjectRegister.OwnerID = NodeID</code> 且 <code>TypeID != 7</code></li>
+<li><code>Tree.Functions</code> 括号内单据名 + 菜单对象名 → <code>DjDy.DjCName</code> → <code>ObjectRegister.Object = DjCName</code> 且 <code>TypeID != 7</code></li>
+<li>回退：<code>Tree.ObjectID</code> 对应 ObjectRegister（<strong>可能含 TypeID&#x3D;7</strong>）</li>
+</ol>
+<p><strong>禁止</strong>仅用 <code>OwnerID=NodeID</code> 或 <code>Tree.ObjectID</code> 推断按钮授权 ObjectID。复合页可能返回多个业务 ObjectID；同一 ObjectID 上可有多个 <code>EXxx:</code> 按钮 Oprate。</p>
+<p><code>listAvailableOperations</code>：标准操作 + ExFunction <code>EXxx:</code> + 库中已有非「执行」Oprate。</p>
+<p>示例（NodeID&#x3D;430）：菜单树 <code>objectId=468</code> 用于勾选「执行」；按钮 <code>EX61:组织架构分发</code> 写在 ObjectID&#x3D;965。</p>
+<hr>
+<h2 id="6-后端组装与-API"><a href="#6-后端组装与-API" class="headerlink" title="6. 后端组装与 API"></a>6. 后端组装与 API</h2><h3 id="6-1-权限菜单树"><a href="#6-1-权限菜单树" class="headerlink" title="6.1 权限菜单树"></a>6.1 权限菜单树</h3><ul>
+<li><strong>接口</strong>：<code>GET /eosrole/menu/tree</code>（或 <code>@RequestMapping</code>）</li>
+<li><strong>实现</strong>：<code>EosRoleController.menuTree()</code> → <code>TreeService.listTreeForPermission()</code></li>
+<li><strong>返回字段</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>来源</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>id</code></td>
+<td><code>Tree.NodeID</code></td>
+<td>zTree 节点 ID</td>
+</tr>
+<tr>
+<td><code>pId</code></td>
+<td><code>Tree.ParentID</code>（0 → -1）</td>
+<td>父节点</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>Tree.NodeCaption</code></td>
+<td>显示名</td>
+</tr>
+<tr>
+<td><code>objectId</code></td>
+<td><code>Tree.ObjectID</code></td>
+<td>STPermission「执行」键</td>
+</tr>
+<tr>
+<td><code>menuType</code></td>
+<td><code>EosMenuTypeHelper.resolveMenuType</code></td>
+<td><code>mes</code> &#x2F; <code>erp</code> &#x2F; <code>folder</code></td>
+</tr>
+<tr>
+<td><code>sysMenuId</code></td>
+<td><code>sys_menu_eos_node</code>，缺失时 NodeDesc fallback</td>
+<td>仅 MES 节点有值</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TreeServiceImpl.listTreeForPermission()</span></span><br><span class="line">m.put(<span class="string">&quot;id&quot;</span>, e.getNodeid());</span><br><span class="line">m.put(<span class="string">&quot;pId&quot;</span>, e.getParentid() == <span class="literal">null</span> || e.getParentid() == <span class="number">0</span> ? -<span class="number">1</span> : e.getParentid());</span><br><span class="line">m.put(<span class="string">&quot;name&quot;</span>, e.getNodecaption() != <span class="literal">null</span> ? e.getNodecaption().trim() : <span class="string">&quot;&quot;</span>);</span><br><span class="line">m.put(<span class="string">&quot;objectId&quot;</span>, e.getObjectid());</span><br><span class="line">m.put(<span class="string">&quot;menuType&quot;</span>, EosMenuTypeHelper.resolveMenuType(e));</span><br><span class="line">m.put(<span class="string">&quot;sysMenuId&quot;</span>, sysMenuIdLookup.get(e.getNodeid()));</span><br></pre></td></tr></table></figure>
+
+<p>与 <code>listTreeForSelect()</code>（eostree 选目录）的区别：后者<strong>不含</strong> <code>objectId</code> &#x2F; <code>menuType</code> &#x2F; <code>sysMenuId</code>，仅 <code>id</code> &#x2F; <code>pId</code> &#x2F; <code>name</code>。</p>
+<h3 id="6-2-权限查询与保存"><a href="#6-2-权限查询与保存" class="headerlink" title="6.2 权限查询与保存"></a>6.2 权限查询与保存</h3><table>
+<thead>
+<tr>
+<th>接口</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GET /eosrole/permission/&#123;roleId&#125;</code></td>
+<td>返回已授权 <strong>objectId</strong> 列表（「执行」+ Permission&#x3D;1）</td>
+</tr>
+<tr>
+<td><code>GET /eosrole/permission/detail/&#123;roleId&#125;?nodeId=</code></td>
+<td>按 NodeID 加载对象&#x2F;按钮详情（MES 或 ERP）</td>
+</tr>
+<tr>
+<td><code>GET /eosrole/permission/mes-menu-ids/&#123;roleId&#125;</code></td>
+<td>返回 MES <code>sys_role_menu</code> 全部 menuId</td>
+</tr>
+<tr>
+<td><code>POST /eosrole/permission/save</code></td>
+<td>菜单执行 + ERP 操作 + MES 按钮</td>
+</tr>
+</tbody></table>
+<p><code>EosRolePermissionServiceImpl.queryMenuObjectIds</code> 过滤条件：<code>Oprate=执行</code> 且 <code>Permission=1</code>（<strong>当前未按 TypeID&#x3D;7 过滤</strong>）。</p>
+<p>save body（<code>EosRolePermissionSaveRequest</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>roleIds</code></td>
+<td>EOS 角色 OID</td>
+</tr>
+<tr>
+<td><code>objectIds</code></td>
+<td>勾选菜单的 Tree.ObjectID → STPermission「执行」</td>
+</tr>
+<tr>
+<td><code>mode</code></td>
+<td><code>append</code> &#x2F; <code>replace</code></td>
+</tr>
+<tr>
+<td><code>mesMenuIds</code></td>
+<td>MES 目录&#x2F;菜单 menu_id → <code>sys_role_menu</code></td>
+</tr>
+<tr>
+<td><code>mesButtonMenuIds</code></td>
+<td>MES 按钮 menu_id → <code>sys_role_menu</code></td>
+</tr>
+<tr>
+<td><code>operationPermissions</code></td>
+<td>ERP <code>&#123;objectId, oprate, granted&#125;</code></td>
+</tr>
+<tr>
+<td><code>operationReplaceObjectIds</code></td>
+<td>replace 时清理非「执行」行的业务 ObjectID</td>
+</tr>
+</tbody></table>
+<p>保存委托：先 <code>EosRolePermissionServiceImpl</code> 写「执行」，再 <code>EosRoleObjectPermissionServiceImpl.saveMesAndObjectPermissions</code> 写 ERP&#x2F;MES。</p>
+<hr>
+<h2 id="7-前端使用（eosrole-js）"><a href="#7-前端使用（eosrole-js）" class="headerlink" title="7. 前端使用（eosrole.js）"></a>7. 前端使用（eosrole.js）</h2><h3 id="7-1-zTree-配置"><a href="#7-1-zTree-配置" class="headerlink" title="7.1 zTree 配置"></a>7.1 zTree 配置</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> permissionTreeSetting = &#123;</span><br><span class="line">    <span class="attr">data</span>: &#123;</span><br><span class="line">        <span class="attr">simpleData</span>: &#123;</span><br><span class="line">            <span class="attr">enable</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">idKey</span>: <span class="string">&quot;id&quot;</span>,      <span class="comment">// = NodeID</span></span><br><span class="line">            <span class="attr">pIdKey</span>: <span class="string">&quot;pId&quot;</span>,   <span class="comment">// = ParentID</span></span><br><span class="line">            <span class="attr">rootPId</span>: -<span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">check</span>: &#123; <span class="attr">enable</span>: <span class="literal">true</span>, <span class="attr">nocheckInherit</span>: <span class="literal">true</span> &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-加载与回显"><a href="#7-2-加载与回显" class="headerlink" title="7.2 加载与回显"></a>7.2 加载与回显</h3><ol>
+<li><code>loadPermissionMenuTree</code> → 请求 <code>/eosrole/menu/tree</code>，用 <code>treeList</code> 初始化 zTree（含 <code>menuType</code> &#x2F; <code>sysMenuId</code>）</li>
+<li>单角色 + replace 模式：<ul>
+<li><code>/eosrole/permission/&#123;roleId&#125;</code> → 按 <strong>objectId</strong> 勾选菜单树（不是 <code>id</code>）</li>
+<li><code>/eosrole/permission/mes-menu-ids/&#123;roleId&#125;</code> → 拆分 MES 菜单 ID &#x2F; 按钮 ID 到 <code>permissionMesMenuIds</code> 等</li>
+</ul>
+</li>
+<li>点击节点 → <code>/eosrole/permission/detail/&#123;roleId&#125;?nodeId=</code>：<ul>
+<li><code>menuType=mes</code>：展示 MES 按钮勾选</li>
+<li><code>menuType=erp</code>：展示 ERP 操作「禁止」勾选</li>
+<li><code>menuType=folder</code>：目录摘要</li>
+</ul>
+</li>
+</ol>
+<p>勾选 MES 节点时把 <code>sysMenuId</code> 加入 <code>permissionMesMenuIds</code>；取消勾选时清理对应按钮态。</p>
+<h3 id="7-3-保存"><a href="#7-3-保存" class="headerlink" title="7.3 保存"></a>7.3 保存</h3><p><code>savePermission</code> 收集并提交：</p>
+<table>
+<thead>
+<tr>
+<th>收集方法</th>
+<th>字段</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>collectPermissionObjectIds()</code></td>
+<td><code>objectIds</code>（勾选节点的 <strong>objectId</strong>，不是 <code>id</code>）</td>
+</tr>
+<tr>
+<td><code>collectMesMenuIdsForSave()</code></td>
+<td><code>mesMenuIds</code></td>
+</tr>
+<tr>
+<td><code>collectMesButtonMenuIdsForSave()</code></td>
+<td><code>mesButtonMenuIds</code></td>
+</tr>
+<tr>
+<td><code>collectOperationPermissionsForSave()</code></td>
+<td><code>operationPermissions</code></td>
+</tr>
+<tr>
+<td><code>collectOperationReplaceObjectIdsForSave()</code></td>
+<td><code>operationReplaceObjectIds</code></td>
+</tr>
+</tbody></table>
+<p>连同 <code>roleIds</code>、<code>mode</code> 一并 POST 到 <code>/eosrole/permission/save</code>。</p>
+<hr>
+<h2 id="8-验证-SQL"><a href="#8-验证-SQL" class="headerlink" title="8. 验证 SQL"></a>8. 验证 SQL</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- NodeID 与 ObjectID 对照</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    t.NodeID,</span><br><span class="line">    RTRIM(t.NodeCaption) <span class="keyword">AS</span> MenuCaption,</span><br><span class="line">    t.ParentID,</span><br><span class="line">    t.ObjectID           <span class="keyword">AS</span> TreeObjectID,</span><br><span class="line">    o.ObjectID           <span class="keyword">AS</span> RegObjectID,</span><br><span class="line">    o.TypeID,</span><br><span class="line">    o.OwnerID</span><br><span class="line"><span class="keyword">FROM</span> messys.dbo.Tree t</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> messys.dbo.ObjectRegister o <span class="keyword">ON</span> o.OwnerID <span class="operator">=</span> t.NodeID</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> t.NodeID;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- UniqueNO 当前序列</span></span><br><span class="line"><span class="keyword">SELECT</span> NName, <span class="keyword">No</span> <span class="keyword">FROM</span> messys.dbo.UniqueNO <span class="keyword">WHERE</span> NName <span class="operator">=</span> <span class="string">&#x27;tree&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="9-相关代码路径"><a href="#9-相关代码路径" class="headerlink" title="9. 相关代码路径"></a>9. 相关代码路径</h2><table>
+<thead>
+<tr>
+<th>环节</th>
+<th>路径</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NodeID 分配</td>
+<td><code>TreeServiceImpl.getNextNodeIdForTree()</code></td>
+</tr>
+<tr>
+<td>ObjectID 分配</td>
+<td><code>TreeServiceImpl.saveObjectRegisterForTree()</code></td>
+</tr>
+<tr>
+<td>新增&#x2F;同步&#x2F;复制</td>
+<td><code>TreeServiceImpl.addNode</code> &#x2F; <code>syncFromSysMenu</code> &#x2F; <code>copyMenu</code></td>
+</tr>
+<tr>
+<td>权限树 API</td>
+<td><code>TreeServiceImpl.listTreeForPermission()</code>、<code>EosRoleController</code></td>
+</tr>
+<tr>
+<td>菜单类型 &#x2F; sysMenuId</td>
+<td><code>EosMenuTypeHelper</code>、<code>SysMenuEosNodeService</code></td>
+</tr>
+<tr>
+<td>菜单「执行」读写</td>
+<td><code>EosRolePermissionServiceImpl</code></td>
+</tr>
+<tr>
+<td>ERP&#x2F;MES 扩展保存</td>
+<td><code>EosRoleObjectPermissionServiceImpl</code></td>
+</tr>
+<tr>
+<td>业务 ObjectID 解析</td>
+<td><code>EosMenuObjectResolver</code></td>
+</tr>
+<tr>
+<td>实体</td>
+<td><code>TreeEntity</code>、<code>ObjectRegisterEntity</code>、<code>StPermissionEntity</code></td>
+</tr>
+<tr>
+<td>前端</td>
+<td><code>static/js/modules/security/eosrole.js</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="10-修订记录"><a href="#10-修订记录" class="headerlink" title="10. 修订记录"></a>10. 修订记录</h2><table>
+<thead>
+<tr>
+<th>日期</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2026-06-16</td>
+<td>初版：梳理 Tree NodeID 与 ObjectID 从数据库到前端权限树的完整链路</td>
+</tr>
+<tr>
+<td>2026-06-16</td>
+<td>补充 NodeID 在 Tree.Functions URL 中作为 menuId 参数的说明</td>
+</tr>
+<tr>
+<td>2026-07-01</td>
+<td>补充业务 ObjectID 与 NodeID 非 OwnerID 关联及 eosrole 解析路径</td>
+</tr>
+<tr>
+<td>2026-07-31</td>
+<td>按最新实现修订：权限树补 <code>menuType</code>&#x2F;<code>sysMenuId</code>；save&#x2F;前端补 MES 与 ERP 扩展字段；代码路径补 ObjectPermission &#x2F; Resolver</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://eppencn.com/2026/07/31/eos-role-tree-nodeid-objectid/" data-id="cmtv41duw000b14v56y3m49gk" data-title="EOS 菜单树 NodeID 与 ObjectID 说明" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EOS/" rel="tag">EOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zTree/" rel="tag">zTree</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-eos-role-menu-relationship" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/07/31/eos-role-menu-relationship/" class="article-date">
@@ -771,7 +1325,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/07/31/eos-role-menu-relationship/" data-id="cmtmncts30007jkv5dush93o2" data-title="EOS 菜单与角色关联关系说明" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/07/31/eos-role-menu-relationship/" data-id="cmtv41duu000814v50c6w1j7g" data-title="EOS 菜单与角色关联关系说明" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -906,7 +1460,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%82%A5%E8%83%96%E5%85%AB%E5%A4%A7%E5%81%A5%E5%BA%B7%E5%9C%B0%E9%9B%B7/" data-id="cmtmncttc002mjkv5am114qzd" data-title="瘦身密码（五）：甜蜜陷阱——肥胖引爆的八大健康地雷" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%82%A5%E8%83%96%E5%85%AB%E5%A4%A7%E5%81%A5%E5%BA%B7%E5%9C%B0%E9%9B%B7/" data-id="cmtv41dvo005114v50x6d3bm9" data-title="瘦身密码（五）：甜蜜陷阱——肥胖引爆的八大健康地雷" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -1068,7 +1622,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E5%A4%A7%E4%BD%93%E8%B4%A8%E7%A7%91%E5%AD%A6%E7%94%A9%E8%82%89%E6%8C%87%E5%8D%97/" data-id="cmtmnctta002kjkv5a12j8u8x" data-title="瘦身密码（四）：九大体质科学甩肉指南——管体加管重" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E5%A4%A7%E4%BD%93%E8%B4%A8%E7%A7%91%E5%AD%A6%E7%94%A9%E8%82%89%E6%8C%87%E5%8D%97/" data-id="cmtv41dvn004z14v58dvm62nv" data-title="瘦身密码（四）：九大体质科学甩肉指南——管体加管重" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -1200,7 +1754,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6%E4%BD%93%E8%B4%A8%E5%AF%86%E7%A0%81%E5%85%A5%E9%97%A8/" data-id="cmtmnctt8002ijkv5d8othtws" data-title="瘦身密码（三）：九体医学入门——解锁你的体质密码" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6%E4%BD%93%E8%B4%A8%E5%AF%86%E7%A0%81%E5%85%A5%E9%97%A8/" data-id="cmtv41dvm004w14v5g9ud6czt" data-title="瘦身密码（三）：九体医学入门——解锁你的体质密码" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -1344,7 +1898,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%84%82%E8%82%AA%E5%B7%A5%E5%8E%82%E4%B8%8E%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" data-id="cmtmnctu2004tjkv52olbbc31" data-title="瘦身密码（二）：脂肪工厂的运作密码——科学减肥是场马拉松" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%84%82%E8%82%AA%E5%B7%A5%E5%8E%82%E4%B8%8E%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" data-id="cmtv41dvp005314v55r1yg627" data-title="瘦身密码（二）：脂肪工厂的运作密码——科学减肥是场马拉松" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -1441,7 +1995,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B8%AD%E5%9B%BD%E5%BC%8F%E5%8F%91%E7%A6%8F%E5%9B%BE%E9%89%B4/" data-id="cmtmncttd002pjkv5a8ov1hm8" data-title="瘦身密码（一）：中国式发福图鉴——14亿人的体重失控现场" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B8%AD%E5%9B%BD%E5%BC%8F%E5%8F%91%E7%A6%8F%E5%9B%BE%E9%89%B4/" data-id="cmtv41dvl004u14v5fkxp1sop" data-title="瘦身密码（一）：中国式发福图鉴——14亿人的体重失控现场" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -1487,7 +2041,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/07/06/hello-world/" data-id="cmtmncts8000djkv573h87689" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/07/06/hello-world/" data-id="cmtv41duv000a14v5fupsexbh" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -1615,7 +2169,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/06/19/cursor-agent-no-version-directories-fix/" data-id="cmtmncts00004jkv5ap1v7dm8" data-title="Cursor Agent CLI 报错 No version directories found 的排查与修复" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/06/19/cursor-agent-no-version-directories-fix/" data-id="cmtv41dus000514v55x948iyi" data-title="Cursor Agent CLI 报错 No version directories found 的排查与修复" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -1720,128 +2274,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/06/19/0-ad-strategy-guide/" data-id="cmtmnctri0000jkv5h76wexmj" data-title="0 A.D. 中文游戏攻略上线" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/06/19/0-ad-strategy-guide/" data-id="cmtv41dum000114v51pl845xf" data-title="0 A.D. 中文游戏攻略上线" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/0AD/" rel="tag">0AD</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenSource/" rel="tag">OpenSource</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RTS/" rel="tag">RTS</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-use-deepseek-as-model-in-claude-code-cli" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/03/15/use-deepseek-as-model-in-claude-code-cli/" class="article-date">
-  <time class="dt-published" datetime="2026-03-15T10:39:08.000Z" itemprop="datePublished">2026-03-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/03/15/use-deepseek-as-model-in-claude-code-cli/">在 Claude Code CLI 中使用 DeepSeek 作为模型</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Claude Code 是 Anthropic 的 AI 编程助手，默认只使用 Anthropic 的模型。通过环境变量 <code>ANTHROPIC_BASE_URL</code> 可以切换 API 端点，DeepSeek 官方提供了 <strong>Anthropic API 兼容</strong> 的接口，因此可以直接把 Claude Code CLI 接到 DeepSeek，无需代理或第三方路由。</p>
-<p>本文介绍如何配置 Claude Code CLI，使其使用 DeepSeek 作为后端模型。</p>
-<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><ul>
-<li>已安装 <a target="_blank" rel="noopener" href="https://claude.ai/code">Claude Code</a>（官方安装：<code>curl -fsSL https://claude.ai/install.sh | bash</code>）</li>
-<li>已注册 <a target="_blank" rel="noopener" href="https://platform.deepseek.com/">DeepSeek 开放平台</a> 并获取 <strong>API Key</strong>（<a target="_blank" rel="noopener" href="https://platform.deepseek.com/api-keys">API Keys 页面</a>）</li>
-</ul>
-<h2 id="方式一：官方-Anthropic-兼容-API（推荐）"><a href="#方式一：官方-Anthropic-兼容-API（推荐）" class="headerlink" title="方式一：官方 Anthropic 兼容 API（推荐）"></a>方式一：官方 Anthropic 兼容 API（推荐）</h2><p>DeepSeek 提供与 Anthropic Messages API 兼容的端点，只需改环境变量即可让 Claude Code 走 DeepSeek。</p>
-<h3 id="1-配置环境变量"><a href="#1-配置环境变量" class="headerlink" title="1. 配置环境变量"></a>1. 配置环境变量</h3><p>在终端中执行（将 <code>YOUR_DEEPSEEK_API_KEY</code> 换成你的 DeepSeek API Key）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># DeepSeek Anthropic 兼容 API 端点</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定使用的模型（见下方「模型选择」）</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：避免长输出时客户端超时（单位毫秒，例如 10 分钟）</span></span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：禁用非必要流量（仅在使用第三方 API 时建议）</span></span><br><span class="line"><span class="built_in">export</span> CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-启动-Claude-Code"><a href="#2-启动-Claude-Code" class="headerlink" title="2. 启动 Claude Code"></a>2. 启动 Claude Code</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> your-project</span><br><span class="line">claude</span><br></pre></td></tr></table></figure>
-
-<p>之后 Claude Code 的请求会发往 DeepSeek，使用你配置的模型。</p>
-<h3 id="3-写入-Shell-配置（长期使用）"><a href="#3-写入-Shell-配置（长期使用）" class="headerlink" title="3. 写入 Shell 配置（长期使用）"></a>3. 写入 Shell 配置（长期使用）</h3><p>避免每次手动 export，可写入 <code>~/.bashrc</code>、<code>~/.zshrc</code> 或 Fish 的 <code>config.fish</code>。</p>
-<p><strong>Bash &#x2F; Zsh 示例：</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># DeepSeek + Claude Code</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br></pre></td></tr></table></figure>
-
-<p><strong>Fish 示例：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function claude-deepseek</span><br><span class="line">    set -x ANTHROPIC_BASE_URL https://api.deepseek.com/anthropic</span><br><span class="line">    set -x ANTHROPIC_AUTH_TOKEN &quot;YOUR_DEEPSEEK_API_KEY&quot;</span><br><span class="line">    set -x ANTHROPIC_MODEL deepseek-chat</span><br><span class="line">    set -x ANTHROPIC_SMALL_FAST_MODEL deepseek-chat</span><br><span class="line">    set -x API_TIMEOUT_MS 600000</span><br><span class="line">    claude $argv</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<p>之后在 Fish 中执行 <code>claude-deepseek</code> 即用 DeepSeek；其他终端保持默认则仍用 Anthropic。</p>
-<h2 id="模型选择"><a href="#模型选择" class="headerlink" title="模型选择"></a>模型选择</h2><p>DeepSeek 在 Anthropic 兼容接口中常用模型名：</p>
-<table>
-<thead>
-<tr>
-<th>模型名</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>deepseek-chat</code></td>
-<td>通用对话，响应快，适合日常编码与问答</td>
-</tr>
-<tr>
-<td><code>deepseek-reasoner</code></td>
-<td>推理模式，步骤更详细，适合复杂分析与多步推理</td>
-</tr>
-</tbody></table>
-<p>通过修改 <code>ANTHROPIC_MODEL</code> 和 <code>ANTHROPIC_SMALL_FAST_MODEL</code> 即可切换。若传入 DeepSeek 不支持的模型名，接口会自动映射到 <code>deepseek-chat</code>。</p>
-<h2 id="方式二：通过-Claude-Code-Router-OpenRouter"><a href="#方式二：通过-Claude-Code-Router-OpenRouter" class="headerlink" title="方式二：通过 Claude Code Router + OpenRouter"></a>方式二：通过 Claude Code Router + OpenRouter</h2><p>若希望在同一套 Claude Code 里切换多种模型（如 Claude、GPT、DeepSeek），可使用 <a target="_blank" rel="noopener" href="https://github.com/musistudio/claude-code-router">Claude Code Router</a>，通过 OpenRouter 统一接入。</p>
-<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 已安装 Claude Code 的前提下</span></span><br><span class="line">npm install -g @musistudio/claude-code-router</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-获取-OpenRouter-API-Key"><a href="#2-获取-OpenRouter-API-Key" class="headerlink" title="2. 获取 OpenRouter API Key"></a>2. 获取 OpenRouter API Key</h3><p>在 <a target="_blank" rel="noopener" href="https://openrouter.ai/">OpenRouter</a> 注册并创建 API Key，按用量计费，可选用 DeepSeek 等模型。</p>
-<h3 id="3-配置文件"><a href="#3-配置文件" class="headerlink" title="3. 配置文件"></a>3. 配置文件</h3><p>创建并编辑 <code>~/.claude-code-router/config.json</code>：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;LOG&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;LOG_LEVEL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;info&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Providers&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_base_url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://openrouter.ai/api/v1/chat/completions&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;YOUR_OPENROUTER_API_KEY&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;transformer&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;use&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span> <span class="string">&quot;tooluse&quot;</span><span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;models&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;anthropic/claude-sonnet-4&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;openai/gpt-4o&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;deepseek/deepseek-chat&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Router&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;default&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;background&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;think&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>将 <code>YOUR_OPENROUTER_API_KEY</code> 换成你的 OpenRouter API Key。<code>transformer</code> 中的 <code>&quot;tooluse&quot;</code> 需保留，否则 Claude Code 的工具调用（编辑文件、执行命令等）会异常。</p>
-<h3 id="4-启动方式"><a href="#4-启动方式" class="headerlink" title="4. 启动方式"></a>4. 启动方式</h3><p>用 Router 启动 Claude Code（不再直接运行 <code>claude</code>）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ccr code</span><br></pre></td></tr></table></figure>
-
-<p>会话中可切换模型，例如：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/model openrouter,deepseek/deepseek-chat</span><br><span class="line">/status</span><br></pre></td></tr></table></figure>
-
-<h2 id="Anthropic-API-兼容性说明（方式一）"><a href="#Anthropic-API-兼容性说明（方式一）" class="headerlink" title="Anthropic API 兼容性说明（方式一）"></a>Anthropic API 兼容性说明（方式一）</h2><p>DeepSeek 的 Anthropic 兼容接口支持：</p>
-<ul>
-<li><strong>常用参数</strong>：<code>max_tokens</code>、<code>stop_sequences</code>、<code>stream</code>、<code>system</code>、<code>temperature</code>（0.0～2.0）、<code>top_p</code></li>
-<li><strong>工具调用</strong>：<code>tools</code>、<code>tool_choice</code>，适合 Claude Code 的编辑与执行等能力</li>
-<li><strong>内容类型</strong>：文本、thinking 类内容</li>
-</ul>
-<p>以下能力在 DeepSeek 端<strong>不支持</strong>或不生效：</p>
-<ul>
-<li>消息中的图片、文档等 multimodal 类型</li>
-<li>部分 MCP 相关类型（如 <code>mcp_tool_use</code>、<code>mcp_tool_result</code>）</li>
-<li>部分 Anthropic 专有字段（如 <code>anthropic-beta</code>、<code>container</code>、<code>metadata</code> 等）</li>
-</ul>
-<p>仅使用「写代码、改文件、跑命令」等常见能力时，方式一即可满足需求。</p>
-<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><p><strong>Q: 必须用 Python 吗？</strong><br>A: 不必。方式一只是改环境变量，任意终端&#x2F;shell 均可；方式二需要 Node.js 来跑 <code>ccr</code>。</p>
-<p><strong>Q: DeepSeek 免费吗？</strong><br>A: 注册会有一定免费额度，超出后按官方定价计费，详见 <a target="_blank" rel="noopener" href="https://platform.deepseek.com/">DeepSeek 定价页</a>。</p>
-<p><strong>Q: 如何确认当前用的是 DeepSeek？</strong><br>A: 方式一：看环境变量 <code>ANTHROPIC_BASE_URL</code> 是否为 <code>https://api.deepseek.com/anthropic</code>。方式二：在会话里输入 <code>/status</code> 查看当前模型。</p>
-<p><strong>Q: 长输出被截断或超时？</strong><br>A: 增大 <code>API_TIMEOUT_MS</code>（例如 <code>600000</code> 表示 10 分钟）。</p>
-<hr>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://api-docs.deepseek.com/zh-cn/guides/anthropic_api">DeepSeek 官方：Anthropic API 兼容说明</a></li>
-<li><a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/settings#environment-variables">Claude Code 环境变量说明</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/musistudio/claude-code-router">Claude Code Router</a></li>
-<li><a target="_blank" rel="noopener" href="https://platform.deepseek.com/api-keys">DeepSeek 开放平台 &#x2F; API Keys</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/03/15/use-deepseek-as-model-in-claude-code-cli/" data-id="cmtmnctt00025jkv539706rfn" data-title="在 Claude Code CLI 中使用 DeepSeek 作为模型" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CLI/" rel="tag">CLI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Claude-Code/" rel="tag">Claude Code</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li></ul>
 
     </footer>
   </div>
@@ -1869,7 +2306,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/0AD/" rel="tag">0AD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Agent/" rel="tag">Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Automation/" rel="tag">Automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CLI/" rel="tag">CLI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Calendar/" rel="tag">Calendar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Claude-Code/" rel="tag">Claude Code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cursor/" rel="tag">Cursor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EOS/" rel="tag">EOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eos/" rel="tag">Eos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LIMS/" rel="tag">LIMS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenSource/" rel="tag">OpenSource</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PowerShell/" rel="tag">PowerShell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RBAC/" rel="tag">RBAC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTS/" rel="tag">RTS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/health/" rel="tag">health</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-energy/" rel="tag">mes-energy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-measure/" rel="tag">mes-measure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-web/" rel="tag">mes-web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zTree/" rel="tag">zTree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" rel="tag">中医体质</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" rel="tag">九体医学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" rel="tag">交接班</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" rel="tag">体质调理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" rel="tag">体重管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%81%A5%E5%BA%B7/" rel="tag">健康</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" rel="tag">慢性病</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" rel="tag">科学减肥</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%82%A5%E8%83%96/" rel="tag">肥胖</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" rel="tag">能耗分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" rel="tag">船舶作业</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/0AD/" rel="tag">0AD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Daily/" rel="tag">AI Daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Agent/" rel="tag">Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Automation/" rel="tag">Automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CLI/" rel="tag">CLI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Calendar/" rel="tag">Calendar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Claude-Code/" rel="tag">Claude Code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CodingAgent/" rel="tag">CodingAgent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cursor/" rel="tag">Cursor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EOS/" rel="tag">EOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eos/" rel="tag">Eos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Harness/" rel="tag">Harness</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LIMS/" rel="tag">LIMS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCP/" rel="tag">MCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenSource/" rel="tag">OpenSource</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PowerShell/" rel="tag">PowerShell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RBAC/" rel="tag">RBAC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTS/" rel="tag">RTS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/health/" rel="tag">health</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-energy/" rel="tag">mes-energy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-measure/" rel="tag">mes-measure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-web/" rel="tag">mes-web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zTree/" rel="tag">zTree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" rel="tag">中医体质</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" rel="tag">九体医学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" rel="tag">交接班</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" rel="tag">体质调理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" rel="tag">体重管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%81%A5%E5%BA%B7/" rel="tag">健康</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" rel="tag">慢性病</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" rel="tag">科学减肥</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%82%A5%E8%83%96/" rel="tag">肥胖</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" rel="tag">能耗分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" rel="tag">船舶作业</a></li></ul>
     </div>
   </div>
 
@@ -1879,7 +2316,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/0AD/" style="font-size: 10px;">0AD</a> <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/Agent/" style="font-size: 10px;">Agent</a> <a href="/tags/Automation/" style="font-size: 10px;">Automation</a> <a href="/tags/CLI/" style="font-size: 11.43px;">CLI</a> <a href="/tags/Calendar/" style="font-size: 10px;">Calendar</a> <a href="/tags/Claude-Code/" style="font-size: 10px;">Claude Code</a> <a href="/tags/Cursor/" style="font-size: 10px;">Cursor</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/EOS/" style="font-size: 11.43px;">EOS</a> <a href="/tags/Eos/" style="font-size: 10px;">Eos</a> <a href="/tags/Game/" style="font-size: 10px;">Game</a> <a href="/tags/LIMS/" style="font-size: 10px;">LIMS</a> <a href="/tags/MES/" style="font-size: 20px;">MES</a> <a href="/tags/OpenSource/" style="font-size: 10px;">OpenSource</a> <a href="/tags/PowerShell/" style="font-size: 10px;">PowerShell</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RBAC/" style="font-size: 10px;">RBAC</a> <a href="/tags/RTS/" style="font-size: 10px;">RTS</a> <a href="/tags/SQL-Server/" style="font-size: 11.43px;">SQL Server</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/health/" style="font-size: 10px;">health</a> <a href="/tags/mes-ai/" style="font-size: 17.14px;">mes-ai</a> <a href="/tags/mes-chart/" style="font-size: 15.71px;">mes-chart</a> <a href="/tags/mes-energy/" style="font-size: 10px;">mes-energy</a> <a href="/tags/mes-measure/" style="font-size: 10px;">mes-measure</a> <a href="/tags/mes-web/" style="font-size: 10px;">mes-web</a> <a href="/tags/zTree/" style="font-size: 10px;">zTree</a> <a href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" style="font-size: 10px;">中医体质</a> <a href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" style="font-size: 12.86px;">九体医学</a> <a href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" style="font-size: 10px;">交接班</a> <a href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" style="font-size: 10px;">体质调理</a> <a href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" style="font-size: 11.43px;">体重管理</a> <a href="/tags/%E5%81%A5%E5%BA%B7/" style="font-size: 15.71px;">健康</a> <a href="/tags/%E5%91%A8%E6%8A%A5/" style="font-size: 14.29px;">周报</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" style="font-size: 18.57px;">工作小结</a> <a href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" style="font-size: 10px;">慢性病</a> <a href="/tags/%E6%9C%88%E6%8A%A5/" style="font-size: 14.29px;">月报</a> <a href="/tags/%E6%9D%83%E9%99%90/" style="font-size: 11.43px;">权限</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" style="font-size: 10px;">科学减肥</a> <a href="/tags/%E8%82%A5%E8%83%96/" style="font-size: 10px;">肥胖</a> <a href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" style="font-size: 10px;">能耗分析</a> <a href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" style="font-size: 10px;">船舶作业</a>
+      <a href="/tags/0AD/" style="font-size: 10px;">0AD</a> <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/AI-Daily/" style="font-size: 10px;">AI Daily</a> <a href="/tags/Agent/" style="font-size: 10px;">Agent</a> <a href="/tags/Automation/" style="font-size: 10px;">Automation</a> <a href="/tags/CLI/" style="font-size: 11.43px;">CLI</a> <a href="/tags/Calendar/" style="font-size: 10px;">Calendar</a> <a href="/tags/Claude-Code/" style="font-size: 10px;">Claude Code</a> <a href="/tags/CodingAgent/" style="font-size: 10px;">CodingAgent</a> <a href="/tags/Cursor/" style="font-size: 11.43px;">Cursor</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/EOS/" style="font-size: 11.43px;">EOS</a> <a href="/tags/Eos/" style="font-size: 10px;">Eos</a> <a href="/tags/Game/" style="font-size: 10px;">Game</a> <a href="/tags/Harness/" style="font-size: 10px;">Harness</a> <a href="/tags/LIMS/" style="font-size: 10px;">LIMS</a> <a href="/tags/MCP/" style="font-size: 10px;">MCP</a> <a href="/tags/MES/" style="font-size: 20px;">MES</a> <a href="/tags/OpenSource/" style="font-size: 10px;">OpenSource</a> <a href="/tags/PowerShell/" style="font-size: 10px;">PowerShell</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RBAC/" style="font-size: 10px;">RBAC</a> <a href="/tags/RTS/" style="font-size: 10px;">RTS</a> <a href="/tags/SQL-Server/" style="font-size: 11.43px;">SQL Server</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/health/" style="font-size: 10px;">health</a> <a href="/tags/mes-ai/" style="font-size: 17.14px;">mes-ai</a> <a href="/tags/mes-chart/" style="font-size: 15.71px;">mes-chart</a> <a href="/tags/mes-energy/" style="font-size: 10px;">mes-energy</a> <a href="/tags/mes-measure/" style="font-size: 10px;">mes-measure</a> <a href="/tags/mes-web/" style="font-size: 10px;">mes-web</a> <a href="/tags/zTree/" style="font-size: 10px;">zTree</a> <a href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" style="font-size: 10px;">中医体质</a> <a href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" style="font-size: 12.86px;">九体医学</a> <a href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" style="font-size: 10px;">交接班</a> <a href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" style="font-size: 10px;">体质调理</a> <a href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" style="font-size: 11.43px;">体重管理</a> <a href="/tags/%E5%81%A5%E5%BA%B7/" style="font-size: 15.71px;">健康</a> <a href="/tags/%E5%91%A8%E6%8A%A5/" style="font-size: 14.29px;">周报</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" style="font-size: 18.57px;">工作小结</a> <a href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" style="font-size: 10px;">慢性病</a> <a href="/tags/%E6%9C%88%E6%8A%A5/" style="font-size: 14.29px;">月报</a> <a href="/tags/%E6%9D%83%E9%99%90/" style="font-size: 11.43px;">权限</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" style="font-size: 10px;">科学减肥</a> <a href="/tags/%E8%82%A5%E8%83%96/" style="font-size: 10px;">肥胖</a> <a href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" style="font-size: 10px;">能耗分析</a> <a href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" style="font-size: 10px;">船舶作业</a>
     </div>
   </div>
 
@@ -1901,6 +2338,10 @@
       <ul>
         
           <li>
+            <a href="/2026/09/10/ai-daily-mes-brief-2026-05-21/">AI Daily · 2026年5月21日 · MES 工作区简报</a>
+          </li>
+        
+          <li>
             <a href="/2026/09/04/mes-weekly-2026-w36/">MES 2026 年第 36 周工作小结</a>
           </li>
         
@@ -1914,10 +2355,6 @@
         
           <li>
             <a href="/2026/08/15/mes-weekly-2026-w33/">MES 2026 年第 33 周工作小结</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/06/mes-weekly-2026-w32/">MES 2026 年第 32 周工作小结</a>
           </li>
         
       </ul>

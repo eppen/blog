@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>AI Daily · 2026年5月21日 · MES 工作区简报 | Hua Liang&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="编码 Agent 产品层加速成熟；Harness（脚手架）仍是能力放大器；检索&#x2F;MCP 成为企业代码库 Agent 的基础设施。  核心摘要 Harness 决定上限：同一模型在不同 Harness 下表现可差近一倍（如 Gemini 3.1 Pro 17.7→31.4），说明 Cursor&#x2F;规则&#x2F;子 Agent 配置值得持续投入，而非只换模型。 编码 Agen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI Daily · 2026年5月21日 · MES 工作区简报">
+<meta property="og:url" content="https://eppencn.com/2026/09/10/ai-daily-mes-brief-2026-05-21/index.html">
+<meta property="og:site_name" content="Hua Liang&#39;s Blog">
+<meta property="og:description" content="编码 Agent 产品层加速成熟；Harness（脚手架）仍是能力放大器；检索&#x2F;MCP 成为企业代码库 Agent 的基础设施。  核心摘要 Harness 决定上限：同一模型在不同 Harness 下表现可差近一倍（如 Gemini 3.1 Pro 17.7→31.4），说明 Cursor&#x2F;规则&#x2F;子 Agent 配置值得持续投入，而非只换模型。 编码 Agen">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://eppencn.com/2026/09/10/ai-daily-mes-brief-2026-05-21/cover.png">
+<meta property="article:published_time" content="2026-09-10T05:51:00.000Z">
+<meta property="article:modified_time" content="2026-09-10T05:51:47.025Z">
+<meta property="article:author" content="eppen">
+<meta property="article:tag" content="AI Daily">
+<meta property="article:tag" content="MES">
+<meta property="article:tag" content="CodingAgent">
+<meta property="article:tag" content="MCP">
+<meta property="article:tag" content="Harness">
+<meta property="article:tag" content="Cursor">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eppencn.com/2026/09/10/ai-daily-mes-brief-2026-05-21/cover.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hua Liang's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<!-- hexo injector head_end start --><meta name="google-adsense-account" content="ca-pub-2045994937692573">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2045994937692573" crossorigin="anonymous"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hua Liang&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://eppencn.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-ai-daily-mes-brief-2026-05-21" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/09/10/ai-daily-mes-brief-2026-05-21/" class="article-date">
+  <time class="dt-published" datetime="2026-09-10T05:51:00.000Z" itemprop="datePublished">2026-09-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      AI Daily · 2026年5月21日 · MES 工作区简报
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <img src="/2026/09/10/ai-daily-mes-brief-2026-05-21/cover.png" class="">
+
+<blockquote>
+<p>编码 Agent 产品层加速成熟；Harness（脚手架）仍是能力放大器；检索&#x2F;MCP 成为企业代码库 Agent 的基础设施。</p>
+</blockquote>
+<h2 id="核心摘要"><a href="#核心摘要" class="headerlink" title="核心摘要"></a>核心摘要</h2><ul>
+<li><strong>Harness 决定上限</strong>：同一模型在不同 Harness 下表现可差近一倍（如 Gemini 3.1 Pro 17.7→31.4），说明 Cursor&#x2F;规则&#x2F;子 Agent 配置值得持续投入，而非只换模型。</li>
+<li><strong>编码 Agent 从 IDE 走向跨设备运维</strong>：Codex 支持手机远程操作已锁屏 Mac、Appshots 抓取应用上下文，预示「长期在线操作员」形态，与 MES 7×24 运维场景有类比价值。</li>
+<li><strong>Agent 架构建议先单 Agent</strong>：工具&#x2F;提示膨胀后再拆 Manager&#x2F;子 Agent；与当前 <code>.cursor/rules</code> + 按需 <code>Task</code> 子代理的模式一致。</li>
+<li><strong>代码库检索 + MCP 一体化</strong>：Weaviate 内置 MCP、LangChain 沙箱 Auth Proxy 与 typed streaming，指向「大单体 Java 多模块仓库」的安全 RAG 方向。</li>
+<li><strong>开源编码模型竞争加剧</strong>：Qwen3.7-Max 在 SWE-bench 等榜单靠前，社区期待 27B&#x2F;35B 开放权重；对本地&#x2F;私有化辅助编码有参考意义。</li>
+</ul>
+<h2 id="与-mes-parent-直接相关"><a href="#与-mes-parent-直接相关" class="headerlink" title="与 mes-parent 直接相关"></a>与 mes-parent 直接相关</h2><h3 id="1-继续投资「Harness」，而不是只追新模型"><a href="#1-继续投资「Harness」，而不是只追新模型" class="headerlink" title="1. 继续投资「Harness」，而不是只追新模型"></a>1. 继续投资「Harness」，而不是只追新模型</h3><ul>
+<li>本仓库已有 <code>.cursor/rules</code>、<code>copilot-instructions.md</code>、HTML&#x2F;JS 版本规范等，本质上就是 <strong>Harness</strong>。</li>
+<li><strong>建议</strong>：把反复出现的坑（如 <code>var vm</code> 勿包在 <code>$(function()&#123;&#125;)</code>、<code>@Transactional</code> 默认 rollback、<code>html</code> 改 JS 必 bump 版本）沉淀进规则，效果往往大于换模型。</li>
+</ul>
+<h3 id="2-子-Agent-用在「模块边界清晰」的任务"><a href="#2-子-Agent-用在「模块边界清晰」的任务" class="headerlink" title="2. 子 Agent 用在「模块边界清晰」的任务"></a>2. 子 Agent 用在「模块边界清晰」的任务</h3><ul>
+<li>行业共识：先单 Agent，再在工具&#x2F;提示失控时拆子 Agent。</li>
+<li><strong>适合 mes-parent</strong>：按模块并行（如 <code>mes-plan</code> 页面规范对齐、<code>mes-document</code> 接口排查），避免一个 Agent 同时改十几个 <code>pom.xml</code>。</li>
+<li><strong>不适合</strong>：跨模块大重构且无明确回滚点——应先拆计划 + 小步提交。</li>
+</ul>
+<h3 id="3-MCP-与大型-Java-单体仓库"><a href="#3-MCP-与大型-Java-单体仓库" class="headerlink" title="3. MCP 与大型 Java 单体仓库"></a>3. MCP 与大型 Java 单体仓库</h3><ul>
+<li>Weaviate 内置 MCP + 混合检索（BM25 + 向量）说明：<strong>Agent 读全仓</strong> 时检索层是产品差异化点。</li>
+<li>本工作区已启用 MySQL&#x2F;MSSQL 等 MCP，可扩展模式：<ul>
+<li><strong>只读 Schema&#x2F;样例查询</strong> 辅助写 Mapper&#x2F;XML</li>
+<li><strong>禁止</strong> Agent 直接执行破坏性 SQL（配合二次确认，与现有删除按钮规范一致）</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-编码-Agent-工作流（可借鉴到侧项目-脚本）"><a href="#4-编码-Agent-工作流（可借鉴到侧项目-脚本）" class="headerlink" title="4. 编码 Agent 工作流（可借鉴到侧项目&#x2F;脚本）"></a>4. 编码 Agent 工作流（可借鉴到侧项目&#x2F;脚本）</h3><p>Reddit 高赞「十年工程师手机 Vibe Coding」要点，经筛选后适用于 <strong>非核心生产路径</strong> 的实验性开发：</p>
+<table>
+<thead>
+<tr>
+<th>实践</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>计划模式先行</td>
+<td>先出计划、人工收窄范围，再自动改代码</td>
+</tr>
+<tr>
+<td>任务粒度</td>
+<td>计划须能「装在脑子里」；过大则拆</td>
+</tr>
+<tr>
+<td>每步 git commit</td>
+<td>与 MES 多模块协作时的回滚习惯一致</td>
+</tr>
+<tr>
+<td>测试与 E2E</td>
+<td>要求 Agent 生成测试；复杂变更加安全&#x2F;测试审查子步骤</td>
+</tr>
+<tr>
+<td>明确非目标</td>
+<td>提示中写清「不要动」的模块&#x2F;文件</td>
+</tr>
+</tbody></table>
+<h3 id="5-培训资源（团队-upskill）"><a href="#5-培训资源（团队-upskill）" class="headerlink" title="5. 培训资源（团队 upskill）"></a>5. 培训资源（团队 upskill）</h3><ul>
+<li>Anthropic 官方免费课程含 <strong>MCP、Claude Code、Plan Mode</strong>（<a target="_blank" rel="noopener" href="https://www.anthropic.com/learn">anthropic.com&#x2F;learn</a>）。</li>
+<li><strong>建议</strong>：前端&#x2F;全栈同事优先 MCP + Agent 课；后端可侧重 Claude API + 企业部署路径。</li>
+</ul>
+<h2 id="工具与产品动态（节选）"><a href="#工具与产品动态（节选）" class="headerlink" title="工具与产品动态（节选）"></a>工具与产品动态（节选）</h2><h3 id="Codex-产品层"><a href="#Codex-产品层" class="headerlink" title="Codex 产品层"></a>Codex 产品层</h3><ul>
+<li><strong>Appshots</strong>：Mac 应用窗口截图+文本，丰富上下文。</li>
+<li><strong>远程 Mac 操作</strong>：手机可在 Mac 锁屏时安全调用应用——长期驻场 Agent 的形态信号。</li>
+<li><strong>团队插件共享、组织分析</strong>：企业落地编码 Agent 时的治理需求。</li>
+</ul>
+<h3 id="LangChain"><a href="#LangChain" class="headerlink" title="LangChain"></a>LangChain</h3><ul>
+<li><strong>Sandbox Auth Proxy</strong>：控制 Agent 与外界边界。</li>
+<li><strong>Typed streaming</strong>：工具&#x2F;子 Agent&#x2F;中断作为一等公民，而非纯 token 流——利于做「MES 操作进度 UI」类投影（若未来做内部 Agent 控制台）。</li>
+</ul>
+<h3 id="其他信号"><a href="#其他信号" class="headerlink" title="其他信号"></a>其他信号</h3><ul>
+<li><strong>mini-swe-agent</strong> 适配 ProgramBench：软件工程 Agent 的 Harness 创新仍在快速迭代。</li>
+<li><strong>turbopuffer</strong> 达 $100M ARR（检索基础设施）：上下文检索是 Agent 产品的核心战场。</li>
+</ul>
+<h2 id="模型与开源生态（节选）"><a href="#模型与开源生态（节选）" class="headerlink" title="模型与开源生态（节选）"></a>模型与开源生态（节选）</h2><ul>
+<li><strong>Qwen3.7-Max</strong>：多项编码&#x2F;Agent 基准靠前；开放权重 27B&#x2F;35B 仍待观望。</li>
+<li>**Cohere Command A+**：Apache 2.0 MoE，面向企业 Agent；社区关注 GGUF 本地部署。</li>
+<li><strong>Meta 向 Heretic 发函</strong>：Llama 衍生权重合规风险上升，选型需注意许可证链。</li>
+</ul>
+<h2 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h2><p>#CodingAgent #MCP #Harness #Cursor #LangChain #Qwen #Java #MES #检索 #子Agent</p>
+<hr>
+<p>数据来源: <a target="_blank" rel="noopener" href="https://news.smol.ai/issues/26-05-21-not-much/">smol.ai · 2026-05-21</a><br>生成时间: 2026-05-23（由 ai-daily 插件拉取并针对 mes-parent 裁剪）</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://eppencn.com/2026/09/10/ai-daily-mes-brief-2026-05-21/" data-id="cmtv41dur000414v57m90dx4z" data-title="AI Daily · 2026年5月21日 · MES 工作区简报" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI-Daily/" rel="tag">AI Daily</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CodingAgent/" rel="tag">CodingAgent</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cursor/" rel="tag">Cursor</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Harness/" rel="tag">Harness</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MCP/" rel="tag">MCP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/09/04/mes-weekly-2026-w36/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MES 2026 年第 36 周工作小结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/0AD/" rel="tag">0AD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Daily/" rel="tag">AI Daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Agent/" rel="tag">Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Automation/" rel="tag">Automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CLI/" rel="tag">CLI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Calendar/" rel="tag">Calendar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Claude-Code/" rel="tag">Claude Code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CodingAgent/" rel="tag">CodingAgent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cursor/" rel="tag">Cursor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EOS/" rel="tag">EOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eos/" rel="tag">Eos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Harness/" rel="tag">Harness</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LIMS/" rel="tag">LIMS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCP/" rel="tag">MCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenSource/" rel="tag">OpenSource</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PowerShell/" rel="tag">PowerShell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RBAC/" rel="tag">RBAC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTS/" rel="tag">RTS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/health/" rel="tag">health</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-energy/" rel="tag">mes-energy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-measure/" rel="tag">mes-measure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-web/" rel="tag">mes-web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zTree/" rel="tag">zTree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" rel="tag">中医体质</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" rel="tag">九体医学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" rel="tag">交接班</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" rel="tag">体质调理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" rel="tag">体重管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%81%A5%E5%BA%B7/" rel="tag">健康</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" rel="tag">慢性病</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" rel="tag">科学减肥</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%82%A5%E8%83%96/" rel="tag">肥胖</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" rel="tag">能耗分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" rel="tag">船舶作业</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/0AD/" style="font-size: 10px;">0AD</a> <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/AI-Daily/" style="font-size: 10px;">AI Daily</a> <a href="/tags/Agent/" style="font-size: 10px;">Agent</a> <a href="/tags/Automation/" style="font-size: 10px;">Automation</a> <a href="/tags/CLI/" style="font-size: 11.43px;">CLI</a> <a href="/tags/Calendar/" style="font-size: 10px;">Calendar</a> <a href="/tags/Claude-Code/" style="font-size: 10px;">Claude Code</a> <a href="/tags/CodingAgent/" style="font-size: 10px;">CodingAgent</a> <a href="/tags/Cursor/" style="font-size: 11.43px;">Cursor</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/EOS/" style="font-size: 11.43px;">EOS</a> <a href="/tags/Eos/" style="font-size: 10px;">Eos</a> <a href="/tags/Game/" style="font-size: 10px;">Game</a> <a href="/tags/Harness/" style="font-size: 10px;">Harness</a> <a href="/tags/LIMS/" style="font-size: 10px;">LIMS</a> <a href="/tags/MCP/" style="font-size: 10px;">MCP</a> <a href="/tags/MES/" style="font-size: 20px;">MES</a> <a href="/tags/OpenSource/" style="font-size: 10px;">OpenSource</a> <a href="/tags/PowerShell/" style="font-size: 10px;">PowerShell</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RBAC/" style="font-size: 10px;">RBAC</a> <a href="/tags/RTS/" style="font-size: 10px;">RTS</a> <a href="/tags/SQL-Server/" style="font-size: 11.43px;">SQL Server</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/health/" style="font-size: 10px;">health</a> <a href="/tags/mes-ai/" style="font-size: 17.14px;">mes-ai</a> <a href="/tags/mes-chart/" style="font-size: 15.71px;">mes-chart</a> <a href="/tags/mes-energy/" style="font-size: 10px;">mes-energy</a> <a href="/tags/mes-measure/" style="font-size: 10px;">mes-measure</a> <a href="/tags/mes-web/" style="font-size: 10px;">mes-web</a> <a href="/tags/zTree/" style="font-size: 10px;">zTree</a> <a href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" style="font-size: 10px;">中医体质</a> <a href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" style="font-size: 12.86px;">九体医学</a> <a href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" style="font-size: 10px;">交接班</a> <a href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" style="font-size: 10px;">体质调理</a> <a href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" style="font-size: 11.43px;">体重管理</a> <a href="/tags/%E5%81%A5%E5%BA%B7/" style="font-size: 15.71px;">健康</a> <a href="/tags/%E5%91%A8%E6%8A%A5/" style="font-size: 14.29px;">周报</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" style="font-size: 18.57px;">工作小结</a> <a href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" style="font-size: 10px;">慢性病</a> <a href="/tags/%E6%9C%88%E6%8A%A5/" style="font-size: 14.29px;">月报</a> <a href="/tags/%E6%9D%83%E9%99%90/" style="font-size: 11.43px;">权限</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" style="font-size: 10px;">科学减肥</a> <a href="/tags/%E8%82%A5%E8%83%96/" style="font-size: 10px;">肥胖</a> <a href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" style="font-size: 10px;">能耗分析</a> <a href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" style="font-size: 10px;">船舶作业</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/09/">September 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">June 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">March 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/12/">December 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">July 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">May 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/09/">September 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">August 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/09/10/ai-daily-mes-brief-2026-05-21/">AI Daily · 2026年5月21日 · MES 工作区简报</a>
+          </li>
+        
+          <li>
+            <a href="/2026/09/04/mes-weekly-2026-w36/">MES 2026 年第 36 周工作小结</a>
+          </li>
+        
+          <li>
+            <a href="/2026/08/31/mes-weekly-2026-w35/">MES 2026 年第 35 周工作小结</a>
+          </li>
+        
+          <li>
+            <a href="/2026/08/25/mes-monthly-2026-08/">MES 2026 年 8 月工作小结</a>
+          </li>
+        
+          <li>
+            <a href="/2026/08/15/mes-weekly-2026-w33/">MES 2026 年第 33 周工作小结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 eppen<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+<!-- hexo injector body_end start --><div class="adsense-wrap" style="margin:24px 0;text-align:center;min-height:90px;overflow:hidden;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2045994937692573" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><!-- hexo injector body_end end --></body>
+</html>
