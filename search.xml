@@ -77,102 +77,6 @@
       </tags>
   </entry>
   <entry>
-    <title>AI Daily · 2026年5月21日 · MES 工作区简报</title>
-    <url>/2026/09/10/ai-daily-mes-brief-2026-05-21/</url>
-    <content><![CDATA[<img src="/2026/09/10/ai-daily-mes-brief-2026-05-21/cover.png" class="">
-
-<blockquote>
-<p>编码 Agent 产品层加速成熟；Harness（脚手架）仍是能力放大器；检索&#x2F;MCP 成为企业代码库 Agent 的基础设施。</p>
-</blockquote>
-<h2 id="核心摘要"><a href="#核心摘要" class="headerlink" title="核心摘要"></a>核心摘要</h2><ul>
-<li><strong>Harness 决定上限</strong>：同一模型在不同 Harness 下表现可差近一倍（如 Gemini 3.1 Pro 17.7→31.4），说明 Cursor&#x2F;规则&#x2F;子 Agent 配置值得持续投入，而非只换模型。</li>
-<li><strong>编码 Agent 从 IDE 走向跨设备运维</strong>：Codex 支持手机远程操作已锁屏 Mac、Appshots 抓取应用上下文，预示「长期在线操作员」形态，与 MES 7×24 运维场景有类比价值。</li>
-<li><strong>Agent 架构建议先单 Agent</strong>：工具&#x2F;提示膨胀后再拆 Manager&#x2F;子 Agent；与当前 <code>.cursor/rules</code> + 按需 <code>Task</code> 子代理的模式一致。</li>
-<li><strong>代码库检索 + MCP 一体化</strong>：Weaviate 内置 MCP、LangChain 沙箱 Auth Proxy 与 typed streaming，指向「大单体 Java 多模块仓库」的安全 RAG 方向。</li>
-<li><strong>开源编码模型竞争加剧</strong>：Qwen3.7-Max 在 SWE-bench 等榜单靠前，社区期待 27B&#x2F;35B 开放权重；对本地&#x2F;私有化辅助编码有参考意义。</li>
-</ul>
-<h2 id="与-mes-parent-直接相关"><a href="#与-mes-parent-直接相关" class="headerlink" title="与 mes-parent 直接相关"></a>与 mes-parent 直接相关</h2><h3 id="1-继续投资「Harness」，而不是只追新模型"><a href="#1-继续投资「Harness」，而不是只追新模型" class="headerlink" title="1. 继续投资「Harness」，而不是只追新模型"></a>1. 继续投资「Harness」，而不是只追新模型</h3><ul>
-<li>本仓库已有 <code>.cursor/rules</code>、<code>copilot-instructions.md</code>、HTML&#x2F;JS 版本规范等，本质上就是 <strong>Harness</strong>。</li>
-<li><strong>建议</strong>：把反复出现的坑（如 <code>var vm</code> 勿包在 <code>$(function()&#123;&#125;)</code>、<code>@Transactional</code> 默认 rollback、<code>html</code> 改 JS 必 bump 版本）沉淀进规则，效果往往大于换模型。</li>
-</ul>
-<h3 id="2-子-Agent-用在「模块边界清晰」的任务"><a href="#2-子-Agent-用在「模块边界清晰」的任务" class="headerlink" title="2. 子 Agent 用在「模块边界清晰」的任务"></a>2. 子 Agent 用在「模块边界清晰」的任务</h3><ul>
-<li>行业共识：先单 Agent，再在工具&#x2F;提示失控时拆子 Agent。</li>
-<li><strong>适合 mes-parent</strong>：按模块并行（如 <code>mes-plan</code> 页面规范对齐、<code>mes-document</code> 接口排查），避免一个 Agent 同时改十几个 <code>pom.xml</code>。</li>
-<li><strong>不适合</strong>：跨模块大重构且无明确回滚点——应先拆计划 + 小步提交。</li>
-</ul>
-<h3 id="3-MCP-与大型-Java-单体仓库"><a href="#3-MCP-与大型-Java-单体仓库" class="headerlink" title="3. MCP 与大型 Java 单体仓库"></a>3. MCP 与大型 Java 单体仓库</h3><ul>
-<li>Weaviate 内置 MCP + 混合检索（BM25 + 向量）说明：<strong>Agent 读全仓</strong> 时检索层是产品差异化点。</li>
-<li>本工作区已启用 MySQL&#x2F;MSSQL 等 MCP，可扩展模式：<ul>
-<li><strong>只读 Schema&#x2F;样例查询</strong> 辅助写 Mapper&#x2F;XML</li>
-<li><strong>禁止</strong> Agent 直接执行破坏性 SQL（配合二次确认，与现有删除按钮规范一致）</li>
-</ul>
-</li>
-</ul>
-<h3 id="4-编码-Agent-工作流（可借鉴到侧项目-脚本）"><a href="#4-编码-Agent-工作流（可借鉴到侧项目-脚本）" class="headerlink" title="4. 编码 Agent 工作流（可借鉴到侧项目&#x2F;脚本）"></a>4. 编码 Agent 工作流（可借鉴到侧项目&#x2F;脚本）</h3><p>Reddit 高赞「十年工程师手机 Vibe Coding」要点，经筛选后适用于 <strong>非核心生产路径</strong> 的实验性开发：</p>
-<table>
-<thead>
-<tr>
-<th>实践</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>计划模式先行</td>
-<td>先出计划、人工收窄范围，再自动改代码</td>
-</tr>
-<tr>
-<td>任务粒度</td>
-<td>计划须能「装在脑子里」；过大则拆</td>
-</tr>
-<tr>
-<td>每步 git commit</td>
-<td>与 MES 多模块协作时的回滚习惯一致</td>
-</tr>
-<tr>
-<td>测试与 E2E</td>
-<td>要求 Agent 生成测试；复杂变更加安全&#x2F;测试审查子步骤</td>
-</tr>
-<tr>
-<td>明确非目标</td>
-<td>提示中写清「不要动」的模块&#x2F;文件</td>
-</tr>
-</tbody></table>
-<h3 id="5-培训资源（团队-upskill）"><a href="#5-培训资源（团队-upskill）" class="headerlink" title="5. 培训资源（团队 upskill）"></a>5. 培训资源（团队 upskill）</h3><ul>
-<li>Anthropic 官方免费课程含 <strong>MCP、Claude Code、Plan Mode</strong>（<a href="https://www.anthropic.com/learn">anthropic.com&#x2F;learn</a>）。</li>
-<li><strong>建议</strong>：前端&#x2F;全栈同事优先 MCP + Agent 课；后端可侧重 Claude API + 企业部署路径。</li>
-</ul>
-<h2 id="工具与产品动态（节选）"><a href="#工具与产品动态（节选）" class="headerlink" title="工具与产品动态（节选）"></a>工具与产品动态（节选）</h2><h3 id="Codex-产品层"><a href="#Codex-产品层" class="headerlink" title="Codex 产品层"></a>Codex 产品层</h3><ul>
-<li><strong>Appshots</strong>：Mac 应用窗口截图+文本，丰富上下文。</li>
-<li><strong>远程 Mac 操作</strong>：手机可在 Mac 锁屏时安全调用应用——长期驻场 Agent 的形态信号。</li>
-<li><strong>团队插件共享、组织分析</strong>：企业落地编码 Agent 时的治理需求。</li>
-</ul>
-<h3 id="LangChain"><a href="#LangChain" class="headerlink" title="LangChain"></a>LangChain</h3><ul>
-<li><strong>Sandbox Auth Proxy</strong>：控制 Agent 与外界边界。</li>
-<li><strong>Typed streaming</strong>：工具&#x2F;子 Agent&#x2F;中断作为一等公民，而非纯 token 流——利于做「MES 操作进度 UI」类投影（若未来做内部 Agent 控制台）。</li>
-</ul>
-<h3 id="其他信号"><a href="#其他信号" class="headerlink" title="其他信号"></a>其他信号</h3><ul>
-<li><strong>mini-swe-agent</strong> 适配 ProgramBench：软件工程 Agent 的 Harness 创新仍在快速迭代。</li>
-<li><strong>turbopuffer</strong> 达 $100M ARR（检索基础设施）：上下文检索是 Agent 产品的核心战场。</li>
-</ul>
-<h2 id="模型与开源生态（节选）"><a href="#模型与开源生态（节选）" class="headerlink" title="模型与开源生态（节选）"></a>模型与开源生态（节选）</h2><ul>
-<li><strong>Qwen3.7-Max</strong>：多项编码&#x2F;Agent 基准靠前；开放权重 27B&#x2F;35B 仍待观望。</li>
-<li>**Cohere Command A+**：Apache 2.0 MoE，面向企业 Agent；社区关注 GGUF 本地部署。</li>
-<li><strong>Meta 向 Heretic 发函</strong>：Llama 衍生权重合规风险上升，选型需注意许可证链。</li>
-</ul>
-<h2 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h2><p>#CodingAgent #MCP #Harness #Cursor #LangChain #Qwen #Java #MES #检索 #子Agent</p>
-<hr>
-<p>数据来源: <a href="https://news.smol.ai/issues/26-05-21-not-much/">smol.ai · 2026-05-21</a><br>生成时间: 2026-05-23（由 ai-daily 插件拉取并针对 mes-parent 裁剪）</p>
-]]></content>
-      <tags>
-        <tag>AI Daily</tag>
-        <tag>MES</tag>
-        <tag>CodingAgent</tag>
-        <tag>MCP</tag>
-        <tag>Harness</tag>
-        <tag>Cursor</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>2026 work calendar</title>
     <url>/2025/12/10/2026-work-calendar/</url>
     <content><![CDATA[<p>介绍一个非常实用的开源项目：<a href="https://github.com/eppen/2026-work-calendar">2026-work-calendar</a>。</p>
@@ -377,246 +281,99 @@
 ]]></content>
   </entry>
   <entry>
-    <title>classicical-chinese-translation-private-policy</title>
-    <url>/2025/06/23/classicical-chinese-translation-private-policy/</url>
-    <content><![CDATA[<h1 id="文言文现代翻译助手-隐私权政策"><a href="#文言文现代翻译助手-隐私权政策" class="headerlink" title="文言文现代翻译助手 - 隐私权政策"></a>文言文现代翻译助手 - 隐私权政策</h1><p><strong>生效日期：</strong> 2024年12月19日</p>
-<p><strong>最后更新：</strong> 2024年12月19日</p>
-<h2 id="📋-政策概述"><a href="#📋-政策概述" class="headerlink" title="📋 政策概述"></a>📋 政策概述</h2><p>文言文现代翻译助手（以下简称”本插件”）致力于保护用户的隐私权。本隐私权政策详细说明了我们如何收集、使用、存储和保护您的信息。</p>
-<p><strong>重要声明：本插件不会收集、存储或传输任何个人身份信息。</strong></p>
-<h2 id="🔍-信息收集与使用"><a href="#🔍-信息收集与使用" class="headerlink" title="🔍 信息收集与使用"></a>🔍 信息收集与使用</h2><h3 id="我们收集什么信息"><a href="#我们收集什么信息" class="headerlink" title="我们收集什么信息"></a>我们收集什么信息</h3><h4 id="1-用户主动提供的信息"><a href="#1-用户主动提供的信息" class="headerlink" title="1. 用户主动提供的信息"></a>1. 用户主动提供的信息</h4><p>-<strong>API密钥</strong>：您输入的DeepSeek API密钥</p>
-<p>-<strong>设置偏好</strong>：插件启用&#x2F;禁用状态等功能设置</p>
-<h4 id="2-翻译内容"><a href="#2-翻译内容" class="headerlink" title="2. 翻译内容"></a>2. 翻译内容</h4><p>-<strong>待翻译文本</strong>：您选择翻译或页面中识别的文言文内容</p>
-<p>-<strong>翻译结果</strong>：从DeepSeek API返回的翻译结果</p>
-<h4 id="3-我们不收集的信息"><a href="#3-我们不收集的信息" class="headerlink" title="3. 我们不收集的信息"></a>3. 我们不收集的信息</h4><ul>
-<li>❌ 个人身份信息（姓名、邮箱、电话等）</li>
-<li>❌ 浏览历史记录</li>
-<li>❌ 网站登录信息</li>
-<li>❌ 其他网站的用户数据</li>
-<li>❌ 设备信息或位置信息</li>
-</ul>
-<h3 id="信息使用目的"><a href="#信息使用目的" class="headerlink" title="信息使用目的"></a>信息使用目的</h3><p>我们收集的信息仅用于以下目的：</p>
-<p>1.<strong>提供翻译服务</strong>：将文言文内容发送至DeepSeek API进行翻译</p>
-<p>2.<strong>保存用户设置</strong>：在您的设备上本地保存API密钥和功能偏好</p>
-<p>3.<strong>改善用户体验</strong>：确保插件功能正常运行</p>
-<h2 id="💾-数据存储与安全"><a href="#💾-数据存储与安全" class="headerlink" title="💾 数据存储与安全"></a>💾 数据存储与安全</h2><h3 id="本地存储"><a href="#本地存储" class="headerlink" title="本地存储"></a>本地存储</h3><p>-<strong>API密钥</strong>：使用Chrome扩展存储API在您的设备上本地保存</p>
-<p>-<strong>用户设置</strong>：本地存储，不会上传到任何服务器</p>
-<p>-<strong>存储位置</strong>：仅存储在您的浏览器中，其他人无法访问</p>
-<h3 id="第三方服务"><a href="#第三方服务" class="headerlink" title="第三方服务"></a>第三方服务</h3><p>-<strong>DeepSeek API</strong>：翻译请求会发送到DeepSeek的服务器</p>
-<p>-<strong>数据传输</strong>：仅传输待翻译的文本内容</p>
-<p>-<strong>加密传输</strong>：所有API请求均通过HTTPS加密传输</p>
-<h3 id="数据安全措施"><a href="#数据安全措施" class="headerlink" title="数据安全措施"></a>数据安全措施</h3><p>1.<strong>本地加密存储</strong>：敏感信息在本地加密保存</p>
-<p>2.<strong>HTTPS传输</strong>：所有网络请求使用SSL&#x2F;TLS加密</p>
-<p>3.<strong>最小权限原则</strong>：插件仅申请必要的浏览器权限</p>
-<p>4.<strong>无服务器存储</strong>：我们不运营任何服务器存储用户数据</p>
-<h2 id="🌐-第三方服务说明"><a href="#🌐-第三方服务说明" class="headerlink" title="🌐 第三方服务说明"></a>🌐 第三方服务说明</h2><h3 id="DeepSeek-API服务"><a href="#DeepSeek-API服务" class="headerlink" title="DeepSeek API服务"></a>DeepSeek API服务</h3><p>-<strong>服务提供商</strong>：DeepSeek (<a href="https://platform.deepseek.com/">https://platform.deepseek.com/</a>)</p>
-<p>-<strong>数据传输</strong>：仅传输您选择翻译的文言文内容</p>
-<p>-<strong>用途</strong>：获取现代汉语翻译结果</p>
-<p>-<strong>隐私政策</strong>：请查看DeepSeek的隐私政策了解其数据处理方式</p>
-<h3 id="不与其他第三方共享数据"><a href="#不与其他第三方共享数据" class="headerlink" title="不与其他第三方共享数据"></a>不与其他第三方共享数据</h3><ul>
-<li>除DeepSeek翻译服务外，我们不会与任何其他第三方共享您的数据</li>
-<li>我们不会出售、租赁或以其他方式提供您的信息给第三方</li>
-</ul>
-<h2 id="🔒-权限说明"><a href="#🔒-权限说明" class="headerlink" title="🔒 权限说明"></a>🔒 权限说明</h2><p>本插件申请的浏览器权限及其用途：</p>
-<h3 id="必需权限"><a href="#必需权限" class="headerlink" title="必需权限"></a>必需权限</h3><p>1.<strong>activeTab</strong></p>
-<p>   -<strong>用途</strong>：在当前网页中识别和翻译文言文内容</p>
-<p>   -<strong>范围</strong>：仅限当前活动标签页</p>
-<p>   -<strong>数据访问</strong>：仅读取页面中的文本内容用于翻译</p>
-<p>2.<strong>storage</strong></p>
-<p>   -<strong>用途</strong>：本地保存API密钥和用户设置</p>
-<p>   -<strong>范围</strong>：仅限本插件的存储空间</p>
-<p>   -<strong>数据类型</strong>：API密钥、启用状态等设置信息</p>
-<p>3.<strong>contextMenus</strong></p>
-<p>   -<strong>用途</strong>：提供右键菜单翻译功能</p>
-<p>   -<strong>数据访问</strong>：仅访问用户选中的文本内容</p>
-<p>4.<strong>notifications</strong></p>
-<p>   -<strong>用途</strong>：显示操作状态和错误提示</p>
-<p>   -<strong>数据传输</strong>：无，仅本地显示通知</p>
-<h3 id="主机权限"><a href="#主机权限" class="headerlink" title="主机权限"></a>主机权限</h3><p>1.<strong><a href="https://api.deepseek.com/">https://api.deepseek.com/</a></strong>*</p>
-<p>   -<strong>用途</strong>：访问DeepSeek翻译API服务</p>
-<p>   -<strong>数据传输</strong>：仅传输待翻译的文言文内容</p>
-<p>   -<strong>必要性</strong>：翻译功能的核心依赖</p>
-<h2 id="👤-用户控制权"><a href="#👤-用户控制权" class="headerlink" title="👤 用户控制权"></a>👤 用户控制权</h2><h3 id="您可以控制的内容"><a href="#您可以控制的内容" class="headerlink" title="您可以控制的内容"></a>您可以控制的内容</h3><p>1.<strong>API密钥管理</strong></p>
-<ul>
-<li>随时修改或删除您的API密钥</li>
-<li>停止使用插件将自动停止所有数据传输</li>
-</ul>
-<p>2.<strong>功能控制</strong></p>
-<ul>
-<li>随时启用或禁用翻译功能</li>
-<li>选择性翻译特定内容</li>
-</ul>
-<p>3.<strong>数据删除</strong></p>
-<ul>
-<li>卸载插件将自动删除所有本地存储的数据</li>
-<li>可以手动清除浏览器扩展数据</li>
-</ul>
-<h3 id="选择退出"><a href="#选择退出" class="headerlink" title="选择退出"></a>选择退出</h3><p>-<strong>完全停用</strong>：在扩展程序管理页面禁用或卸载插件</p>
-<p>-<strong>临时停用</strong>：在插件设置中关闭翻译功能</p>
-<p>-<strong>选择性使用</strong>：仅在需要时手动翻译选定内容</p>
-<h2 id="🔄-数据保留政策"><a href="#🔄-数据保留政策" class="headerlink" title="🔄 数据保留政策"></a>🔄 数据保留政策</h2><h3 id="本地数据"><a href="#本地数据" class="headerlink" title="本地数据"></a>本地数据</h3><p>-<strong>保留期限</strong>：直到您主动删除或卸载插件</p>
-<p>-<strong>自动清理</strong>：卸载插件时自动清除所有本地数据</p>
-<p>-<strong>用户控制</strong>：您可以随时清除存储的设置</p>
-<h3 id="传输数据"><a href="#传输数据" class="headerlink" title="传输数据"></a>传输数据</h3><p>-<strong>API请求</strong>：翻译请求发送后不在本地保留</p>
-<p>-<strong>翻译结果</strong>：仅在页面显示，不永久存储</p>
-<p>-<strong>会话数据</strong>：浏览器关闭后自动清除</p>
-<h2 id="👶-儿童隐私保护"><a href="#👶-儿童隐私保护" class="headerlink" title="👶 儿童隐私保护"></a>👶 儿童隐私保护</h2><ul>
-<li>本插件不专门面向13岁以下儿童设计</li>
-<li>我们不会故意收集儿童的个人信息</li>
-<li>如果发现意外收集了儿童信息，我们会立即删除</li>
-</ul>
-<h2 id="🌍-国际数据传输"><a href="#🌍-国际数据传输" class="headerlink" title="🌍 国际数据传输"></a>🌍 国际数据传输</h2><p>-<strong>数据传输</strong>：翻译请求可能涉及跨境数据传输（发送至DeepSeek服务器）</p>
-<p>-<strong>传输内容</strong>：仅限待翻译的文言文内容</p>
-<p>-<strong>保护措施</strong>：所有传输均通过加密通道进行</p>
-<h2 id="📧-联系我们"><a href="#📧-联系我们" class="headerlink" title="📧 联系我们"></a>📧 联系我们</h2><p>如果您对本隐私政策有任何疑问或建议，请通过以下方式联系我们：</p>
-<p>-<strong>GitHub Issues</strong>：<a href="https://github.com/eppen/ClassicalChineseTranslation/issues">https://github.com/eppen/ClassicalChineseTranslation/issues</a></p>
-<p>-<strong>项目主页</strong>：<a href="https://github.com/eppen/ClassicalChineseTranslation">https://github.com/eppen/ClassicalChineseTranslation</a></p>
-<p>-<strong>邮箱联系</strong>：通过GitHub项目页面联系开发者</p>
-<h2 id="🔄-政策更新"><a href="#🔄-政策更新" class="headerlink" title="🔄 政策更新"></a>🔄 政策更新</h2><h3 id="更新通知"><a href="#更新通知" class="headerlink" title="更新通知"></a>更新通知</h3><ul>
-<li>我们可能会不定期更新本隐私政策</li>
-<li>重大变更将通过插件更新或GitHub通知用户</li>
-<li>建议定期查看最新版本的隐私政策</li>
-</ul>
-<h3 id="更新历史"><a href="#更新历史" class="headerlink" title="更新历史"></a>更新历史</h3><p>-<strong>2024年12月19日</strong>：初始版本发布</p>
-<h3 id="变更生效"><a href="#变更生效" class="headerlink" title="变更生效"></a>变更生效</h3><ul>
-<li>政策更新后继续使用插件即表示您接受新的隐私政策</li>
-<li>如不同意更新内容，请停止使用本插件</li>
-</ul>
-<h2 id="📜-法律依据"><a href="#📜-法律依据" class="headerlink" title="📜 法律依据"></a>📜 法律依据</h2><p>本隐私政策的制定基于：</p>
-<ul>
-<li>《中华人民共和国个人信息保护法》</li>
-<li>《欧盟通用数据保护条例》(GDPR)</li>
-<li>Chrome网上应用店隐私政策要求</li>
-<li>其他适用的隐私保护法律法规</li>
-</ul>
-<h2 id="✅-用户权利"><a href="#✅-用户权利" class="headerlink" title="✅ 用户权利"></a>✅ 用户权利</h2><p>根据适用的隐私法律，您享有以下权利：</p>
-<p>1.<strong>知情权</strong>：了解我们如何处理您的信息</p>
-<p>2.<strong>访问权</strong>：查看我们存储的关于您的信息</p>
-<p>3.<strong>更正权</strong>：修正不准确的个人信息</p>
-<p>4.<strong>删除权</strong>：要求删除您的个人信息</p>
-<p>5.<strong>限制处理权</strong>：限制我们处理您信息的方式</p>
-<p>6.<strong>数据可携权</strong>：获取您的数据副本</p>
-<p>7.<strong>反对权</strong>：反对某些类型的数据处理</p>
-<p><strong>行使权利</strong>：由于本插件不收集个人身份信息，大部分权利可通过卸载插件或清除浏览器数据来实现。</p>
-<h2 id="🛡️-安全事件响应"><a href="#🛡️-安全事件响应" class="headerlink" title="🛡️ 安全事件响应"></a>🛡️ 安全事件响应</h2><h3 id="安全措施"><a href="#安全措施" class="headerlink" title="安全措施"></a>安全措施</h3><ul>
-<li>我们采用行业标准的安全措施保护数据</li>
-<li>定期更新插件以修复安全漏洞</li>
-<li>监控潜在的安全威胁</li>
-</ul>
-<h3 id="事件响应"><a href="#事件响应" class="headerlink" title="事件响应"></a>事件响应</h3><ul>
-<li>如发现安全漏洞，我们将立即采取补救措施</li>
-<li>及时发布安全更新</li>
-<li>必要时通知受影响的用户</li>
-</ul>
-<h2 id="📊-数据最小化原则"><a href="#📊-数据最小化原则" class="headerlink" title="📊 数据最小化原则"></a>📊 数据最小化原则</h2><p>我们严格遵循数据最小化原则：</p>
-<p>-<strong>目的限制</strong>：仅收集实现功能所必需的数据</p>
-<p>-<strong>数量最小</strong>：收集的数据量保持在最低限度</p>
-<p>-<strong>时间最短</strong>：不会无限期保留数据</p>
-<p>-<strong>范围最窄</strong>：仅在必要范围内使用数据</p>
-<hr>
-<p><strong>本隐私政策是我们对用户隐私保护承诺的体现。我们将持续改进隐私保护措施，确保用户信息安全。</strong></p>
-<p><em>如有任何疑问，欢迎随时联系我们。感谢您对文言文现代翻译助手的信任与支持！</em></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>Cursor Agent CLI 报错 No version directories found 的排查与修复</title>
-    <url>/2026/06/19/cursor-agent-no-version-directories-fix/</url>
-    <content><![CDATA[<p>在 Windows 终端执行 <code>agent</code> 或 <code>cursor-agent</code> 时，可能遇到如下错误：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">C:\Users\liuhualiang\AppData\Local\cursor-agent\agent.ps1 : No version directories found in C:\Users\liuhualiang\AppData\Local\cursor-agent</span><br><span class="line">所在位置 行:1 字符: 1</span><br><span class="line">+ agent</span><br><span class="line">+ ~~~~~</span><br><span class="line">    + CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException</span><br><span class="line">    + FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException,agent.ps1</span><br></pre></td></tr></table></figure>
+    <title>AI Daily · 2026年5月21日 · MES 工作区简报</title>
+    <url>/2026/09/10/ai-daily-mes-brief-2026-05-21/</url>
+    <content><![CDATA[<img src="/2026/09/10/ai-daily-mes-brief-2026-05-21/cover.png" class="">
 
-<p>本文记录该问题的现象、根因、修复方式与临时绕过方法。</p>
-<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><ul>
-<li><code>agent</code>、<code>cursor-agent</code> 命令均无法启动</li>
-<li>报错提示在 <code>%LOCALAPPDATA%\cursor-agent</code> 下找不到版本目录</li>
-<li>但手动查看 <code>versions</code> 子目录，实际存在多个版本文件夹，例如：</li>
+<blockquote>
+<p>编码 Agent 产品层加速成熟；Harness（脚手架）仍是能力放大器；检索&#x2F;MCP 成为企业代码库 Agent 的基础设施。</p>
+</blockquote>
+<h2 id="核心摘要"><a href="#核心摘要" class="headerlink" title="核心摘要"></a>核心摘要</h2><ul>
+<li><strong>Harness 决定上限</strong>：同一模型在不同 Harness 下表现可差近一倍（如 Gemini 3.1 Pro 17.7→31.4），说明 Cursor&#x2F;规则&#x2F;子 Agent 配置值得持续投入，而非只换模型。</li>
+<li><strong>编码 Agent 从 IDE 走向跨设备运维</strong>：Codex 支持手机远程操作已锁屏 Mac、Appshots 抓取应用上下文，预示「长期在线操作员」形态，与 MES 7×24 运维场景有类比价值。</li>
+<li><strong>Agent 架构建议先单 Agent</strong>：工具&#x2F;提示膨胀后再拆 Manager&#x2F;子 Agent；与当前 <code>.cursor/rules</code> + 按需 <code>Task</code> 子代理的模式一致。</li>
+<li><strong>代码库检索 + MCP 一体化</strong>：Weaviate 内置 MCP、LangChain 沙箱 Auth Proxy 与 typed streaming，指向「大单体 Java 多模块仓库」的安全 RAG 方向。</li>
+<li><strong>开源编码模型竞争加剧</strong>：Qwen3.7-Max 在 SWE-bench 等榜单靠前，社区期待 27B&#x2F;35B 开放权重；对本地&#x2F;私有化辅助编码有参考意义。</li>
 </ul>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">C:\Users\liuhualiang\AppData\Local\cursor-agent\versions\</span><br><span class="line">├── 2026.06.12-19-59-36-f6aba9a</span><br><span class="line">├── 2026.06.15-03-48-54-da23e37</span><br><span class="line">└── 2026.06.16-20-30-07-a07d3ac</span><br></pre></td></tr></table></figure>
-
-<h2 id="根因"><a href="#根因" class="headerlink" title="根因"></a>根因</h2><p><code>agent.ps1</code> 与 <code>cursor-agent.ps1</code> 启动时会扫描 <code>versions</code> 目录，并用正则过滤合法版本名：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>该正则只匹配<strong>旧格式</strong>：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">YYYY.MM.DD-commit</span><br></pre></td></tr></table></figure>
-
-<p>例如：<code>2026.06.16-a07d3ac</code></p>
-<p>而 Cursor Agent 更新后的目录名变为<strong>新格式</strong>，中间多了构建时间：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">YYYY.MM.DD-HH-MM-SS-commit</span><br></pre></td></tr></table></figure>
-
-<p>例如：<code>2026.06.16-20-30-07-a07d3ac</code></p>
-<p>因此所有现有版本目录都被过滤掉，脚本误判为「没有版本目录」。</p>
-<h2 id="修复方法"><a href="#修复方法" class="headerlink" title="修复方法"></a>修复方法</h2><p>编辑以下两个文件（内容相同，需同步修改）：</p>
-<ul>
-<li><code>%LOCALAPPDATA%\cursor-agent\agent.ps1</code></li>
-<li><code>%LOCALAPPDATA%\cursor-agent\cursor-agent.ps1</code></li>
+<h2 id="与-mes-parent-直接相关"><a href="#与-mes-parent-直接相关" class="headerlink" title="与 mes-parent 直接相关"></a>与 mes-parent 直接相关</h2><h3 id="1-继续投资「Harness」，而不是只追新模型"><a href="#1-继续投资「Harness」，而不是只追新模型" class="headerlink" title="1. 继续投资「Harness」，而不是只追新模型"></a>1. 继续投资「Harness」，而不是只追新模型</h3><ul>
+<li>本仓库已有 <code>.cursor/rules</code>、<code>copilot-instructions.md</code>、HTML&#x2F;JS 版本规范等，本质上就是 <strong>Harness</strong>。</li>
+<li><strong>建议</strong>：把反复出现的坑（如 <code>var vm</code> 勿包在 <code>$(function()&#123;&#125;)</code>、<code>@Transactional</code> 默认 rollback、<code>html</code> 改 JS 必 bump 版本）沉淀进规则，效果往往大于换模型。</li>
 </ul>
-<h3 id="1-更新版本目录匹配正则"><a href="#1-更新版本目录匹配正则" class="headerlink" title="1. 更新版本目录匹配正则"></a>1. 更新版本目录匹配正则</h3><p>将原来的：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>改为同时兼容新旧格式：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;(-\d&#123;1,2&#125;-\d&#123;1,2&#125;-\d&#123;1,2&#125;)?-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-改进版本排序逻辑（可选但推荐）"><a href="#2-改进版本排序逻辑（可选但推荐）" class="headerlink" title="2. 改进版本排序逻辑（可选但推荐）"></a>2. 改进版本排序逻辑（可选但推荐）</h3><p><code>Parse-VersionString</code> 函数原先只按日期 <code>YYYY.MM.DD</code> 排序。若同一天存在多个构建，建议解析时间戳后再比较：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Parse-VersionString</span></span> &#123;</span><br><span class="line">    <span class="keyword">param</span> (</span><br><span class="line">        [<span class="built_in">string</span>]<span class="variable">$versionString</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="variable">$segments</span> = <span class="variable">$versionString</span>.Split(<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">    <span class="variable">$datePart</span> = <span class="variable">$segments</span>[<span class="number">0</span>]</span><br><span class="line">    <span class="variable">$parts</span> = <span class="variable">$datePart</span>.Split(<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$parts</span>.Length <span class="operator">-ne</span> <span class="number">3</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="string">&quot;Invalid version format. Expected format: YYYY.MM.DD[-HH-MM-SS]-commit&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$year</span> = <span class="variable">$parts</span>[<span class="number">0</span>]</span><br><span class="line">    <span class="variable">$month</span> = <span class="variable">$parts</span>[<span class="number">1</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    <span class="variable">$day</span> = <span class="variable">$parts</span>[<span class="number">2</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    <span class="variable">$timeSuffix</span> = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$segments</span>.Length <span class="operator">-ge</span> <span class="number">5</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">1</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">2</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">3</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span>) &#123;</span><br><span class="line">        <span class="variable">$timeSuffix</span> = <span class="variable">$segments</span>[<span class="number">1</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>) + <span class="variable">$segments</span>[<span class="number">2</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>) + <span class="variable">$segments</span>[<span class="number">3</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">long</span>](<span class="variable">$year</span> + <span class="variable">$month</span> + <span class="variable">$day</span> + <span class="variable">$timeSuffix</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-验证修复"><a href="#3-验证修复" class="headerlink" title="3. 验证修复"></a>3. 验证修复</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">agent <span class="literal">--version</span></span><br><span class="line">agent status</span><br></pre></td></tr></table></figure>
-
-<p>预期输出示例：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">2026.06.16-20-30-07-a07d3ac</span><br><span class="line">✓ Logged in as your@email.com</span><br></pre></td></tr></table></figure>
-
-<h2 id="临时绕过（不修改脚本）"><a href="#临时绕过（不修改脚本）" class="headerlink" title="临时绕过（不修改脚本）"></a>临时绕过（不修改脚本）</h2><p>若暂时不想改启动脚本，可直接调用最新版本目录下的 <code>node.exe</code> 与 <code>index.js</code>：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$v</span> = <span class="string">&quot;C:\Users\liuhualiang\AppData\Local\cursor-agent\versions\2026.06.16-20-30-07-a07d3ac&quot;</span></span><br><span class="line">&amp; <span class="string">&quot;<span class="variable">$v</span>\node.exe&quot;</span> <span class="string">&quot;<span class="variable">$v</span>\index.js&quot;</span> status</span><br><span class="line">&amp; <span class="string">&quot;<span class="variable">$v</span>\node.exe&quot;</span> <span class="string">&quot;<span class="variable">$v</span>\index.js&quot;</span> <span class="literal">--help</span></span><br></pre></td></tr></table></figure>
-
-<p>将 <code>$v</code> 替换为 <code>versions</code> 下实际存在的最新目录名即可。</p>
-<h2 id="一键修复工具"><a href="#一键修复工具" class="headerlink" title="一键修复工具"></a>一键修复工具</h2><p>仓库内提供了自动修复脚本，下次 <code>agent update</code> 覆盖修复后可直接运行：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 首次安装（写入 %USERPROFILE%\bin 并加入 PATH）</span></span><br><span class="line">powershell <span class="literal">-ExecutionPolicy</span> Bypass <span class="operator">-File</span> D:\blog\github\scripts\<span class="built_in">install-fix</span><span class="literal">-cursor-agent</span>.ps1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修复</span></span><br><span class="line">fix<span class="literal">-cursor-agent</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 仅检查是否需要修复（退出码 2 表示需要修复）</span></span><br><span class="line">fix<span class="literal">-cursor-agent</span> <span class="literal">-CheckOnly</span></span><br></pre></td></tr></table></figure>
-
-<p>脚本位置：</p>
-<ul>
-<li><code>D:\blog\github\scripts\fix-cursor-agent.ps1</code></li>
-<li><code>D:\blog\github\scripts\fix-cursor-agent.cmd</code></li>
-<li><code>D:\blog\github\scripts\install-fix-cursor-agent.ps1</code></li>
+<h3 id="2-子-Agent-用在「模块边界清晰」的任务"><a href="#2-子-Agent-用在「模块边界清晰」的任务" class="headerlink" title="2. 子 Agent 用在「模块边界清晰」的任务"></a>2. 子 Agent 用在「模块边界清晰」的任务</h3><ul>
+<li>行业共识：先单 Agent，再在工具&#x2F;提示失控时拆子 Agent。</li>
+<li><strong>适合 mes-parent</strong>：按模块并行（如 <code>mes-plan</code> 页面规范对齐、<code>mes-document</code> 接口排查），避免一个 Agent 同时改十几个 <code>pom.xml</code>。</li>
+<li><strong>不适合</strong>：跨模块大重构且无明确回滚点——应先拆计划 + 小步提交。</li>
 </ul>
-<p>修复前会自动备份为 <code>agent.ps1.bak-YYYYMMDD-HHMMSS</code>，并尝试执行 <code>agent --version</code> 验证。</p>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
-<li><strong>更新可能覆盖修复</strong>：执行 <code>agent update</code> 或 Cursor 自动更新 Agent CLI 后，<code>agent.ps1</code> 可能被还原，问题会复现，需重新应用上述修改。</li>
-<li><strong>IDE CLI 与 Agent CLI 是两套工具</strong>：<ul>
-<li><code>cursor</code>：Cursor IDE 自带 CLI（打开文件、diff、tunnel 等），路径通常在 <code>%LOCALAPPDATA%\Programs\cursor\resources\app\bin\</code></li>
-<li><code>agent</code> &#x2F; <code>cursor-agent</code>：终端 Agent CLI，安装在 <code>%LOCALAPPDATA%\cursor-agent\</code></li>
+<h3 id="3-MCP-与大型-Java-单体仓库"><a href="#3-MCP-与大型-Java-单体仓库" class="headerlink" title="3. MCP 与大型 Java 单体仓库"></a>3. MCP 与大型 Java 单体仓库</h3><ul>
+<li>Weaviate 内置 MCP + 混合检索（BM25 + 向量）说明：<strong>Agent 读全仓</strong> 时检索层是产品差异化点。</li>
+<li>本工作区已启用 MySQL&#x2F;MSSQL 等 MCP，可扩展模式：<ul>
+<li><strong>只读 Schema&#x2F;样例查询</strong> 辅助写 Mapper&#x2F;XML</li>
+<li><strong>禁止</strong> Agent 直接执行破坏性 SQL（配合二次确认，与现有删除按钮规范一致）</li>
 </ul>
 </li>
-<li><strong><code>cursor agent</code> 子命令</strong>：IDE CLI 也注册了 <code>agent</code> 子命令，但日常使用的 <code>agent</code> 命令通常来自 PATH 中的 <code>cursor-agent</code> 包装脚本。</li>
-</ol>
-<h2 id="相关环境信息（排查参考）"><a href="#相关环境信息（排查参考）" class="headerlink" title="相关环境信息（排查参考）"></a>相关环境信息（排查参考）</h2><table>
+</ul>
+<h3 id="4-编码-Agent-工作流（可借鉴到侧项目-脚本）"><a href="#4-编码-Agent-工作流（可借鉴到侧项目-脚本）" class="headerlink" title="4. 编码 Agent 工作流（可借鉴到侧项目&#x2F;脚本）"></a>4. 编码 Agent 工作流（可借鉴到侧项目&#x2F;脚本）</h3><p>Reddit 高赞「十年工程师手机 Vibe Coding」要点，经筛选后适用于 <strong>非核心生产路径</strong> 的实验性开发：</p>
+<table>
 <thead>
 <tr>
-<th>项目</th>
-<th>值</th>
+<th>实践</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>Cursor IDE 版本</td>
-<td>3.8.11</td>
+<td>计划模式先行</td>
+<td>先出计划、人工收窄范围，再自动改代码</td>
 </tr>
 <tr>
-<td>Agent CLI 版本</td>
-<td>2026.06.16-20-30-07-a07d3ac</td>
+<td>任务粒度</td>
+<td>计划须能「装在脑子里」；过大则拆</td>
 </tr>
 <tr>
-<td>操作系统</td>
-<td>Windows 10&#x2F;11 x64</td>
+<td>每步 git commit</td>
+<td>与 MES 多模块协作时的回滚习惯一致</td>
 </tr>
 <tr>
-<td>安装路径</td>
-<td><code>%LOCALAPPDATA%\cursor-agent\</code></td>
+<td>测试与 E2E</td>
+<td>要求 Agent 生成测试；复杂变更加安全&#x2F;测试审查子步骤</td>
+</tr>
+<tr>
+<td>明确非目标</td>
+<td>提示中写清「不要动」的模块&#x2F;文件</td>
 </tr>
 </tbody></table>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><code>No version directories found</code> 并非版本文件缺失，而是 <strong>PowerShell 启动脚本的版本名正则未跟上 Cursor Agent 新的目录命名规范</strong>。更新正则后即可恢复正常；若再次被更新覆盖，按本文步骤重新修复即可。</p>
+<h3 id="5-培训资源（团队-upskill）"><a href="#5-培训资源（团队-upskill）" class="headerlink" title="5. 培训资源（团队 upskill）"></a>5. 培训资源（团队 upskill）</h3><ul>
+<li>Anthropic 官方免费课程含 <strong>MCP、Claude Code、Plan Mode</strong>（<a href="https://www.anthropic.com/learn">anthropic.com&#x2F;learn</a>）。</li>
+<li><strong>建议</strong>：前端&#x2F;全栈同事优先 MCP + Agent 课；后端可侧重 Claude API + 企业部署路径。</li>
+</ul>
+<h2 id="工具与产品动态（节选）"><a href="#工具与产品动态（节选）" class="headerlink" title="工具与产品动态（节选）"></a>工具与产品动态（节选）</h2><h3 id="Codex-产品层"><a href="#Codex-产品层" class="headerlink" title="Codex 产品层"></a>Codex 产品层</h3><ul>
+<li><strong>Appshots</strong>：Mac 应用窗口截图+文本，丰富上下文。</li>
+<li><strong>远程 Mac 操作</strong>：手机可在 Mac 锁屏时安全调用应用——长期驻场 Agent 的形态信号。</li>
+<li><strong>团队插件共享、组织分析</strong>：企业落地编码 Agent 时的治理需求。</li>
+</ul>
+<h3 id="LangChain"><a href="#LangChain" class="headerlink" title="LangChain"></a>LangChain</h3><ul>
+<li><strong>Sandbox Auth Proxy</strong>：控制 Agent 与外界边界。</li>
+<li><strong>Typed streaming</strong>：工具&#x2F;子 Agent&#x2F;中断作为一等公民，而非纯 token 流——利于做「MES 操作进度 UI」类投影（若未来做内部 Agent 控制台）。</li>
+</ul>
+<h3 id="其他信号"><a href="#其他信号" class="headerlink" title="其他信号"></a>其他信号</h3><ul>
+<li><strong>mini-swe-agent</strong> 适配 ProgramBench：软件工程 Agent 的 Harness 创新仍在快速迭代。</li>
+<li><strong>turbopuffer</strong> 达 $100M ARR（检索基础设施）：上下文检索是 Agent 产品的核心战场。</li>
+</ul>
+<h2 id="模型与开源生态（节选）"><a href="#模型与开源生态（节选）" class="headerlink" title="模型与开源生态（节选）"></a>模型与开源生态（节选）</h2><ul>
+<li><strong>Qwen3.7-Max</strong>：多项编码&#x2F;Agent 基准靠前；开放权重 27B&#x2F;35B 仍待观望。</li>
+<li>**Cohere Command A+**：Apache 2.0 MoE，面向企业 Agent；社区关注 GGUF 本地部署。</li>
+<li><strong>Meta 向 Heretic 发函</strong>：Llama 衍生权重合规风险上升，选型需注意许可证链。</li>
+</ul>
+<h2 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h2><p>#CodingAgent #MCP #Harness #Cursor #LangChain #Qwen #Java #MES #检索 #子Agent</p>
+<hr>
+<p>数据来源: <a href="https://news.smol.ai/issues/26-05-21-not-much/">smol.ai · 2026-05-21</a><br>生成时间: 2026-05-23（由 ai-daily 插件拉取并针对 mes-parent 裁剪）</p>
 ]]></content>
       <tags>
+        <tag>AI Daily</tag>
+        <tag>MES</tag>
+        <tag>CodingAgent</tag>
+        <tag>MCP</tag>
+        <tag>Harness</tag>
         <tag>Cursor</tag>
-        <tag>CLI</tag>
-        <tag>Agent</tag>
-        <tag>Windows</tag>
-        <tag>PowerShell</tag>
       </tags>
   </entry>
   <entry>
@@ -1832,23 +1589,27 @@
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2026/07/06/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><span id="more"></span>
+    <title>kingbase</title>
+    <url>/2024/09/02/kingbase/</url>
+    <content><![CDATA[<h1 id="kingbase使用问题"><a href="#kingbase使用问题" class="headerlink" title="kingbase使用问题"></a>kingbase使用问题</h1><h2 id="乱码问题"><a href="#乱码问题" class="headerlink" title="乱码问题"></a>乱码问题</h2><p>创建gb18030的数据库，可以解决。</p>
+<img src="/2024/09/02/kingbase/1725264522588.png" class="" width="1725264522588">
 
-<h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<img src="/2024/09/02/kingbase/1725264492761.png" class="" width="1725264492761">
 
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>更换驱动</p>
+<img src="/2024/09/02/kingbase/1725264867078.png" class="" width="1725264867078">
 
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<h2 id="不支持10"><a href="#不支持10" class="headerlink" title="不支持10"></a>不支持10</h2><img src="/2024/09/02/kingbase/1725264959146.png" class="" width="1725264959146">
 
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<h2 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pgjdbc: autodetected server-encoding to be ISO-8859-1, if the message is not readable, please check database logs and/or host, port, dbname, user, password, pg_hba.conf</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<h2 id="错误-1"><a href="#错误-1" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">See nested exception: org.postgresql.util.PSQLException: ERROR: 关系 &quot;qrtz_triggers&quot; 不存在</span><br></pre></td></tr></table></figure>
+
+<img src="/2024/09/02/kingbase/1725267331659.png" class="" width="1725267331659">
+
+<h2 id="查询数据库编码"><a href="#查询数据库编码" class="headerlink" title="查询数据库编码"></a>查询数据库编码</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT pg_encoding_to_char(encoding) FROM pg_database WHERE datname = &#x27;your_database_name&#x27;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="对模式xx权限不够"><a href="#对模式xx权限不够" class="headerlink" title="对模式xx权限不够"></a>对模式xx权限不够</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Caused by: org.postgresql.util.PSQLException: ERROR: 对模式 cems 权限不够</span><br></pre></td></tr></table></figure>
 ]]></content>
   </entry>
   <entry>
@@ -1916,27 +1677,23 @@
       </tags>
   </entry>
   <entry>
-    <title>kingbase</title>
-    <url>/2024/09/02/kingbase/</url>
-    <content><![CDATA[<h1 id="kingbase使用问题"><a href="#kingbase使用问题" class="headerlink" title="kingbase使用问题"></a>kingbase使用问题</h1><h2 id="乱码问题"><a href="#乱码问题" class="headerlink" title="乱码问题"></a>乱码问题</h2><p>创建gb18030的数据库，可以解决。</p>
-<img src="/2024/09/02/kingbase/1725264522588.png" class="" width="1725264522588">
+    <title>Hello World</title>
+    <url>/2026/07/06/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><span id="more"></span>
 
-<img src="/2024/09/02/kingbase/1725264492761.png" class="" width="1725264492761">
+<h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
 
-<p>更换驱动</p>
-<img src="/2024/09/02/kingbase/1725264867078.png" class="" width="1725264867078">
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 
-<h2 id="不支持10"><a href="#不支持10" class="headerlink" title="不支持10"></a>不支持10</h2><img src="/2024/09/02/kingbase/1725264959146.png" class="" width="1725264959146">
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
 
-<h2 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pgjdbc: autodetected server-encoding to be ISO-8859-1, if the message is not readable, please check database logs and/or host, port, dbname, user, password, pg_hba.conf</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 
-<h2 id="错误-1"><a href="#错误-1" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">See nested exception: org.postgresql.util.PSQLException: ERROR: 关系 &quot;qrtz_triggers&quot; 不存在</span><br></pre></td></tr></table></figure>
-
-<img src="/2024/09/02/kingbase/1725267331659.png" class="" width="1725267331659">
-
-<h2 id="查询数据库编码"><a href="#查询数据库编码" class="headerlink" title="查询数据库编码"></a>查询数据库编码</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT pg_encoding_to_char(encoding) FROM pg_database WHERE datname = &#x27;your_database_name&#x27;;</span><br></pre></td></tr></table></figure>
-
-<h2 id="对模式xx权限不够"><a href="#对模式xx权限不够" class="headerlink" title="对模式xx权限不够"></a>对模式xx权限不够</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Caused by: org.postgresql.util.PSQLException: ERROR: 对模式 cems 权限不够</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
   </entry>
   <entry>
@@ -2014,64 +1771,145 @@
       </tags>
   </entry>
   <entry>
-    <title>MES 2026 年 5 月工作小结</title>
-    <url>/2026/08/01/mes-monthly-2026-05/</url>
-    <content><![CDATA[<img src="/2026/08/01/mes-monthly-2026-05/cover.png" class="">
-
-<p>5 月（约 <strong>220+ 次提交</strong>、合并 PR <strong>#239–#281</strong>）主线落在业务现场能力：交接班 Docx 模型导入、液体码头&#x2F;船舶作业增强、仪表位号与报表关联，以及 RTDB&#x2F;ISYS 采集链路。改动最集中的是 <code>mes-operation</code>、<code>mes-measure</code>、<code>mes-vessel-operation</code>，辅以 <code>mes-web</code> &#x2F; <code>mes-rtdb</code>。</p>
-<h2 id="一、交接班-ShiftLog（中下旬主线）"><a href="#一、交接班-ShiftLog（中下旬主线）" class="headerlink" title="一、交接班 ShiftLog（中下旬主线）"></a>一、交接班 ShiftLog（中下旬主线）</h2><ul>
-<li>Docx 模型导入与解析预览（#263）：锚点注入、单元格模式、输入类型与公式处理。</li>
-<li>跳过孤儿锚点（#270）、批量删除与归属校验、调度日志预览。</li>
-<li>Docx 解析器持续增强（#278）：条目类型、标签推断、TABLE_STR_BC 批量生成等。</li>
-<li>月末补齐 docx_code 唯一性校验（#281）。</li>
+    <title>classicical-chinese-translation-private-policy</title>
+    <url>/2025/06/23/classicical-chinese-translation-private-policy/</url>
+    <content><![CDATA[<h1 id="文言文现代翻译助手-隐私权政策"><a href="#文言文现代翻译助手-隐私权政策" class="headerlink" title="文言文现代翻译助手 - 隐私权政策"></a>文言文现代翻译助手 - 隐私权政策</h1><p><strong>生效日期：</strong> 2024年12月19日</p>
+<p><strong>最后更新：</strong> 2024年12月19日</p>
+<h2 id="📋-政策概述"><a href="#📋-政策概述" class="headerlink" title="📋 政策概述"></a>📋 政策概述</h2><p>文言文现代翻译助手（以下简称”本插件”）致力于保护用户的隐私权。本隐私权政策详细说明了我们如何收集、使用、存储和保护您的信息。</p>
+<p><strong>重要声明：本插件不会收集、存储或传输任何个人身份信息。</strong></p>
+<h2 id="🔍-信息收集与使用"><a href="#🔍-信息收集与使用" class="headerlink" title="🔍 信息收集与使用"></a>🔍 信息收集与使用</h2><h3 id="我们收集什么信息"><a href="#我们收集什么信息" class="headerlink" title="我们收集什么信息"></a>我们收集什么信息</h3><h4 id="1-用户主动提供的信息"><a href="#1-用户主动提供的信息" class="headerlink" title="1. 用户主动提供的信息"></a>1. 用户主动提供的信息</h4><p>-<strong>API密钥</strong>：您输入的DeepSeek API密钥</p>
+<p>-<strong>设置偏好</strong>：插件启用&#x2F;禁用状态等功能设置</p>
+<h4 id="2-翻译内容"><a href="#2-翻译内容" class="headerlink" title="2. 翻译内容"></a>2. 翻译内容</h4><p>-<strong>待翻译文本</strong>：您选择翻译或页面中识别的文言文内容</p>
+<p>-<strong>翻译结果</strong>：从DeepSeek API返回的翻译结果</p>
+<h4 id="3-我们不收集的信息"><a href="#3-我们不收集的信息" class="headerlink" title="3. 我们不收集的信息"></a>3. 我们不收集的信息</h4><ul>
+<li>❌ 个人身份信息（姓名、邮箱、电话等）</li>
+<li>❌ 浏览历史记录</li>
+<li>❌ 网站登录信息</li>
+<li>❌ 其他网站的用户数据</li>
+<li>❌ 设备信息或位置信息</li>
 </ul>
-<h2 id="二、船舶-液体码头作业"><a href="#二、船舶-液体码头作业" class="headerlink" title="二、船舶 &#x2F; 液体码头作业"></a>二、船舶 &#x2F; 液体码头作业</h2><ul>
-<li>内外贸字段、管线名称、货种筛选与泊位告警（#239&#x2F;#241&#x2F;#246&#x2F;#248）。</li>
-<li>收发油罐按物料多选（#244）；船名模糊检索等终端体验。</li>
-<li>船舶动态导入：到港时间格式与提示信息修复（#258&#x2F;#276）。</li>
-<li>排船页接入真实 LLM 辅助（#275）。</li>
+<h3 id="信息使用目的"><a href="#信息使用目的" class="headerlink" title="信息使用目的"></a>信息使用目的</h3><p>我们收集的信息仅用于以下目的：</p>
+<p>1.<strong>提供翻译服务</strong>：将文言文内容发送至DeepSeek API进行翻译</p>
+<p>2.<strong>保存用户设置</strong>：在您的设备上本地保存API密钥和功能偏好</p>
+<p>3.<strong>改善用户体验</strong>：确保插件功能正常运行</p>
+<h2 id="💾-数据存储与安全"><a href="#💾-数据存储与安全" class="headerlink" title="💾 数据存储与安全"></a>💾 数据存储与安全</h2><h3 id="本地存储"><a href="#本地存储" class="headerlink" title="本地存储"></a>本地存储</h3><p>-<strong>API密钥</strong>：使用Chrome扩展存储API在您的设备上本地保存</p>
+<p>-<strong>用户设置</strong>：本地存储，不会上传到任何服务器</p>
+<p>-<strong>存储位置</strong>：仅存储在您的浏览器中，其他人无法访问</p>
+<h3 id="第三方服务"><a href="#第三方服务" class="headerlink" title="第三方服务"></a>第三方服务</h3><p>-<strong>DeepSeek API</strong>：翻译请求会发送到DeepSeek的服务器</p>
+<p>-<strong>数据传输</strong>：仅传输待翻译的文本内容</p>
+<p>-<strong>加密传输</strong>：所有API请求均通过HTTPS加密传输</p>
+<h3 id="数据安全措施"><a href="#数据安全措施" class="headerlink" title="数据安全措施"></a>数据安全措施</h3><p>1.<strong>本地加密存储</strong>：敏感信息在本地加密保存</p>
+<p>2.<strong>HTTPS传输</strong>：所有网络请求使用SSL&#x2F;TLS加密</p>
+<p>3.<strong>最小权限原则</strong>：插件仅申请必要的浏览器权限</p>
+<p>4.<strong>无服务器存储</strong>：我们不运营任何服务器存储用户数据</p>
+<h2 id="🌐-第三方服务说明"><a href="#🌐-第三方服务说明" class="headerlink" title="🌐 第三方服务说明"></a>🌐 第三方服务说明</h2><h3 id="DeepSeek-API服务"><a href="#DeepSeek-API服务" class="headerlink" title="DeepSeek API服务"></a>DeepSeek API服务</h3><p>-<strong>服务提供商</strong>：DeepSeek (<a href="https://platform.deepseek.com/">https://platform.deepseek.com/</a>)</p>
+<p>-<strong>数据传输</strong>：仅传输您选择翻译的文言文内容</p>
+<p>-<strong>用途</strong>：获取现代汉语翻译结果</p>
+<p>-<strong>隐私政策</strong>：请查看DeepSeek的隐私政策了解其数据处理方式</p>
+<h3 id="不与其他第三方共享数据"><a href="#不与其他第三方共享数据" class="headerlink" title="不与其他第三方共享数据"></a>不与其他第三方共享数据</h3><ul>
+<li>除DeepSeek翻译服务外，我们不会与任何其他第三方共享您的数据</li>
+<li>我们不会出售、租赁或以其他方式提供您的信息给第三方</li>
 </ul>
-<h2 id="三、仪表位号与报表"><a href="#三、仪表位号与报表" class="headerlink" title="三、仪表位号与报表"></a>三、仪表位号与报表</h2><ul>
-<li>手动采集按钮（#254）；位号配置、导入导出、唯一性与时间处理（#267）。</li>
-<li>关联报表模板展示与批量查询、模板维度（#252&#x2F;#265）。</li>
-<li>报表&#x2F;位号侧过滤与 jqGrid 行范围选择。</li>
+<h2 id="🔒-权限说明"><a href="#🔒-权限说明" class="headerlink" title="🔒 权限说明"></a>🔒 权限说明</h2><p>本插件申请的浏览器权限及其用途：</p>
+<h3 id="必需权限"><a href="#必需权限" class="headerlink" title="必需权限"></a>必需权限</h3><p>1.<strong>activeTab</strong></p>
+<p>   -<strong>用途</strong>：在当前网页中识别和翻译文言文内容</p>
+<p>   -<strong>范围</strong>：仅限当前活动标签页</p>
+<p>   -<strong>数据访问</strong>：仅读取页面中的文本内容用于翻译</p>
+<p>2.<strong>storage</strong></p>
+<p>   -<strong>用途</strong>：本地保存API密钥和用户设置</p>
+<p>   -<strong>范围</strong>：仅限本插件的存储空间</p>
+<p>   -<strong>数据类型</strong>：API密钥、启用状态等设置信息</p>
+<p>3.<strong>contextMenus</strong></p>
+<p>   -<strong>用途</strong>：提供右键菜单翻译功能</p>
+<p>   -<strong>数据访问</strong>：仅访问用户选中的文本内容</p>
+<p>4.<strong>notifications</strong></p>
+<p>   -<strong>用途</strong>：显示操作状态和错误提示</p>
+<p>   -<strong>数据传输</strong>：无，仅本地显示通知</p>
+<h3 id="主机权限"><a href="#主机权限" class="headerlink" title="主机权限"></a>主机权限</h3><p>1.<strong><a href="https://api.deepseek.com/">https://api.deepseek.com/</a></strong>*</p>
+<p>   -<strong>用途</strong>：访问DeepSeek翻译API服务</p>
+<p>   -<strong>数据传输</strong>：仅传输待翻译的文言文内容</p>
+<p>   -<strong>必要性</strong>：翻译功能的核心依赖</p>
+<h2 id="👤-用户控制权"><a href="#👤-用户控制权" class="headerlink" title="👤 用户控制权"></a>👤 用户控制权</h2><h3 id="您可以控制的内容"><a href="#您可以控制的内容" class="headerlink" title="您可以控制的内容"></a>您可以控制的内容</h3><p>1.<strong>API密钥管理</strong></p>
+<ul>
+<li>随时修改或删除您的API密钥</li>
+<li>停止使用插件将自动停止所有数据传输</li>
 </ul>
-<h2 id="四、实时库与工程体验"><a href="#四、实时库与工程体验" class="headerlink" title="四、实时库与工程体验"></a>四、实时库与工程体验</h2><ul>
-<li>RTDB ISYS SDK RMI 回调（#271）；ISYS 配置与 HTTP 客户端增强。</li>
-<li>SpringDoc OpenAPI &#x2F; Swagger UI 接入。</li>
-<li>多 Tab 溢出箭头滚动（#273）、滚动条样式、模态间菜单切换；菜单关键词逗号 OR 搜索（#269）。</li>
-<li>反馈排程关闭&#x2F;驳回态隐藏按钮等细节（#250）。</li>
+<p>2.<strong>功能控制</strong></p>
+<ul>
+<li>随时启用或禁用翻译功能</li>
+<li>选择性翻译特定内容</li>
 </ul>
-<h2 id="五、月度节奏"><a href="#五、月度节奏" class="headerlink" title="五、月度节奏"></a>五、月度节奏</h2><table>
-<thead>
-<tr>
-<th>阶段</th>
-<th>重点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>上旬</td>
-<td>液体码头罐&#x2F;管线&#x2F;货种、位号手动采集、报表模板维度</td>
-</tr>
-<tr>
-<td>中旬</td>
-<td>交接班 Docx 导入起步、位号关联报表、菜单搜索与 UI 修复</td>
-</tr>
-<tr>
-<td>下旬</td>
-<td>ShiftLog 解析深化、RTDB RMI、排船 AI、到港时间导入、docx 唯一性</td>
-</tr>
-</tbody></table>
+<p>3.<strong>数据删除</strong></p>
+<ul>
+<li>卸载插件将自动删除所有本地存储的数据</li>
+<li>可以手动清除浏览器扩展数据</li>
+</ul>
+<h3 id="选择退出"><a href="#选择退出" class="headerlink" title="选择退出"></a>选择退出</h3><p>-<strong>完全停用</strong>：在扩展程序管理页面禁用或卸载插件</p>
+<p>-<strong>临时停用</strong>：在插件设置中关闭翻译功能</p>
+<p>-<strong>选择性使用</strong>：仅在需要时手动翻译选定内容</p>
+<h2 id="🔄-数据保留政策"><a href="#🔄-数据保留政策" class="headerlink" title="🔄 数据保留政策"></a>🔄 数据保留政策</h2><h3 id="本地数据"><a href="#本地数据" class="headerlink" title="本地数据"></a>本地数据</h3><p>-<strong>保留期限</strong>：直到您主动删除或卸载插件</p>
+<p>-<strong>自动清理</strong>：卸载插件时自动清除所有本地数据</p>
+<p>-<strong>用户控制</strong>：您可以随时清除存储的设置</p>
+<h3 id="传输数据"><a href="#传输数据" class="headerlink" title="传输数据"></a>传输数据</h3><p>-<strong>API请求</strong>：翻译请求发送后不在本地保留</p>
+<p>-<strong>翻译结果</strong>：仅在页面显示，不永久存储</p>
+<p>-<strong>会话数据</strong>：浏览器关闭后自动清除</p>
+<h2 id="👶-儿童隐私保护"><a href="#👶-儿童隐私保护" class="headerlink" title="👶 儿童隐私保护"></a>👶 儿童隐私保护</h2><ul>
+<li>本插件不专门面向13岁以下儿童设计</li>
+<li>我们不会故意收集儿童的个人信息</li>
+<li>如果发现意外收集了儿童信息，我们会立即删除</li>
+</ul>
+<h2 id="🌍-国际数据传输"><a href="#🌍-国际数据传输" class="headerlink" title="🌍 国际数据传输"></a>🌍 国际数据传输</h2><p>-<strong>数据传输</strong>：翻译请求可能涉及跨境数据传输（发送至DeepSeek服务器）</p>
+<p>-<strong>传输内容</strong>：仅限待翻译的文言文内容</p>
+<p>-<strong>保护措施</strong>：所有传输均通过加密通道进行</p>
+<h2 id="📧-联系我们"><a href="#📧-联系我们" class="headerlink" title="📧 联系我们"></a>📧 联系我们</h2><p>如果您对本隐私政策有任何疑问或建议，请通过以下方式联系我们：</p>
+<p>-<strong>GitHub Issues</strong>：<a href="https://github.com/eppen/ClassicalChineseTranslation/issues">https://github.com/eppen/ClassicalChineseTranslation/issues</a></p>
+<p>-<strong>项目主页</strong>：<a href="https://github.com/eppen/ClassicalChineseTranslation">https://github.com/eppen/ClassicalChineseTranslation</a></p>
+<p>-<strong>邮箱联系</strong>：通过GitHub项目页面联系开发者</p>
+<h2 id="🔄-政策更新"><a href="#🔄-政策更新" class="headerlink" title="🔄 政策更新"></a>🔄 政策更新</h2><h3 id="更新通知"><a href="#更新通知" class="headerlink" title="更新通知"></a>更新通知</h3><ul>
+<li>我们可能会不定期更新本隐私政策</li>
+<li>重大变更将通过插件更新或GitHub通知用户</li>
+<li>建议定期查看最新版本的隐私政策</li>
+</ul>
+<h3 id="更新历史"><a href="#更新历史" class="headerlink" title="更新历史"></a>更新历史</h3><p>-<strong>2024年12月19日</strong>：初始版本发布</p>
+<h3 id="变更生效"><a href="#变更生效" class="headerlink" title="变更生效"></a>变更生效</h3><ul>
+<li>政策更新后继续使用插件即表示您接受新的隐私政策</li>
+<li>如不同意更新内容，请停止使用本插件</li>
+</ul>
+<h2 id="📜-法律依据"><a href="#📜-法律依据" class="headerlink" title="📜 法律依据"></a>📜 法律依据</h2><p>本隐私政策的制定基于：</p>
+<ul>
+<li>《中华人民共和国个人信息保护法》</li>
+<li>《欧盟通用数据保护条例》(GDPR)</li>
+<li>Chrome网上应用店隐私政策要求</li>
+<li>其他适用的隐私保护法律法规</li>
+</ul>
+<h2 id="✅-用户权利"><a href="#✅-用户权利" class="headerlink" title="✅ 用户权利"></a>✅ 用户权利</h2><p>根据适用的隐私法律，您享有以下权利：</p>
+<p>1.<strong>知情权</strong>：了解我们如何处理您的信息</p>
+<p>2.<strong>访问权</strong>：查看我们存储的关于您的信息</p>
+<p>3.<strong>更正权</strong>：修正不准确的个人信息</p>
+<p>4.<strong>删除权</strong>：要求删除您的个人信息</p>
+<p>5.<strong>限制处理权</strong>：限制我们处理您信息的方式</p>
+<p>6.<strong>数据可携权</strong>：获取您的数据副本</p>
+<p>7.<strong>反对权</strong>：反对某些类型的数据处理</p>
+<p><strong>行使权利</strong>：由于本插件不收集个人身份信息，大部分权利可通过卸载插件或清除浏览器数据来实现。</p>
+<h2 id="🛡️-安全事件响应"><a href="#🛡️-安全事件响应" class="headerlink" title="🛡️ 安全事件响应"></a>🛡️ 安全事件响应</h2><h3 id="安全措施"><a href="#安全措施" class="headerlink" title="安全措施"></a>安全措施</h3><ul>
+<li>我们采用行业标准的安全措施保护数据</li>
+<li>定期更新插件以修复安全漏洞</li>
+<li>监控潜在的安全威胁</li>
+</ul>
+<h3 id="事件响应"><a href="#事件响应" class="headerlink" title="事件响应"></a>事件响应</h3><ul>
+<li>如发现安全漏洞，我们将立即采取补救措施</li>
+<li>及时发布安全更新</li>
+<li>必要时通知受影响的用户</li>
+</ul>
+<h2 id="📊-数据最小化原则"><a href="#📊-数据最小化原则" class="headerlink" title="📊 数据最小化原则"></a>📊 数据最小化原则</h2><p>我们严格遵循数据最小化原则：</p>
+<p>-<strong>目的限制</strong>：仅收集实现功能所必需的数据</p>
+<p>-<strong>数量最小</strong>：收集的数据量保持在最低限度</p>
+<p>-<strong>时间最短</strong>：不会无限期保留数据</p>
+<p>-<strong>范围最窄</strong>：仅在必要范围内使用数据</p>
 <hr>
-<p><strong>一句话</strong>：5 月把交接班 Docx 导入做成可用链路，并加强液体码头作业与仪表采集&#x2F;报表关联；实时库回调与若干前端体验同步落地，为 6 月平台化（AI&#x2F;能耗&#x2F;图表）腾出业务底座。</p>
+<p><strong>本隐私政策是我们对用户隐私保护承诺的体现。我们将持续改进隐私保护措施，确保用户信息安全。</strong></p>
+<p><em>如有任何疑问，欢迎随时联系我们。感谢您对文言文现代翻译助手的信任与支持！</em></p>
 ]]></content>
-      <tags>
-        <tag>MES</tag>
-        <tag>交接班</tag>
-        <tag>船舶作业</tag>
-        <tag>工作小结</tag>
-        <tag>月报</tag>
-      </tags>
   </entry>
   <entry>
     <title>MES 2026 年 6 月工作小结</title>
@@ -2128,204 +1966,11 @@
 ]]></content>
       <tags>
         <tag>MES</tag>
-        <tag>工作小结</tag>
-        <tag>月报</tag>
         <tag>mes-ai</tag>
         <tag>mes-energy</tag>
         <tag>mes-chart</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MES 2026 年 8 月工作小结</title>
-    <url>/2026/08/25/mes-monthly-2026-08/</url>
-    <content><![CDATA[<img src="/2026/08/25/mes-monthly-2026-08/cover.png" class="">
-
-<p>8 月（截至 8&#x2F;25，约 <strong>320 次提交</strong>、合并 PR <strong>#360 &#x2F; #368–#381</strong>，另有多条功能分支直接合入）主线是把 <strong>mes-ai</strong> 从「能出表&#x2F;图」推进到 <strong>配方化 SQL 查询、双区间对比与 AgentScope 子运行时</strong>，并同步加深看板下钻、工艺符号面板与 EOS 权限移除能力。改动最集中的模块是 <code>mes-ai</code>，其次 <code>mes-chart</code> &#x2F; <code>mes-web</code> &#x2F; <code>mes-visual</code> &#x2F; <code>mes-security</code>；月末打上 <code>release-2026-08-25</code>。</p>
-<h2 id="一、MES-AI：sql-compose、双区间图与-AgentScope"><a href="#一、MES-AI：sql-compose、双区间图与-AgentScope" class="headerlink" title="一、MES-AI：sql_compose、双区间图与 AgentScope"></a>一、MES-AI：sql_compose、双区间图与 AgentScope</h2><ul>
-<li><strong>sql_compose</strong>：配方化查询生成、别名&#x2F;LIKE&#x2F;单位校验、产耗默认负号、双区间对比图与 <code>[区间1]</code>&#x2F;<code>[区间2]</code> 列标签；「回溯起算」日期解析与 TOP&#x2F;CTE 安全注入。</li>
-<li><strong>AgentScope</strong>：新增 <code>mes-agentscope</code> 子模块，子 Agent 配置、权限模式、表格块与图表抽取、token usage 写入运行日志；管理端与协作编排联动。</li>
-<li><strong>对话体验</strong>：Markdown&#x2F;语法高亮、思考步骤、会话搜索与历史内嵌图表、运行日志反馈&#x2F;复测、相对月份 SQL 参数、选项回答与工具移交编辑。</li>
-<li><strong>能耗工具链</strong>：日表多装置、同比环比&#x2F;趋势&#x2F;饼图、存储过程工具出图、<code>excludeFromUiTable</code>、列组与汇总行、多日均值查询、当前时间预调用。</li>
-</ul>
-<h2 id="二、看板与可视化"><a href="#二、看板与可视化" class="headerlink" title="二、看板与可视化"></a>二、看板与可视化</h2><ul>
-<li><strong>下钻</strong>：饼图&#x2F;柱图弹层明细 → 行级二级详情；能耗模块明细 SQL 与多看板下钻文档补齐；多柱图支持。</li>
-<li><strong>嵌套饼图</strong>：色相微调、固定品类配色、零值过滤与高亮；看板树展开、月份筛选与图表包导入导出。</li>
-<li><strong>工艺工程</strong>：ISA 5.1 仪表符号面板、P&amp;ID 工艺符号面板与生成脚本；设计图&#x2F;图形资产页交互规范。</li>
-<li><strong>项目甘特</strong>：可拖拽分栏、布局与基线&#x2F;排程相关增强（<code>mes-project</code>）。</li>
-</ul>
-<h2 id="三、权限安全与其它业务"><a href="#三、权限安全与其它业务" class="headerlink" title="三、权限安全与其它业务"></a>三、权限安全与其它业务</h2><ul>
-<li><strong>EOS</strong>：角色权限移除授权模式、孤立目录剪枝、菜单树拖拽重排、角色管理 UI 与菜单详情刷新交互。</li>
-<li><strong>船舶 &#x2F; 工作台</strong>：码头船舶待办 Provider；联锁强制投用率相关查询。</li>
-<li><strong>计量</strong>：恒值监测状态持久化与告警联动、仪表型号管理、监测规则按电表批量查询。</li>
-<li><strong>基础设施</strong>：Docker 本地直连端口映射、Flowable schema 自动升级；UI 查询区对齐与成功 <code>msg</code>&#x2F;失败 <code>alert</code> 规范落地。</li>
-</ul>
-<h2 id="四、月度节奏"><a href="#四、月度节奏" class="headerlink" title="四、月度节奏"></a>四、月度节奏</h2><table>
-<thead>
-<tr>
-<th>阶段</th>
-<th>重点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>上旬</td>
-<td>协作子 Agent &#x2F; 工具移交、相对月份参数、运行日志反馈复测、对话内图表合入（#360）</td>
-</tr>
-<tr>
-<td>中旬</td>
-<td>存储过程出图、能耗趋势&#x2F;饼图&#x2F;同比、嵌套饼与下钻、Eos 菜单拖拽与权限修复（#376–#381）</td>
-</tr>
-<tr>
-<td>下旬</td>
-<td>sql_compose 与双区间图、AgentScope、看板二级下钻、P&amp;ID 符号面板、EOS 移除授权；发版 <code>release-2026-08-25</code></td>
-</tr>
-</tbody></table>
-<hr>
-<p><strong>一句话</strong>：8 月把 MES-AI 推到「能配方写 SQL、能双区间出图、能挂 AgentScope」，看板下钻与工艺符号面板同步成型，并在月末完成 <code>release-2026-08-25</code> 发版收口。</p>
-]]></content>
-      <tags>
-        <tag>MES</tag>
         <tag>工作小结</tag>
         <tag>月报</tag>
-        <tag>mes-ai</tag>
-        <tag>mes-chart</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MES 本周工作小结（2026-07-28 ~ 08-01）</title>
-    <url>/2026/08/01/mes-weekly-2026-w31/</url>
-    <content><![CDATA[<img src="/2026/08/01/mes-weekly-2026-w31/cover.png" class="">
-
-<p>本周（7&#x2F;28–8&#x2F;1）工作以 <strong>MES-AI 能耗分析与对话表格展示</strong> 为主线，并落地了 Eos 工程师日志、船舶作业校验与一批文档。约 74 次提交，合并 10 个 PR（#357–#367）。</p>
-<h2 id="一、MES-AI-能耗智能体（主线）"><a href="#一、MES-AI-能耗智能体（主线）" class="headerlink" title="一、MES-AI 能耗智能体（主线）"></a>一、MES-AI 能耗智能体（主线）</h2><ul>
-<li><strong>SQL 工具与参数</strong>：完善能耗工具参数解析（#357）、同比环比工具、装置&#x2F;时段槽位提取；多轮按运行日志纠偏（装置识别、明细 vs 汇总、单位标注等）。</li>
-<li><strong>日表查询</strong>：新增 <code>energy_nhfx_day</code> &#x2F; <code>Z_View_NHFX_TABLE</code> 日表多装置查询（#363），持续修 JSON、错误处理与设计物耗字段表述。</li>
-<li><strong>表格与图表</strong>：复合表头&#x2F;列组（#358）、单元格着色（#359）、汇总行与派生率（#361）、双图（多日&#x2F;多装置）、<code>excludeFromUiTable</code> 隐藏辅助结果（#365）。</li>
-<li><strong>稳定性</strong>：<code>StoredProcToolHandler</code> 围绕 Fastjson 未闭合字符串等问题迭代，后简化控制字符预处理逻辑。</li>
-<li><strong>硬编码治理</strong>：默认模型可配置、Embedding base-url 清理等 P0 项合入（#367）。</li>
-</ul>
-<h2 id="二、AI-管理端与规范"><a href="#二、AI-管理端与规范" class="headerlink" title="二、AI 管理端与规范"></a>二、AI 管理端与规范</h2><ul>
-<li>AI 列表&#x2F;编辑页统一按钮样式、导航、成功提示改用 <code>msg</code>（#364）。</li>
-<li>Cursor 规则与页面约定对齐（成功&#x2F;失败提示、按钮风格）。</li>
-</ul>
-<h2 id="三、Eos-安全任务"><a href="#三、Eos-安全任务" class="headerlink" title="三、Eos &#x2F; 安全任务"></a>三、Eos &#x2F; 安全任务</h2><ul>
-<li>新增 <strong>Eos 工程师日志</strong> 模块（OpenService 客户端、定时任务、装置配置、测试）（#366）。</li>
-<li>日常用 skill&#x2F;脚本按 token 批量生成各装置工程师日志。</li>
-<li>补充&#x2F;更新 EOS 角色-菜单、角色树 nodeId&#x2F;objectId 文档。</li>
-</ul>
-<h2 id="四、船舶作业"><a href="#四、船舶作业" class="headerlink" title="四、船舶作业"></a>四、船舶作业</h2><ul>
-<li>终端侧强制&#x2F;校验 <code>vesselOperationDynamicId</code>（#362）。</li>
-<li>完善到离港接口与 <code>mes-measure-vessel</code> ↔ <code>mes-vessel-operation</code> 调用说明文档。</li>
-</ul>
-<h2 id="五、其他"><a href="#五、其他" class="headerlink" title="五、其他"></a>五、其他</h2><ul>
-<li>mesdata 存储过程&#x2F;函数梳理、能耗模型数据核对、日志错误报告更新。</li>
-<li>README 与若干 AI&#x2F;业务 PDF 文档整理。</li>
-</ul>
-<h2 id="六、周末进行中"><a href="#六、周末进行中" class="headerlink" title="六、周末进行中"></a>六、周末进行中</h2><p>本地仍有未合入改动：<code>ai-chat-render.js</code>、若干 AI HTML，以及 <code>index.html</code> &#x2F; <code>main.css</code>（偏首页&#x2F;样式微调）。</p>
-<hr>
-<p><strong>一句话</strong>：本周把能耗 AI 从「能查」推进到「表格好看、图表可用、结果可控、配置可治理」，并完成工程师日志自动化与船舶动态 ID 校验。</p>
-]]></content>
-      <tags>
-        <tag>MES</tag>
-        <tag>工作小结</tag>
-        <tag>mes-ai</tag>
-        <tag>能耗分析</tag>
-        <tag>Eos</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MES 2026 年第 33 周工作小结</title>
-    <url>/2026/08/15/mes-weekly-2026-w33/</url>
-    <content><![CDATA[<img src="/2026/08/15/mes-weekly-2026-w33/cover.png" class="">
-
-<p>本周（8&#x2F;8–8&#x2F;15，活跃提交 8&#x2F;11–8&#x2F;14，约 <strong>74 次提交</strong>、合并 PR <strong>#376–#381</strong>）主线在 <strong>AI 能耗分析图表能力</strong>（存储过程出图、趋势&#x2F;饼图、同比环比），同步推进看板嵌套饼图与下钻、联锁强制投用，以及 Eos 菜单拖拽与权限修复。主力模块 <code>mes-ai</code>（约 141 文件触达），次为 <code>mes-chart</code>（约 70 文件）。</p>
-<h2 id="一、AI-存储过程图表与能耗分析（-378、-379、-381）"><a href="#一、AI-存储过程图表与能耗分析（-378、-379、-381）" class="headerlink" title="一、AI 存储过程图表与能耗分析（#378、#379、#381）"></a>一、AI 存储过程图表与能耗分析（#378、#379、#381）</h2><p>把能耗类 SQL 工具从「表格结果」推进到「对话内可渲染图表」：</p>
-<ul>
-<li><strong>存储过程工具支持图表输出</strong>：<code>SqlToolChartBuilder</code> 增强 tooltip、系列类型与默认配色同步；能耗分析工具补充 chart intent 与月份处理</li>
-<li><strong>能耗趋势</strong>：多线图、单位过滤、趋势查询与标签修正；去掉不适用的 <code>exclusive_group</code></li>
-<li><strong>能耗饼图 &#x2F; 统计图</strong>：嵌套饼、RATE 展示对齐图形查询路由；柱状图顶部数值展示；图表快照导出 <code>snapshotChartsToImages</code></li>
-<li><strong>同比 &#x2F; 环比</strong>：能耗分析存储过程增强 MoM&#x2F;YoY、按消耗类型细化；<code>excludeFromUiTable</code> 与 remarks 收敛；修复同比列缺失与单位后缀（#380）</li>
-</ul>
-<h2 id="二、智能体会话与聊天体验（-377）"><a href="#二、智能体会话与聊天体验（-377）" class="headerlink" title="二、智能体会话与聊天体验（#377）"></a>二、智能体会话与聊天体验（#377）</h2><ul>
-<li>会话历史检索增强，运行日志详情内嵌图表渲染</li>
-<li>会话搜索、等待态指示、图表 resize</li>
-<li>适配 deepseek-v4-flash；SQL JSON 输出保留 NULL；列可见性策略补充空内容与行去重</li>
-<li>聊天表格 &#x2F; Agent 卡片样式与布局修复；运行日志列表性能相关合入</li>
-</ul>
-<h2 id="三、看板-chart：嵌套饼图与交互"><a href="#三、看板-chart：嵌套饼图与交互" class="headerlink" title="三、看板 chart：嵌套饼图与交互"></a>三、看板 chart：嵌套饼图与交互</h2><ul>
-<li>嵌套饼图配置、绑定与零值过滤；动态系列类型与饼图坐标轴清理</li>
-<li>能耗图表下钻、高亮；看板菜单树展开&#x2F;折叠</li>
-<li>图表包导入导出；画布高度计算修复</li>
-</ul>
-<h2 id="四、联锁强制投用与权限安全（-376）"><a href="#四、联锁强制投用与权限安全（-376）" class="headerlink" title="四、联锁强制投用与权限安全（#376）"></a>四、联锁强制投用与权限安全（#376）</h2><ul>
-<li>联锁监控纳入 <code>isForce</code>（强制投用）条件与查询方法</li>
-<li>Eos 菜单树支持拖拽重排；菜单缓存防误改</li>
-<li>权限批量删除处理重构修复</li>
-</ul>
-<h2 id="五、其它"><a href="#五、其它" class="headerlink" title="五、其它"></a>五、其它</h2><ul>
-<li>容器运行图表配色同步</li>
-<li>审批组面板样式调整</li>
-<li>清理 <code>/rtdb/pi</code> 相关废弃存储过程与函数</li>
-<li>H2 任务计划与 code review 文档更新</li>
-</ul>
-<hr>
-<p><strong>一句话</strong>：本周以 AI 能耗存储过程出图与同比环比分析落地为主，看板嵌套饼图&#x2F;下钻跟上，联锁强制投用与 Eos 菜单拖拽补齐平台侧能力。</p>
-]]></content>
-      <tags>
-        <tag>MES</tag>
-        <tag>工作小结</tag>
-        <tag>mes-ai</tag>
-        <tag>mes-chart</tag>
-        <tag>周报</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MES 2026 年第 32 周工作小结</title>
-    <url>/2026/08/06/mes-weekly-2026-w32/</url>
-    <content><![CDATA[<img src="/2026/08/06/mes-weekly-2026-w32/cover.png" class="">
-
-<p>本周（8&#x2F;3–8&#x2F;6，约 <strong>50 次提交</strong>、合并 PR <strong>#360、#374</strong>）主线在 <strong>AI 图表内联渲染</strong>与<strong>相对月份推理修复</strong>，同时推进运行日志可观测性和 ExternalApi 集成。主力模块 <code>mes-ai</code>（167 文件触达），次为 <code>mes-chart</code>（15 文件）。</p>
-<h2 id="一、AI-图表内联与看板增强（-360）"><a href="#一、AI-图表内联与看板增强（-360）" class="headerlink" title="一、AI 图表内联与看板增强（#360）"></a>一、AI 图表内联与看板增强（#360）</h2><p>在 AI 聊天中落地面向 SQL 工具的内联图表渲染，并增强看板筛选能力：</p>
-<ul>
-<li><strong>SqlToolChartPolicy</strong>：新增图表配置编辑入口，支持为 SQL 工具指定折线&#x2F;柱状&#x2F;表格等图表类型，查询结果直接在对话中渲染</li>
-<li><strong>看板增强</strong>：Tab 筛选与可见性管理、月份过滤支持、<code>renderFilterBar</code> 异步时序修复</li>
-<li><strong>健壮性修复</strong>：<code>ClassCastException</code>（图表配置为标量值时）、<code>NumberUtil</code> 统一替代自定义数值解析方法</li>
-</ul>
-<h2 id="二、相对月份查询修复（-985、-992）"><a href="#二、相对月份查询修复（-985、-992）" class="headerlink" title="二、相对月份查询修复（#985、#992）"></a>二、相对月份查询修复（#985、#992）</h2><p>针对性修复”上个月”等相对月份提示词输出错误日历月份的问题：</p>
-<ul>
-<li><code>RelativeMonthOverviewNormalizer</code>：正则从 <code>RELATIVE_MONTH_PHRASES</code> 集中化短语列表动态构建，消除分散常量</li>
-<li><code>AgentReactExecutor</code>：注入已解析年月提示，防止 Agent 在强制结单前过早输出 JSON 导致月份错误</li>
-<li>新增单测覆盖多种相对月份表述场景</li>
-</ul>
-<h2 id="三、AI-运行日志可观测性（-374）"><a href="#三、AI-运行日志可观测性（-374）" class="headerlink" title="三、AI 运行日志可观测性（#374）"></a>三、AI 运行日志可观测性（#374）</h2><ul>
-<li>运行日志列表新增<strong>会话详情弹窗</strong>，支持按 sessionId 匹配 assistant 消息并展示</li>
-<li><code>AiChatRunLogEntity</code> 关联 <code>SysUserEntity</code>，日志列表展示用户信息（用户名&#x2F;姓名）</li>
-<li><code>AgentChatController</code> 会话管理功能增强：分页、搜索、会话切换</li>
-<li><code>AgentAnswerParser</code> 新增 <code>intentional_choices</code> JSON 解析</li>
-</ul>
-<h2 id="四、ExternalApi-工具增强"><a href="#四、ExternalApi-工具增强" class="headerlink" title="四、ExternalApi 工具增强"></a>四、ExternalApi 工具增强</h2><ul>
-<li>URI 构造与编码重构，<code>urlEncode</code> 冗余方法移除</li>
-<li>测试用例覆盖 URI 特殊字符编码场景</li>
-<li>文档补充：高德天气工具、通用 External API 接入示例</li>
-</ul>
-<h2 id="五、文档与基础设施"><a href="#五、文档与基础设施" class="headerlink" title="五、文档与基础设施"></a>五、文档与基础设施</h2><ul>
-<li>MES vs Dify &#x2F; AgentScope 对比文档大幅更新，详列成本&#x2F;标注反馈闭环等维度差距</li>
-<li>mes-ai 工具配置复杂度分析文档</li>
-<li>新增 <code>mes-count-loc</code> Skill</li>
-<li><code>.mcp.json</code> 加入 <code>.gitignore</code>，清理过期 LLM 文档和已吸收的单次 SQL 补丁</li>
-</ul>
-<h2 id="六、物料查询"><a href="#六、物料查询" class="headerlink" title="六、物料查询"></a>六、物料查询</h2><ul>
-<li>新增物料 ZZTJ 日进出 SQL 工具种子及文档索引</li>
-<li>物料单位 IO 明细查询增加含量、类别筛选参数</li>
-</ul>
-<hr>
-<p><strong>一句话</strong>：本周以 AI 图表内联和相对月份修复落地为主，运行日志可观测性明显提升，ExternalApi 和物料查询逐步补全。</p>
-]]></content>
-      <tags>
-        <tag>MES</tag>
-        <tag>工作小结</tag>
-        <tag>mes-ai</tag>
-        <tag>mes-chart</tag>
-        <tag>周报</tag>
       </tags>
   </entry>
   <entry>
@@ -2382,9 +2027,249 @@
 ]]></content>
       <tags>
         <tag>MES</tag>
+        <tag>mes-ai</tag>
         <tag>工作小结</tag>
         <tag>月报</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Cursor Agent CLI 报错 No version directories found 的排查与修复</title>
+    <url>/2026/06/19/cursor-agent-no-version-directories-fix/</url>
+    <content><![CDATA[<p>在 Windows 终端执行 <code>agent</code> 或 <code>cursor-agent</code> 时，可能遇到如下错误：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">C:\Users\liuhualiang\AppData\Local\cursor-agent\agent.ps1 : No version directories found in C:\Users\liuhualiang\AppData\Local\cursor-agent</span><br><span class="line">所在位置 行:1 字符: 1</span><br><span class="line">+ agent</span><br><span class="line">+ ~~~~~</span><br><span class="line">    + CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException</span><br><span class="line">    + FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException,agent.ps1</span><br></pre></td></tr></table></figure>
+
+<p>本文记录该问题的现象、根因、修复方式与临时绕过方法。</p>
+<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><ul>
+<li><code>agent</code>、<code>cursor-agent</code> 命令均无法启动</li>
+<li>报错提示在 <code>%LOCALAPPDATA%\cursor-agent</code> 下找不到版本目录</li>
+<li>但手动查看 <code>versions</code> 子目录，实际存在多个版本文件夹，例如：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">C:\Users\liuhualiang\AppData\Local\cursor-agent\versions\</span><br><span class="line">├── 2026.06.12-19-59-36-f6aba9a</span><br><span class="line">├── 2026.06.15-03-48-54-da23e37</span><br><span class="line">└── 2026.06.16-20-30-07-a07d3ac</span><br></pre></td></tr></table></figure>
+
+<h2 id="根因"><a href="#根因" class="headerlink" title="根因"></a>根因</h2><p><code>agent.ps1</code> 与 <code>cursor-agent.ps1</code> 启动时会扫描 <code>versions</code> 目录，并用正则过滤合法版本名：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>该正则只匹配<strong>旧格式</strong>：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">YYYY.MM.DD-commit</span><br></pre></td></tr></table></figure>
+
+<p>例如：<code>2026.06.16-a07d3ac</code></p>
+<p>而 Cursor Agent 更新后的目录名变为<strong>新格式</strong>，中间多了构建时间：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">YYYY.MM.DD-HH-MM-SS-commit</span><br></pre></td></tr></table></figure>
+
+<p>例如：<code>2026.06.16-20-30-07-a07d3ac</code></p>
+<p>因此所有现有版本目录都被过滤掉，脚本误判为「没有版本目录」。</p>
+<h2 id="修复方法"><a href="#修复方法" class="headerlink" title="修复方法"></a>修复方法</h2><p>编辑以下两个文件（内容相同，需同步修改）：</p>
+<ul>
+<li><code>%LOCALAPPDATA%\cursor-agent\agent.ps1</code></li>
+<li><code>%LOCALAPPDATA%\cursor-agent\cursor-agent.ps1</code></li>
+</ul>
+<h3 id="1-更新版本目录匹配正则"><a href="#1-更新版本目录匹配正则" class="headerlink" title="1. 更新版本目录匹配正则"></a>1. 更新版本目录匹配正则</h3><p>将原来的：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>改为同时兼容新旧格式：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$name</span> <span class="operator">-match</span> <span class="string">&#x27;^\d&#123;4&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;(-\d&#123;1,2&#125;-\d&#123;1,2&#125;-\d&#123;1,2&#125;)?-[a-f0-9]+$&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-改进版本排序逻辑（可选但推荐）"><a href="#2-改进版本排序逻辑（可选但推荐）" class="headerlink" title="2. 改进版本排序逻辑（可选但推荐）"></a>2. 改进版本排序逻辑（可选但推荐）</h3><p><code>Parse-VersionString</code> 函数原先只按日期 <code>YYYY.MM.DD</code> 排序。若同一天存在多个构建，建议解析时间戳后再比较：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Parse-VersionString</span></span> &#123;</span><br><span class="line">    <span class="keyword">param</span> (</span><br><span class="line">        [<span class="built_in">string</span>]<span class="variable">$versionString</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="variable">$segments</span> = <span class="variable">$versionString</span>.Split(<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">    <span class="variable">$datePart</span> = <span class="variable">$segments</span>[<span class="number">0</span>]</span><br><span class="line">    <span class="variable">$parts</span> = <span class="variable">$datePart</span>.Split(<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$parts</span>.Length <span class="operator">-ne</span> <span class="number">3</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="string">&quot;Invalid version format. Expected format: YYYY.MM.DD[-HH-MM-SS]-commit&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$year</span> = <span class="variable">$parts</span>[<span class="number">0</span>]</span><br><span class="line">    <span class="variable">$month</span> = <span class="variable">$parts</span>[<span class="number">1</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    <span class="variable">$day</span> = <span class="variable">$parts</span>[<span class="number">2</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    <span class="variable">$timeSuffix</span> = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$segments</span>.Length <span class="operator">-ge</span> <span class="number">5</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">1</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">2</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span> <span class="operator">-and</span> <span class="variable">$segments</span>[<span class="number">3</span>] <span class="operator">-match</span> <span class="string">&#x27;^\d+$&#x27;</span>) &#123;</span><br><span class="line">        <span class="variable">$timeSuffix</span> = <span class="variable">$segments</span>[<span class="number">1</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>) + <span class="variable">$segments</span>[<span class="number">2</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>) + <span class="variable">$segments</span>[<span class="number">3</span>].PadLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">long</span>](<span class="variable">$year</span> + <span class="variable">$month</span> + <span class="variable">$day</span> + <span class="variable">$timeSuffix</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-验证修复"><a href="#3-验证修复" class="headerlink" title="3. 验证修复"></a>3. 验证修复</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">agent <span class="literal">--version</span></span><br><span class="line">agent status</span><br></pre></td></tr></table></figure>
+
+<p>预期输出示例：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">2026.06.16-20-30-07-a07d3ac</span><br><span class="line">✓ Logged in as your@email.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="临时绕过（不修改脚本）"><a href="#临时绕过（不修改脚本）" class="headerlink" title="临时绕过（不修改脚本）"></a>临时绕过（不修改脚本）</h2><p>若暂时不想改启动脚本，可直接调用最新版本目录下的 <code>node.exe</code> 与 <code>index.js</code>：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$v</span> = <span class="string">&quot;C:\Users\liuhualiang\AppData\Local\cursor-agent\versions\2026.06.16-20-30-07-a07d3ac&quot;</span></span><br><span class="line">&amp; <span class="string">&quot;<span class="variable">$v</span>\node.exe&quot;</span> <span class="string">&quot;<span class="variable">$v</span>\index.js&quot;</span> status</span><br><span class="line">&amp; <span class="string">&quot;<span class="variable">$v</span>\node.exe&quot;</span> <span class="string">&quot;<span class="variable">$v</span>\index.js&quot;</span> <span class="literal">--help</span></span><br></pre></td></tr></table></figure>
+
+<p>将 <code>$v</code> 替换为 <code>versions</code> 下实际存在的最新目录名即可。</p>
+<h2 id="一键修复工具"><a href="#一键修复工具" class="headerlink" title="一键修复工具"></a>一键修复工具</h2><p>仓库内提供了自动修复脚本，下次 <code>agent update</code> 覆盖修复后可直接运行：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 首次安装（写入 %USERPROFILE%\bin 并加入 PATH）</span></span><br><span class="line">powershell <span class="literal">-ExecutionPolicy</span> Bypass <span class="operator">-File</span> D:\blog\github\scripts\<span class="built_in">install-fix</span><span class="literal">-cursor-agent</span>.ps1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修复</span></span><br><span class="line">fix<span class="literal">-cursor-agent</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 仅检查是否需要修复（退出码 2 表示需要修复）</span></span><br><span class="line">fix<span class="literal">-cursor-agent</span> <span class="literal">-CheckOnly</span></span><br></pre></td></tr></table></figure>
+
+<p>脚本位置：</p>
+<ul>
+<li><code>D:\blog\github\scripts\fix-cursor-agent.ps1</code></li>
+<li><code>D:\blog\github\scripts\fix-cursor-agent.cmd</code></li>
+<li><code>D:\blog\github\scripts\install-fix-cursor-agent.ps1</code></li>
+</ul>
+<p>修复前会自动备份为 <code>agent.ps1.bak-YYYYMMDD-HHMMSS</code>，并尝试执行 <code>agent --version</code> 验证。</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<li><strong>更新可能覆盖修复</strong>：执行 <code>agent update</code> 或 Cursor 自动更新 Agent CLI 后，<code>agent.ps1</code> 可能被还原，问题会复现，需重新应用上述修改。</li>
+<li><strong>IDE CLI 与 Agent CLI 是两套工具</strong>：<ul>
+<li><code>cursor</code>：Cursor IDE 自带 CLI（打开文件、diff、tunnel 等），路径通常在 <code>%LOCALAPPDATA%\Programs\cursor\resources\app\bin\</code></li>
+<li><code>agent</code> &#x2F; <code>cursor-agent</code>：终端 Agent CLI，安装在 <code>%LOCALAPPDATA%\cursor-agent\</code></li>
+</ul>
+</li>
+<li><strong><code>cursor agent</code> 子命令</strong>：IDE CLI 也注册了 <code>agent</code> 子命令，但日常使用的 <code>agent</code> 命令通常来自 PATH 中的 <code>cursor-agent</code> 包装脚本。</li>
+</ol>
+<h2 id="相关环境信息（排查参考）"><a href="#相关环境信息（排查参考）" class="headerlink" title="相关环境信息（排查参考）"></a>相关环境信息（排查参考）</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cursor IDE 版本</td>
+<td>3.8.11</td>
+</tr>
+<tr>
+<td>Agent CLI 版本</td>
+<td>2026.06.16-20-30-07-a07d3ac</td>
+</tr>
+<tr>
+<td>操作系统</td>
+<td>Windows 10&#x2F;11 x64</td>
+</tr>
+<tr>
+<td>安装路径</td>
+<td><code>%LOCALAPPDATA%\cursor-agent\</code></td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><code>No version directories found</code> 并非版本文件缺失，而是 <strong>PowerShell 启动脚本的版本名正则未跟上 Cursor Agent 新的目录命名规范</strong>。更新正则后即可恢复正常；若再次被更新覆盖，按本文步骤重新修复即可。</p>
+]]></content>
+      <tags>
+        <tag>Cursor</tag>
+        <tag>CLI</tag>
+        <tag>Agent</tag>
+        <tag>Windows</tag>
+        <tag>PowerShell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MES 本周工作小结（2026-07-28 ~ 08-01）</title>
+    <url>/2026/08/01/mes-weekly-2026-w31/</url>
+    <content><![CDATA[<img src="/2026/08/01/mes-weekly-2026-w31/cover.png" class="">
+
+<p>本周（7&#x2F;28–8&#x2F;1）工作以 <strong>MES-AI 能耗分析与对话表格展示</strong> 为主线，并落地了 Eos 工程师日志、船舶作业校验与一批文档。约 74 次提交，合并 10 个 PR（#357–#367）。</p>
+<h2 id="一、MES-AI-能耗智能体（主线）"><a href="#一、MES-AI-能耗智能体（主线）" class="headerlink" title="一、MES-AI 能耗智能体（主线）"></a>一、MES-AI 能耗智能体（主线）</h2><ul>
+<li><strong>SQL 工具与参数</strong>：完善能耗工具参数解析（#357）、同比环比工具、装置&#x2F;时段槽位提取；多轮按运行日志纠偏（装置识别、明细 vs 汇总、单位标注等）。</li>
+<li><strong>日表查询</strong>：新增 <code>energy_nhfx_day</code> &#x2F; <code>Z_View_NHFX_TABLE</code> 日表多装置查询（#363），持续修 JSON、错误处理与设计物耗字段表述。</li>
+<li><strong>表格与图表</strong>：复合表头&#x2F;列组（#358）、单元格着色（#359）、汇总行与派生率（#361）、双图（多日&#x2F;多装置）、<code>excludeFromUiTable</code> 隐藏辅助结果（#365）。</li>
+<li><strong>稳定性</strong>：<code>StoredProcToolHandler</code> 围绕 Fastjson 未闭合字符串等问题迭代，后简化控制字符预处理逻辑。</li>
+<li><strong>硬编码治理</strong>：默认模型可配置、Embedding base-url 清理等 P0 项合入（#367）。</li>
+</ul>
+<h2 id="二、AI-管理端与规范"><a href="#二、AI-管理端与规范" class="headerlink" title="二、AI 管理端与规范"></a>二、AI 管理端与规范</h2><ul>
+<li>AI 列表&#x2F;编辑页统一按钮样式、导航、成功提示改用 <code>msg</code>（#364）。</li>
+<li>Cursor 规则与页面约定对齐（成功&#x2F;失败提示、按钮风格）。</li>
+</ul>
+<h2 id="三、Eos-安全任务"><a href="#三、Eos-安全任务" class="headerlink" title="三、Eos &#x2F; 安全任务"></a>三、Eos &#x2F; 安全任务</h2><ul>
+<li>新增 <strong>Eos 工程师日志</strong> 模块（OpenService 客户端、定时任务、装置配置、测试）（#366）。</li>
+<li>日常用 skill&#x2F;脚本按 token 批量生成各装置工程师日志。</li>
+<li>补充&#x2F;更新 EOS 角色-菜单、角色树 nodeId&#x2F;objectId 文档。</li>
+</ul>
+<h2 id="四、船舶作业"><a href="#四、船舶作业" class="headerlink" title="四、船舶作业"></a>四、船舶作业</h2><ul>
+<li>终端侧强制&#x2F;校验 <code>vesselOperationDynamicId</code>（#362）。</li>
+<li>完善到离港接口与 <code>mes-measure-vessel</code> ↔ <code>mes-vessel-operation</code> 调用说明文档。</li>
+</ul>
+<h2 id="五、其他"><a href="#五、其他" class="headerlink" title="五、其他"></a>五、其他</h2><ul>
+<li>mesdata 存储过程&#x2F;函数梳理、能耗模型数据核对、日志错误报告更新。</li>
+<li>README 与若干 AI&#x2F;业务 PDF 文档整理。</li>
+</ul>
+<h2 id="六、周末进行中"><a href="#六、周末进行中" class="headerlink" title="六、周末进行中"></a>六、周末进行中</h2><p>本地仍有未合入改动：<code>ai-chat-render.js</code>、若干 AI HTML，以及 <code>index.html</code> &#x2F; <code>main.css</code>（偏首页&#x2F;样式微调）。</p>
+<hr>
+<p><strong>一句话</strong>：本周把能耗 AI 从「能查」推进到「表格好看、图表可用、结果可控、配置可治理」，并完成工程师日志自动化与船舶动态 ID 校验。</p>
+]]></content>
+      <tags>
+        <tag>MES</tag>
         <tag>mes-ai</tag>
+        <tag>工作小结</tag>
+        <tag>能耗分析</tag>
+        <tag>Eos</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MES 2026 年第 32 周工作小结</title>
+    <url>/2026/08/06/mes-weekly-2026-w32/</url>
+    <content><![CDATA[<img src="/2026/08/06/mes-weekly-2026-w32/cover.png" class="">
+
+<p>本周（8&#x2F;3–8&#x2F;6，约 <strong>50 次提交</strong>、合并 PR <strong>#360、#374</strong>）主线在 <strong>AI 图表内联渲染</strong>与<strong>相对月份推理修复</strong>，同时推进运行日志可观测性和 ExternalApi 集成。主力模块 <code>mes-ai</code>（167 文件触达），次为 <code>mes-chart</code>（15 文件）。</p>
+<h2 id="一、AI-图表内联与看板增强（-360）"><a href="#一、AI-图表内联与看板增强（-360）" class="headerlink" title="一、AI 图表内联与看板增强（#360）"></a>一、AI 图表内联与看板增强（#360）</h2><p>在 AI 聊天中落地面向 SQL 工具的内联图表渲染，并增强看板筛选能力：</p>
+<ul>
+<li><strong>SqlToolChartPolicy</strong>：新增图表配置编辑入口，支持为 SQL 工具指定折线&#x2F;柱状&#x2F;表格等图表类型，查询结果直接在对话中渲染</li>
+<li><strong>看板增强</strong>：Tab 筛选与可见性管理、月份过滤支持、<code>renderFilterBar</code> 异步时序修复</li>
+<li><strong>健壮性修复</strong>：<code>ClassCastException</code>（图表配置为标量值时）、<code>NumberUtil</code> 统一替代自定义数值解析方法</li>
+</ul>
+<h2 id="二、相对月份查询修复（-985、-992）"><a href="#二、相对月份查询修复（-985、-992）" class="headerlink" title="二、相对月份查询修复（#985、#992）"></a>二、相对月份查询修复（#985、#992）</h2><p>针对性修复”上个月”等相对月份提示词输出错误日历月份的问题：</p>
+<ul>
+<li><code>RelativeMonthOverviewNormalizer</code>：正则从 <code>RELATIVE_MONTH_PHRASES</code> 集中化短语列表动态构建，消除分散常量</li>
+<li><code>AgentReactExecutor</code>：注入已解析年月提示，防止 Agent 在强制结单前过早输出 JSON 导致月份错误</li>
+<li>新增单测覆盖多种相对月份表述场景</li>
+</ul>
+<h2 id="三、AI-运行日志可观测性（-374）"><a href="#三、AI-运行日志可观测性（-374）" class="headerlink" title="三、AI 运行日志可观测性（#374）"></a>三、AI 运行日志可观测性（#374）</h2><ul>
+<li>运行日志列表新增<strong>会话详情弹窗</strong>，支持按 sessionId 匹配 assistant 消息并展示</li>
+<li><code>AiChatRunLogEntity</code> 关联 <code>SysUserEntity</code>，日志列表展示用户信息（用户名&#x2F;姓名）</li>
+<li><code>AgentChatController</code> 会话管理功能增强：分页、搜索、会话切换</li>
+<li><code>AgentAnswerParser</code> 新增 <code>intentional_choices</code> JSON 解析</li>
+</ul>
+<h2 id="四、ExternalApi-工具增强"><a href="#四、ExternalApi-工具增强" class="headerlink" title="四、ExternalApi 工具增强"></a>四、ExternalApi 工具增强</h2><ul>
+<li>URI 构造与编码重构，<code>urlEncode</code> 冗余方法移除</li>
+<li>测试用例覆盖 URI 特殊字符编码场景</li>
+<li>文档补充：高德天气工具、通用 External API 接入示例</li>
+</ul>
+<h2 id="五、文档与基础设施"><a href="#五、文档与基础设施" class="headerlink" title="五、文档与基础设施"></a>五、文档与基础设施</h2><ul>
+<li>MES vs Dify &#x2F; AgentScope 对比文档大幅更新，详列成本&#x2F;标注反馈闭环等维度差距</li>
+<li>mes-ai 工具配置复杂度分析文档</li>
+<li>新增 <code>mes-count-loc</code> Skill</li>
+<li><code>.mcp.json</code> 加入 <code>.gitignore</code>，清理过期 LLM 文档和已吸收的单次 SQL 补丁</li>
+</ul>
+<h2 id="六、物料查询"><a href="#六、物料查询" class="headerlink" title="六、物料查询"></a>六、物料查询</h2><ul>
+<li>新增物料 ZZTJ 日进出 SQL 工具种子及文档索引</li>
+<li>物料单位 IO 明细查询增加含量、类别筛选参数</li>
+</ul>
+<hr>
+<p><strong>一句话</strong>：本周以 AI 图表内联和相对月份修复落地为主，运行日志可观测性明显提升，ExternalApi 和物料查询逐步补全。</p>
+]]></content>
+      <tags>
+        <tag>MES</tag>
+        <tag>mes-ai</tag>
+        <tag>mes-chart</tag>
+        <tag>工作小结</tag>
+        <tag>周报</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MES 2026 年第 33 周工作小结</title>
+    <url>/2026/08/15/mes-weekly-2026-w33/</url>
+    <content><![CDATA[<img src="/2026/08/15/mes-weekly-2026-w33/cover.png" class="">
+
+<p>本周（8&#x2F;8–8&#x2F;15，活跃提交 8&#x2F;11–8&#x2F;14，约 <strong>74 次提交</strong>、合并 PR <strong>#376–#381</strong>）主线在 <strong>AI 能耗分析图表能力</strong>（存储过程出图、趋势&#x2F;饼图、同比环比），同步推进看板嵌套饼图与下钻、联锁强制投用，以及 Eos 菜单拖拽与权限修复。主力模块 <code>mes-ai</code>（约 141 文件触达），次为 <code>mes-chart</code>（约 70 文件）。</p>
+<h2 id="一、AI-存储过程图表与能耗分析（-378、-379、-381）"><a href="#一、AI-存储过程图表与能耗分析（-378、-379、-381）" class="headerlink" title="一、AI 存储过程图表与能耗分析（#378、#379、#381）"></a>一、AI 存储过程图表与能耗分析（#378、#379、#381）</h2><p>把能耗类 SQL 工具从「表格结果」推进到「对话内可渲染图表」：</p>
+<ul>
+<li><strong>存储过程工具支持图表输出</strong>：<code>SqlToolChartBuilder</code> 增强 tooltip、系列类型与默认配色同步；能耗分析工具补充 chart intent 与月份处理</li>
+<li><strong>能耗趋势</strong>：多线图、单位过滤、趋势查询与标签修正；去掉不适用的 <code>exclusive_group</code></li>
+<li><strong>能耗饼图 &#x2F; 统计图</strong>：嵌套饼、RATE 展示对齐图形查询路由；柱状图顶部数值展示；图表快照导出 <code>snapshotChartsToImages</code></li>
+<li><strong>同比 &#x2F; 环比</strong>：能耗分析存储过程增强 MoM&#x2F;YoY、按消耗类型细化；<code>excludeFromUiTable</code> 与 remarks 收敛；修复同比列缺失与单位后缀（#380）</li>
+</ul>
+<h2 id="二、智能体会话与聊天体验（-377）"><a href="#二、智能体会话与聊天体验（-377）" class="headerlink" title="二、智能体会话与聊天体验（#377）"></a>二、智能体会话与聊天体验（#377）</h2><ul>
+<li>会话历史检索增强，运行日志详情内嵌图表渲染</li>
+<li>会话搜索、等待态指示、图表 resize</li>
+<li>适配 deepseek-v4-flash；SQL JSON 输出保留 NULL；列可见性策略补充空内容与行去重</li>
+<li>聊天表格 &#x2F; Agent 卡片样式与布局修复；运行日志列表性能相关合入</li>
+</ul>
+<h2 id="三、看板-chart：嵌套饼图与交互"><a href="#三、看板-chart：嵌套饼图与交互" class="headerlink" title="三、看板 chart：嵌套饼图与交互"></a>三、看板 chart：嵌套饼图与交互</h2><ul>
+<li>嵌套饼图配置、绑定与零值过滤；动态系列类型与饼图坐标轴清理</li>
+<li>能耗图表下钻、高亮；看板菜单树展开&#x2F;折叠</li>
+<li>图表包导入导出；画布高度计算修复</li>
+</ul>
+<h2 id="四、联锁强制投用与权限安全（-376）"><a href="#四、联锁强制投用与权限安全（-376）" class="headerlink" title="四、联锁强制投用与权限安全（#376）"></a>四、联锁强制投用与权限安全（#376）</h2><ul>
+<li>联锁监控纳入 <code>isForce</code>（强制投用）条件与查询方法</li>
+<li>Eos 菜单树支持拖拽重排；菜单缓存防误改</li>
+<li>权限批量删除处理重构修复</li>
+</ul>
+<h2 id="五、其它"><a href="#五、其它" class="headerlink" title="五、其它"></a>五、其它</h2><ul>
+<li>容器运行图表配色同步</li>
+<li>审批组面板样式调整</li>
+<li>清理 <code>/rtdb/pi</code> 相关废弃存储过程与函数</li>
+<li>H2 任务计划与 code review 文档更新</li>
+</ul>
+<hr>
+<p><strong>一句话</strong>：本周以 AI 能耗存储过程出图与同比环比分析落地为主，看板嵌套饼图&#x2F;下钻跟上，联锁强制投用与 Eos 菜单拖拽补齐平台侧能力。</p>
+]]></content>
+      <tags>
+        <tag>MES</tag>
+        <tag>mes-ai</tag>
+        <tag>mes-chart</tag>
+        <tag>工作小结</tag>
+        <tag>周报</tag>
       </tags>
   </entry>
   <entry>
@@ -2427,8 +2312,8 @@
 ]]></content>
       <tags>
         <tag>MES</tag>
-        <tag>工作小结</tag>
         <tag>mes-ai</tag>
+        <tag>工作小结</tag>
         <tag>周报</tag>
         <tag>mes-web</tag>
         <tag>LIMS</tag>
@@ -2506,11 +2391,149 @@
 ]]></content>
       <tags>
         <tag>MES</tag>
-        <tag>工作小结</tag>
         <tag>mes-ai</tag>
         <tag>mes-chart</tag>
+        <tag>工作小结</tag>
         <tag>周报</tag>
         <tag>mes-measure</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MES 2026 年第 37 周工作小结</title>
+    <url>/2026/09/12/mes-weekly-2026-w37/</url>
+    <content><![CDATA[<img src="/2026/09/12/mes-weekly-2026-w37/cover.png" class="">
+
+<p>本周（9&#x2F;7–9&#x2F;12，约 <strong>59 次提交</strong>，合入 <code>feature/ai-config-snapshot</code>）主线在 <strong>报表&#x2F;文档模板版本史与回滚</strong>、<strong>能源计量公式检查（含 AI 公式检查）</strong>，以及 <strong>计划范围导入体验</strong> 与 <strong>看板数值卡下钻</strong>。主力模块 <code>mes-report</code> &#x2F; <code>mes-plan</code> &#x2F; <code>mes-factory</code>，另有 <code>mes-web</code>、<code>mes-ai</code>、<code>mes-chart</code>、<code>mes-vessel-operation</code>。</p>
+<h2 id="一、报表与文档模板：历史、快照、回滚（mes-report）"><a href="#一、报表与文档模板：历史、快照、回滚（mes-report）" class="headerlink" title="一、报表与文档模板：历史、快照、回滚（mes-report）"></a>一、报表与文档模板：历史、快照、回滚（mes-report）</h2><ul>
+<li><strong>报表模板</strong>：归档元数据、历史版本、回滚；上传进度与重复文件状态</li>
+<li><strong>XLS 模板</strong>：历史管理、版本对比、回滚；<code>mergeCells</code> 重叠区域与样式保留优化</li>
+<li><strong>DOCX 模板</strong>：版本历史与快照</li>
+<li><strong>计划范围文档（jhfwdoc）</strong>：文档历史管理与快照</li>
+</ul>
+<h2 id="二、公式检查与能源计量报表"><a href="#二、公式检查与能源计量报表" class="headerlink" title="二、公式检查与能源计量报表"></a>二、公式检查与能源计量报表</h2><ul>
+<li>荣盛能源计量报表公式检查报告、复检结论与模板文档</li>
+<li><strong>AI 公式检查</strong>：报表模板侧入口与解析加固、报告渲染与样式、尾随空格检测</li>
+<li>菜单 SQL 与父菜单识别修正，支撑公式检查按钮挂载</li>
+</ul>
+<h2 id="三、计划范围导入与摘要（mes-plan）"><a href="#三、计划范围导入与摘要（mes-plan）" class="headerlink" title="三、计划范围导入与摘要（mes-plan）"></a>三、计划范围导入与摘要（mes-plan）</h2><ul>
+<li>Excel 解析、导入摘要与未匹配装置名展示；导入结果 UI 简化</li>
+<li>计划范围布局增强；计划日期拆分年月工具方法</li>
+<li>过程名 &#x2F; 未匹配装置名日志，便于排错</li>
+</ul>
+<h2 id="四、看板下钻与罐区体验"><a href="#四、看板下钻与罐区体验" class="headerlink" title="四、看板下钻与罐区体验"></a>四、看板下钻与罐区体验</h2><ul>
+<li><strong>Chart</strong>：数值卡下钻能力与配置；船舶管理、任务管理看板下钻</li>
+<li><strong>罐存平衡 &#x2F; 罐日</strong>：网格布局与初始化、数据校验与加载优化、UI 对齐</li>
+</ul>
+<h2 id="五、船舶黑名单与装置日报"><a href="#五、船舶黑名单与装置日报" class="headerlink" title="五、船舶黑名单与装置日报"></a>五、船舶黑名单与装置日报</h2><ul>
+<li>船舶黑名单：IMO &#x2F; 船名检索；导入导出</li>
+<li>新增装置日报（pdr）模块起步</li>
+<li>位号表单增加取数类型；表格文字列自适应</li>
+</ul>
+<h2 id="六、AI-与平台杂项（mes-ai-sys）"><a href="#六、AI-与平台杂项（mes-ai-sys）" class="headerlink" title="六、AI 与平台杂项（mes-ai &#x2F; sys）"></a>六、AI 与平台杂项（mes-ai &#x2F; sys）</h2><ul>
+<li>合入 AI 配置快照分支；协作与配置管理文档增强</li>
+<li>Agent 工具调用处理增强；装置开停工 &#x2F; 停工区间 SQL；三率配置同步本地</li>
+<li>用户已分配角色查询；AesUtil-obf 安装脚本；本地热重载开发说明</li>
+</ul>
+<h3 id="节奏"><a href="#节奏" class="headerlink" title="节奏"></a>节奏</h3><table>
+<thead>
+<tr>
+<th>日期</th>
+<th>提交约数</th>
+<th>重心</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>09-08</td>
+<td>10</td>
+<td>报表历史上传回滚、装置日报、位号</td>
+</tr>
+<tr>
+<td>09-09</td>
+<td>9</td>
+<td>XLS&#x2F;计划文档历史、罐存网格、角色</td>
+</tr>
+<tr>
+<td>09-10</td>
+<td>14</td>
+<td>DOCX 历史、看板下钻、罐日重构</td>
+</tr>
+<tr>
+<td>09-11</td>
+<td>13</td>
+<td>计划导入摘要、能源公式检查、船舶黑名单</td>
+</tr>
+<tr>
+<td>09-12</td>
+<td>15</td>
+<td>AI 公式检查、Agent&#x2F;开停工 SQL、导入收尾</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>一句话</strong>：本周把报表与文档模板的「可回滚版本史」铺开，能源计量公式检查（含 AI）落地，并补齐计划导入摘要、看板下钻与船舶黑名单等业务体验。</p>
+]]></content>
+      <tags>
+        <tag>MES</tag>
+        <tag>mes-ai</tag>
+        <tag>mes-chart</tag>
+        <tag>工作小结</tag>
+        <tag>周报</tag>
+        <tag>mes-report</tag>
+        <tag>mes-plan</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MES 2026 年 8 月工作小结</title>
+    <url>/2026/08/25/mes-monthly-2026-08/</url>
+    <content><![CDATA[<img src="/2026/08/25/mes-monthly-2026-08/cover.png" class="">
+
+<p>8 月（截至 8&#x2F;25，约 <strong>320 次提交</strong>、合并 PR <strong>#360 &#x2F; #368–#381</strong>，另有多条功能分支直接合入）主线是把 <strong>mes-ai</strong> 从「能出表&#x2F;图」推进到 <strong>配方化 SQL 查询、双区间对比与 AgentScope 子运行时</strong>，并同步加深看板下钻、工艺符号面板与 EOS 权限移除能力。改动最集中的模块是 <code>mes-ai</code>，其次 <code>mes-chart</code> &#x2F; <code>mes-web</code> &#x2F; <code>mes-visual</code> &#x2F; <code>mes-security</code>；月末打上 <code>release-2026-08-25</code>。</p>
+<h2 id="一、MES-AI：sql-compose、双区间图与-AgentScope"><a href="#一、MES-AI：sql-compose、双区间图与-AgentScope" class="headerlink" title="一、MES-AI：sql_compose、双区间图与 AgentScope"></a>一、MES-AI：sql_compose、双区间图与 AgentScope</h2><ul>
+<li><strong>sql_compose</strong>：配方化查询生成、别名&#x2F;LIKE&#x2F;单位校验、产耗默认负号、双区间对比图与 <code>[区间1]</code>&#x2F;<code>[区间2]</code> 列标签；「回溯起算」日期解析与 TOP&#x2F;CTE 安全注入。</li>
+<li><strong>AgentScope</strong>：新增 <code>mes-agentscope</code> 子模块，子 Agent 配置、权限模式、表格块与图表抽取、token usage 写入运行日志；管理端与协作编排联动。</li>
+<li><strong>对话体验</strong>：Markdown&#x2F;语法高亮、思考步骤、会话搜索与历史内嵌图表、运行日志反馈&#x2F;复测、相对月份 SQL 参数、选项回答与工具移交编辑。</li>
+<li><strong>能耗工具链</strong>：日表多装置、同比环比&#x2F;趋势&#x2F;饼图、存储过程工具出图、<code>excludeFromUiTable</code>、列组与汇总行、多日均值查询、当前时间预调用。</li>
+</ul>
+<h2 id="二、看板与可视化"><a href="#二、看板与可视化" class="headerlink" title="二、看板与可视化"></a>二、看板与可视化</h2><ul>
+<li><strong>下钻</strong>：饼图&#x2F;柱图弹层明细 → 行级二级详情；能耗模块明细 SQL 与多看板下钻文档补齐；多柱图支持。</li>
+<li><strong>嵌套饼图</strong>：色相微调、固定品类配色、零值过滤与高亮；看板树展开、月份筛选与图表包导入导出。</li>
+<li><strong>工艺工程</strong>：ISA 5.1 仪表符号面板、P&amp;ID 工艺符号面板与生成脚本；设计图&#x2F;图形资产页交互规范。</li>
+<li><strong>项目甘特</strong>：可拖拽分栏、布局与基线&#x2F;排程相关增强（<code>mes-project</code>）。</li>
+</ul>
+<h2 id="三、权限安全与其它业务"><a href="#三、权限安全与其它业务" class="headerlink" title="三、权限安全与其它业务"></a>三、权限安全与其它业务</h2><ul>
+<li><strong>EOS</strong>：角色权限移除授权模式、孤立目录剪枝、菜单树拖拽重排、角色管理 UI 与菜单详情刷新交互。</li>
+<li><strong>船舶 &#x2F; 工作台</strong>：码头船舶待办 Provider；联锁强制投用率相关查询。</li>
+<li><strong>计量</strong>：恒值监测状态持久化与告警联动、仪表型号管理、监测规则按电表批量查询。</li>
+<li><strong>基础设施</strong>：Docker 本地直连端口映射、Flowable schema 自动升级；UI 查询区对齐与成功 <code>msg</code>&#x2F;失败 <code>alert</code> 规范落地。</li>
+</ul>
+<h2 id="四、月度节奏"><a href="#四、月度节奏" class="headerlink" title="四、月度节奏"></a>四、月度节奏</h2><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上旬</td>
+<td>协作子 Agent &#x2F; 工具移交、相对月份参数、运行日志反馈复测、对话内图表合入（#360）</td>
+</tr>
+<tr>
+<td>中旬</td>
+<td>存储过程出图、能耗趋势&#x2F;饼图&#x2F;同比、嵌套饼与下钻、Eos 菜单拖拽与权限修复（#376–#381）</td>
+</tr>
+<tr>
+<td>下旬</td>
+<td>sql_compose 与双区间图、AgentScope、看板二级下钻、P&amp;ID 符号面板、EOS 移除授权；发版 <code>release-2026-08-25</code></td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>一句话</strong>：8 月把 MES-AI 推到「能配方写 SQL、能双区间出图、能挂 AgentScope」，看板下钻与工艺符号面板同步成型，并在月末完成 <code>release-2026-08-25</code> 发版收口。</p>
+]]></content>
+      <tags>
+        <tag>MES</tag>
+        <tag>mes-ai</tag>
+        <tag>mes-chart</tag>
+        <tag>工作小结</tag>
+        <tag>月报</tag>
       </tags>
   </entry>
   <entry>
@@ -2605,20 +2628,90 @@
 ]]></content>
   </entry>
   <entry>
-    <title>查看电脑的电池状态</title>
-    <url>/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/</url>
-    <content><![CDATA[<p>没有特殊软件的情况下，使用powershell命令生成电池使用情况报告</p>
-<p>在 PowerShell（管理员模式）输入 powercfg &#x2F;batteryreport，系统会生成一个 HTML 报告，包含电池设计容量、当前满电容量、充放电历史等信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">powercfg /batteryreport</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>运行后生成一个html文件 batteryreport.html</p>
-<p>使用浏览器打开这个html文件  </p>
-<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070792534.png" class="" width="1748070792534">
+    <title>使用tailscale组网 使用家里打印机</title>
+    <url>/2026/03/15/%E4%BD%BF%E7%94%A8tailscale%E7%BB%84%E7%BD%91-%E4%BD%BF%E7%94%A8%E5%AE%B6%E9%87%8C%E6%89%93%E5%8D%B0%E6%9C%BA/</url>
+    <content><![CDATA[<p>在 Ubuntu 上开启子网广播</p>
+<h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p><strong>确定家里的网段：</strong> 通常是 <code>192.168.1.0/24</code> 或 <code>192.168.0.0/24</code></p>
+<p><strong>开启 IP 转发（内核层面）：</strong><br>运行以下命令：</p>
+<p><strong>Bash</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;net.ipv4.ip_forward = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">echo &#x27;net.ipv6.conf.all.forwarding = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">sudo sysctl -p /etc/sysctl.d/99-tailscale.conf</span><br></pre></td></tr></table></figure>
 
 
-<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070821322.png" class="" width="1748070821322">
+<p><strong>启动子网路由：</strong><br>运行以下命令（将 <code>192.168.1.0/24</code> 替换为你家里的实际网段）：</p>
+<p><strong>Bash</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo tailscale up --advertise-routes=192.168.1.0/24</span><br></pre></td></tr></table></figure>
 
+
+
+
+<h3 id="第二步：在-Tailscale-控制面板允许路由"><a href="#第二步：在-Tailscale-控制面板允许路由" class="headerlink" title="第二步：在 Tailscale 控制面板允许路由"></a>第二步：在 Tailscale 控制面板允许路由</h3><p>为了安全，Tailscale 默认不会自动启用路由，需要你手动点一下：</p>
+<ol>
+<li>打开 <a href="https://login.tailscale.com/admin/machines">Tailscale Admin Console</a>。</li>
+<li>找到你的 <strong>Ubuntu</strong> 设备。</li>
+<li>点击右侧的三个点 <code>...</code> -&gt;  <strong>Edit route settings</strong> 。</li>
+<li>在 <strong>Subnet routes</strong> 下，勾选你刚才添加的网段，点击确认。</li>
+</ol>
 ]]></content>
+  </entry>
+  <entry>
+    <title>MES 2026 年 5 月工作小结</title>
+    <url>/2026/08/01/mes-monthly-2026-05/</url>
+    <content><![CDATA[<img src="/2026/08/01/mes-monthly-2026-05/cover.png" class="">
+
+<p>5 月（约 <strong>220+ 次提交</strong>、合并 PR <strong>#239–#281</strong>）主线落在业务现场能力：交接班 Docx 模型导入、液体码头&#x2F;船舶作业增强、仪表位号与报表关联，以及 RTDB&#x2F;ISYS 采集链路。改动最集中的是 <code>mes-operation</code>、<code>mes-measure</code>、<code>mes-vessel-operation</code>，辅以 <code>mes-web</code> &#x2F; <code>mes-rtdb</code>。</p>
+<h2 id="一、交接班-ShiftLog（中下旬主线）"><a href="#一、交接班-ShiftLog（中下旬主线）" class="headerlink" title="一、交接班 ShiftLog（中下旬主线）"></a>一、交接班 ShiftLog（中下旬主线）</h2><ul>
+<li>Docx 模型导入与解析预览（#263）：锚点注入、单元格模式、输入类型与公式处理。</li>
+<li>跳过孤儿锚点（#270）、批量删除与归属校验、调度日志预览。</li>
+<li>Docx 解析器持续增强（#278）：条目类型、标签推断、TABLE_STR_BC 批量生成等。</li>
+<li>月末补齐 docx_code 唯一性校验（#281）。</li>
+</ul>
+<h2 id="二、船舶-液体码头作业"><a href="#二、船舶-液体码头作业" class="headerlink" title="二、船舶 &#x2F; 液体码头作业"></a>二、船舶 &#x2F; 液体码头作业</h2><ul>
+<li>内外贸字段、管线名称、货种筛选与泊位告警（#239&#x2F;#241&#x2F;#246&#x2F;#248）。</li>
+<li>收发油罐按物料多选（#244）；船名模糊检索等终端体验。</li>
+<li>船舶动态导入：到港时间格式与提示信息修复（#258&#x2F;#276）。</li>
+<li>排船页接入真实 LLM 辅助（#275）。</li>
+</ul>
+<h2 id="三、仪表位号与报表"><a href="#三、仪表位号与报表" class="headerlink" title="三、仪表位号与报表"></a>三、仪表位号与报表</h2><ul>
+<li>手动采集按钮（#254）；位号配置、导入导出、唯一性与时间处理（#267）。</li>
+<li>关联报表模板展示与批量查询、模板维度（#252&#x2F;#265）。</li>
+<li>报表&#x2F;位号侧过滤与 jqGrid 行范围选择。</li>
+</ul>
+<h2 id="四、实时库与工程体验"><a href="#四、实时库与工程体验" class="headerlink" title="四、实时库与工程体验"></a>四、实时库与工程体验</h2><ul>
+<li>RTDB ISYS SDK RMI 回调（#271）；ISYS 配置与 HTTP 客户端增强。</li>
+<li>SpringDoc OpenAPI &#x2F; Swagger UI 接入。</li>
+<li>多 Tab 溢出箭头滚动（#273）、滚动条样式、模态间菜单切换；菜单关键词逗号 OR 搜索（#269）。</li>
+<li>反馈排程关闭&#x2F;驳回态隐藏按钮等细节（#250）。</li>
+</ul>
+<h2 id="五、月度节奏"><a href="#五、月度节奏" class="headerlink" title="五、月度节奏"></a>五、月度节奏</h2><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上旬</td>
+<td>液体码头罐&#x2F;管线&#x2F;货种、位号手动采集、报表模板维度</td>
+</tr>
+<tr>
+<td>中旬</td>
+<td>交接班 Docx 导入起步、位号关联报表、菜单搜索与 UI 修复</td>
+</tr>
+<tr>
+<td>下旬</td>
+<td>ShiftLog 解析深化、RTDB RMI、排船 AI、到港时间导入、docx 唯一性</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>一句话</strong>：5 月把交接班 Docx 导入做成可用链路，并加强液体码头作业与仪表采集&#x2F;报表关联；实时库回调与若干前端体验同步落地，为 6 月平台化（AI&#x2F;能耗&#x2F;图表）腾出业务底座。</p>
+]]></content>
+      <tags>
+        <tag>MES</tag>
+        <tag>工作小结</tag>
+        <tag>月报</tag>
+        <tag>交接班</tag>
+        <tag>船舶作业</tag>
+      </tags>
   </entry>
   <entry>
     <title>在 Claude Code CLI 中使用 DeepSeek 作为模型</title>
@@ -2709,168 +2802,128 @@
       </tags>
   </entry>
   <entry>
-    <title>浙石化序</title>
-    <url>/2025/07/07/%E6%B5%99%E7%9F%B3%E5%8C%96%E5%BA%8F/</url>
-    <content><![CDATA[<p>浙东形胜，三衢古郡，舟山新府。襟东海而带杭湾，控岛链而引巨舶。物华天宝，原油映碧海之光;人杰地灵，工匠聚寰宇之智。雄州雾列，塔器参天;货积云屯，管道织地。时维仲夏，序属清和，掌舵人邀宾朋于鱼山，展宏图于海隅。群贤毕至，少长成集，观此化工新城，敢竭鄙诚，恭疏短引。<br>若夫巨浸茫茫，沧波浩荡。昔者荒礁寂寥，渔火零星;今朝钢构峥，银灯璀璨。削峰填壑，六载功成;跨海连洲，百里势就。银罐如林，贮寰球之黑金;铁轨似弦，奏工业之强音。裂解装置耸若剑阁，催化高塔峻比雷峰。火炬凌雪，夜燃不灭之<br>炬;码头枕浪，朝发万吨之舟。<br>至若生产之盛，则见管道蟠空，银蛇舞壑;仪表星罗，明眸察微。中央控室，决胜千里之外;智能系统，运筹方寸之间。<br>原油分馏，轻质化而为汽柴;分子重构，烯烃聚而成塑胶。芳烃织锦衣之梦，PX解化纤之渴。硫黄变废为宝，尾气点石成金。<br>节能减排，树绿色标杆;循环利用，开生态新篇。若乃创新之道，院十工作站藏龙卧虎，博十后基地起凤腾蛟。专利千项，破外邦之垄断;标准百家，立行业之丰泉。纳米催化，巧夺造化;智能炼厂，智领未来。校企联姻，产学研一体;中外合作，技贸融三通。斯诚东海之硅谷，实乃化工之殿<br>早:嗟乎!石化兴衰，关乎国运。昔闻大庆精神，铁人泣血;今见浙石气象，海匠呕心。老牌炼厂，困陈规而式微;新兴基地，乘东风而崛起。屈子求索，路漫漫其修远;愚公移山，志巍巍而不改。岂效守成之辈，坐享其成?敢为天下先，方兄英雄色。<br>掌舵人，精神抖擞，壮志凌云。掌千亿之资，立百年之业。创新驱动，布新局如弈棋;安全为本，守红线若履冰。绿色低碳，岂止合规达标?数字智能，更求行业引领。呜呯!碧海蓝天，岂与黑烟共存?金山银山，终须绿水相伴。所赖转型及时，未雨绸缪。<br>敢竭鄙怀，恭疏短引。一言均赋，四韵俱成:鱼山螺岛起宏图，钢构连云海气殊。裂解千钧轻似羽，合成万象妙如珠。智能已破重洋术，绿色新开双碳途。莫道化工皆浊物，今看白舞银炉。</p>
+    <title>查看电脑的电池状态</title>
+    <url>/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/</url>
+    <content><![CDATA[<p>没有特殊软件的情况下，使用powershell命令生成电池使用情况报告</p>
+<p>在 PowerShell（管理员模式）输入 powercfg &#x2F;batteryreport，系统会生成一个 HTML 报告，包含电池设计容量、当前满电容量、充放电历史等信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">powercfg /batteryreport</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行后生成一个html文件 batteryreport.html</p>
+<p>使用浏览器打开这个html文件  </p>
+<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070792534.png" class="" width="1748070792534">
+
+
+<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070821322.png" class="" width="1748070821322">
+
 ]]></content>
   </entry>
   <entry>
-    <title>使用tailscale组网 使用家里打印机</title>
-    <url>/2026/03/15/%E4%BD%BF%E7%94%A8tailscale%E7%BB%84%E7%BD%91-%E4%BD%BF%E7%94%A8%E5%AE%B6%E9%87%8C%E6%89%93%E5%8D%B0%E6%9C%BA/</url>
-    <content><![CDATA[<p>在 Ubuntu 上开启子网广播</p>
-<h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p><strong>确定家里的网段：</strong> 通常是 <code>192.168.1.0/24</code> 或 <code>192.168.0.0/24</code></p>
-<p><strong>开启 IP 转发（内核层面）：</strong><br>运行以下命令：</p>
-<p><strong>Bash</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;net.ipv4.ip_forward = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">echo &#x27;net.ipv6.conf.all.forwarding = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">sudo sysctl -p /etc/sysctl.d/99-tailscale.conf</span><br></pre></td></tr></table></figure>
-
-
-<p><strong>启动子网路由：</strong><br>运行以下命令（将 <code>192.168.1.0/24</code> 替换为你家里的实际网段）：</p>
-<p><strong>Bash</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo tailscale up --advertise-routes=192.168.1.0/24</span><br></pre></td></tr></table></figure>
-
-
-
-
-<h3 id="第二步：在-Tailscale-控制面板允许路由"><a href="#第二步：在-Tailscale-控制面板允许路由" class="headerlink" title="第二步：在 Tailscale 控制面板允许路由"></a>第二步：在 Tailscale 控制面板允许路由</h3><p>为了安全，Tailscale 默认不会自动启用路由，需要你手动点一下：</p>
-<ol>
-<li>打开 <a href="https://login.tailscale.com/admin/machines">Tailscale Admin Console</a>。</li>
-<li>找到你的 <strong>Ubuntu</strong> 设备。</li>
-<li>点击右侧的三个点 <code>...</code> -&gt;  <strong>Edit route settings</strong> 。</li>
-<li>在 <strong>Subnet routes</strong> 下，勾选你刚才添加的网段，点击确认。</li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
-    <title>瘦身密码（四）：九大体质科学甩肉指南——管体加管重</title>
-    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E5%A4%A7%E4%BD%93%E8%B4%A8%E7%A7%91%E5%AD%A6%E7%94%A9%E8%82%89%E6%8C%87%E5%8D%97/</url>
-    <content><![CDATA[<h2 id="核心理念：管体-管重"><a href="#核心理念：管体-管重" class="headerlink" title="核心理念：管体 + 管重"></a>核心理念：管体 + 管重</h2><ul>
-<li><strong>管体</strong>：辨识体质、纠正偏颇——体质调好了，赘肉才不容易反弹</li>
-<li><strong>管重</strong>：吃对食物比盲目少吃更重要；体重是体质的一面镜子，但不是唯一指标</li>
-</ul>
-<p>同样体重的人，体脂率、肌肉量不同，健康状况可以天差地别。短期节食难持久，<strong>结合体质的长期调理</strong>才是正道。</p>
-<hr>
-<h2 id="平和质：别把好体质作没了"><a href="#平和质：别把好体质作没了" class="headerlink" title="平和质：别把好体质作没了"></a>平和质：别把好体质作没了</h2><p><strong>特征</strong>：体形匀称，精力充沛，患病少，适应力强。</p>
-<p><strong>要点</strong>：</p>
-<ul>
-<li>膳食平衡，粗粮细粮搭配，寒温适中，七八分饱</li>
-<li>每天有氧运动约 30 分钟，或步行不少于 6000 步</li>
-<li>22:30 前入睡，春夏养阳、秋冬避风寒</li>
-<li>穴位保健：足三里、三阴交、涌泉</li>
-</ul>
-<p><strong>药膳举例</strong>：南瓜豆腐羹、芝麻山药粥</p>
-<hr>
-<h2 id="阳虚质：扶阳驱寒是关键"><a href="#阳虚质：扶阳驱寒是关键" class="headerlink" title="阳虚质：扶阳驱寒是关键"></a>阳虚质：扶阳驱寒是关键</h2><p><strong>特征</strong>：怕冷、手足凉、夜尿多、精神不振，脂肪像给身体「穿羽绒服」。</p>
-<p><strong>要点</strong>：</p>
-<ul>
-<li>避寒就温，多晒太阳，睡前 40～45℃ 泡脚 15 分钟</li>
-<li>宜羊肉、鸡肉、韭菜、核桃；少生冷、少苦寒苦瓜（可煮透减寒）</li>
-<li>运动选慢跑、太极拳、八段锦，微汗为度，忌大汗伤阳</li>
-<li>穴位：关元、命门、阳池</li>
-</ul>
-<p><strong>药膳举例</strong>：暖胃茶（红茶+桂圆+生姜+白术+红枣）、当归生姜羊肉汤</p>
-<hr>
-<h2 id="阴虚质：补水降火是核心"><a href="#阴虚质：补水降火是核心" class="headerlink" title="阴虚质：补水降火是核心"></a>阴虚质：补水降火是核心</h2><p><strong>特征</strong>：口干咽燥、手足心热、盗汗、便干，体型偏瘦但血脂易偏高。</p>
-<p><strong>要点</strong>：</p>
-<ul>
-<li>忌熬夜、桑拿、高温环境；室温 14～26℃ 为宜</li>
-<li>宜芝麻、蜂蜜、豆腐、鱼类；少辛辣燥烈、火锅</li>
-<li>运动选游泳、瑜伽、散步，避免大汗淋漓</li>
-<li>穴位：太溪、三阴交、大敦</li>
-</ul>
-<p><strong>药膳举例</strong>：三汁饮（黄精、生地、天门冬、茯苓）、冰糖五果羹</p>
-<hr>
-<h2 id="气郁质：疏肝解郁才能瘦"><a href="#气郁质：疏肝解郁才能瘦" class="headerlink" title="气郁质：疏肝解郁才能瘦"></a>气郁质：疏肝解郁才能瘦</h2><p><strong>特征</strong>：多愁善感、胸闷叹息、睡眠差；<strong>一焦虑就暴食，压力肥堆腰腹</strong>。</p>
-<p><strong>要点</strong>：</p>
-<ul>
-<li>环境宜安静，春季多户外活动舒展阳气</li>
-<li>宜萝卜、洋葱、柑橘；玫瑰花、茉莉花代茶饮</li>
-<li>少芋艿、甘薯等易胀气食物</li>
-<li>推荐：玫瑰花茶 + 敲胆经，疏解肝郁</li>
-</ul>
-<p><strong>药膳举例</strong>：萝卜丝饼、玫瑰佛手茶</p>
-<hr>
-<h2 id="血瘀质：活血化瘀加速瘦身"><a href="#血瘀质：活血化瘀加速瘦身" class="headerlink" title="血瘀质：活血化瘀加速瘦身"></a>血瘀质：活血化瘀加速瘦身</h2><p><strong>特征</strong>：面色晦暗、唇舌黯、黑眼圈，肉硬腿粗，减肥进展慢如「挤牙膏」。</p>
-<p><strong>要点</strong>：</p>
-<ul>
-<li>少食肥腻、寒凉，宜活血食物：山楂、黑豆、玫瑰花</li>
-<li>运动促进血液循环，避免久坐</li>
-<li>药浴泡脚 + 山楂茶是经典组合</li>
-<li>穴位：血海、膈俞、三阴交</li>
-</ul>
-<hr>
-<h2 id="痰湿质：祛湿排浊才是真抽脂"><a href="#痰湿质：祛湿排浊才是真抽脂" class="headerlink" title="痰湿质：祛湿排浊才是真抽脂"></a>痰湿质：祛湿排浊才是真抽脂</h2><p><strong>特征</strong>：体胖腹大、身重困倦、痰多、鼾声大，减肥易卡平台期。</p>
-<p><strong>要点</strong>：</p>
-<ul>
-<li>饮食清淡：冬瓜、白萝卜、薏米、赤小豆；少甜腻、少暴饮暴食</li>
-<li>忌潮湿环境，宜阳光下午后运动</li>
-<li>按揉丰隆、足三里、中脘；红豆薏米汤、山药冬瓜汤</li>
-<li>古籍云：「肥人多痰湿」——祛湿比单纯节食更关键</li>
-</ul>
-<hr>
-<h2 id="湿热质：清火除湿瘦成清爽"><a href="#湿热质：清火除湿瘦成清爽" class="headerlink" title="湿热质：清火除湿瘦成清爽"></a>湿热质：清火除湿瘦成清爽</h2><p><strong>特征</strong>：面油痤疮、口臭、便黏，脸油肚凸的「油胖子」。</p>
-<p><strong>要点</strong>：</p>
-<ul>
-<li>宜冬瓜、绿豆、苦瓜、芹菜；忌辛辣、油炸、甜腻</li>
-<li>运动选中长跑、游泳等耗湿清热项目</li>
-<li>冬瓜汤、刮肝经，拒绝油腻感</li>
-<li>穴位：阴陵泉、曲池、委中</li>
-</ul>
-<hr>
-<h2 id="气虚质：补气提效懒人瘦身"><a href="#气虚质：补气提效懒人瘦身" class="headerlink" title="气虚质：补气提效懒人瘦身"></a>气虚质：补气提效懒人瘦身</h2><p><strong>特征</strong>：疲乏气短、声低懒言、易感冒，肉松垮像棉花。</p>
-<p><strong>要点</strong>：</p>
-<ul>
-<li>宜山药、大枣、鸡肉、黄芪；忌过劳、过饱</li>
-<li>运动从散步、八段锦入手，循序渐进，忌大汗</li>
-<li>黄芪水 + 八段锦，提升运化效率再减重</li>
-<li>穴位：气海、脾俞、足三里</li>
-</ul>
-<hr>
-<h2 id="特禀质：温和调理避开雷区"><a href="#特禀质：温和调理避开雷区" class="headerlink" title="特禀质：温和调理避开雷区"></a>特禀质：温和调理避开雷区</h2><p><strong>特征</strong>：易过敏，减肥过激易诱发风团、喷嚏。</p>
-<p><strong>要点</strong>：</p>
-<ul>
-<li>低敏饮食，避开已知过敏原</li>
-<li>运动环境清洁，避免花粉、尘螨密集处</li>
-<li>穴位按摩宜轻柔；中药调理需严格遵医嘱</li>
-<li>减肥方案宜缓不宜猛</li>
-</ul>
-<hr>
-<h2 id="通用运动时间表（可参考）"><a href="#通用运动时间表（可参考）" class="headerlink" title="通用运动时间表（可参考）"></a>通用运动时间表（可参考）</h2><table>
+    <title>瘦身密码（三）：九体医学入门——解锁你的体质密码</title>
+    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6%E4%BD%93%E8%B4%A8%E5%AF%86%E7%A0%81%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<h2 id="世界上没有两片相同的树叶"><a href="#世界上没有两片相同的树叶" class="headerlink" title="世界上没有两片相同的树叶"></a>世界上没有两片相同的树叶</h2><p>九体医学以九种体质分类为指导，研究体质特征与疾病的相关性，从而指导预防、治疗与养生康复。王琦院士将人群科学分为九种类型：</p>
+<table>
 <thead>
 <tr>
-<th>时段</th>
-<th>建议</th>
-<th>热量参考</th>
+<th>体质</th>
+<th>形象比喻</th>
+<th>典型特征（口诀）</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>6～9 点</td>
-<td>慢跑、快走，微汗</td>
-<td>200～300 千卡</td>
+<td><strong>平和质</strong></td>
+<td>小太阳</td>
+<td>气血匀，面红润，目光炯，元气振</td>
 </tr>
 <tr>
-<td>12～14 点</td>
-<td>午休 30～45 分钟，不宜剧烈运动</td>
-<td>—</td>
+<td><strong>气虚质</strong></td>
+<td>小懒猫</td>
+<td>常气短，虚汗浸，懒言语，易疲晕</td>
 </tr>
 <tr>
-<td>16～17 点</td>
-<td>有氧操、骑行</td>
-<td>300～400 千卡</td>
+<td><strong>阳虚质</strong></td>
+<td>小冰块</td>
+<td>手足冰，腰膝冷，舌淡胖，夜尿频</td>
 </tr>
 <tr>
-<td>20～22 点</td>
-<td>瑜伽拉伸、仙人揉腹</td>
-<td>50～100 千卡</td>
+<td><strong>阴虚质</strong></td>
+<td>小火苗</td>
+<td>颧潮红，五心热，口咽干，便秘困</td>
+</tr>
+<tr>
+<td><strong>痰湿质</strong></td>
+<td>小水库</td>
+<td>体臃肿，大肚腩，鼾声大，腹胀闷</td>
+</tr>
+<tr>
+<td><strong>湿热质</strong></td>
+<td>小蒸笼</td>
+<td>面油腻，痤疮丛，常口臭，便黏滞</td>
+</tr>
+<tr>
+<td><strong>血瘀质</strong></td>
+<td>小堵车</td>
+<td>唇舌黯，黑眼圈，痛如刺，易长斑</td>
+</tr>
+<tr>
+<td><strong>气郁质</strong></td>
+<td>小气球</td>
+<td>眉紧蹙，多善感，常郁闷，结节生</td>
+</tr>
+<tr>
+<td><strong>特禀质</strong></td>
+<td>小敏感</td>
+<td>易过敏，风团起，喷嚏疾，泪涟涕</td>
 </tr>
 </tbody></table>
-<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>九体医学告诉我们：<strong>没有放之四海而皆准的减肥法</strong>。痰湿要祛湿，阳虚要温阳，气郁要疏肝，气虚要补气——先调体，再管重，才能瘦得健康、瘦得长久。</p>
-<p>下一篇将聚焦肥胖引爆的<strong>八大健康地雷</strong>：糖尿病、冠心病、脂肪肝……早知早防。</p>
+<p><strong>平和质</strong>是健康基准；其余八种为偏颇体质，如同八条通往特定疾病的道路——早发现、早调体，就能掉头往回走。</p>
+<h2 id="九体医学与精准医学"><a href="#九体医学与精准医学" class="headerlink" title="九体医学与精准医学"></a>九体医学与精准医学</h2><p>2015 年，王琦院士团队提出「九体医学健康计划」，被视为中国版「精准医学」：与奥巴马「精准医学」计划同年亮相，却更强调中医「治未病」「同病异治」思想。</p>
+<ul>
+<li>体质辨识已纳入《国家基本公共卫生服务标准》</li>
+<li>《中医体质分类与判定》量表已翻译成英、日、韩等多国语言</li>
+<li>覆盖全国 31 个省区，应用于健康管理、亚健康调理、慢病防控</li>
+</ul>
+<p>古籍早有端倪：「肥人多痰湿」（朱丹溪）、「阴阳匀平……命曰平人」（《素问》）。王琦院士用 40 余年研究，将零散珍珠串成体系。</p>
+<h2 id="四大原理"><a href="#四大原理" class="headerlink" title="四大原理"></a>四大原理</h2><ol>
+<li><strong>体质过程论</strong>：体质随年龄阶段演变，养生应因时而异</li>
+<li><strong>形神构成论</strong>：躯体与心理一体，痰湿质者情绪稳定型居多</li>
+<li><strong>环境制约论</strong>：饮食、气候、地理塑造体质——嗜肥甘生痰湿，过逸成痰瘀</li>
+<li><strong>禀赋遗传论</strong>：先天禀赋决定体质底色，后天仍可调节</li>
+</ol>
+<h2 id="三大核心"><a href="#三大核心" class="headerlink" title="三大核心"></a>三大核心</h2><ul>
+<li><strong>体质可分论</strong>：个体差异与群体趋同性并存</li>
+<li><strong>体病相关论</strong>：痰湿质易患肥胖、三高；气虚质易感冒、内脏下垂；血瘀质易患肿瘤、痛证</li>
+<li><strong>体质可调论</strong>：偏颇体质可通过饮食、起居、运动、情志干预改善</li>
+</ul>
+<h2 id="与肥胖的关系"><a href="#与肥胖的关系" class="headerlink" title="与肥胖的关系"></a>与肥胖的关系</h2><p>肥胖与体质密切相关：</p>
+<ul>
+<li><strong>痰湿质</strong>：中心性肥胖、高血脂、高血糖、高血压高发——「祛湿排浊才是真抽脂」</li>
+<li><strong>气虚质</strong>：肉松垮、动则气短，减肥效率低</li>
+<li><strong>阳虚质</strong>：怕冷，脂肪像「穿羽绒服」保温</li>
+<li><strong>气郁质</strong>：压力肥，焦虑时暴食，肉易堆腰腹</li>
+<li><strong>湿热质</strong>：脸油肚凸，「油胖子」需清火除湿</li>
+<li><strong>血瘀质</strong>：肉硬、循环差，减肥像挤牙膏</li>
+</ul>
+<p>国家 2024 年「体重管理年」方案明确发挥中医药技术优势；王琦院士「九体医学健康中国计划」正是体重个体化管理的理论基础。</p>
+<h2 id="如何判定自己的体质？"><a href="#如何判定自己的体质？" class="headerlink" title="如何判定自己的体质？"></a>如何判定自己的体质？</h2><p>依据《中医体质分类与判定》标准：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">原始分 = 各条目分值相加</span><br><span class="line">转化分 = [(原始分 − 条目数) / (条目数 × 4)] × 100</span><br></pre></td></tr></table></figure>
+
+<p><strong>平和质</strong>：转化分 ≥60，且其余 8 种均 &lt;30（或均 &lt;40 为「基本是」）</p>
+<p><strong>偏颇质</strong>：转化分 ≥40 为「是」；30～39 为「倾向是」</p>
+<p>建议通过正规医疗机构或社区卫生中心的体质辨识服务获取准确结果，勿仅凭网络测试下定论。</p>
+<h2 id="体质不是终身标签"><a href="#体质不是终身标签" class="headerlink" title="体质不是终身标签"></a>体质不是终身标签</h2><p>体质会随环境、饮食、情绪变化而调整。一方水土养一方人，养生需<strong>因人制宜、因时制宜</strong>——读懂身体密码，才能把健康主动权握在自己手里。</p>
+<p>下一篇将进入实战：<strong>九大体质的科学甩肉指南</strong>，痰湿、湿热、阳虚……各有什么吃法、练法和穴位？</p>
 ]]></content>
       <tags>
         <tag>健康</tag>
         <tag>九体医学</tag>
-        <tag>体质调理</tag>
+        <tag>中医体质</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>浙石化序</title>
+    <url>/2025/07/07/%E6%B5%99%E7%9F%B3%E5%8C%96%E5%BA%8F/</url>
+    <content><![CDATA[<p>浙东形胜，三衢古郡，舟山新府。襟东海而带杭湾，控岛链而引巨舶。物华天宝，原油映碧海之光;人杰地灵，工匠聚寰宇之智。雄州雾列，塔器参天;货积云屯，管道织地。时维仲夏，序属清和，掌舵人邀宾朋于鱼山，展宏图于海隅。群贤毕至，少长成集，观此化工新城，敢竭鄙诚，恭疏短引。<br>若夫巨浸茫茫，沧波浩荡。昔者荒礁寂寥，渔火零星;今朝钢构峥，银灯璀璨。削峰填壑，六载功成;跨海连洲，百里势就。银罐如林，贮寰球之黑金;铁轨似弦，奏工业之强音。裂解装置耸若剑阁，催化高塔峻比雷峰。火炬凌雪，夜燃不灭之<br>炬;码头枕浪，朝发万吨之舟。<br>至若生产之盛，则见管道蟠空，银蛇舞壑;仪表星罗，明眸察微。中央控室，决胜千里之外;智能系统，运筹方寸之间。<br>原油分馏，轻质化而为汽柴;分子重构，烯烃聚而成塑胶。芳烃织锦衣之梦，PX解化纤之渴。硫黄变废为宝，尾气点石成金。<br>节能减排，树绿色标杆;循环利用，开生态新篇。若乃创新之道，院十工作站藏龙卧虎，博十后基地起凤腾蛟。专利千项，破外邦之垄断;标准百家，立行业之丰泉。纳米催化，巧夺造化;智能炼厂，智领未来。校企联姻，产学研一体;中外合作，技贸融三通。斯诚东海之硅谷，实乃化工之殿<br>早:嗟乎!石化兴衰，关乎国运。昔闻大庆精神，铁人泣血;今见浙石气象，海匠呕心。老牌炼厂，困陈规而式微;新兴基地，乘东风而崛起。屈子求索，路漫漫其修远;愚公移山，志巍巍而不改。岂效守成之辈，坐享其成?敢为天下先，方兄英雄色。<br>掌舵人，精神抖擞，壮志凌云。掌千亿之资，立百年之业。创新驱动，布新局如弈棋;安全为本，守红线若履冰。绿色低碳，岂止合规达标?数字智能，更求行业引领。呜呯!碧海蓝天，岂与黑烟共存?金山银山，终须绿水相伴。所赖转型及时，未雨绸缪。<br>敢竭鄙怀，恭疏短引。一言均赋，四韵俱成:鱼山螺岛起宏图，钢构连云海气殊。裂解千钧轻似羽，合成万象妙如珠。智能已破重洋术，绿色新开双碳途。莫道化工皆浊物，今看白舞银炉。</p>
+]]></content>
   </entry>
   <entry>
     <title>瘦身密码（一）：中国式发福图鉴——14亿人的体重失控现场</title>
@@ -3054,110 +3107,6 @@
       </tags>
   </entry>
   <entry>
-    <title>队列监控页面使用指南</title>
-    <url>/2025/06/12/%E9%98%9F%E5%88%97%E7%9B%91%E6%8E%A7%E9%A1%B5%E9%9D%A2%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</url>
-    <content><![CDATA[<h1 id="队列监控页面使用指南"><a href="#队列监控页面使用指南" class="headerlink" title="队列监控页面使用指南"></a>队列监控页面使用指南</h1><h2 id="页面访问"><a href="#页面访问" class="headerlink" title="页面访问"></a>页面访问</h2><p>队列监控页面位于：<code>/views/modules/mm/queue.html</code></p>
-<h2 id="页面功能"><a href="#页面功能" class="headerlink" title="页面功能"></a>页面功能</h2><h3 id="1-概览统计"><a href="#1-概览统计" class="headerlink" title="1. 概览统计"></a>1. 概览统计</h3><p>页面顶部显示四个关键指标：</p>
-<p>-<strong>活跃队列总数</strong>：当前有请求等待的队列数量</p>
-<p>-<strong>等待请求总数</strong>：所有队列中等待执行的请求总数</p>
-<p>-<strong>执行中请求</strong>：当前正在执行的请求数量</p>
-<p>-<strong>最大队列长度</strong>：所有队列中最长的队列长度</p>
-<h3 id="2-自动刷新功能"><a href="#2-自动刷新功能" class="headerlink" title="2. 自动刷新功能"></a>2. 自动刷新功能</h3><ul>
-<li>点击”开启自动刷新”按钮启用自动刷新（每5秒刷新一次）</li>
-<li>点击”停止自动刷新”按钮关闭自动刷新</li>
-<li>可随时点击”手动刷新”按钮立即更新数据</li>
-</ul>
-<h3 id="3-队列列表"><a href="#3-队列列表" class="headerlink" title="3. 队列列表"></a>3. 队列列表</h3><p>显示所有租户的队列状态，包括：</p>
-<p>-<strong>租户ID</strong>：队列所属的租户标识</p>
-<p>-<strong>队列长度</strong>：当前队列中的请求数量</p>
-<p>-<strong>当前执行请求</strong>：正在执行的请求UUID（显示前16位）</p>
-<p>-<strong>状态</strong>：队列当前状态</p>
-<ul>
-<li>🟢 空闲：队列为空</li>
-<li>🟡 执行中：有请求正在执行</li>
-<li>🔴 异常：队列有请求但没有执行中的请求</li>
-</ul>
-<p>-<strong>操作</strong>：可执行的操作按钮</p>
-<h3 id="4-状态说明"><a href="#4-状态说明" class="headerlink" title="4. 状态说明"></a>4. 状态说明</h3><h4 id="队列状态图标说明"><a href="#队列状态图标说明" class="headerlink" title="队列状态图标说明"></a>队列状态图标说明</h4><p>-**绿色标签 (0)**：队列为空，无等待请求</p>
-<p>-**黄色标签 (数字)**：队列中有等待的请求</p>
-<p>-<strong>蓝色标签</strong>：当前执行的请求ID</p>
-<p>-<strong>灰色文字</strong>：无执行请求</p>
-<h4 id="状态类型"><a href="#状态类型" class="headerlink" title="状态类型"></a>状态类型</h4><p>-<strong>空闲</strong>：队列无任何请求</p>
-<p>-<strong>执行中</strong>：有请求正在执行，可能还有其他请求在等待</p>
-<p>-<strong>异常</strong>：队列中有请求但没有正在执行的请求（可能需要清理）</p>
-<h3 id="5-操作功能"><a href="#5-操作功能" class="headerlink" title="5. 操作功能"></a>5. 操作功能</h3><h4 id="查看详情"><a href="#查看详情" class="headerlink" title="查看详情"></a>查看详情</h4><ul>
-<li><p>点击操作列的”详情”按钮或选中行后点击”查看详情”</p>
-</li>
-<li><p>弹出详情窗口显示：</p>
-<ul>
-<li>租户ID和队列长度</li>
-<li>当前执行请求的完整UUID</li>
-<li>队列中所有请求的列表（按执行顺序排列）</li>
-<li>第一个请求标记为”执行中”，其余为”等待中”</li>
-</ul>
-</li>
-</ul>
-<h4 id="清空队列"><a href="#清空队列" class="headerlink" title="清空队列"></a>清空队列</h4><ul>
-<li>只有当队列长度大于0时才显示”清空”按钮</li>
-<li>点击后会弹出确认对话框</li>
-<li>确认后将清除队列中所有等待的请求</li>
-<li>⚠️ <strong>注意</strong>：此操作会中断所有等待的请求，请谨慎使用</li>
-</ul>
-<h3 id="6-搜索和筛选"><a href="#6-搜索和筛选" class="headerlink" title="6. 搜索和筛选"></a>6. 搜索和筛选</h3><ul>
-<li>可以通过租户ID搜索特定的队列</li>
-<li>点击”重置”按钮清空搜索条件并显示所有队列</li>
-</ul>
-<h2 id="权限说明"><a href="#权限说明" class="headerlink" title="权限说明"></a>权限说明</h2><p>页面需要以下权限：</p>
-<p>-<code>queueManagement:view</code> - 查看队列状态</p>
-<p>-<code>queueManagement:clear</code> - 清空队列</p>
-<p>没有相应权限的用户将无法看到对应的操作按钮。</p>
-<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><h3 id="1-日常监控"><a href="#1-日常监控" class="headerlink" title="1. 日常监控"></a>1. 日常监控</h3><ul>
-<li>开启自动刷新功能，实时监控队列状态</li>
-<li>关注”等待请求总数”和”最大队列长度”指标</li>
-<li>当看到红色异常状态时及时处理</li>
-</ul>
-<h3 id="2-问题排查"><a href="#2-问题排查" class="headerlink" title="2. 问题排查"></a>2. 问题排查</h3><ul>
-<li>当业务反馈操作缓慢时，查看对应租户的队列长度</li>
-<li>通过队列详情查看具体的请求排队情况</li>
-<li>分析队列积压的原因</li>
-</ul>
-<h3 id="3-紧急处理"><a href="#3-紧急处理" class="headerlink" title="3. 紧急处理"></a>3. 紧急处理</h3><ul>
-<li>当队列出现异常积压时，可以使用清空功能</li>
-<li>清空前建议先查看详情了解具体情况</li>
-<li>清空后通知相关用户重新提交请求</li>
-</ul>
-<h2 id="技术说明"><a href="#技术说明" class="headerlink" title="技术说明"></a>技术说明</h2><h3 id="数据刷新机制"><a href="#数据刷新机制" class="headerlink" title="数据刷新机制"></a>数据刷新机制</h3><ul>
-<li>手动刷新：立即获取最新数据</li>
-<li>自动刷新：每5秒钟自动获取最新数据</li>
-<li>页面加载时自动执行一次查询</li>
-</ul>
-<h3 id="统计计算规则"><a href="#统计计算规则" class="headerlink" title="统计计算规则"></a>统计计算规则</h3><p>-<strong>活跃队列</strong>：队列长度 &gt; 0 的队列数量</p>
-<p>-<strong>等待请求</strong>：所有队列长度之和 - 执行中请求数</p>
-<p>-<strong>执行中请求</strong>：有 currentExecutingRequest 的队列数量</p>
-<p>-<strong>最大队列长度</strong>：所有队列中长度的最大值</p>
-<h3 id="前端技术栈"><a href="#前端技术栈" class="headerlink" title="前端技术栈"></a>前端技术栈</h3><ul>
-<li>Vue.js：数据绑定和组件化</li>
-<li>jQuery jqGrid：表格展示</li>
-<li>Bootstrap：UI框架</li>
-<li>自定义CSS：样式美化</li>
-</ul>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>1.<strong>性能考虑</strong>：队列监控会频繁访问Redis，大量租户时注意性能影响</p>
-<p>2.<strong>权限控制</strong>：确保只有授权用户才能访问监控页面</p>
-<p>3.<strong>操作审计</strong>：清空队列等关键操作会记录系统日志</p>
-<p>4.<strong>浏览器兼容</strong>：建议使用现代浏览器以获得最佳体验</p>
-<p>5.<strong>移动端适配</strong>：页面已优化移动端显示效果</p>
-<h2 id="故障处理"><a href="#故障处理" class="headerlink" title="故障处理"></a>故障处理</h2><h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><p><strong>Q: 页面显示”获取队列状态失败”</strong></p>
-<p>A: 检查Redis连接状态和后端服务是否正常</p>
-<p><strong>Q: 自动刷新不工作</strong></p>
-<p>A: 检查浏览器是否阻止了定时器，或刷新页面重试</p>
-<p><strong>Q: 清空队列后仍显示有请求</strong></p>
-<p>A: 可能有新请求进入，手动刷新查看最新状态</p>
-<p><strong>Q: 队列状态显示异常</strong></p>
-<p>A: 可能是Redis数据不一致，可以尝试清空队列解决</p>
-<h3 id="联系支持"><a href="#联系支持" class="headerlink" title="联系支持"></a>联系支持</h3><p>如遇到技术问题，请联系系统管理员或查看系统日志获取详细错误信息。</p>
-]]></content>
-  </entry>
-  <entry>
     <title>瘦身密码（五）：甜蜜陷阱——肥胖引爆的八大健康地雷</title>
     <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%82%A5%E8%83%96%E5%85%AB%E5%A4%A7%E5%81%A5%E5%BA%B7%E5%9C%B0%E9%9B%B7/</url>
     <content><![CDATA[<p>肥胖是健康的「隐形杀手」——影响的不只是外形，而是心血管、代谢、内分泌、呼吸、骨骼、生殖乃至心理的全系统连锁反应。以下梳理书中重点阐述的<strong>八大健康地雷</strong>及应对思路。</p>
@@ -3263,106 +3212,108 @@
       </tags>
   </entry>
   <entry>
-    <title>瘦身密码（三）：九体医学入门——解锁你的体质密码</title>
-    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6%E4%BD%93%E8%B4%A8%E5%AF%86%E7%A0%81%E5%85%A5%E9%97%A8/</url>
-    <content><![CDATA[<h2 id="世界上没有两片相同的树叶"><a href="#世界上没有两片相同的树叶" class="headerlink" title="世界上没有两片相同的树叶"></a>世界上没有两片相同的树叶</h2><p>九体医学以九种体质分类为指导，研究体质特征与疾病的相关性，从而指导预防、治疗与养生康复。王琦院士将人群科学分为九种类型：</p>
-<table>
-<thead>
-<tr>
-<th>体质</th>
-<th>形象比喻</th>
-<th>典型特征（口诀）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>平和质</strong></td>
-<td>小太阳</td>
-<td>气血匀，面红润，目光炯，元气振</td>
-</tr>
-<tr>
-<td><strong>气虚质</strong></td>
-<td>小懒猫</td>
-<td>常气短，虚汗浸，懒言语，易疲晕</td>
-</tr>
-<tr>
-<td><strong>阳虚质</strong></td>
-<td>小冰块</td>
-<td>手足冰，腰膝冷，舌淡胖，夜尿频</td>
-</tr>
-<tr>
-<td><strong>阴虚质</strong></td>
-<td>小火苗</td>
-<td>颧潮红，五心热，口咽干，便秘困</td>
-</tr>
-<tr>
-<td><strong>痰湿质</strong></td>
-<td>小水库</td>
-<td>体臃肿，大肚腩，鼾声大，腹胀闷</td>
-</tr>
-<tr>
-<td><strong>湿热质</strong></td>
-<td>小蒸笼</td>
-<td>面油腻，痤疮丛，常口臭，便黏滞</td>
-</tr>
-<tr>
-<td><strong>血瘀质</strong></td>
-<td>小堵车</td>
-<td>唇舌黯，黑眼圈，痛如刺，易长斑</td>
-</tr>
-<tr>
-<td><strong>气郁质</strong></td>
-<td>小气球</td>
-<td>眉紧蹙，多善感，常郁闷，结节生</td>
-</tr>
-<tr>
-<td><strong>特禀质</strong></td>
-<td>小敏感</td>
-<td>易过敏，风团起，喷嚏疾，泪涟涕</td>
-</tr>
-</tbody></table>
-<p><strong>平和质</strong>是健康基准；其余八种为偏颇体质，如同八条通往特定疾病的道路——早发现、早调体，就能掉头往回走。</p>
-<h2 id="九体医学与精准医学"><a href="#九体医学与精准医学" class="headerlink" title="九体医学与精准医学"></a>九体医学与精准医学</h2><p>2015 年，王琦院士团队提出「九体医学健康计划」，被视为中国版「精准医学」：与奥巴马「精准医学」计划同年亮相，却更强调中医「治未病」「同病异治」思想。</p>
+    <title>队列监控页面使用指南</title>
+    <url>/2025/06/12/%E9%98%9F%E5%88%97%E7%9B%91%E6%8E%A7%E9%A1%B5%E9%9D%A2%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</url>
+    <content><![CDATA[<h1 id="队列监控页面使用指南"><a href="#队列监控页面使用指南" class="headerlink" title="队列监控页面使用指南"></a>队列监控页面使用指南</h1><h2 id="页面访问"><a href="#页面访问" class="headerlink" title="页面访问"></a>页面访问</h2><p>队列监控页面位于：<code>/views/modules/mm/queue.html</code></p>
+<h2 id="页面功能"><a href="#页面功能" class="headerlink" title="页面功能"></a>页面功能</h2><h3 id="1-概览统计"><a href="#1-概览统计" class="headerlink" title="1. 概览统计"></a>1. 概览统计</h3><p>页面顶部显示四个关键指标：</p>
+<p>-<strong>活跃队列总数</strong>：当前有请求等待的队列数量</p>
+<p>-<strong>等待请求总数</strong>：所有队列中等待执行的请求总数</p>
+<p>-<strong>执行中请求</strong>：当前正在执行的请求数量</p>
+<p>-<strong>最大队列长度</strong>：所有队列中最长的队列长度</p>
+<h3 id="2-自动刷新功能"><a href="#2-自动刷新功能" class="headerlink" title="2. 自动刷新功能"></a>2. 自动刷新功能</h3><ul>
+<li>点击”开启自动刷新”按钮启用自动刷新（每5秒刷新一次）</li>
+<li>点击”停止自动刷新”按钮关闭自动刷新</li>
+<li>可随时点击”手动刷新”按钮立即更新数据</li>
+</ul>
+<h3 id="3-队列列表"><a href="#3-队列列表" class="headerlink" title="3. 队列列表"></a>3. 队列列表</h3><p>显示所有租户的队列状态，包括：</p>
+<p>-<strong>租户ID</strong>：队列所属的租户标识</p>
+<p>-<strong>队列长度</strong>：当前队列中的请求数量</p>
+<p>-<strong>当前执行请求</strong>：正在执行的请求UUID（显示前16位）</p>
+<p>-<strong>状态</strong>：队列当前状态</p>
 <ul>
-<li>体质辨识已纳入《国家基本公共卫生服务标准》</li>
-<li>《中医体质分类与判定》量表已翻译成英、日、韩等多国语言</li>
-<li>覆盖全国 31 个省区，应用于健康管理、亚健康调理、慢病防控</li>
+<li>🟢 空闲：队列为空</li>
+<li>🟡 执行中：有请求正在执行</li>
+<li>🔴 异常：队列有请求但没有执行中的请求</li>
 </ul>
-<p>古籍早有端倪：「肥人多痰湿」（朱丹溪）、「阴阳匀平……命曰平人」（《素问》）。王琦院士用 40 余年研究，将零散珍珠串成体系。</p>
-<h2 id="四大原理"><a href="#四大原理" class="headerlink" title="四大原理"></a>四大原理</h2><ol>
-<li><strong>体质过程论</strong>：体质随年龄阶段演变，养生应因时而异</li>
-<li><strong>形神构成论</strong>：躯体与心理一体，痰湿质者情绪稳定型居多</li>
-<li><strong>环境制约论</strong>：饮食、气候、地理塑造体质——嗜肥甘生痰湿，过逸成痰瘀</li>
-<li><strong>禀赋遗传论</strong>：先天禀赋决定体质底色，后天仍可调节</li>
-</ol>
-<h2 id="三大核心"><a href="#三大核心" class="headerlink" title="三大核心"></a>三大核心</h2><ul>
-<li><strong>体质可分论</strong>：个体差异与群体趋同性并存</li>
-<li><strong>体病相关论</strong>：痰湿质易患肥胖、三高；气虚质易感冒、内脏下垂；血瘀质易患肿瘤、痛证</li>
-<li><strong>体质可调论</strong>：偏颇体质可通过饮食、起居、运动、情志干预改善</li>
-</ul>
-<h2 id="与肥胖的关系"><a href="#与肥胖的关系" class="headerlink" title="与肥胖的关系"></a>与肥胖的关系</h2><p>肥胖与体质密切相关：</p>
+<p>-<strong>操作</strong>：可执行的操作按钮</p>
+<h3 id="4-状态说明"><a href="#4-状态说明" class="headerlink" title="4. 状态说明"></a>4. 状态说明</h3><h4 id="队列状态图标说明"><a href="#队列状态图标说明" class="headerlink" title="队列状态图标说明"></a>队列状态图标说明</h4><p>-**绿色标签 (0)**：队列为空，无等待请求</p>
+<p>-**黄色标签 (数字)**：队列中有等待的请求</p>
+<p>-<strong>蓝色标签</strong>：当前执行的请求ID</p>
+<p>-<strong>灰色文字</strong>：无执行请求</p>
+<h4 id="状态类型"><a href="#状态类型" class="headerlink" title="状态类型"></a>状态类型</h4><p>-<strong>空闲</strong>：队列无任何请求</p>
+<p>-<strong>执行中</strong>：有请求正在执行，可能还有其他请求在等待</p>
+<p>-<strong>异常</strong>：队列中有请求但没有正在执行的请求（可能需要清理）</p>
+<h3 id="5-操作功能"><a href="#5-操作功能" class="headerlink" title="5. 操作功能"></a>5. 操作功能</h3><h4 id="查看详情"><a href="#查看详情" class="headerlink" title="查看详情"></a>查看详情</h4><ul>
+<li><p>点击操作列的”详情”按钮或选中行后点击”查看详情”</p>
+</li>
+<li><p>弹出详情窗口显示：</p>
 <ul>
-<li><strong>痰湿质</strong>：中心性肥胖、高血脂、高血糖、高血压高发——「祛湿排浊才是真抽脂」</li>
-<li><strong>气虚质</strong>：肉松垮、动则气短，减肥效率低</li>
-<li><strong>阳虚质</strong>：怕冷，脂肪像「穿羽绒服」保温</li>
-<li><strong>气郁质</strong>：压力肥，焦虑时暴食，肉易堆腰腹</li>
-<li><strong>湿热质</strong>：脸油肚凸，「油胖子」需清火除湿</li>
-<li><strong>血瘀质</strong>：肉硬、循环差，减肥像挤牙膏</li>
+<li>租户ID和队列长度</li>
+<li>当前执行请求的完整UUID</li>
+<li>队列中所有请求的列表（按执行顺序排列）</li>
+<li>第一个请求标记为”执行中”，其余为”等待中”</li>
 </ul>
-<p>国家 2024 年「体重管理年」方案明确发挥中医药技术优势；王琦院士「九体医学健康中国计划」正是体重个体化管理的理论基础。</p>
-<h2 id="如何判定自己的体质？"><a href="#如何判定自己的体质？" class="headerlink" title="如何判定自己的体质？"></a>如何判定自己的体质？</h2><p>依据《中医体质分类与判定》标准：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">原始分 = 各条目分值相加</span><br><span class="line">转化分 = [(原始分 − 条目数) / (条目数 × 4)] × 100</span><br></pre></td></tr></table></figure>
-
-<p><strong>平和质</strong>：转化分 ≥60，且其余 8 种均 &lt;30（或均 &lt;40 为「基本是」）</p>
-<p><strong>偏颇质</strong>：转化分 ≥40 为「是」；30～39 为「倾向是」</p>
-<p>建议通过正规医疗机构或社区卫生中心的体质辨识服务获取准确结果，勿仅凭网络测试下定论。</p>
-<h2 id="体质不是终身标签"><a href="#体质不是终身标签" class="headerlink" title="体质不是终身标签"></a>体质不是终身标签</h2><p>体质会随环境、饮食、情绪变化而调整。一方水土养一方人，养生需<strong>因人制宜、因时制宜</strong>——读懂身体密码，才能把健康主动权握在自己手里。</p>
-<p>下一篇将进入实战：<strong>九大体质的科学甩肉指南</strong>，痰湿、湿热、阳虚……各有什么吃法、练法和穴位？</p>
+</li>
+</ul>
+<h4 id="清空队列"><a href="#清空队列" class="headerlink" title="清空队列"></a>清空队列</h4><ul>
+<li>只有当队列长度大于0时才显示”清空”按钮</li>
+<li>点击后会弹出确认对话框</li>
+<li>确认后将清除队列中所有等待的请求</li>
+<li>⚠️ <strong>注意</strong>：此操作会中断所有等待的请求，请谨慎使用</li>
+</ul>
+<h3 id="6-搜索和筛选"><a href="#6-搜索和筛选" class="headerlink" title="6. 搜索和筛选"></a>6. 搜索和筛选</h3><ul>
+<li>可以通过租户ID搜索特定的队列</li>
+<li>点击”重置”按钮清空搜索条件并显示所有队列</li>
+</ul>
+<h2 id="权限说明"><a href="#权限说明" class="headerlink" title="权限说明"></a>权限说明</h2><p>页面需要以下权限：</p>
+<p>-<code>queueManagement:view</code> - 查看队列状态</p>
+<p>-<code>queueManagement:clear</code> - 清空队列</p>
+<p>没有相应权限的用户将无法看到对应的操作按钮。</p>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><h3 id="1-日常监控"><a href="#1-日常监控" class="headerlink" title="1. 日常监控"></a>1. 日常监控</h3><ul>
+<li>开启自动刷新功能，实时监控队列状态</li>
+<li>关注”等待请求总数”和”最大队列长度”指标</li>
+<li>当看到红色异常状态时及时处理</li>
+</ul>
+<h3 id="2-问题排查"><a href="#2-问题排查" class="headerlink" title="2. 问题排查"></a>2. 问题排查</h3><ul>
+<li>当业务反馈操作缓慢时，查看对应租户的队列长度</li>
+<li>通过队列详情查看具体的请求排队情况</li>
+<li>分析队列积压的原因</li>
+</ul>
+<h3 id="3-紧急处理"><a href="#3-紧急处理" class="headerlink" title="3. 紧急处理"></a>3. 紧急处理</h3><ul>
+<li>当队列出现异常积压时，可以使用清空功能</li>
+<li>清空前建议先查看详情了解具体情况</li>
+<li>清空后通知相关用户重新提交请求</li>
+</ul>
+<h2 id="技术说明"><a href="#技术说明" class="headerlink" title="技术说明"></a>技术说明</h2><h3 id="数据刷新机制"><a href="#数据刷新机制" class="headerlink" title="数据刷新机制"></a>数据刷新机制</h3><ul>
+<li>手动刷新：立即获取最新数据</li>
+<li>自动刷新：每5秒钟自动获取最新数据</li>
+<li>页面加载时自动执行一次查询</li>
+</ul>
+<h3 id="统计计算规则"><a href="#统计计算规则" class="headerlink" title="统计计算规则"></a>统计计算规则</h3><p>-<strong>活跃队列</strong>：队列长度 &gt; 0 的队列数量</p>
+<p>-<strong>等待请求</strong>：所有队列长度之和 - 执行中请求数</p>
+<p>-<strong>执行中请求</strong>：有 currentExecutingRequest 的队列数量</p>
+<p>-<strong>最大队列长度</strong>：所有队列中长度的最大值</p>
+<h3 id="前端技术栈"><a href="#前端技术栈" class="headerlink" title="前端技术栈"></a>前端技术栈</h3><ul>
+<li>Vue.js：数据绑定和组件化</li>
+<li>jQuery jqGrid：表格展示</li>
+<li>Bootstrap：UI框架</li>
+<li>自定义CSS：样式美化</li>
+</ul>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>1.<strong>性能考虑</strong>：队列监控会频繁访问Redis，大量租户时注意性能影响</p>
+<p>2.<strong>权限控制</strong>：确保只有授权用户才能访问监控页面</p>
+<p>3.<strong>操作审计</strong>：清空队列等关键操作会记录系统日志</p>
+<p>4.<strong>浏览器兼容</strong>：建议使用现代浏览器以获得最佳体验</p>
+<p>5.<strong>移动端适配</strong>：页面已优化移动端显示效果</p>
+<h2 id="故障处理"><a href="#故障处理" class="headerlink" title="故障处理"></a>故障处理</h2><h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><p><strong>Q: 页面显示”获取队列状态失败”</strong></p>
+<p>A: 检查Redis连接状态和后端服务是否正常</p>
+<p><strong>Q: 自动刷新不工作</strong></p>
+<p>A: 检查浏览器是否阻止了定时器，或刷新页面重试</p>
+<p><strong>Q: 清空队列后仍显示有请求</strong></p>
+<p>A: 可能有新请求进入，手动刷新查看最新状态</p>
+<p><strong>Q: 队列状态显示异常</strong></p>
+<p>A: 可能是Redis数据不一致，可以尝试清空队列解决</p>
+<h3 id="联系支持"><a href="#联系支持" class="headerlink" title="联系支持"></a>联系支持</h3><p>如遇到技术问题，请联系系统管理员或查看系统日志获取详细错误信息。</p>
 ]]></content>
-      <tags>
-        <tag>健康</tag>
-        <tag>九体医学</tag>
-        <tag>中医体质</tag>
-      </tags>
   </entry>
   <entry>
     <title>魔方</title>
@@ -3413,5 +3364,137 @@
 
 <img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752334486991.png" class="" width="1752334486991">
 ]]></content>
+  </entry>
+  <entry>
+    <title>瘦身密码（四）：九大体质科学甩肉指南——管体加管重</title>
+    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E5%A4%A7%E4%BD%93%E8%B4%A8%E7%A7%91%E5%AD%A6%E7%94%A9%E8%82%89%E6%8C%87%E5%8D%97/</url>
+    <content><![CDATA[<h2 id="核心理念：管体-管重"><a href="#核心理念：管体-管重" class="headerlink" title="核心理念：管体 + 管重"></a>核心理念：管体 + 管重</h2><ul>
+<li><strong>管体</strong>：辨识体质、纠正偏颇——体质调好了，赘肉才不容易反弹</li>
+<li><strong>管重</strong>：吃对食物比盲目少吃更重要；体重是体质的一面镜子，但不是唯一指标</li>
+</ul>
+<p>同样体重的人，体脂率、肌肉量不同，健康状况可以天差地别。短期节食难持久，<strong>结合体质的长期调理</strong>才是正道。</p>
+<hr>
+<h2 id="平和质：别把好体质作没了"><a href="#平和质：别把好体质作没了" class="headerlink" title="平和质：别把好体质作没了"></a>平和质：别把好体质作没了</h2><p><strong>特征</strong>：体形匀称，精力充沛，患病少，适应力强。</p>
+<p><strong>要点</strong>：</p>
+<ul>
+<li>膳食平衡，粗粮细粮搭配，寒温适中，七八分饱</li>
+<li>每天有氧运动约 30 分钟，或步行不少于 6000 步</li>
+<li>22:30 前入睡，春夏养阳、秋冬避风寒</li>
+<li>穴位保健：足三里、三阴交、涌泉</li>
+</ul>
+<p><strong>药膳举例</strong>：南瓜豆腐羹、芝麻山药粥</p>
+<hr>
+<h2 id="阳虚质：扶阳驱寒是关键"><a href="#阳虚质：扶阳驱寒是关键" class="headerlink" title="阳虚质：扶阳驱寒是关键"></a>阳虚质：扶阳驱寒是关键</h2><p><strong>特征</strong>：怕冷、手足凉、夜尿多、精神不振，脂肪像给身体「穿羽绒服」。</p>
+<p><strong>要点</strong>：</p>
+<ul>
+<li>避寒就温，多晒太阳，睡前 40～45℃ 泡脚 15 分钟</li>
+<li>宜羊肉、鸡肉、韭菜、核桃；少生冷、少苦寒苦瓜（可煮透减寒）</li>
+<li>运动选慢跑、太极拳、八段锦，微汗为度，忌大汗伤阳</li>
+<li>穴位：关元、命门、阳池</li>
+</ul>
+<p><strong>药膳举例</strong>：暖胃茶（红茶+桂圆+生姜+白术+红枣）、当归生姜羊肉汤</p>
+<hr>
+<h2 id="阴虚质：补水降火是核心"><a href="#阴虚质：补水降火是核心" class="headerlink" title="阴虚质：补水降火是核心"></a>阴虚质：补水降火是核心</h2><p><strong>特征</strong>：口干咽燥、手足心热、盗汗、便干，体型偏瘦但血脂易偏高。</p>
+<p><strong>要点</strong>：</p>
+<ul>
+<li>忌熬夜、桑拿、高温环境；室温 14～26℃ 为宜</li>
+<li>宜芝麻、蜂蜜、豆腐、鱼类；少辛辣燥烈、火锅</li>
+<li>运动选游泳、瑜伽、散步，避免大汗淋漓</li>
+<li>穴位：太溪、三阴交、大敦</li>
+</ul>
+<p><strong>药膳举例</strong>：三汁饮（黄精、生地、天门冬、茯苓）、冰糖五果羹</p>
+<hr>
+<h2 id="气郁质：疏肝解郁才能瘦"><a href="#气郁质：疏肝解郁才能瘦" class="headerlink" title="气郁质：疏肝解郁才能瘦"></a>气郁质：疏肝解郁才能瘦</h2><p><strong>特征</strong>：多愁善感、胸闷叹息、睡眠差；<strong>一焦虑就暴食，压力肥堆腰腹</strong>。</p>
+<p><strong>要点</strong>：</p>
+<ul>
+<li>环境宜安静，春季多户外活动舒展阳气</li>
+<li>宜萝卜、洋葱、柑橘；玫瑰花、茉莉花代茶饮</li>
+<li>少芋艿、甘薯等易胀气食物</li>
+<li>推荐：玫瑰花茶 + 敲胆经，疏解肝郁</li>
+</ul>
+<p><strong>药膳举例</strong>：萝卜丝饼、玫瑰佛手茶</p>
+<hr>
+<h2 id="血瘀质：活血化瘀加速瘦身"><a href="#血瘀质：活血化瘀加速瘦身" class="headerlink" title="血瘀质：活血化瘀加速瘦身"></a>血瘀质：活血化瘀加速瘦身</h2><p><strong>特征</strong>：面色晦暗、唇舌黯、黑眼圈，肉硬腿粗，减肥进展慢如「挤牙膏」。</p>
+<p><strong>要点</strong>：</p>
+<ul>
+<li>少食肥腻、寒凉，宜活血食物：山楂、黑豆、玫瑰花</li>
+<li>运动促进血液循环，避免久坐</li>
+<li>药浴泡脚 + 山楂茶是经典组合</li>
+<li>穴位：血海、膈俞、三阴交</li>
+</ul>
+<hr>
+<h2 id="痰湿质：祛湿排浊才是真抽脂"><a href="#痰湿质：祛湿排浊才是真抽脂" class="headerlink" title="痰湿质：祛湿排浊才是真抽脂"></a>痰湿质：祛湿排浊才是真抽脂</h2><p><strong>特征</strong>：体胖腹大、身重困倦、痰多、鼾声大，减肥易卡平台期。</p>
+<p><strong>要点</strong>：</p>
+<ul>
+<li>饮食清淡：冬瓜、白萝卜、薏米、赤小豆；少甜腻、少暴饮暴食</li>
+<li>忌潮湿环境，宜阳光下午后运动</li>
+<li>按揉丰隆、足三里、中脘；红豆薏米汤、山药冬瓜汤</li>
+<li>古籍云：「肥人多痰湿」——祛湿比单纯节食更关键</li>
+</ul>
+<hr>
+<h2 id="湿热质：清火除湿瘦成清爽"><a href="#湿热质：清火除湿瘦成清爽" class="headerlink" title="湿热质：清火除湿瘦成清爽"></a>湿热质：清火除湿瘦成清爽</h2><p><strong>特征</strong>：面油痤疮、口臭、便黏，脸油肚凸的「油胖子」。</p>
+<p><strong>要点</strong>：</p>
+<ul>
+<li>宜冬瓜、绿豆、苦瓜、芹菜；忌辛辣、油炸、甜腻</li>
+<li>运动选中长跑、游泳等耗湿清热项目</li>
+<li>冬瓜汤、刮肝经，拒绝油腻感</li>
+<li>穴位：阴陵泉、曲池、委中</li>
+</ul>
+<hr>
+<h2 id="气虚质：补气提效懒人瘦身"><a href="#气虚质：补气提效懒人瘦身" class="headerlink" title="气虚质：补气提效懒人瘦身"></a>气虚质：补气提效懒人瘦身</h2><p><strong>特征</strong>：疲乏气短、声低懒言、易感冒，肉松垮像棉花。</p>
+<p><strong>要点</strong>：</p>
+<ul>
+<li>宜山药、大枣、鸡肉、黄芪；忌过劳、过饱</li>
+<li>运动从散步、八段锦入手，循序渐进，忌大汗</li>
+<li>黄芪水 + 八段锦，提升运化效率再减重</li>
+<li>穴位：气海、脾俞、足三里</li>
+</ul>
+<hr>
+<h2 id="特禀质：温和调理避开雷区"><a href="#特禀质：温和调理避开雷区" class="headerlink" title="特禀质：温和调理避开雷区"></a>特禀质：温和调理避开雷区</h2><p><strong>特征</strong>：易过敏，减肥过激易诱发风团、喷嚏。</p>
+<p><strong>要点</strong>：</p>
+<ul>
+<li>低敏饮食，避开已知过敏原</li>
+<li>运动环境清洁，避免花粉、尘螨密集处</li>
+<li>穴位按摩宜轻柔；中药调理需严格遵医嘱</li>
+<li>减肥方案宜缓不宜猛</li>
+</ul>
+<hr>
+<h2 id="通用运动时间表（可参考）"><a href="#通用运动时间表（可参考）" class="headerlink" title="通用运动时间表（可参考）"></a>通用运动时间表（可参考）</h2><table>
+<thead>
+<tr>
+<th>时段</th>
+<th>建议</th>
+<th>热量参考</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>6～9 点</td>
+<td>慢跑、快走，微汗</td>
+<td>200～300 千卡</td>
+</tr>
+<tr>
+<td>12～14 点</td>
+<td>午休 30～45 分钟，不宜剧烈运动</td>
+<td>—</td>
+</tr>
+<tr>
+<td>16～17 点</td>
+<td>有氧操、骑行</td>
+<td>300～400 千卡</td>
+</tr>
+<tr>
+<td>20～22 点</td>
+<td>瑜伽拉伸、仙人揉腹</td>
+<td>50～100 千卡</td>
+</tr>
+</tbody></table>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>九体医学告诉我们：<strong>没有放之四海而皆准的减肥法</strong>。痰湿要祛湿，阳虚要温阳，气郁要疏肝，气虚要补气——先调体，再管重，才能瘦得健康、瘦得长久。</p>
+<p>下一篇将聚焦肥胖引爆的<strong>八大健康地雷</strong>：糖尿病、冠心病、脂肪肝……早知早防。</p>
+]]></content>
+      <tags>
+        <tag>健康</tag>
+        <tag>九体医学</tag>
+        <tag>体质调理</tag>
+      </tags>
   </entry>
 </search>
