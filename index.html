@@ -71,6 +71,108 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-mes-weekly-2026-w38" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/09/18/mes-weekly-2026-w38/" class="article-date">
+  <time class="dt-published" datetime="2026-09-18T07:30:00.000Z" itemprop="datePublished">2026-09-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/09/18/mes-weekly-2026-w38/">MES 2026 年第 38 周工作小结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <img src="/2026/09/18/mes-weekly-2026-w38/cover.png" class="">
+
+<p>本周（9&#x2F;14–9&#x2F;18，约 <strong>41 次提交</strong>）主线是 <strong>计量器具台账与菜单落地</strong>，同时补齐 <strong>菜单管理 V2</strong>、<strong>AI 协作并行</strong> 与 <strong>LLM 用量记录</strong>。合入 master 的功能分支：<code>feature/llm-api-usage</code>、<code>feature/ai-collab-parallel-children</code>、<code>feature/msr-measuring-instrument-menu</code>；GitHub <a target="_blank" rel="noopener" href="https://github.com/eppen/mes-parent/pull/385">#385</a> 于周一合入。主力模块 <code>mes-measure</code>、<code>mes-workflow</code>、<code>mes-ai</code>、<code>mes-core</code>、<code>mes-web</code>。</p>
+<h2 id="一、计量器具（mes-measure）"><a href="#一、计量器具（mes-measure）" class="headerlink" title="一、计量器具（mes-measure）"></a>一、计量器具（mes-measure）</h2><ul>
+<li>菜单排除部门，字典种子补齐</li>
+<li>运行部菜单可配置挂载目录，按 URL 识别；菜单挪出「计量器具」后不再误判未生成，同步时按配置目录创建或迁入</li>
+<li>台账列表扩展字段，增加人员关联</li>
+<li>模版下载、出厂日期选择、Excel 属性转换、周期单位选项收了一轮</li>
+</ul>
+<h2 id="二、菜单与目录"><a href="#二、菜单与目录" class="headerlink" title="二、菜单与目录"></a>二、菜单与目录</h2><ul>
+<li>菜单拖拽排序、批量改上级；选择上级树跳过 <code>parentId</code> 自引用脏数据</li>
+<li>EOS 目录树节点处理与交互收简</li>
+<li>安全侧支持把 MES 目录挂到已有 EOS 节点，不再新建树节点，并校验菜单与节点类型</li>
+</ul>
+<h2 id="三、AI-协作、用量与流程图（mes-ai）"><a href="#三、AI-协作、用量与流程图（mes-ai）" class="headerlink" title="三、AI 协作、用量与流程图（mes-ai）"></a>三、AI 协作、用量与流程图（mes-ai）</h2><ul>
+<li>协作子智能体并行执行、上下文隔离，新增 <code>child_concurrency</code> 限制并发</li>
+<li>对话与图表调用记录 LLM API 用量</li>
+<li>BPMN：自动布局与导入、名称属性清洗与校验、条件表达式清洗</li>
+<li>图表批量上限 <code>EXEC_BATCH_MAX_ITEMS</code> 从 20 提到 30</li>
+</ul>
+<h2 id="四、图表、报表与附件"><a href="#四、图表、报表与附件" class="headerlink" title="四、图表、报表与附件"></a>四、图表、报表与附件</h2><ul>
+<li>船舶图：近期计划船舶及数量查询、对应组件与下钻</li>
+<li>报表模版公式检查随 #385 合入；Excel 模版支持手动保存检查点</li>
+<li>附件删除同步回写 EOS 表头附件数，删除前校验权限</li>
+<li>文档全屏预览样式、船舶天气表单对齐小修</li>
+</ul>
+<h3 id="节奏"><a href="#节奏" class="headerlink" title="节奏"></a>节奏</h3><table>
+<thead>
+<tr>
+<th>日期</th>
+<th>提交约数</th>
+<th>重心</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>09-14</td>
+<td>3</td>
+<td>#385 合入；模版检查点、文档预览</td>
+</tr>
+<tr>
+<td>09-15</td>
+<td>10</td>
+<td>LLM 用量、协作并行、计划船舶；两条 AI 分支合入 master</td>
+</tr>
+<tr>
+<td>09-16</td>
+<td>6</td>
+<td>BPMN 条件清洗、LLM 客户端、工程配置清理</td>
+</tr>
+<tr>
+<td>09-17</td>
+<td>11</td>
+<td>菜单拖拽与挂载目录；计量器具菜单分支合入 master</td>
+</tr>
+<tr>
+<td>09-18</td>
+<td>13</td>
+<td>器具台账字段与日期、目录挂接、附件删除</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>一句话</strong>：计量器具从菜单到台账基本能用，菜单管理 V2 和 AI 调用侧也各收了一截。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://eppencn.com/2026/09/18/mes-weekly-2026-w38/" data-id="cmu6mxv5z0011igv50seshz39" data-title="MES 2026 年第 38 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-measure/" rel="tag">mes-measure</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-web/" rel="tag">mes-web</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-mes-weekly-2026-w37" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/09/12/mes-weekly-2026-w37/" class="article-date">
@@ -166,7 +268,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/09/12/mes-weekly-2026-w37/" data-id="cmty3y1tz00148kv5bric961o" data-title="MES 2026 年第 37 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/09/12/mes-weekly-2026-w37/" data-id="cmu6mxv5u000xigv51ujrewry" data-title="MES 2026 年第 37 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -269,7 +371,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/09/10/mes-jhfwdoc-excel-green-import/" data-id="cmty3y1tv000p8kv5addehpxz" data-title="MES 计划范围文档：Excel 绿色区块解析核心" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/09/10/mes-jhfwdoc-excel-green-import/" data-id="cmu6mxv55000digv5c3u74tpa" data-title="MES 计划范围文档：Excel 绿色区块解析核心" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -392,7 +494,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/09/10/ai-daily-mes-brief-2026-05-21/" data-id="cmty3y1tt000h8kv5ddq67tuj" data-title="AI Daily · 2026年5月21日 · MES 工作区简报" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/09/10/ai-daily-mes-brief-2026-05-21/" data-id="cmu6mxv400000igv5g7ua10u7" data-title="AI Daily · 2026年5月21日 · MES 工作区简报" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -498,7 +600,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/09/04/mes-weekly-2026-w36/" data-id="cmty3y1tz00128kv5932tcxxa" data-title="MES 2026 年第 36 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/09/04/mes-weekly-2026-w36/" data-id="cmu6mxv5h000ligv5bc70bj05" data-title="MES 2026 年第 36 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -572,7 +674,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/08/31/mes-weekly-2026-w35/" data-id="cmty3y1ty00118kv521f7asgy" data-title="MES 2026 年第 35 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/08/31/mes-weekly-2026-w35/" data-id="cmu6mxv5j000nigv552nv7u99" data-title="MES 2026 年第 35 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -655,7 +757,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/08/25/mes-monthly-2026-08/" data-id="cmty3y1u000168kv52h2cfv06" data-title="MES 2026 年 8 月工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/08/25/mes-monthly-2026-08/" data-id="cmu6mxv5l000pigv5h06de573" data-title="MES 2026 年 8 月工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -729,7 +831,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/08/15/mes-weekly-2026-w33/" data-id="cmty3y1ty000z8kv518wdbned" data-title="MES 2026 年第 33 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/08/15/mes-weekly-2026-w33/" data-id="cmu6mxv5c000higv576ot9nge" data-title="MES 2026 年第 33 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -807,7 +909,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/08/06/mes-weekly-2026-w32/" data-id="cmty3y1tx000y8kv55ik0f4vs" data-title="MES 2026 年第 32 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/08/06/mes-weekly-2026-w32/" data-id="cmu6mxv5f000kigv5f4t05wpg" data-title="MES 2026 年第 32 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -895,100 +997,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/08/01/mes-monthly-2026-05/" data-id="cmty3y1u2001e8kv52f0t2lkx" data-title="MES 2026 年 5 月工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/08/01/mes-monthly-2026-05/" data-id="cmu6mxv660016igv5ge6zen08" data-title="MES 2026 年 5 月工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" rel="tag">交接班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" rel="tag">船舶作业</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-mes-monthly-2026-06" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/08/01/mes-monthly-2026-06/" class="article-date">
-  <time class="dt-published" datetime="2026-08-01T03:16:00.000Z" itemprop="datePublished">2026-08-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/08/01/mes-monthly-2026-06/">MES 2026 年 6 月工作小结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <img src="/2026/08/01/mes-monthly-2026-06/cover.png" class="">
-
-<p>6 月（约 <strong>340+ 次提交</strong>、合并 PR <strong>#277–#310</strong>）是平台能力铺开的一个月：落地 <strong>mes-ai Agent 平台</strong> 与 <strong>mes-energy</strong> 模块，图表看板与 AI 向导增强，并同步推进 Eos 权限、OTP、在线消息与个人工作台。改动较均衡地落在 <code>mes-core</code> &#x2F; <code>mes-web</code> &#x2F; <code>mes-ai</code> &#x2F; <code>mes-energy</code> &#x2F; <code>mes-chart</code>。</p>
-<h2 id="一、MES-AI-Agent-平台（下旬主线，-305）"><a href="#一、MES-AI-Agent-平台（下旬主线，-305）" class="headerlink" title="一、MES-AI Agent 平台（下旬主线，#305）"></a>一、MES-AI Agent 平台（下旬主线，#305）</h2><ul>
-<li>新增 mes-ai 模块骨架：Agent 管理、聊天流式输出、thinking 步骤跟踪。</li>
-<li>SQL 工具执行与表格流式渲染、能耗 Agent SQL&#x2F;输出格式迭代。</li>
-<li>Schema Tool、菜单权限与助手推荐问题&#x2F;欢迎语等体验补齐。</li>
-</ul>
-<h2 id="二、能耗模块-mes-energy（中下旬）"><a href="#二、能耗模块-mes-energy（中下旬）" class="headerlink" title="二、能耗模块 mes-energy（中下旬）"></a>二、能耗模块 mes-energy（中下旬）</h2><ul>
-<li>独立 <code>mes-energy</code> 并接入 web 依赖；峰谷（TOU）时段配置、日统计、分页&#x2F;汇总&#x2F;导出。</li>
-<li>电表数据源管理、手动录入、相邻时段合并、能耗看板菜单与电压等级过滤等。</li>
-</ul>
-<h2 id="三、图表看板与-AI-向导（-304）"><a href="#三、图表看板与-AI-向导（-304）" class="headerlink" title="三、图表看板与 AI 向导（#304）"></a>三、图表看板与 AI 向导（#304）</h2><ul>
-<li>看板设计：布局预设、槽位、组件面板、主题与最大化查看。</li>
-<li>SQL 编辑（CodeMirror）、安全校验与试跑；AI 配置&#x2F;SQL 审查、图层面板主题说明。</li>
-</ul>
-<h2 id="四、权限、认证与消息"><a href="#四、权限、认证与消息" class="headerlink" title="四、权限、认证与消息"></a>四、权限、认证与消息</h2><ul>
-<li><strong>Eos 角色管理</strong>（#299）：对象级权限配置、菜单同步、权限详情与 UI 重构。</li>
-<li><strong>OTP 二期</strong>（#289&#x2F;#294）；runas 用户切换修复（#277）；权限 token 切换（#309）。</li>
-<li>在线消息通知（#307）与列表慢查询优化（#308）；系统菜单导航慢查询（#306）。</li>
-</ul>
-<h2 id="五、其它业务与工程"><a href="#五、其它业务与工程" class="headerlink" title="五、其它业务与工程"></a>五、其它业务与工程</h2><ul>
-<li><strong>个人工作台</strong>（#310）；首页用户下拉菜单（#295）。</li>
-<li>储罐体积&#x2F;导入导出（#298）；班组装置同步（#302）；交接班 shiftlog（#286&#x2F;#287）。</li>
-<li>Flowable&#x2F;请假流程与 Docker 配置；jqGrid 多表头紧凑样式；mes-core 单测补强。</li>
-<li>SysLog 注解与敏感字段、QRTZ&#x2F;监控相关增强。</li>
-</ul>
-<h2 id="六、月度节奏"><a href="#六、月度节奏" class="headerlink" title="六、月度节奏"></a>六、月度节奏</h2><table>
-<thead>
-<tr>
-<th>阶段</th>
-<th>重点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>上旬</td>
-<td>runas&#x2F;OTP、交接班、jqGrid、mes-core 测试、反馈看板</td>
-</tr>
-<tr>
-<td>中旬</td>
-<td>Eos 角色权限、储罐体积、图表看板设计、mes-energy &#x2F; mes-ai 起步</td>
-</tr>
-<tr>
-<td>下旬</td>
-<td>AI Agent 平台合入、图表 AI 向导、能耗 TOU、消息与慢查询、个人工作台</td>
-</tr>
-</tbody></table>
-<hr>
-<p><strong>一句话</strong>：6 月搭好了 AI Agent、能耗与图表看板三块新底座，并在 Eos 权限与登录安全上完成一轮可用交付，为 7 月能耗智能体与生产运行闭环打基础。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/08/01/mes-monthly-2026-06/" data-id="cmty3y1tw000s8kv570es0zk1" data-title="MES 2026 年 6 月工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-energy/" rel="tag">mes-energy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li></ul>
 
     </footer>
   </div>
@@ -1026,7 +1039,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/0AD/" style="font-size: 10px;">0AD</a> <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/AI-Daily/" style="font-size: 10px;">AI Daily</a> <a href="/tags/Agent/" style="font-size: 10px;">Agent</a> <a href="/tags/Automation/" style="font-size: 10px;">Automation</a> <a href="/tags/CLI/" style="font-size: 11.25px;">CLI</a> <a href="/tags/Calendar/" style="font-size: 10px;">Calendar</a> <a href="/tags/Claude-Code/" style="font-size: 10px;">Claude Code</a> <a href="/tags/CodingAgent/" style="font-size: 10px;">CodingAgent</a> <a href="/tags/Cursor/" style="font-size: 11.25px;">Cursor</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/EOS/" style="font-size: 11.25px;">EOS</a> <a href="/tags/Eos/" style="font-size: 10px;">Eos</a> <a href="/tags/Excel/" style="font-size: 10px;">Excel</a> <a href="/tags/Game/" style="font-size: 10px;">Game</a> <a href="/tags/Harness/" style="font-size: 10px;">Harness</a> <a href="/tags/LIMS/" style="font-size: 10px;">LIMS</a> <a href="/tags/MCP/" style="font-size: 10px;">MCP</a> <a href="/tags/MES/" style="font-size: 20px;">MES</a> <a href="/tags/OpenSource/" style="font-size: 10px;">OpenSource</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/PowerShell/" style="font-size: 10px;">PowerShell</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RBAC/" style="font-size: 10px;">RBAC</a> <a href="/tags/RTS/" style="font-size: 10px;">RTS</a> <a href="/tags/SQL-Server/" style="font-size: 11.25px;">SQL Server</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/health/" style="font-size: 10px;">health</a> <a href="/tags/mes-ai/" style="font-size: 17.5px;">mes-ai</a> <a href="/tags/mes-chart/" style="font-size: 16.25px;">mes-chart</a> <a href="/tags/mes-energy/" style="font-size: 10px;">mes-energy</a> <a href="/tags/mes-measure/" style="font-size: 10px;">mes-measure</a> <a href="/tags/mes-plan/" style="font-size: 10px;">mes-plan</a> <a href="/tags/mes-report/" style="font-size: 10px;">mes-report</a> <a href="/tags/mes-web/" style="font-size: 10px;">mes-web</a> <a href="/tags/zTree/" style="font-size: 10px;">zTree</a> <a href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" style="font-size: 10px;">中医体质</a> <a href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" style="font-size: 12.5px;">九体医学</a> <a href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" style="font-size: 10px;">交接班</a> <a href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" style="font-size: 10px;">体质调理</a> <a href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" style="font-size: 11.25px;">体重管理</a> <a href="/tags/%E5%81%A5%E5%BA%B7/" style="font-size: 15px;">健康</a> <a href="/tags/%E5%91%A8%E6%8A%A5/" style="font-size: 15px;">周报</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" style="font-size: 18.75px;">工作小结</a> <a href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" style="font-size: 10px;">慢性病</a> <a href="/tags/%E6%9C%88%E6%8A%A5/" style="font-size: 13.75px;">月报</a> <a href="/tags/%E6%9D%83%E9%99%90/" style="font-size: 11.25px;">权限</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" style="font-size: 10px;">科学减肥</a> <a href="/tags/%E8%82%A5%E8%83%96/" style="font-size: 10px;">肥胖</a> <a href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" style="font-size: 10px;">能耗分析</a> <a href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" style="font-size: 10px;">船舶作业</a> <a href="/tags/%E8%AE%A1%E5%88%92%E8%8C%83%E5%9B%B4/" style="font-size: 10px;">计划范围</a>
+      <a href="/tags/0AD/" style="font-size: 10px;">0AD</a> <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/AI-Daily/" style="font-size: 10px;">AI Daily</a> <a href="/tags/Agent/" style="font-size: 10px;">Agent</a> <a href="/tags/Automation/" style="font-size: 10px;">Automation</a> <a href="/tags/CLI/" style="font-size: 11.25px;">CLI</a> <a href="/tags/Calendar/" style="font-size: 10px;">Calendar</a> <a href="/tags/Claude-Code/" style="font-size: 10px;">Claude Code</a> <a href="/tags/CodingAgent/" style="font-size: 10px;">CodingAgent</a> <a href="/tags/Cursor/" style="font-size: 11.25px;">Cursor</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/EOS/" style="font-size: 11.25px;">EOS</a> <a href="/tags/Eos/" style="font-size: 10px;">Eos</a> <a href="/tags/Excel/" style="font-size: 10px;">Excel</a> <a href="/tags/Game/" style="font-size: 10px;">Game</a> <a href="/tags/Harness/" style="font-size: 10px;">Harness</a> <a href="/tags/LIMS/" style="font-size: 10px;">LIMS</a> <a href="/tags/MCP/" style="font-size: 10px;">MCP</a> <a href="/tags/MES/" style="font-size: 20px;">MES</a> <a href="/tags/OpenSource/" style="font-size: 10px;">OpenSource</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/PowerShell/" style="font-size: 10px;">PowerShell</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RBAC/" style="font-size: 10px;">RBAC</a> <a href="/tags/RTS/" style="font-size: 10px;">RTS</a> <a href="/tags/SQL-Server/" style="font-size: 11.25px;">SQL Server</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/health/" style="font-size: 10px;">health</a> <a href="/tags/mes-ai/" style="font-size: 17.5px;">mes-ai</a> <a href="/tags/mes-chart/" style="font-size: 16.25px;">mes-chart</a> <a href="/tags/mes-energy/" style="font-size: 10px;">mes-energy</a> <a href="/tags/mes-measure/" style="font-size: 11.25px;">mes-measure</a> <a href="/tags/mes-plan/" style="font-size: 10px;">mes-plan</a> <a href="/tags/mes-report/" style="font-size: 10px;">mes-report</a> <a href="/tags/mes-web/" style="font-size: 11.25px;">mes-web</a> <a href="/tags/zTree/" style="font-size: 10px;">zTree</a> <a href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" style="font-size: 10px;">中医体质</a> <a href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" style="font-size: 12.5px;">九体医学</a> <a href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" style="font-size: 10px;">交接班</a> <a href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" style="font-size: 10px;">体质调理</a> <a href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" style="font-size: 11.25px;">体重管理</a> <a href="/tags/%E5%81%A5%E5%BA%B7/" style="font-size: 15px;">健康</a> <a href="/tags/%E5%91%A8%E6%8A%A5/" style="font-size: 16.25px;">周报</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" style="font-size: 18.75px;">工作小结</a> <a href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" style="font-size: 10px;">慢性病</a> <a href="/tags/%E6%9C%88%E6%8A%A5/" style="font-size: 13.75px;">月报</a> <a href="/tags/%E6%9D%83%E9%99%90/" style="font-size: 11.25px;">权限</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" style="font-size: 10px;">科学减肥</a> <a href="/tags/%E8%82%A5%E8%83%96/" style="font-size: 10px;">肥胖</a> <a href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" style="font-size: 10px;">能耗分析</a> <a href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" style="font-size: 10px;">船舶作业</a> <a href="/tags/%E8%AE%A1%E5%88%92%E8%8C%83%E5%9B%B4/" style="font-size: 10px;">计划范围</a>
     </div>
   </div>
 
@@ -1048,6 +1061,10 @@
       <ul>
         
           <li>
+            <a href="/2026/09/18/mes-weekly-2026-w38/">MES 2026 年第 38 周工作小结</a>
+          </li>
+        
+          <li>
             <a href="/2026/09/12/mes-weekly-2026-w37/">MES 2026 年第 37 周工作小结</a>
           </li>
         
@@ -1061,10 +1078,6 @@
         
           <li>
             <a href="/2026/09/04/mes-weekly-2026-w36/">MES 2026 年第 36 周工作小结</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/31/mes-weekly-2026-w35/">MES 2026 年第 35 周工作小结</a>
           </li>
         
       </ul>
