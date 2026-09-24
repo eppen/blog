@@ -71,6 +71,172 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-mes-weekly-2026-w32" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/08/06/mes-weekly-2026-w32/" class="article-date">
+  <time class="dt-published" datetime="2026-08-06T15:00:00.000Z" itemprop="datePublished">2026-08-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/08/06/mes-weekly-2026-w32/">MES 2026 年第 32 周工作小结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <img src="/2026/08/06/mes-weekly-2026-w32/cover.png" class="">
+
+<p>本周（8&#x2F;3–8&#x2F;6，约 <strong>50 次提交</strong>、合并 PR <strong>#360、#374</strong>）主线在 <strong>AI 图表内联渲染</strong>与<strong>相对月份推理修复</strong>，同时推进运行日志可观测性和 ExternalApi 集成。主力模块 <code>mes-ai</code>（167 文件触达），次为 <code>mes-chart</code>（15 文件）。</p>
+<h2 id="一、AI-图表内联与看板增强（-360）"><a href="#一、AI-图表内联与看板增强（-360）" class="headerlink" title="一、AI 图表内联与看板增强（#360）"></a>一、AI 图表内联与看板增强（#360）</h2><p>在 AI 聊天中落地面向 SQL 工具的内联图表渲染，并增强看板筛选能力：</p>
+<ul>
+<li><strong>SqlToolChartPolicy</strong>：新增图表配置编辑入口，支持为 SQL 工具指定折线&#x2F;柱状&#x2F;表格等图表类型，查询结果直接在对话中渲染</li>
+<li><strong>看板增强</strong>：Tab 筛选与可见性管理、月份过滤支持、<code>renderFilterBar</code> 异步时序修复</li>
+<li><strong>健壮性修复</strong>：<code>ClassCastException</code>（图表配置为标量值时）、<code>NumberUtil</code> 统一替代自定义数值解析方法</li>
+</ul>
+<h2 id="二、相对月份查询修复（-985、-992）"><a href="#二、相对月份查询修复（-985、-992）" class="headerlink" title="二、相对月份查询修复（#985、#992）"></a>二、相对月份查询修复（#985、#992）</h2><p>针对性修复”上个月”等相对月份提示词输出错误日历月份的问题：</p>
+<ul>
+<li><code>RelativeMonthOverviewNormalizer</code>：正则从 <code>RELATIVE_MONTH_PHRASES</code> 集中化短语列表动态构建，消除分散常量</li>
+<li><code>AgentReactExecutor</code>：注入已解析年月提示，防止 Agent 在强制结单前过早输出 JSON 导致月份错误</li>
+<li>新增单测覆盖多种相对月份表述场景</li>
+</ul>
+<h2 id="三、AI-运行日志可观测性（-374）"><a href="#三、AI-运行日志可观测性（-374）" class="headerlink" title="三、AI 运行日志可观测性（#374）"></a>三、AI 运行日志可观测性（#374）</h2><ul>
+<li>运行日志列表新增<strong>会话详情弹窗</strong>，支持按 sessionId 匹配 assistant 消息并展示</li>
+<li><code>AiChatRunLogEntity</code> 关联 <code>SysUserEntity</code>，日志列表展示用户信息（用户名&#x2F;姓名）</li>
+<li><code>AgentChatController</code> 会话管理功能增强：分页、搜索、会话切换</li>
+<li><code>AgentAnswerParser</code> 新增 <code>intentional_choices</code> JSON 解析</li>
+</ul>
+<h2 id="四、ExternalApi-工具增强"><a href="#四、ExternalApi-工具增强" class="headerlink" title="四、ExternalApi 工具增强"></a>四、ExternalApi 工具增强</h2><ul>
+<li>URI 构造与编码重构，<code>urlEncode</code> 冗余方法移除</li>
+<li>测试用例覆盖 URI 特殊字符编码场景</li>
+<li>文档补充：高德天气工具、通用 External API 接入示例</li>
+</ul>
+<h2 id="五、文档与基础设施"><a href="#五、文档与基础设施" class="headerlink" title="五、文档与基础设施"></a>五、文档与基础设施</h2><ul>
+<li>MES vs Dify &#x2F; AgentScope 对比文档大幅更新，详列成本&#x2F;标注反馈闭环等维度差距</li>
+<li>mes-ai 工具配置复杂度分析文档</li>
+<li>新增 <code>mes-count-loc</code> Skill</li>
+<li><code>.mcp.json</code> 加入 <code>.gitignore</code>，清理过期 LLM 文档和已吸收的单次 SQL 补丁</li>
+</ul>
+<h2 id="六、物料查询"><a href="#六、物料查询" class="headerlink" title="六、物料查询"></a>六、物料查询</h2><ul>
+<li>新增物料 ZZTJ 日进出 SQL 工具种子及文档索引</li>
+<li>物料单位 IO 明细查询增加含量、类别筛选参数</li>
+</ul>
+<hr>
+<p><strong>一句话</strong>：本周以 AI 图表内联和相对月份修复落地为主，运行日志可观测性明显提升，ExternalApi 和物料查询逐步补全。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://eppencn.com/2026/08/06/mes-weekly-2026-w32/" data-id="cmufbv4nj000rjsv53sgda2s2" data-title="MES 2026 年第 32 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-mes-monthly-2026-05" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/08/01/mes-monthly-2026-05/" class="article-date">
+  <time class="dt-published" datetime="2026-08-01T03:45:00.000Z" itemprop="datePublished">2026-08-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/08/01/mes-monthly-2026-05/">MES 2026 年 5 月工作小结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <img src="/2026/08/01/mes-monthly-2026-05/cover.png" class="">
+
+<p>5 月（约 <strong>220+ 次提交</strong>、合并 PR <strong>#239–#281</strong>）主线落在业务现场能力：交接班 Docx 模型导入、液体码头&#x2F;船舶作业增强、仪表位号与报表关联，以及 RTDB&#x2F;ISYS 采集链路。改动最集中的是 <code>mes-operation</code>、<code>mes-measure</code>、<code>mes-vessel-operation</code>，辅以 <code>mes-web</code> &#x2F; <code>mes-rtdb</code>。</p>
+<h2 id="一、交接班-ShiftLog（中下旬主线）"><a href="#一、交接班-ShiftLog（中下旬主线）" class="headerlink" title="一、交接班 ShiftLog（中下旬主线）"></a>一、交接班 ShiftLog（中下旬主线）</h2><ul>
+<li>Docx 模型导入与解析预览（#263）：锚点注入、单元格模式、输入类型与公式处理。</li>
+<li>跳过孤儿锚点（#270）、批量删除与归属校验、调度日志预览。</li>
+<li>Docx 解析器持续增强（#278）：条目类型、标签推断、TABLE_STR_BC 批量生成等。</li>
+<li>月末补齐 docx_code 唯一性校验（#281）。</li>
+</ul>
+<h2 id="二、船舶-液体码头作业"><a href="#二、船舶-液体码头作业" class="headerlink" title="二、船舶 &#x2F; 液体码头作业"></a>二、船舶 &#x2F; 液体码头作业</h2><ul>
+<li>内外贸字段、管线名称、货种筛选与泊位告警（#239&#x2F;#241&#x2F;#246&#x2F;#248）。</li>
+<li>收发油罐按物料多选（#244）；船名模糊检索等终端体验。</li>
+<li>船舶动态导入：到港时间格式与提示信息修复（#258&#x2F;#276）。</li>
+<li>排船页接入真实 LLM 辅助（#275）。</li>
+</ul>
+<h2 id="三、仪表位号与报表"><a href="#三、仪表位号与报表" class="headerlink" title="三、仪表位号与报表"></a>三、仪表位号与报表</h2><ul>
+<li>手动采集按钮（#254）；位号配置、导入导出、唯一性与时间处理（#267）。</li>
+<li>关联报表模板展示与批量查询、模板维度（#252&#x2F;#265）。</li>
+<li>报表&#x2F;位号侧过滤与 jqGrid 行范围选择。</li>
+</ul>
+<h2 id="四、实时库与工程体验"><a href="#四、实时库与工程体验" class="headerlink" title="四、实时库与工程体验"></a>四、实时库与工程体验</h2><ul>
+<li>RTDB ISYS SDK RMI 回调（#271）；ISYS 配置与 HTTP 客户端增强。</li>
+<li>SpringDoc OpenAPI &#x2F; Swagger UI 接入。</li>
+<li>多 Tab 溢出箭头滚动（#273）、滚动条样式、模态间菜单切换；菜单关键词逗号 OR 搜索（#269）。</li>
+<li>反馈排程关闭&#x2F;驳回态隐藏按钮等细节（#250）。</li>
+</ul>
+<h2 id="五、月度节奏"><a href="#五、月度节奏" class="headerlink" title="五、月度节奏"></a>五、月度节奏</h2><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上旬</td>
+<td>液体码头罐&#x2F;管线&#x2F;货种、位号手动采集、报表模板维度</td>
+</tr>
+<tr>
+<td>中旬</td>
+<td>交接班 Docx 导入起步、位号关联报表、菜单搜索与 UI 修复</td>
+</tr>
+<tr>
+<td>下旬</td>
+<td>ShiftLog 解析深化、RTDB RMI、排船 AI、到港时间导入、docx 唯一性</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>一句话</strong>：5 月把交接班 Docx 导入做成可用链路，并加强液体码头作业与仪表采集&#x2F;报表关联；实时库回调与若干前端体验同步落地，为 6 月平台化（AI&#x2F;能耗&#x2F;图表）腾出业务底座。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://eppencn.com/2026/08/01/mes-monthly-2026-05/" data-id="cmufbv4ni000njsv52r2e8hvm" data-title="MES 2026 年 5 月工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" rel="tag">交接班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" rel="tag">船舶作业</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-mes-monthly-2026-06" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/08/01/mes-monthly-2026-06/" class="article-date">
@@ -146,7 +312,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/08/01/mes-monthly-2026-06/" data-id="cmu6mxv58000eigv5dcalar50" data-title="MES 2026 年 6 月工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/08/01/mes-monthly-2026-06/" data-id="cmufbv4nh000kjsv5a9tr8s95" data-title="MES 2026 年 6 月工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -234,7 +400,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/08/01/mes-monthly-2026-07/" data-id="cmu6mxv5q000uigv5gjwjdbde" data-title="MES 2026 年 7 月工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/08/01/mes-monthly-2026-07/" data-id="cmufbv4ng000ijsv57yyf6gf4" data-title="MES 2026 年 7 月工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -304,7 +470,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/08/01/mes-weekly-2026-w31/" data-id="cmu6mxv5o000sigv5cms60uqg" data-title="MES 本周工作小结（2026-07-28 ~ 08-01）" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/08/01/mes-weekly-2026-w31/" data-id="cmufbv4ni000pjsv50616bkeq" data-title="MES 本周工作小结（2026-07-28 ~ 08-01）" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -459,7 +625,11 @@
 <li><strong>查询</strong>：<code>treeDao.findAll(...)</code>、<code>queryObject(nodeid)</code> 等</li>
 <li><strong>删除</strong>：<code>delete</code> &#x2F; <code>deleteBatch</code> 按 NodeID 删除 Tree，并先 <code>ObjectRegisterDao.deleteByOwnerId(NodeID)</code> 清理关联对象</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">  A[UniqueNO&lt;br/&gt;NName=tree] --&gt;|取 No 作为 NodeID| B[Tree.NodeID]</span><br><span class="line">  B --&gt; C[listTreeForPermission&lt;br/&gt;返回 id=NodeID]</span><br><span class="line">  C --&gt; D[zTree id / pId&lt;br/&gt;树结构展示]</span><br></pre></td></tr></table></figure>
+<pre class="mermaid">flowchart LR
+  A[UniqueNO&lt;br/&gt;NName=tree] --&gt;|取 No 作为 NodeID| B[Tree.NodeID]
+  B --&gt; C[listTreeForPermission&lt;br/&gt;返回 id=NodeID]
+  C --&gt; D[zTree id / pId&lt;br/&gt;树结构展示]</pre>
+
 
 <hr>
 <h2 id="3-ObjectID-是什么"><a href="#3-ObjectID-是什么" class="headerlink" title="3. ObjectID 是什么"></a>3. ObjectID 是什么</h2><p><code>ObjectID</code> 是 EOS 对象注册表 <code>messys.dbo.ObjectRegister</code> 的主键。每个可授权对象在 <code>ObjectRegister</code> 中注册一条记录；菜单&#x2F;目录节点对应 <strong>TypeID &#x3D; 7</strong>，并通过 <strong>OwnerID &#x3D; Tree.NodeID</strong> 与菜单树关联。</p>
@@ -543,7 +713,13 @@
 <td><code>object == null</code> 时 <code>Tree.ObjectID = 0</code>（无有效授权对象）</td>
 </tr>
 </tbody></table>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">  A[分配 NodeID] --&gt; B[插入 ObjectRegister&lt;br/&gt;ObjectID=MAX+1]</span><br><span class="line">  B --&gt; C[Tree.ObjectID = ObjectID]</span><br><span class="line">  C --&gt; D[listTreeForPermission&lt;br/&gt;返回 objectId]</span><br><span class="line">  D --&gt; E[前端勾选提交 objectIds]</span><br><span class="line">  E --&gt; F[STPermission 写入]</span><br></pre></td></tr></table></figure>
+<pre class="mermaid">flowchart LR
+  A[分配 NodeID] --&gt; B[插入 ObjectRegister&lt;br/&gt;ObjectID=MAX+1]
+  B --&gt; C[Tree.ObjectID = ObjectID]
+  C --&gt; D[listTreeForPermission&lt;br/&gt;返回 objectId]
+  D --&gt; E[前端勾选提交 objectIds]
+  E --&gt; F[STPermission 写入]</pre>
+
 
 <hr>
 <h2 id="5-NodeID-与-ObjectID-对照"><a href="#5-NodeID-与-ObjectID-对照" class="headerlink" title="5. NodeID 与 ObjectID 对照"></a>5. NodeID 与 ObjectID 对照</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Tree.NodeID       ──►  zTree.id         （树结构、ParentID 父子关系）</span><br><span class="line">Tree.ObjectID     ──►  zTree.objectId   （STPermission「执行」授权键）</span><br><span class="line"></span><br><span class="line">ObjectRegister.OwnerID  = Tree.NodeID</span><br><span class="line">ObjectRegister.ObjectID = Tree.ObjectID</span><br><span class="line">ObjectRegister.TypeID   = 7（菜单/目录）</span><br></pre></td></tr></table></figure>
@@ -858,7 +1034,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/07/31/eos-role-tree-nodeid-objectid/" data-id="cmu6mxv4t0004igv53ume4gop" data-title="EOS 菜单树 NodeID 与 ObjectID 说明" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/07/31/eos-role-tree-nodeid-objectid/" data-id="cmufbv4nd0008jsv5dkxq2q3a" data-title="EOS 菜单树 NodeID 与 ObjectID 说明" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -1572,7 +1748,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/07/31/eos-role-menu-relationship/" data-id="cmu6mxv52000aigv5eqn35k8z" data-title="EOS 菜单与角色关联关系说明" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/07/31/eos-role-menu-relationship/" data-id="cmufbv4ne000bjsv5f7gybrni" data-title="EOS 菜单与角色关联关系说明" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -1707,7 +1883,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%82%A5%E8%83%96%E5%85%AB%E5%A4%A7%E5%81%A5%E5%BA%B7%E5%9C%B0%E9%9B%B7/" data-id="cmu6mxv8t006jigv5b0ft2h48" data-title="瘦身密码（五）：甜蜜陷阱——肥胖引爆的八大健康地雷" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%82%A5%E8%83%96%E5%85%AB%E5%A4%A7%E5%81%A5%E5%BA%B7%E5%9C%B0%E9%9B%B7/" data-id="cmufbv4o90071jsv5e2ioap9d" data-title="瘦身密码（五）：甜蜜陷阱——肥胖引爆的八大健康地雷" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -1869,7 +2045,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E5%A4%A7%E4%BD%93%E8%B4%A8%E7%A7%91%E5%AD%A6%E7%94%A9%E8%82%89%E6%8C%87%E5%8D%97/" data-id="cmu6mxv8e005sigv505k28l44" data-title="瘦身密码（四）：九大体质科学甩肉指南——管体加管重" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E5%A4%A7%E4%BD%93%E8%B4%A8%E7%A7%91%E5%AD%A6%E7%94%A9%E8%82%89%E6%8C%87%E5%8D%97/" data-id="cmufbv4nr001ejsv5adxg6zle" data-title="瘦身密码（四）：九大体质科学甩肉指南——管体加管重" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -2001,252 +2177,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6%E4%BD%93%E8%B4%A8%E5%AF%86%E7%A0%81%E5%85%A5%E9%97%A8/" data-id="cmu6mxv80005kigv51dc68c5w" data-title="瘦身密码（三）：九体医学入门——解锁你的体质密码" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6%E4%BD%93%E8%B4%A8%E5%AF%86%E7%A0%81%E5%85%A5%E9%97%A8/" data-id="cmufbv4ns001fjsv5cviwdr79" data-title="瘦身密码（三）：九体医学入门——解锁你的体质密码" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" rel="tag">中医体质</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" rel="tag">九体医学</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%81%A5%E5%BA%B7/" rel="tag">健康</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-瘦身密码-脂肪工厂与科学减肥" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%84%82%E8%82%AA%E5%B7%A5%E5%8E%82%E4%B8%8E%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" class="article-date">
-  <time class="dt-published" datetime="2026-07-06T08:35:00.000Z" itemprop="datePublished">2026-07-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%84%82%E8%82%AA%E5%B7%A5%E5%8E%82%E4%B8%8E%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/">瘦身密码（二）：脂肪工厂的运作密码——科学减肥是场马拉松</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="你真的需要减肥吗？"><a href="#你真的需要减肥吗？" class="headerlink" title="你真的需要减肥吗？"></a>你真的需要减肥吗？</h2><h3 id="BMI：有用，但不万能"><a href="#BMI：有用，但不万能" class="headerlink" title="BMI：有用，但不万能"></a>BMI：有用，但不万能</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BMI = 体重(kg) ÷ 身高²(m²)</span><br></pre></td></tr></table></figure>
-
-<p>中国成人标准：</p>
-<table>
-<thead>
-<tr>
-<th>分类</th>
-<th>BMI</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>体重过低</td>
-<td>&lt;18.5</td>
-</tr>
-<tr>
-<td>正常</td>
-<td>18.5～24</td>
-</tr>
-<tr>
-<td>超重</td>
-<td>24～28</td>
-</tr>
-<tr>
-<td>肥胖</td>
-<td>≥28</td>
-</tr>
-</tbody></table>
-<p>BMI 对普通成年人实用，但对运动员等肌肉发达者可能误判；对孕妇、儿童、老年人参考价值有限。<strong>更关键的是脂肪分布</strong>，而非单一数字。</p>
-<h3 id="肥胖三级预警"><a href="#肥胖三级预警" class="headerlink" title="肥胖三级预警"></a>肥胖三级预警</h3><ul>
-<li><strong>轻度</strong>（28～32.5）：糖尿病、高血压风险上升，关节负担加重</li>
-<li><strong>中度</strong>（32.5～37.5）：心血管风险加剧，易出现睡眠呼吸暂停</li>
-<li><strong>重度</strong>（≥37.5）：心衰、脑卒中风险极高，代谢综合征与多种癌症风险显著上升</li>
-</ul>
-<h3 id="体脂率与腰臀比"><a href="#体脂率与腰臀比" class="headerlink" title="体脂率与腰臀比"></a>体脂率与腰臀比</h3><p>健康体脂率：男性约 15%～20%，女性约 20%～25%。腰臀比反映脂肪分布——苹果型（腹型）远比梨型危险。</p>
-<h2 id="脂肪从哪来？"><a href="#脂肪从哪来？" class="headerlink" title="脂肪从哪来？"></a>脂肪从哪来？</h2><h3 id="中医视角：易胖体质的「培育土壤」"><a href="#中医视角：易胖体质的「培育土壤」" class="headerlink" title="中医视角：易胖体质的「培育土壤」"></a>中医视角：易胖体质的「培育土壤」</h3><ol>
-<li><strong>饮食不节</strong>：肥甘厚味、暴饮暴食，脾胃运化不及，聚为膏脂痰浊</li>
-<li><strong>缺乏运动</strong>：久坐少动，气血不畅，痰湿内生</li>
-<li><strong>情志失调</strong>：肝郁气滞、思虑伤脾，水湿代谢失常</li>
-<li><strong>脏腑失调</strong>：脾虚运化失司、肾阳虚水湿不化</li>
-</ol>
-<h3 id="西医视角：代谢失衡"><a href="#西医视角：代谢失衡" class="headerlink" title="西医视角：代谢失衡"></a>西医视角：代谢失衡</h3><p>遗传、高热量饮食、运动不足、内分泌疾病（甲减、库欣综合征）、肠道菌群失衡等，共同导致能量摄入大于消耗，多余能量以脂肪储存。</p>
-<h2 id="快速瘦身的陷阱"><a href="#快速瘦身的陷阱" class="headerlink" title="快速瘦身的陷阱"></a>快速瘦身的陷阱</h2><h3 id="过度节食：得不偿失"><a href="#过度节食：得不偿失" class="headerlink" title="过度节食：得不偿失"></a>过度节食：得不偿失</h3><p>节食初期体重下降，但身体会降低基础代谢率（BMR）进入「平台期」。恢复正常饮食后极易反弹，并可能带来：</p>
-<ul>
-<li>免疫力下降、肝肾功能失调</li>
-<li>女性月经紊乱甚至闭经</li>
-<li>脱发、抑郁焦虑</li>
-<li>反复节食形成恶性循环</li>
-</ul>
-<p><strong>BMR 估算公式（Mifflin-St Jeor）：</strong></p>
-<ul>
-<li>男性：10×体重(kg) + 6.25×身高(cm) − 5×年龄 + 5</li>
-<li>女性：10×体重(kg) + 6.25×身高(cm) − 5×年龄 − 161</li>
-</ul>
-<h3 id="代餐、排毒、极端断食"><a href="#代餐、排毒、极端断食" class="headerlink" title="代餐、排毒、极端断食"></a>代餐、排毒、极端断食</h3><ul>
-<li><strong>代餐</strong>：短期降重，但代谢减慢，恢复饮食后易反弹，长期可能影响消化与免疫</li>
-<li><strong>排毒</strong>：人体有自净能力；情志调节、均衡饮食、规律运动才是正道</li>
-<li><strong>轻断食</strong>：间歇性禁食有一定研究支持，但长时间不吃饭可能导致低血糖、电解质紊乱，糖尿病患者尤其危险</li>
-</ul>
-<h2 id="什么才是科学减肥？"><a href="#什么才是科学减肥？" class="headerlink" title="什么才是科学减肥？"></a>什么才是科学减肥？</h2><p>核心原则：<strong>减肥是马拉松，不是百米冲刺。</strong></p>
-<h3 id="能量平衡"><a href="#能量平衡" class="headerlink" title="能量平衡"></a>能量平衡</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">每日摄入（减重）= TDEE − 500 千卡</span><br><span class="line">TDEE = BMR × 活动因子</span><br></pre></td></tr></table></figure>
-
-<p>活动因子：久坐 1.2，轻度活动 1.375，中度 1.55，高度 1.725，极高 1.9。</p>
-<h3 id="三大营养素分配"><a href="#三大营养素分配" class="headerlink" title="三大营养素分配"></a>三大营养素分配</h3><ul>
-<li>碳水化合物：45%～65%（优选全谷物、薯类、豆类）</li>
-<li>蛋白质：10%～35%（瘦肉、鱼、蛋、奶、豆制品）</li>
-<li>脂肪：20%～30%（植物油、坚果，少饱和脂肪与反式脂肪）</li>
-</ul>
-<h3 id="饮食习惯"><a href="#饮食习惯" class="headerlink" title="饮食习惯"></a>饮食习惯</h3><ul>
-<li>定时进食，细嚼慢咽，七八分饱</li>
-<li>进食顺序：清汤 → 蔬菜 → 肉类 → 主食</li>
-<li>烹调以蒸、炖、煮为主，少油炸</li>
-<li>看懂营养成分表，警惕「低脂」但高热量的食品</li>
-</ul>
-<h3 id="运动：每天-6000-步起步"><a href="#运动：每天-6000-步起步" class="headerlink" title="运动：每天 6000 步起步"></a>运动：每天 6000 步起步</h3><ul>
-<li>每周至少 150 分钟中等强度有氧运动</li>
-<li>结合力量训练，提高基础代谢</li>
-<li>碎片化运动也有价值：通勤多走、爬楼梯、工间拉伸</li>
-</ul>
-<h3 id="情绪管理"><a href="#情绪管理" class="headerlink" title="情绪管理"></a>情绪管理</h3><p>压力肥、深夜暴食常与情绪相关。好心情是最佳「燃脂剂」——学会与焦虑和解，比盲目节食更重要。</p>
-<h2 id="懒人减肥武器库速览"><a href="#懒人减肥武器库速览" class="headerlink" title="懒人减肥武器库速览"></a>懒人减肥武器库速览</h2><table>
-<thead>
-<tr>
-<th>维度</th>
-<th>要点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>饮食</strong></td>
-<td>能量赤字 + 营养充足；外卖少点高糖高油；麻辣烫不加麻酱也是多样饮食的好选择</td>
-</tr>
-<tr>
-<td><strong>运动</strong></td>
-<td>每天 10 分钟碎片化运动也有累积效应；选自己喜欢的项目才能坚持</td>
-</tr>
-<tr>
-<td><strong>情绪</strong></td>
-<td>识别压力性进食；用运动、社交替代零食快感</td>
-</tr>
-<tr>
-<td><strong>中医适宜技术</strong></td>
-<td>针灸、埋线、拔罐、穴位按摩等可作为辅助，需在专业医师指导下进行</td>
-</tr>
-</tbody></table>
-<h2 id="管体-管重-不反弹"><a href="#管体-管重-不反弹" class="headerlink" title="管体 + 管重 &#x3D; 不反弹"></a>管体 + 管重 &#x3D; 不反弹</h2><p>单纯减重而不调体质，往往陷入「减—反弹—再减」循环。下一篇将介绍王琦院士创立的<strong>九体医学</strong>——先认清自己是哪种体质，再对症瘦身。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%84%82%E8%82%AA%E5%B7%A5%E5%8E%82%E4%B8%8E%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" data-id="cmu6mxv83005ligv5gmc8fwym" data-title="瘦身密码（二）：脂肪工厂的运作密码——科学减肥是场马拉松" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" rel="tag">体重管理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%81%A5%E5%BA%B7/" rel="tag">健康</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" rel="tag">科学减肥</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-瘦身密码-中国式发福图鉴" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B8%AD%E5%9B%BD%E5%BC%8F%E5%8F%91%E7%A6%8F%E5%9B%BE%E9%89%B4/" class="article-date">
-  <time class="dt-published" datetime="2026-07-06T08:30:00.000Z" itemprop="datePublished">2026-07-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B8%AD%E5%9B%BD%E5%BC%8F%E5%8F%91%E7%A6%8F%E5%9B%BE%E9%89%B4/">瘦身密码（一）：中国式发福图鉴——14亿人的体重失控现场</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>近三十年，中国人以惊人速度「胖」了起来。据《中国居民营养与慢性病状况报告（2020）》，成年居民超重率 34.3%、肥胖率 16.4%——<strong>每 2 个成年人就有 1 人面临超重&#x2F;肥胖威胁</strong>。</p>
-<p>更令人警醒的是增速：1989 年中国超重人口约 1.67 亿，2009 年增至 5.29 亿，20 年间每天约增加 4.9 万人，年均增长率 10.8%，超过同期 GDP 增速。《柳叶刀》估算，2021 年全球超重&#x2F;肥胖成年人 21.1 亿，中国以 4.02 亿居首；预计到 2050 年，全球将有超过一半成年人超重&#x2F;肥胖。</p>
-<p>若以腰围衡量腹型肥胖，2009 年中国腹型肥胖人口约 6.7 亿，超过欧美总和。李新华等团队在《柳叶刀》发表的研究显示，2004～2018 年间，18～69 岁人群标准化平均 BMI 从 22.7 升至 24.4 kg&#x2F;m²，肥胖患病率（BMI≥30）从 3.1% 升至 8.1%。2018 年肥胖人数约 8500 万，是 2004 年的三倍。</p>
-<h2 id="谁更容易发胖？"><a href="#谁更容易发胖？" class="headerlink" title="谁更容易发胖？"></a>谁更容易发胖？</h2><p>肥胖增长并非均匀分布，城乡、性别、年龄各有特点：</p>
-<table>
-<thead>
-<tr>
-<th>维度</th>
-<th>主要趋势</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>城乡</strong></td>
-<td>2010 年前城市高于农村；此后农村女性 BMI 增速快于城市，2018 年农村女性已超过城市</td>
-</tr>
-<tr>
-<td><strong>性别</strong></td>
-<td>2004 年男性低于女性，2018 年完全逆转，男性增速更快</td>
-</tr>
-<tr>
-<td><strong>年龄</strong></td>
-<td>女性随年龄升高至 50 岁；男性 30～49 岁为高峰</td>
-</tr>
-<tr>
-<td><strong>儿童</strong></td>
-<td>与 1985 年比，2014 年 7～18 岁学生肥胖患病率增长 54.8 倍</td>
-</tr>
-<tr>
-<td><strong>老年人</strong></td>
-<td>2011～2015 年超重率 29.2%→33.2%，中心性肥胖 58.3%→63.9%</td>
-</tr>
-</tbody></table>
-<h2 id="肥胖正在吃掉你的存款"><a href="#肥胖正在吃掉你的存款" class="headerlink" title="肥胖正在吃掉你的存款"></a>肥胖正在吃掉你的存款</h2><p>肥胖已从个人问题演变为国家危机。2024 年 6 月，国家卫生健康委联合 16 部门启动「体重管理年」活动，推动慢病防治关口前移。</p>
-<p><strong>健康代价：</strong></p>
-<ul>
-<li>近 20 年高血压患病率 19%→28%，糖尿病约 3%→13%</li>
-<li>2018 年糖尿病及前期患病率合计约 51%，知晓率、治疗率、控制率均偏低</li>
-<li>预测 2030 年成人超重&#x2F;肥胖率或达 70.5%</li>
-</ul>
-<p><strong>经济代价：</strong></p>
-<ul>
-<li>2030 年归因于超重&#x2F;肥胖的医疗费用预计约 4180 亿元，约占全国医疗费用 22%</li>
-<li>超重&#x2F;肥胖对全球经济影响占 GDP 2.4%，2035 年预计升至更高</li>
-<li>肥胖还带来间接损失：工作效率下降、请假增多、就业机会受影响（「体型歧视」）</li>
-</ul>
-<p>研究还发现，肥胖与收入的关系并非线性——<strong>中等收入人群肥胖风险反而最高</strong>；农村高收入男性、高教育男性肥胖关联更强，而女性高教育与肥胖呈负相关。</p>
-<h2 id="腰围比体重更值得警惕"><a href="#腰围比体重更值得警惕" class="headerlink" title="腰围比体重更值得警惕"></a>腰围比体重更值得警惕</h2><p>BMI 虽常用，但有盲区：不区分肌肉与脂肪、不反映脂肪分布。腹型肥胖（苹果型）风险远高于梨型：</p>
-<ul>
-<li>男性腰围 ≥90 cm、女性 ≥85 cm，即存在腹型肥胖风险</li>
-<li>内脏脂肪升高甘油三酯、胆固醇，促动脉粥样硬化</li>
-<li>干扰胰岛素作用，显著增加 2 型糖尿病风险</li>
-<li>与结直肠癌、子宫内膜癌等多种癌症相关</li>
-<li>压迫横膈膜，引发睡眠呼吸暂停；加重关节负担</li>
-</ul>
-<p><strong>建议：</strong> 除定期测 BMI 外，务必关注腰围和腰臀比（亚洲男性上限 0.9，女性 0.8）。</p>
-<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>肥胖威胁的不只是外形，更是心血管、代谢、呼吸、骨骼乃至心理的全方位健康。2024 年「体重管理年」与「九体医学健康中国计划」的推进，标志着体重管理正从「一刀切节食」走向<strong>个体化、科学化、中西医协同</strong>的新阶段。</p>
-<p>下一篇，我们将拆解「脂肪工厂」——脂肪从何而来，以及什么才是科学的减肥马拉松。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B8%AD%E5%9B%BD%E5%BC%8F%E5%8F%91%E7%A6%8F%E5%9B%BE%E9%89%B4/" data-id="cmu6mxv89005pigv5hpwkdjlh" data-title="瘦身密码（一）：中国式发福图鉴——14亿人的体重失控现场" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" rel="tag">九体医学</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" rel="tag">体重管理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%81%A5%E5%BA%B7/" rel="tag">健康</a></li></ul>
 
     </footer>
   </div>
@@ -2274,7 +2209,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/0AD/" rel="tag">0AD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Daily/" rel="tag">AI Daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Agent/" rel="tag">Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Automation/" rel="tag">Automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CLI/" rel="tag">CLI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Calendar/" rel="tag">Calendar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Claude-Code/" rel="tag">Claude Code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CodingAgent/" rel="tag">CodingAgent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cursor/" rel="tag">Cursor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EOS/" rel="tag">EOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eos/" rel="tag">Eos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Excel/" rel="tag">Excel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Harness/" rel="tag">Harness</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LIMS/" rel="tag">LIMS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCP/" rel="tag">MCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenSource/" rel="tag">OpenSource</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PowerShell/" rel="tag">PowerShell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RBAC/" rel="tag">RBAC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTS/" rel="tag">RTS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/health/" rel="tag">health</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-energy/" rel="tag">mes-energy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-measure/" rel="tag">mes-measure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-plan/" rel="tag">mes-plan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-report/" rel="tag">mes-report</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-web/" rel="tag">mes-web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zTree/" rel="tag">zTree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" rel="tag">中医体质</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" rel="tag">九体医学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" rel="tag">交接班</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" rel="tag">体质调理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" rel="tag">体重管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%81%A5%E5%BA%B7/" rel="tag">健康</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" rel="tag">慢性病</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" rel="tag">科学减肥</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%82%A5%E8%83%96/" rel="tag">肥胖</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" rel="tag">能耗分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" rel="tag">船舶作业</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E5%88%92%E8%8C%83%E5%9B%B4/" rel="tag">计划范围</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/0AD/" rel="tag">0AD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Daily/" rel="tag">AI Daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AdGuard-Home/" rel="tag">AdGuard Home</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Agent/" rel="tag">Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Automation/" rel="tag">Automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CLI/" rel="tag">CLI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Calendar/" rel="tag">Calendar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Claude-Code/" rel="tag">Claude Code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CodingAgent/" rel="tag">CodingAgent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cursor/" rel="tag">Cursor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DNS/" rel="tag">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EOS/" rel="tag">EOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eos/" rel="tag">Eos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Excel/" rel="tag">Excel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Harness/" rel="tag">Harness</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LIMS/" rel="tag">LIMS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCP/" rel="tag">MCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenSource/" rel="tag">OpenSource</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OptiPlex/" rel="tag">OptiPlex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PowerShell/" rel="tag">PowerShell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RBAC/" rel="tag">RBAC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTS/" rel="tag">RTS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/health/" rel="tag">health</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-energy/" rel="tag">mes-energy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-measure/" rel="tag">mes-measure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-plan/" rel="tag">mes-plan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-quartz/" rel="tag">mes-quartz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-report/" rel="tag">mes-report</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-rtdb/" rel="tag">mes-rtdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-web/" rel="tag">mes-web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zTree/" rel="tag">zTree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" rel="tag">中医体质</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" rel="tag">九体医学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" rel="tag">交接班</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" rel="tag">体质调理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" rel="tag">体重管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%81%A5%E5%BA%B7/" rel="tag">健康</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8E%E4%B8%BA%E8%B7%AF%E7%94%B1/" rel="tag">华为路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" rel="tag">慢性病</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" rel="tag">科学减肥</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%82%A5%E8%83%96/" rel="tag">肥胖</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" rel="tag">能耗分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" rel="tag">船舶作业</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E5%88%92%E8%8C%83%E5%9B%B4/" rel="tag">计划范围</a></li></ul>
     </div>
   </div>
 
@@ -2284,7 +2219,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/0AD/" style="font-size: 10px;">0AD</a> <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/AI-Daily/" style="font-size: 10px;">AI Daily</a> <a href="/tags/Agent/" style="font-size: 10px;">Agent</a> <a href="/tags/Automation/" style="font-size: 10px;">Automation</a> <a href="/tags/CLI/" style="font-size: 11.25px;">CLI</a> <a href="/tags/Calendar/" style="font-size: 10px;">Calendar</a> <a href="/tags/Claude-Code/" style="font-size: 10px;">Claude Code</a> <a href="/tags/CodingAgent/" style="font-size: 10px;">CodingAgent</a> <a href="/tags/Cursor/" style="font-size: 11.25px;">Cursor</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/EOS/" style="font-size: 11.25px;">EOS</a> <a href="/tags/Eos/" style="font-size: 10px;">Eos</a> <a href="/tags/Excel/" style="font-size: 10px;">Excel</a> <a href="/tags/Game/" style="font-size: 10px;">Game</a> <a href="/tags/Harness/" style="font-size: 10px;">Harness</a> <a href="/tags/LIMS/" style="font-size: 10px;">LIMS</a> <a href="/tags/MCP/" style="font-size: 10px;">MCP</a> <a href="/tags/MES/" style="font-size: 20px;">MES</a> <a href="/tags/OpenSource/" style="font-size: 10px;">OpenSource</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/PowerShell/" style="font-size: 10px;">PowerShell</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RBAC/" style="font-size: 10px;">RBAC</a> <a href="/tags/RTS/" style="font-size: 10px;">RTS</a> <a href="/tags/SQL-Server/" style="font-size: 11.25px;">SQL Server</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/health/" style="font-size: 10px;">health</a> <a href="/tags/mes-ai/" style="font-size: 17.5px;">mes-ai</a> <a href="/tags/mes-chart/" style="font-size: 16.25px;">mes-chart</a> <a href="/tags/mes-energy/" style="font-size: 10px;">mes-energy</a> <a href="/tags/mes-measure/" style="font-size: 11.25px;">mes-measure</a> <a href="/tags/mes-plan/" style="font-size: 10px;">mes-plan</a> <a href="/tags/mes-report/" style="font-size: 10px;">mes-report</a> <a href="/tags/mes-web/" style="font-size: 11.25px;">mes-web</a> <a href="/tags/zTree/" style="font-size: 10px;">zTree</a> <a href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" style="font-size: 10px;">中医体质</a> <a href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" style="font-size: 12.5px;">九体医学</a> <a href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" style="font-size: 10px;">交接班</a> <a href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" style="font-size: 10px;">体质调理</a> <a href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" style="font-size: 11.25px;">体重管理</a> <a href="/tags/%E5%81%A5%E5%BA%B7/" style="font-size: 15px;">健康</a> <a href="/tags/%E5%91%A8%E6%8A%A5/" style="font-size: 16.25px;">周报</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" style="font-size: 18.75px;">工作小结</a> <a href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" style="font-size: 10px;">慢性病</a> <a href="/tags/%E6%9C%88%E6%8A%A5/" style="font-size: 13.75px;">月报</a> <a href="/tags/%E6%9D%83%E9%99%90/" style="font-size: 11.25px;">权限</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" style="font-size: 10px;">科学减肥</a> <a href="/tags/%E8%82%A5%E8%83%96/" style="font-size: 10px;">肥胖</a> <a href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" style="font-size: 10px;">能耗分析</a> <a href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" style="font-size: 10px;">船舶作业</a> <a href="/tags/%E8%AE%A1%E5%88%92%E8%8C%83%E5%9B%B4/" style="font-size: 10px;">计划范围</a>
+      <a href="/tags/0AD/" style="font-size: 10px;">0AD</a> <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/AI-Daily/" style="font-size: 10px;">AI Daily</a> <a href="/tags/AdGuard-Home/" style="font-size: 10px;">AdGuard Home</a> <a href="/tags/Agent/" style="font-size: 10px;">Agent</a> <a href="/tags/Automation/" style="font-size: 10px;">Automation</a> <a href="/tags/CLI/" style="font-size: 11.11px;">CLI</a> <a href="/tags/Calendar/" style="font-size: 10px;">Calendar</a> <a href="/tags/Claude-Code/" style="font-size: 10px;">Claude Code</a> <a href="/tags/CodingAgent/" style="font-size: 10px;">CodingAgent</a> <a href="/tags/Cursor/" style="font-size: 11.11px;">Cursor</a> <a href="/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/EOS/" style="font-size: 11.11px;">EOS</a> <a href="/tags/Eos/" style="font-size: 10px;">Eos</a> <a href="/tags/Excel/" style="font-size: 10px;">Excel</a> <a href="/tags/Game/" style="font-size: 10px;">Game</a> <a href="/tags/Harness/" style="font-size: 10px;">Harness</a> <a href="/tags/LIMS/" style="font-size: 10px;">LIMS</a> <a href="/tags/MCP/" style="font-size: 10px;">MCP</a> <a href="/tags/MES/" style="font-size: 20px;">MES</a> <a href="/tags/OpenSource/" style="font-size: 10px;">OpenSource</a> <a href="/tags/OptiPlex/" style="font-size: 10px;">OptiPlex</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/PowerShell/" style="font-size: 10px;">PowerShell</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RBAC/" style="font-size: 10px;">RBAC</a> <a href="/tags/RTS/" style="font-size: 10px;">RTS</a> <a href="/tags/SQL-Server/" style="font-size: 11.11px;">SQL Server</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/health/" style="font-size: 10px;">health</a> <a href="/tags/mes-ai/" style="font-size: 17.78px;">mes-ai</a> <a href="/tags/mes-chart/" style="font-size: 15.56px;">mes-chart</a> <a href="/tags/mes-energy/" style="font-size: 10px;">mes-energy</a> <a href="/tags/mes-measure/" style="font-size: 12.22px;">mes-measure</a> <a href="/tags/mes-plan/" style="font-size: 10px;">mes-plan</a> <a href="/tags/mes-quartz/" style="font-size: 10px;">mes-quartz</a> <a href="/tags/mes-report/" style="font-size: 10px;">mes-report</a> <a href="/tags/mes-rtdb/" style="font-size: 10px;">mes-rtdb</a> <a href="/tags/mes-web/" style="font-size: 11.11px;">mes-web</a> <a href="/tags/zTree/" style="font-size: 10px;">zTree</a> <a href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" style="font-size: 10px;">中医体质</a> <a href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" style="font-size: 12.22px;">九体医学</a> <a href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" style="font-size: 10px;">交接班</a> <a href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" style="font-size: 10px;">体质调理</a> <a href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" style="font-size: 11.11px;">体重管理</a> <a href="/tags/%E5%81%A5%E5%BA%B7/" style="font-size: 14.44px;">健康</a> <a href="/tags/%E5%8D%8E%E4%B8%BA%E8%B7%AF%E7%94%B1/" style="font-size: 10px;">华为路由</a> <a href="/tags/%E5%91%A8%E6%8A%A5/" style="font-size: 16.67px;">周报</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" style="font-size: 18.89px;">工作小结</a> <a href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" style="font-size: 10px;">慢性病</a> <a href="/tags/%E6%9C%88%E6%8A%A5/" style="font-size: 13.33px;">月报</a> <a href="/tags/%E6%9D%83%E9%99%90/" style="font-size: 11.11px;">权限</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" style="font-size: 10px;">科学减肥</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">网络</a> <a href="/tags/%E8%82%A5%E8%83%96/" style="font-size: 10px;">肥胖</a> <a href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" style="font-size: 10px;">能耗分析</a> <a href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" style="font-size: 10px;">船舶作业</a> <a href="/tags/%E8%AE%A1%E5%88%92%E8%8C%83%E5%9B%B4/" style="font-size: 10px;">计划范围</a>
     </div>
   </div>
 
@@ -2306,6 +2241,14 @@
       <ul>
         
           <li>
+            <a href="/2026/09/24/mes-weekly-2026-w39/">MES 2026 年第 39 周工作小结</a>
+          </li>
+        
+          <li>
+            <a href="/2026/09/22/%E7%BD%91%E7%BB%9C%E5%9B%BE-OptiPlex-%E5%8D%8E%E4%B8%BA%E8%B7%AF%E7%94%B1/">OptiPlex + 华为路由 网络图</a>
+          </li>
+        
+          <li>
             <a href="/2026/09/18/mes-weekly-2026-w38/">MES 2026 年第 38 周工作小结</a>
           </li>
         
@@ -2315,14 +2258,6 @@
         
           <li>
             <a href="/2026/09/10/mes-jhfwdoc-excel-green-import/">MES 计划范围文档：Excel 绿色区块解析核心</a>
-          </li>
-        
-          <li>
-            <a href="/2026/09/10/ai-daily-mes-brief-2026-05-21/">AI Daily · 2026年5月21日 · MES 工作区简报</a>
-          </li>
-        
-          <li>
-            <a href="/2026/09/04/mes-weekly-2026-w36/">MES 2026 年第 36 周工作小结</a>
           </li>
         
       </ul>
