@@ -4,16 +4,27 @@
   <meta charset="utf-8">
   
   
-  <title>Tag: MES | Hua Liang&#39;s Blog</title>
+  <title>MES 2026 年 9 月工作小结 | Hua Liang&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hua Liang&#39;s Blog">
-<meta property="og:url" content="https://eppencn.com/tags/MES/index.html">
+  <meta name="description" content="9 月（约 278 次提交）主线从「AI 对话能力」转向 看板能力合入、报表公式检查、计量器具导入闭环，并启动 多应用拆分 与 TSDB&#x2F;ISYS 实时库底座。正式合并 PR 含 #384（看板能力增强）、**#385**（报表模板 AI 公式检查），另有大量功能分支直接合入 master &#x2F; feat&#x2F;mes-app。改动最集中的模块是 mes-core、mes-meas">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MES 2026 年 9 月工作小结">
+<meta property="og:url" content="https://eppencn.com/2026/09/29/mes-monthly-2026-09/index.html">
 <meta property="og:site_name" content="Hua Liang&#39;s Blog">
+<meta property="og:description" content="9 月（约 278 次提交）主线从「AI 对话能力」转向 看板能力合入、报表公式检查、计量器具导入闭环，并启动 多应用拆分 与 TSDB&#x2F;ISYS 实时库底座。正式合并 PR 含 #384（看板能力增强）、**#385**（报表模板 AI 公式检查），另有大量功能分支直接合入 master &#x2F; feat&#x2F;mes-app。改动最集中的模块是 mes-core、mes-meas">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://eppencn.com/2026/09/29/mes-monthly-2026-09/cover.png">
+<meta property="article:published_time" content="2026-09-29T03:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-29T01:44:19.133Z">
 <meta property="article:author" content="eppen">
-<meta property="article:tag" content="liuhualiang,Hua Liang,blog,hexo,github,pages">
+<meta property="article:tag" content="MES">
+<meta property="article:tag" content="工作小结">
+<meta property="article:tag" content="月报">
+<meta property="article:tag" content="mes-chart">
+<meta property="article:tag" content="mes-measure">
+<meta property="article:tag" content="mes-rtdb">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eppencn.com/2026/09/29/mes-monthly-2026-09/cover.png">
   
     <link rel="alternate" href="/atom.xml" title="Hua Liang's Blog" type="application/atom+xml">
   
@@ -69,216 +80,103 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2026" class="archive-year">2026</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2026/09/29/mes-monthly-2026-09/" class="archive-article-date">
-  <time class="dt-published" datetime="2026-09-29T03:00:00.000Z" itemprop="datePublished">Sep 29</time>
+        <section id="main"><article id="post-mes-monthly-2026-09" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/09/29/mes-monthly-2026-09/" class="article-date">
+  <time class="dt-published" datetime="2026-09-29T03:00:00.000Z" itemprop="datePublished">2026-09-29</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/09/29/mes-monthly-2026-09/">MES 2026 年 9 月工作小结</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      MES 2026 年 9 月工作小结
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2026/09/29/mes-quarterly-2026-q3/" class="archive-article-date">
-  <time class="dt-published" datetime="2026-09-29T02:00:00.000Z" itemprop="datePublished">Sep 29</time>
-</a>
+    <div class="e-content article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/09/29/mes-quarterly-2026-q3/">MES 2026 年三季度工作小结</a>
-    </h1>
-  
+        <img src="/2026/09/29/mes-monthly-2026-09/cover.png" class="">
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2026/09/24/mes-weekly-2026-w39/" class="archive-article-date">
-  <time class="dt-published" datetime="2026-09-24T09:30:00.000Z" itemprop="datePublished">Sep 24</time>
-</a>
+<p>9 月（约 <strong>278</strong> 次提交）主线从「AI 对话能力」转向 <strong>看板能力合入、报表公式检查、计量器具导入闭环</strong>，并启动 <strong>多应用拆分</strong> 与 <strong>TSDB&#x2F;ISYS 实时库底座</strong>。正式合并 PR 含 <strong>#384</strong>（看板能力增强）、**#385**（报表模板 AI 公式检查），另有大量功能分支直接合入 master &#x2F; <code>feat/mes-app</code>。改动最集中的模块是 <code>mes-core</code>、<code>mes-measure</code>、<code>mes-rtdb</code>、<code>mes-report</code>，其次 <code>mes-ai</code> &#x2F; <code>mes-chart</code> &#x2F; <code>mes-web</code>。</p>
+<h2 id="一、看板与图表（-384）"><a href="#一、看板与图表（-384）" class="headerlink" title="一、看板与图表（#384）"></a>一、看板与图表（#384）</h2><ul>
+<li><strong>能力包合入</strong>：书签 URL、筛选联动、透视、虚拟滚动、看板导出、数字卡&#x2F;表格增强、SQL 安全校验（Druid）等。</li>
+<li><strong>下钻与运维</strong>：数字卡下钻、船舶&#x2F;任务看板下钻；数据库监控阻塞数报警并跳转解锁页。</li>
+<li><strong>演示看板</strong>：DEMO 能力看板、DEMO 组织看板 KPI 数字卡与末级部门&#x2F;岗位人数表。</li>
+</ul>
+<h2 id="二、报表与公式检查（-385）"><a href="#二、报表与公式检查（-385）" class="headerlink" title="二、报表与公式检查（#385）"></a>二、报表与公式检查（#385）</h2><ul>
+<li><strong>AI 公式检查</strong>：报表模板公式校验、LIMS 语义检查、与 Python 语义对齐、检查报告渲染与复检文档。</li>
+<li><strong>模板治理</strong>：上传进度&#x2F;重复提示、历史归档元数据、回滚与检查点、XLS&#x2F;DOCX 版本对比与快照。</li>
+<li><strong>报表调度</strong>：任务卡 UI、上次结果&#x2F;下次执行、按应用过滤、提交后同步 Quartz Job。</li>
+</ul>
+<h2 id="三、计量器具与业务模块"><a href="#三、计量器具与业务模块" class="headerlink" title="三、计量器具与业务模块"></a>三、计量器具与业务模块</h2><ul>
+<li><strong>计量（msr）</strong>：运行部菜单挂载、xlsm 模板与 VBA、VLOOKUP 装置查找、按管理部门筛装置、导入 zip + 本机一键准备。</li>
+<li><strong>计划范围</strong>：导入摘要、未匹配装置名、布局与错误反馈增强。</li>
+<li><strong>船舶 &#x2F; 罐区</strong>：黑名单导入导出与 IMO&#x2F;船名检索、月度运行 widget；罐日与库存平衡网格优化。</li>
+<li><strong>装置日报（pdr）</strong>：新增装置日报模块雏形；位号数据源筛选与列自适应。</li>
+</ul>
+<h2 id="四、平台、菜单与实时库"><a href="#四、平台、菜单与实时库" class="headerlink" title="四、平台、菜单与实时库"></a>四、平台、菜单与实时库</h2><ul>
+<li><strong>多应用拆分</strong>：抽出平台，将 mes-web、报表、调度拆成独立子应用（<code>feat/mes-app</code>），依赖与部署初始化整理。</li>
+<li><strong>菜单 v2</strong>：拖拽排序、批量改上级、按 app 检索、刷新 EOS 菜单 URL &#x2F; hash。</li>
+<li><strong>TSDB &#x2F; ISYS</strong>：SDK 接入与文档、实时&#x2F;历史 client 固定池与分锁、监控页挂平台菜单。</li>
+<li><strong>AI 侧续作</strong>：Agent&#x2F;Tool 配置快照备份回滚、LLM 用量记录、协作子 Agent 并行、装置开停工区间、BPMN 生成与布局。</li>
+<li><strong>运维</strong>：运行时&#x2F;Tomcat 状态监控可视化。</li>
+</ul>
+<h2 id="五、月度节奏"><a href="#五、月度节奏" class="headerlink" title="五、月度节奏"></a>五、月度节奏</h2><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上旬</td>
+<td>计量导出与菜单、运行时监控、装置开停工、看板能力合入（#384）、AI 配置快照</td>
+</tr>
+<tr>
+<td>中旬</td>
+<td>模板历史&#x2F;回滚、公式检查（#385）、计划导入摘要、船舶黑名单、LLM 用量与协作并行</td>
+</tr>
+<tr>
+<td>下旬</td>
+<td>多应用拆分、菜单 v2 &#x2F; EOS 刷新、报表调度、计量 xlsm、TSDB client 池与 ISYS</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>一句话</strong>：9 月把看板能力与报表公式检查正式落地，计量导入闭环成型，并启动多应用拆分与 TSDB 实时库底座，为独立部署和时序接入铺路。</p>
+
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/09/24/mes-weekly-2026-w39/">MES 2026 年第 39 周工作小结</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2026/09/18/mes-weekly-2026-w38/" class="archive-article-date">
-  <time class="dt-published" datetime="2026-09-18T07:30:00.000Z" itemprop="datePublished">Sep 18</time>
-</a>
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://eppencn.com/2026/09/29/mes-monthly-2026-09/" data-id="cmum0k8340024msv5fzf62e1x" data-title="MES 2026 年 9 月工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/09/18/mes-weekly-2026-w38/">MES 2026 年第 38 周工作小结</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2026/09/12/mes-weekly-2026-w37/" class="archive-article-date">
-  <time class="dt-published" datetime="2026-09-12T08:20:00.000Z" itemprop="datePublished">Sep 12</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/09/12/mes-weekly-2026-w37/">MES 2026 年第 37 周工作小结</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2026/09/10/mes-jhfwdoc-excel-green-import/" class="archive-article-date">
-  <time class="dt-published" datetime="2026-09-10T06:00:00.000Z" itemprop="datePublished">Sep 10</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/09/10/mes-jhfwdoc-excel-green-import/">MES 计划范围文档：Excel 绿色区块解析核心</a>
-    </h1>
-  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-measure/" rel="tag">mes-measure</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-rtdb/" rel="tag">mes-rtdb</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li></ul>
 
-    </header>
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/09/29/mes-quarterly-2026-q3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MES 2026 年三季度工作小结</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2026/09/10/ai-daily-mes-brief-2026-05-21/" class="archive-article-date">
-  <time class="dt-published" datetime="2026-09-10T05:51:00.000Z" itemprop="datePublished">Sep 10</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/09/10/ai-daily-mes-brief-2026-05-21/">AI Daily · 2026年5月21日 · MES 工作区简报</a>
-    </h1>
-  
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2026/09/04/mes-weekly-2026-w36/" class="archive-article-date">
-  <time class="dt-published" datetime="2026-09-04T07:35:00.000Z" itemprop="datePublished">Sep 4</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/09/04/mes-weekly-2026-w36/">MES 2026 年第 36 周工作小结</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2026/08/31/mes-weekly-2026-w35/" class="archive-article-date">
-  <time class="dt-published" datetime="2026-08-31T07:20:00.000Z" itemprop="datePublished">Aug 31</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/08/31/mes-weekly-2026-w35/">MES 2026 年第 35 周工作小结</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2026/08/25/mes-monthly-2026-08/" class="archive-article-date">
-  <time class="dt-published" datetime="2026-08-25T03:00:00.000Z" itemprop="datePublished">Aug 25</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/08/25/mes-monthly-2026-08/">MES 2026 年 8 月工作小结</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-
-  <nav id="page-nav">
-    
-    <span class="page-number current">1</span><a class="page-number" href="/tags/MES/page/2/">2</a><a class="extend next" rel="next" href="/tags/MES/page/2/">Next &raquo;</a>
-  </nav>
 
 </section>
         
@@ -389,5 +287,6 @@
 
 
   </div>
-</body>
+<!-- hexo injector body_end start --><div class="adsense-wrap" style="margin:24px 0;text-align:center;min-height:90px;overflow:hidden;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2045994937692573" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, securityLevel: "loose" });</script><!-- hexo injector body_end end --></body>
 </html>
