@@ -4,16 +4,27 @@
   <meta charset="utf-8">
   
   
-  <title>Tag: 体质调理 | Hua Liang&#39;s Blog</title>
+  <title>MES 2026 年第 40 周工作小结 | Hua Liang&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hua Liang&#39;s Blog">
-<meta property="og:url" content="https://eppencn.com/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/index.html">
+  <meta name="description" content="本周（9&#x2F;28–9&#x2F;30，约 17 次提交）主线是 多应用拆分落地 与 RTDB &#x2F; ISYS SDK，并修正 LIMS 位号、EOS 菜单 URL。合入分支主要包括：wip&#x2F;tsdb-sdk-decompiled、feature&#x2F;lims-tag-optional-sample-name、feat&#x2F;mes-app。主力模块 mes-web、mes-factory">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MES 2026 年第 40 周工作小结">
+<meta property="og:url" content="https://eppencn.com/2026/09/30/mes-weekly-2026-w40/index.html">
 <meta property="og:site_name" content="Hua Liang&#39;s Blog">
+<meta property="og:description" content="本周（9&#x2F;28–9&#x2F;30，约 17 次提交）主线是 多应用拆分落地 与 RTDB &#x2F; ISYS SDK，并修正 LIMS 位号、EOS 菜单 URL。合入分支主要包括：wip&#x2F;tsdb-sdk-decompiled、feature&#x2F;lims-tag-optional-sample-name、feat&#x2F;mes-app。主力模块 mes-web、mes-factory">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://eppencn.com/2026/09/30/mes-weekly-2026-w40/cover.png">
+<meta property="article:published_time" content="2026-09-30T06:40:00.000Z">
+<meta property="article:modified_time" content="2026-09-30T06:42:41.405Z">
 <meta property="article:author" content="eppen">
-<meta property="article:tag" content="liuhualiang,Hua Liang,blog,hexo,github,pages">
+<meta property="article:tag" content="MES">
+<meta property="article:tag" content="工作小结">
+<meta property="article:tag" content="mes-rtdb">
+<meta property="article:tag" content="周报">
+<meta property="article:tag" content="mes-web">
+<meta property="article:tag" content="mes-security">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eppencn.com/2026/09/30/mes-weekly-2026-w40/cover.png">
   
     <link rel="alternate" href="/atom.xml" title="Hua Liang's Blog" type="application/atom+xml">
   
@@ -69,39 +80,100 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2026" class="archive-year">2026</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E5%A4%A7%E4%BD%93%E8%B4%A8%E7%A7%91%E5%AD%A6%E7%94%A9%E8%82%89%E6%8C%87%E5%8D%97/" class="archive-article-date">
-  <time class="dt-published" datetime="2026-07-06T08:45:00.000Z" itemprop="datePublished">Jul 6</time>
+        <section id="main"><article id="post-mes-weekly-2026-w40" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/09/30/mes-weekly-2026-w40/" class="article-date">
+  <time class="dt-published" datetime="2026-09-30T06:40:00.000Z" itemprop="datePublished">2026-09-30</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E5%A4%A7%E4%BD%93%E8%B4%A8%E7%A7%91%E5%AD%A6%E7%94%A9%E8%82%89%E6%8C%87%E5%8D%97/">瘦身密码（四）：九大体质科学甩肉指南——管体加管重</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      MES 2026 年第 40 周工作小结
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <img src="/2026/09/30/mes-weekly-2026-w40/cover.png" class="">
+
+<p>本周（9&#x2F;28–9&#x2F;30，约 <strong>17 次提交</strong>）主线是 <strong>多应用拆分落地</strong> 与 <strong>RTDB &#x2F; ISYS SDK</strong>，并修正 <strong>LIMS 位号</strong>、<strong>EOS 菜单 URL</strong>。合入分支主要包括：<code>wip/tsdb-sdk-decompiled</code>、<code>feature/lims-tag-optional-sample-name</code>、<code>feat/mes-app</code>。主力模块 <code>mes-web</code>、<code>mes-factory</code>、<code>mes-rtdb</code>、<code>mes-security</code>、<code>mes-report</code>。</p>
+<h2 id="一、实时库-ISYS-SDK（mes-rtdb）"><a href="#一、实时库-ISYS-SDK（mes-rtdb）" class="headerlink" title="一、实时库 &#x2F; ISYS SDK（mes-rtdb）"></a>一、实时库 &#x2F; ISYS SDK（mes-rtdb）</h2><ul>
+<li>合入 <code>wip/tsdb-sdk-decompiled</code>，沉淀 TSDB SDK 反编译参考</li>
+<li>新增 <strong>ISYS SDK</strong> 接入：独立端口与上下文、Nginx 代理、监控相关配置与文档</li>
+<li>完善 ISYS SDK 与多应用说明文档</li>
+</ul>
+<h2 id="二、多应用拆分与基础设施（mes-web-scripts）"><a href="#二、多应用拆分与基础设施（mes-web-scripts）" class="headerlink" title="二、多应用拆分与基础设施（mes-web &#x2F; scripts）"></a>二、多应用拆分与基础设施（mes-web &#x2F; scripts）</h2><ul>
+<li>应用拆分后 <strong>日志文件按应用拆分</strong>；补充 <code>mes-utils</code> &#x2F; <code>mes-chart</code> &#x2F; <code>mes-message-eos</code> 等依赖</li>
+<li>Nginx 兼容历史 PDF 路径；清理部分测试子工程</li>
+<li>整理 <code>scripts/build-all</code> 目录处理与错误管理</li>
+</ul>
+<h2 id="三、LIMS-位号（mes-factory）"><a href="#三、LIMS-位号（mes-factory）" class="headerlink" title="三、LIMS 位号（mes-factory）"></a>三、LIMS 位号（mes-factory）</h2><ul>
+<li>样品名可空：导入 DTO、位号生成与取数逻辑同步调整，并更新说明与单测</li>
+<li>合入 <code>feature/lims-tag-optional-sample-name</code></li>
+</ul>
+<h2 id="四、EOS-菜单与安全（mes-security）"><a href="#四、EOS-菜单与安全（mes-security）" class="headerlink" title="四、EOS 菜单与安全（mes-security）"></a>四、EOS 菜单与安全（mes-security）</h2><ul>
+<li>EOS 菜单 URL 刷新：仅改写 <code>.html</code>，跳过 jt-web hash 路由</li>
+<li>补充 <code>EosMenuTypeHelper</code> 与相关单测</li>
+</ul>
+<h2 id="五、文档"><a href="#五、文档" class="headerlink" title="五、文档"></a>五、文档</h2><ul>
+<li>报表定时操作手册（md &#x2F; docx + 截图）</li>
+<li>新增《JSON 请求体传输加密说明》</li>
+</ul>
+<h2 id="节奏"><a href="#节奏" class="headerlink" title="节奏"></a>节奏</h2><table>
+<thead>
+<tr>
+<th>时段</th>
+<th>侧重</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>周一</td>
+<td>ISYS SDK &#x2F; TSDB 反编译参考合入；LIMS 样品名可空</td>
+</tr>
+<tr>
+<td>周二</td>
+<td>EOS 菜单 URL；多应用依赖与日志拆分；nginx PDF；报表手册</td>
+</tr>
+<tr>
+<td>周三</td>
+<td>build-all 脚本整理；传输加密说明文档</td>
+</tr>
+</tbody></table>
+<p>一句话：把多应用拆分从依赖与日志侧再推进一步，同时把 ISYS SDK 与 LIMS&#x2F;菜单边界问题收干净。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://eppencn.com/2026/09/30/mes-weekly-2026-w40/" data-id="cmunqp1ef0029l4v506zbd5nn" data-title="MES 2026 年第 40 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-rtdb/" rel="tag">mes-rtdb</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-security/" rel="tag">mes-security</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-web/" rel="tag">mes-web</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/09/29/mes-monthly-2026-09/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MES 2026 年 9 月工作小结</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 
 </section>
@@ -213,5 +285,6 @@
 
 
   </div>
-</body>
+<!-- hexo injector body_end start --><div class="adsense-wrap" style="margin:24px 0;text-align:center;min-height:90px;overflow:hidden;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2045994937692573" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, securityLevel: "loose" });</script><!-- hexo injector body_end end --></body>
 </html>
