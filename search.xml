@@ -130,6 +130,102 @@
       </tags>
   </entry>
   <entry>
+    <title>AI Daily · 2026年5月21日 · MES 工作区简报</title>
+    <url>/2026/09/10/ai-daily-mes-brief-2026-05-21/</url>
+    <content><![CDATA[<img src="/2026/09/10/ai-daily-mes-brief-2026-05-21/cover.png" class="">
+
+<blockquote>
+<p>编码 Agent 产品层加速成熟；Harness（脚手架）仍是能力放大器；检索&#x2F;MCP 成为企业代码库 Agent 的基础设施。</p>
+</blockquote>
+<h2 id="核心摘要"><a href="#核心摘要" class="headerlink" title="核心摘要"></a>核心摘要</h2><ul>
+<li><strong>Harness 决定上限</strong>：同一模型在不同 Harness 下表现可差近一倍（如 Gemini 3.1 Pro 17.7→31.4），说明 Cursor&#x2F;规则&#x2F;子 Agent 配置值得持续投入，而非只换模型。</li>
+<li><strong>编码 Agent 从 IDE 走向跨设备运维</strong>：Codex 支持手机远程操作已锁屏 Mac、Appshots 抓取应用上下文，预示「长期在线操作员」形态，与 MES 7×24 运维场景有类比价值。</li>
+<li><strong>Agent 架构建议先单 Agent</strong>：工具&#x2F;提示膨胀后再拆 Manager&#x2F;子 Agent；与当前 <code>.cursor/rules</code> + 按需 <code>Task</code> 子代理的模式一致。</li>
+<li><strong>代码库检索 + MCP 一体化</strong>：Weaviate 内置 MCP、LangChain 沙箱 Auth Proxy 与 typed streaming，指向「大单体 Java 多模块仓库」的安全 RAG 方向。</li>
+<li><strong>开源编码模型竞争加剧</strong>：Qwen3.7-Max 在 SWE-bench 等榜单靠前，社区期待 27B&#x2F;35B 开放权重；对本地&#x2F;私有化辅助编码有参考意义。</li>
+</ul>
+<h2 id="与-mes-parent-直接相关"><a href="#与-mes-parent-直接相关" class="headerlink" title="与 mes-parent 直接相关"></a>与 mes-parent 直接相关</h2><h3 id="1-继续投资「Harness」，而不是只追新模型"><a href="#1-继续投资「Harness」，而不是只追新模型" class="headerlink" title="1. 继续投资「Harness」，而不是只追新模型"></a>1. 继续投资「Harness」，而不是只追新模型</h3><ul>
+<li>本仓库已有 <code>.cursor/rules</code>、<code>copilot-instructions.md</code>、HTML&#x2F;JS 版本规范等，本质上就是 <strong>Harness</strong>。</li>
+<li><strong>建议</strong>：把反复出现的坑（如 <code>var vm</code> 勿包在 <code>$(function()&#123;&#125;)</code>、<code>@Transactional</code> 默认 rollback、<code>html</code> 改 JS 必 bump 版本）沉淀进规则，效果往往大于换模型。</li>
+</ul>
+<h3 id="2-子-Agent-用在「模块边界清晰」的任务"><a href="#2-子-Agent-用在「模块边界清晰」的任务" class="headerlink" title="2. 子 Agent 用在「模块边界清晰」的任务"></a>2. 子 Agent 用在「模块边界清晰」的任务</h3><ul>
+<li>行业共识：先单 Agent，再在工具&#x2F;提示失控时拆子 Agent。</li>
+<li><strong>适合 mes-parent</strong>：按模块并行（如 <code>mes-plan</code> 页面规范对齐、<code>mes-document</code> 接口排查），避免一个 Agent 同时改十几个 <code>pom.xml</code>。</li>
+<li><strong>不适合</strong>：跨模块大重构且无明确回滚点——应先拆计划 + 小步提交。</li>
+</ul>
+<h3 id="3-MCP-与大型-Java-单体仓库"><a href="#3-MCP-与大型-Java-单体仓库" class="headerlink" title="3. MCP 与大型 Java 单体仓库"></a>3. MCP 与大型 Java 单体仓库</h3><ul>
+<li>Weaviate 内置 MCP + 混合检索（BM25 + 向量）说明：<strong>Agent 读全仓</strong> 时检索层是产品差异化点。</li>
+<li>本工作区已启用 MySQL&#x2F;MSSQL 等 MCP，可扩展模式：<ul>
+<li><strong>只读 Schema&#x2F;样例查询</strong> 辅助写 Mapper&#x2F;XML</li>
+<li><strong>禁止</strong> Agent 直接执行破坏性 SQL（配合二次确认，与现有删除按钮规范一致）</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-编码-Agent-工作流（可借鉴到侧项目-脚本）"><a href="#4-编码-Agent-工作流（可借鉴到侧项目-脚本）" class="headerlink" title="4. 编码 Agent 工作流（可借鉴到侧项目&#x2F;脚本）"></a>4. 编码 Agent 工作流（可借鉴到侧项目&#x2F;脚本）</h3><p>Reddit 高赞「十年工程师手机 Vibe Coding」要点，经筛选后适用于 <strong>非核心生产路径</strong> 的实验性开发：</p>
+<table>
+<thead>
+<tr>
+<th>实践</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>计划模式先行</td>
+<td>先出计划、人工收窄范围，再自动改代码</td>
+</tr>
+<tr>
+<td>任务粒度</td>
+<td>计划须能「装在脑子里」；过大则拆</td>
+</tr>
+<tr>
+<td>每步 git commit</td>
+<td>与 MES 多模块协作时的回滚习惯一致</td>
+</tr>
+<tr>
+<td>测试与 E2E</td>
+<td>要求 Agent 生成测试；复杂变更加安全&#x2F;测试审查子步骤</td>
+</tr>
+<tr>
+<td>明确非目标</td>
+<td>提示中写清「不要动」的模块&#x2F;文件</td>
+</tr>
+</tbody></table>
+<h3 id="5-培训资源（团队-upskill）"><a href="#5-培训资源（团队-upskill）" class="headerlink" title="5. 培训资源（团队 upskill）"></a>5. 培训资源（团队 upskill）</h3><ul>
+<li>Anthropic 官方免费课程含 <strong>MCP、Claude Code、Plan Mode</strong>（<a href="https://www.anthropic.com/learn">anthropic.com&#x2F;learn</a>）。</li>
+<li><strong>建议</strong>：前端&#x2F;全栈同事优先 MCP + Agent 课；后端可侧重 Claude API + 企业部署路径。</li>
+</ul>
+<h2 id="工具与产品动态（节选）"><a href="#工具与产品动态（节选）" class="headerlink" title="工具与产品动态（节选）"></a>工具与产品动态（节选）</h2><h3 id="Codex-产品层"><a href="#Codex-产品层" class="headerlink" title="Codex 产品层"></a>Codex 产品层</h3><ul>
+<li><strong>Appshots</strong>：Mac 应用窗口截图+文本，丰富上下文。</li>
+<li><strong>远程 Mac 操作</strong>：手机可在 Mac 锁屏时安全调用应用——长期驻场 Agent 的形态信号。</li>
+<li><strong>团队插件共享、组织分析</strong>：企业落地编码 Agent 时的治理需求。</li>
+</ul>
+<h3 id="LangChain"><a href="#LangChain" class="headerlink" title="LangChain"></a>LangChain</h3><ul>
+<li><strong>Sandbox Auth Proxy</strong>：控制 Agent 与外界边界。</li>
+<li><strong>Typed streaming</strong>：工具&#x2F;子 Agent&#x2F;中断作为一等公民，而非纯 token 流——利于做「MES 操作进度 UI」类投影（若未来做内部 Agent 控制台）。</li>
+</ul>
+<h3 id="其他信号"><a href="#其他信号" class="headerlink" title="其他信号"></a>其他信号</h3><ul>
+<li><strong>mini-swe-agent</strong> 适配 ProgramBench：软件工程 Agent 的 Harness 创新仍在快速迭代。</li>
+<li><strong>turbopuffer</strong> 达 $100M ARR（检索基础设施）：上下文检索是 Agent 产品的核心战场。</li>
+</ul>
+<h2 id="模型与开源生态（节选）"><a href="#模型与开源生态（节选）" class="headerlink" title="模型与开源生态（节选）"></a>模型与开源生态（节选）</h2><ul>
+<li><strong>Qwen3.7-Max</strong>：多项编码&#x2F;Agent 基准靠前；开放权重 27B&#x2F;35B 仍待观望。</li>
+<li>**Cohere Command A+**：Apache 2.0 MoE，面向企业 Agent；社区关注 GGUF 本地部署。</li>
+<li><strong>Meta 向 Heretic 发函</strong>：Llama 衍生权重合规风险上升，选型需注意许可证链。</li>
+</ul>
+<h2 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h2><p>#CodingAgent #MCP #Harness #Cursor #LangChain #Qwen #Java #MES #检索 #子Agent</p>
+<hr>
+<p>数据来源: <a href="https://news.smol.ai/issues/26-05-21-not-much/">smol.ai · 2026-05-21</a><br>生成时间: 2026-05-23（由 ai-daily 插件拉取并针对 mes-parent 裁剪）</p>
+]]></content>
+      <tags>
+        <tag>AI Daily</tag>
+        <tag>MES</tag>
+        <tag>CodingAgent</tag>
+        <tag>MCP</tag>
+        <tag>Harness</tag>
+        <tag>Cursor</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>classicical-chinese-translation-private-policy</title>
     <url>/2025/06/23/classicical-chinese-translation-private-policy/</url>
     <content><![CDATA[<h1 id="文言文现代翻译助手-隐私权政策"><a href="#文言文现代翻译助手-隐私权政策" class="headerlink" title="文言文现代翻译助手 - 隐私权政策"></a>文言文现代翻译助手 - 隐私权政策</h1><p><strong>生效日期：</strong> 2024年12月19日</p>
@@ -269,102 +365,6 @@
 <p><strong>本隐私政策是我们对用户隐私保护承诺的体现。我们将持续改进隐私保护措施，确保用户信息安全。</strong></p>
 <p><em>如有任何疑问，欢迎随时联系我们。感谢您对文言文现代翻译助手的信任与支持！</em></p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>AI Daily · 2026年5月21日 · MES 工作区简报</title>
-    <url>/2026/09/10/ai-daily-mes-brief-2026-05-21/</url>
-    <content><![CDATA[<img src="/2026/09/10/ai-daily-mes-brief-2026-05-21/cover.png" class="">
-
-<blockquote>
-<p>编码 Agent 产品层加速成熟；Harness（脚手架）仍是能力放大器；检索&#x2F;MCP 成为企业代码库 Agent 的基础设施。</p>
-</blockquote>
-<h2 id="核心摘要"><a href="#核心摘要" class="headerlink" title="核心摘要"></a>核心摘要</h2><ul>
-<li><strong>Harness 决定上限</strong>：同一模型在不同 Harness 下表现可差近一倍（如 Gemini 3.1 Pro 17.7→31.4），说明 Cursor&#x2F;规则&#x2F;子 Agent 配置值得持续投入，而非只换模型。</li>
-<li><strong>编码 Agent 从 IDE 走向跨设备运维</strong>：Codex 支持手机远程操作已锁屏 Mac、Appshots 抓取应用上下文，预示「长期在线操作员」形态，与 MES 7×24 运维场景有类比价值。</li>
-<li><strong>Agent 架构建议先单 Agent</strong>：工具&#x2F;提示膨胀后再拆 Manager&#x2F;子 Agent；与当前 <code>.cursor/rules</code> + 按需 <code>Task</code> 子代理的模式一致。</li>
-<li><strong>代码库检索 + MCP 一体化</strong>：Weaviate 内置 MCP、LangChain 沙箱 Auth Proxy 与 typed streaming，指向「大单体 Java 多模块仓库」的安全 RAG 方向。</li>
-<li><strong>开源编码模型竞争加剧</strong>：Qwen3.7-Max 在 SWE-bench 等榜单靠前，社区期待 27B&#x2F;35B 开放权重；对本地&#x2F;私有化辅助编码有参考意义。</li>
-</ul>
-<h2 id="与-mes-parent-直接相关"><a href="#与-mes-parent-直接相关" class="headerlink" title="与 mes-parent 直接相关"></a>与 mes-parent 直接相关</h2><h3 id="1-继续投资「Harness」，而不是只追新模型"><a href="#1-继续投资「Harness」，而不是只追新模型" class="headerlink" title="1. 继续投资「Harness」，而不是只追新模型"></a>1. 继续投资「Harness」，而不是只追新模型</h3><ul>
-<li>本仓库已有 <code>.cursor/rules</code>、<code>copilot-instructions.md</code>、HTML&#x2F;JS 版本规范等，本质上就是 <strong>Harness</strong>。</li>
-<li><strong>建议</strong>：把反复出现的坑（如 <code>var vm</code> 勿包在 <code>$(function()&#123;&#125;)</code>、<code>@Transactional</code> 默认 rollback、<code>html</code> 改 JS 必 bump 版本）沉淀进规则，效果往往大于换模型。</li>
-</ul>
-<h3 id="2-子-Agent-用在「模块边界清晰」的任务"><a href="#2-子-Agent-用在「模块边界清晰」的任务" class="headerlink" title="2. 子 Agent 用在「模块边界清晰」的任务"></a>2. 子 Agent 用在「模块边界清晰」的任务</h3><ul>
-<li>行业共识：先单 Agent，再在工具&#x2F;提示失控时拆子 Agent。</li>
-<li><strong>适合 mes-parent</strong>：按模块并行（如 <code>mes-plan</code> 页面规范对齐、<code>mes-document</code> 接口排查），避免一个 Agent 同时改十几个 <code>pom.xml</code>。</li>
-<li><strong>不适合</strong>：跨模块大重构且无明确回滚点——应先拆计划 + 小步提交。</li>
-</ul>
-<h3 id="3-MCP-与大型-Java-单体仓库"><a href="#3-MCP-与大型-Java-单体仓库" class="headerlink" title="3. MCP 与大型 Java 单体仓库"></a>3. MCP 与大型 Java 单体仓库</h3><ul>
-<li>Weaviate 内置 MCP + 混合检索（BM25 + 向量）说明：<strong>Agent 读全仓</strong> 时检索层是产品差异化点。</li>
-<li>本工作区已启用 MySQL&#x2F;MSSQL 等 MCP，可扩展模式：<ul>
-<li><strong>只读 Schema&#x2F;样例查询</strong> 辅助写 Mapper&#x2F;XML</li>
-<li><strong>禁止</strong> Agent 直接执行破坏性 SQL（配合二次确认，与现有删除按钮规范一致）</li>
-</ul>
-</li>
-</ul>
-<h3 id="4-编码-Agent-工作流（可借鉴到侧项目-脚本）"><a href="#4-编码-Agent-工作流（可借鉴到侧项目-脚本）" class="headerlink" title="4. 编码 Agent 工作流（可借鉴到侧项目&#x2F;脚本）"></a>4. 编码 Agent 工作流（可借鉴到侧项目&#x2F;脚本）</h3><p>Reddit 高赞「十年工程师手机 Vibe Coding」要点，经筛选后适用于 <strong>非核心生产路径</strong> 的实验性开发：</p>
-<table>
-<thead>
-<tr>
-<th>实践</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>计划模式先行</td>
-<td>先出计划、人工收窄范围，再自动改代码</td>
-</tr>
-<tr>
-<td>任务粒度</td>
-<td>计划须能「装在脑子里」；过大则拆</td>
-</tr>
-<tr>
-<td>每步 git commit</td>
-<td>与 MES 多模块协作时的回滚习惯一致</td>
-</tr>
-<tr>
-<td>测试与 E2E</td>
-<td>要求 Agent 生成测试；复杂变更加安全&#x2F;测试审查子步骤</td>
-</tr>
-<tr>
-<td>明确非目标</td>
-<td>提示中写清「不要动」的模块&#x2F;文件</td>
-</tr>
-</tbody></table>
-<h3 id="5-培训资源（团队-upskill）"><a href="#5-培训资源（团队-upskill）" class="headerlink" title="5. 培训资源（团队 upskill）"></a>5. 培训资源（团队 upskill）</h3><ul>
-<li>Anthropic 官方免费课程含 <strong>MCP、Claude Code、Plan Mode</strong>（<a href="https://www.anthropic.com/learn">anthropic.com&#x2F;learn</a>）。</li>
-<li><strong>建议</strong>：前端&#x2F;全栈同事优先 MCP + Agent 课；后端可侧重 Claude API + 企业部署路径。</li>
-</ul>
-<h2 id="工具与产品动态（节选）"><a href="#工具与产品动态（节选）" class="headerlink" title="工具与产品动态（节选）"></a>工具与产品动态（节选）</h2><h3 id="Codex-产品层"><a href="#Codex-产品层" class="headerlink" title="Codex 产品层"></a>Codex 产品层</h3><ul>
-<li><strong>Appshots</strong>：Mac 应用窗口截图+文本，丰富上下文。</li>
-<li><strong>远程 Mac 操作</strong>：手机可在 Mac 锁屏时安全调用应用——长期驻场 Agent 的形态信号。</li>
-<li><strong>团队插件共享、组织分析</strong>：企业落地编码 Agent 时的治理需求。</li>
-</ul>
-<h3 id="LangChain"><a href="#LangChain" class="headerlink" title="LangChain"></a>LangChain</h3><ul>
-<li><strong>Sandbox Auth Proxy</strong>：控制 Agent 与外界边界。</li>
-<li><strong>Typed streaming</strong>：工具&#x2F;子 Agent&#x2F;中断作为一等公民，而非纯 token 流——利于做「MES 操作进度 UI」类投影（若未来做内部 Agent 控制台）。</li>
-</ul>
-<h3 id="其他信号"><a href="#其他信号" class="headerlink" title="其他信号"></a>其他信号</h3><ul>
-<li><strong>mini-swe-agent</strong> 适配 ProgramBench：软件工程 Agent 的 Harness 创新仍在快速迭代。</li>
-<li><strong>turbopuffer</strong> 达 $100M ARR（检索基础设施）：上下文检索是 Agent 产品的核心战场。</li>
-</ul>
-<h2 id="模型与开源生态（节选）"><a href="#模型与开源生态（节选）" class="headerlink" title="模型与开源生态（节选）"></a>模型与开源生态（节选）</h2><ul>
-<li><strong>Qwen3.7-Max</strong>：多项编码&#x2F;Agent 基准靠前；开放权重 27B&#x2F;35B 仍待观望。</li>
-<li>**Cohere Command A+**：Apache 2.0 MoE，面向企业 Agent；社区关注 GGUF 本地部署。</li>
-<li><strong>Meta 向 Heretic 发函</strong>：Llama 衍生权重合规风险上升，选型需注意许可证链。</li>
-</ul>
-<h2 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h2><p>#CodingAgent #MCP #Harness #Cursor #LangChain #Qwen #Java #MES #检索 #子Agent</p>
-<hr>
-<p>数据来源: <a href="https://news.smol.ai/issues/26-05-21-not-much/">smol.ai · 2026-05-21</a><br>生成时间: 2026-05-23（由 ai-daily 插件拉取并针对 mes-parent 裁剪）</p>
-]]></content>
-      <tags>
-        <tag>AI Daily</tag>
-        <tag>MES</tag>
-        <tag>CodingAgent</tag>
-        <tag>MCP</tag>
-        <tag>Harness</tag>
-        <tag>Cursor</tag>
-      </tags>
   </entry>
   <entry>
     <title>Cursor Agent CLI 报错 No version directories found 的排查与修复</title>
@@ -1155,221 +1155,6 @@
       </tags>
   </entry>
   <entry>
-    <title>classical chinese translation</title>
-    <url>/2025/06/23/classical-chinese-translation/</url>
-    <content><![CDATA[<h1 id="文言文现代翻译助手-内容说明"><a href="#文言文现代翻译助手-内容说明" class="headerlink" title="文言文现代翻译助手 - 内容说明"></a>文言文现代翻译助手 - 内容说明</h1><h2 id="📖-插件简介"><a href="#📖-插件简介" class="headerlink" title="📖 插件简介"></a>📖 插件简介</h2><p>文言文现代翻译助手是一款专为古典文学爱好者和学习者设计的Chrome浏览器插件。它能够智能识别网页中的文言文内容，并通过先进的AI技术将其翻译为现代汉语，帮助用户更好地理解古典文献。</p>
-<h2 id="🎯-目标用户"><a href="#🎯-目标用户" class="headerlink" title="🎯 目标用户"></a>🎯 目标用户</h2><h3 id="主要用户群体"><a href="#主要用户群体" class="headerlink" title="主要用户群体"></a>主要用户群体</h3><p>-<strong>学生群体</strong>：学习古代汉语、古典文学的中学生和大学生</p>
-<p>-<strong>教育工作者</strong>：语文教师、古典文学研究者</p>
-<p>-<strong>文学爱好者</strong>：对古诗词、文言文感兴趣的普通用户</p>
-<p>-<strong>研究人员</strong>：从事历史、文学、哲学研究的学者</p>
-<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
-<li>阅读古典文学网站时需要理解文言文内容</li>
-<li>学习古诗词时需要快速了解含义</li>
-<li>研究历史文献时需要翻译参考</li>
-<li>日常浏览遇到文言文内容时的即时翻译需求</li>
-</ul>
-<h2 id="✨-核心功能详解"><a href="#✨-核心功能详解" class="headerlink" title="✨ 核心功能详解"></a>✨ 核心功能详解</h2><h3 id="1-智能文言文识别"><a href="#1-智能文言文识别" class="headerlink" title="1. 智能文言文识别"></a>1. 智能文言文识别</h3><h4 id="识别原理"><a href="#识别原理" class="headerlink" title="识别原理"></a>识别原理</h4><p>插件采用多层次识别算法：</p>
-<p><strong>词汇匹配层</strong>：</p>
-<ul>
-<li>检测常见文言虚词：之、乎、者、也、焉、哉、矣、耳等</li>
-<li>识别文言实词：曰、云、谓、谓之、是以、故等</li>
-<li>匹配古代人名、地名、官职名称</li>
-</ul>
-<p><strong>语法模式层</strong>：</p>
-<ul>
-<li>识别倒装句式：宾语前置、定语后置等</li>
-<li>检测省略句式：主语省略、谓语省略等</li>
-<li>判断特殊句式：判断句、被动句、疑问句等</li>
-</ul>
-<p><strong>统计分析层</strong>：</p>
-<ul>
-<li>计算文言词汇密度（文言词汇数&#x2F;总词汇数）</li>
-<li>分析句子长度和结构复杂度</li>
-<li>评估整体文本的文言文特征</li>
-</ul>
-<h4 id="识别精度"><a href="#识别精度" class="headerlink" title="识别精度"></a>识别精度</h4><p>-<strong>高精度场景</strong>：古诗词、经典文言文片段（准确率&gt;90%）</p>
-<p>-<strong>中等精度场景</strong>：现代文中夹杂的文言词汇（准确率&gt;80%）</p>
-<p>-<strong>低精度场景</strong>：口语化表达中的文言元素（准确率&gt;70%）</p>
-<h3 id="2-AI翻译技术"><a href="#2-AI翻译技术" class="headerlink" title="2. AI翻译技术"></a>2. AI翻译技术</h3><h4 id="翻译引擎"><a href="#翻译引擎" class="headerlink" title="翻译引擎"></a>翻译引擎</h4><p>采用DeepSeek大语言模型，具备：</p>
-<p>-<strong>上下文理解</strong>：能够理解文言文的语境和背景</p>
-<p>-<strong>文化内涵保持</strong>：保留原文的文化内涵和意境</p>
-<p>-<strong>现代表达</strong>：用现代汉语准确表达古文含义</p>
-<h4 id="翻译质量"><a href="#翻译质量" class="headerlink" title="翻译质量"></a>翻译质量</h4><p>-<strong>词汇翻译</strong>：准确翻译古今异义词、通假字</p>
-<p>-<strong>语法转换</strong>：将文言语法转换为现代汉语语法</p>
-<p>-<strong>语气保持</strong>：尽量保持原文的语气和感情色彩</p>
-<h3 id="3-沉浸式显示"><a href="#3-沉浸式显示" class="headerlink" title="3. 沉浸式显示"></a>3. 沉浸式显示</h3><h4 id="显示方式"><a href="#显示方式" class="headerlink" title="显示方式"></a>显示方式</h4><p>-<strong>原文保留</strong>：原始文言文内容保持不变</p>
-<p>-<strong>下方显示</strong>：翻译结果显示在原文正下方</p>
-<p>-<strong>视觉区分</strong>：通过背景色、边框等视觉元素区分原文和译文</p>
-<h4 id="样式设计"><a href="#样式设计" class="headerlink" title="样式设计"></a>样式设计</h4><p>-<strong>渐变背景</strong>：使用柔和的渐变色突出翻译内容</p>
-<p>-<strong>圆角边框</strong>：现代化的圆角设计，提升视觉体验</p>
-<p>-<strong>阴影效果</strong>：轻微的阴影增加层次感</p>
-<p>-<strong>响应式布局</strong>：适配不同屏幕尺寸</p>
-<h3 id="4-用户交互"><a href="#4-用户交互" class="headerlink" title="4. 用户交互"></a>4. 用户交互</h3><h4 id="自动翻译"><a href="#自动翻译" class="headerlink" title="自动翻译"></a>自动翻译</h4><p>-<strong>页面扫描</strong>：加载页面时自动扫描文言文内容</p>
-<p>-<strong>动态监听</strong>：监听页面内容变化，翻译新增的文言文</p>
-<p>-<strong>智能过滤</strong>：避免翻译过短或明显不是文言文的内容</p>
-<h4 id="手动翻译"><a href="#手动翻译" class="headerlink" title="手动翻译"></a>手动翻译</h4><p>-<strong>右键菜单</strong>：选中文本后右键选择翻译</p>
-<p>-<strong>快捷操作</strong>：通过插件图标快速开启&#x2F;关闭功能</p>
-<p>-<strong>设置管理</strong>：详细的设置界面管理各项功能</p>
-<h2 id="🔧-技术架构"><a href="#🔧-技术架构" class="headerlink" title="🔧 技术架构"></a>🔧 技术架构</h2><h3 id="前端技术栈"><a href="#前端技术栈" class="headerlink" title="前端技术栈"></a>前端技术栈</h3><p>-<strong>HTML5</strong>：现代化的页面结构</p>
-<p>-<strong>CSS3</strong>：使用Grid、Flexbox等现代布局技术</p>
-<p>-**JavaScript ES6+**：使用现代JavaScript特性</p>
-<p>-<strong>Chrome Extension API</strong>：Manifest V3规范</p>
-<h3 id="核心模块"><a href="#核心模块" class="headerlink" title="核心模块"></a>核心模块</h3><h4 id="Content-Script（内容脚本）"><a href="#Content-Script（内容脚本）" class="headerlink" title="Content Script（内容脚本）"></a>Content Script（内容脚本）</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 主要功能：</span></span><br><span class="line"></span><br><span class="line">- <span class="variable constant_">DOM</span>监听和文本识别</span><br><span class="line"></span><br><span class="line">- 翻译结果插入和显示</span><br><span class="line"></span><br><span class="line">- 用户交互事件处理</span><br><span class="line"></span><br><span class="line">- 页面样式动态调整</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="Background-Script（后台脚本）"><a href="#Background-Script（后台脚本）" class="headerlink" title="Background Script（后台脚本）"></a>Background Script（后台脚本）</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 主要功能：</span></span><br><span class="line"></span><br><span class="line">- <span class="variable constant_">API</span>请求处理</span><br><span class="line"></span><br><span class="line">- 右键菜单管理</span><br><span class="line"></span><br><span class="line">- 存储数据管理</span><br><span class="line"></span><br><span class="line">- 跨页面通信</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="Popup-Interface（弹窗界面）"><a href="#Popup-Interface（弹窗界面）" class="headerlink" title="Popup Interface（弹窗界面）"></a>Popup Interface（弹窗界面）</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 主要功能：</span></span><br><span class="line"></span><br><span class="line">- 用户设置管理</span><br><span class="line"></span><br><span class="line">- <span class="variable constant_">API</span>密钥配置</span><br><span class="line"></span><br><span class="line">- 功能开关控制</span><br><span class="line"></span><br><span class="line">- 状态显示和反馈</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="数据流程"><a href="#数据流程" class="headerlink" title="数据流程"></a>数据流程</h3><p>1.<strong>识别阶段</strong>：Content Script扫描页面文本</p>
-<p>2.<strong>判断阶段</strong>：使用识别算法判断是否为文言文</p>
-<p>3.<strong>请求阶段</strong>：Background Script调用DeepSeek API</p>
-<p>4.<strong>翻译阶段</strong>：AI模型处理并返回翻译结果</p>
-<p>5.<strong>显示阶段</strong>：Content Script将结果插入页面</p>
-<h2 id="🎨-用户界面设计"><a href="#🎨-用户界面设计" class="headerlink" title="🎨 用户界面设计"></a>🎨 用户界面设计</h2><h3 id="设计理念"><a href="#设计理念" class="headerlink" title="设计理念"></a>设计理念</h3><p>-<strong>简洁现代</strong>：采用现代化的设计语言</p>
-<p>-<strong>文化融合</strong>：融入中国传统文化元素</p>
-<p>-<strong>用户友好</strong>：操作简单，学习成本低</p>
-<p>-<strong>视觉舒适</strong>：配色柔和，减少视觉疲劳</p>
-<h3 id="色彩方案"><a href="#色彩方案" class="headerlink" title="色彩方案"></a>色彩方案</h3><p>-<strong>主色调</strong>：蓝紫渐变（#667eea - #764ba2）</p>
-<p>-<strong>辅助色</strong>：清新蓝绿（#4facfe - #00f2fe）</p>
-<p>-<strong>强调色</strong>：温暖橙黄（#fbbf24）</p>
-<p>-<strong>文本色</strong>：深灰色（#2c3e50）</p>
-<h3 id="图标设计"><a href="#图标设计" class="headerlink" title="图标设计"></a>图标设计</h3><p>-<strong>主图标</strong>：📜 卷轴，象征古典文献</p>
-<p>-<strong>备选图标</strong>：✒️ 毛笔、📖 书本、🎋 竹子</p>
-<p>-<strong>尺寸规格</strong>：16x16、48x48、128x128像素</p>
-<h2 id="📊-使用数据分析"><a href="#📊-使用数据分析" class="headerlink" title="📊 使用数据分析"></a>📊 使用数据分析</h2><h3 id="适用网站类型"><a href="#适用网站类型" class="headerlink" title="适用网站类型"></a>适用网站类型</h3><p>1.<strong>古典文学网站</strong>（使用频率最高）</p>
-<ul>
-<li>古诗文网、诗词名句网等</li>
-<li>国学经典网站</li>
-<li>文言文学习平台</li>
-</ul>
-<p>2.<strong>教育学习网站</strong>（使用频率较高）</p>
-<ul>
-<li>在线课程平台</li>
-<li>学术论文网站</li>
-<li>教育资源网站</li>
-</ul>
-<p>3.<strong>新闻资讯网站</strong>（偶尔使用）</p>
-<ul>
-<li>文化类新闻报道</li>
-<li>历史类文章</li>
-<li>书评和文学评论</li>
-</ul>
-<h3 id="用户行为模式"><a href="#用户行为模式" class="headerlink" title="用户行为模式"></a>用户行为模式</h3><p>-<strong>学习型用户</strong>：经常使用，关注翻译准确性</p>
-<p>-<strong>浏览型用户</strong>：偶尔使用，追求便捷性</p>
-<p>-<strong>研究型用户</strong>：深度使用，需要详细功能</p>
-<h2 id="🔒-隐私和安全"><a href="#🔒-隐私和安全" class="headerlink" title="🔒 隐私和安全"></a>🔒 隐私和安全</h2><h3 id="数据处理原则"><a href="#数据处理原则" class="headerlink" title="数据处理原则"></a>数据处理原则</h3><p>-<strong>最小化收集</strong>：只收集必要的翻译文本</p>
-<p>-<strong>本地存储</strong>：API密钥等敏感信息仅本地存储</p>
-<p>-<strong>透明处理</strong>：明确告知用户数据使用方式</p>
-<p>-<strong>用户控制</strong>：用户可随时删除存储的数据</p>
-<h3 id="安全措施"><a href="#安全措施" class="headerlink" title="安全措施"></a>安全措施</h3><p>-<strong>HTTPS传输</strong>：所有API请求使用HTTPS加密</p>
-<p>-<strong>输入验证</strong>：对用户输入进行安全验证</p>
-<p>-<strong>权限最小化</strong>：只申请必要的浏览器权限</p>
-<p>-<strong>定期更新</strong>：及时修复安全漏洞</p>
-<h2 id="📈-性能优化"><a href="#📈-性能优化" class="headerlink" title="📈 性能优化"></a>📈 性能优化</h2><h3 id="识别性能"><a href="#识别性能" class="headerlink" title="识别性能"></a>识别性能</h3><p>-<strong>延迟加载</strong>：避免阻塞页面渲染</p>
-<p>-<strong>缓存机制</strong>：缓存已翻译的内容</p>
-<p>-<strong>批量处理</strong>：将多个翻译请求合并处理</p>
-<p>-<strong>智能节流</strong>：控制API请求频率</p>
-<h3 id="显示性能"><a href="#显示性能" class="headerlink" title="显示性能"></a>显示性能</h3><p>-<strong>CSS优化</strong>：使用硬件加速的CSS属性</p>
-<p>-<strong>DOM操作优化</strong>：减少不必要的DOM操作</p>
-<p>-<strong>内存管理</strong>：及时清理不需要的数据</p>
-<p>-<strong>响应式设计</strong>：适配不同设备性能</p>
-<h2 id="🚀-未来发展规划"><a href="#🚀-未来发展规划" class="headerlink" title="🚀 未来发展规划"></a>🚀 未来发展规划</h2><h3 id="短期目标（1-3个月）"><a href="#短期目标（1-3个月）" class="headerlink" title="短期目标（1-3个月）"></a>短期目标（1-3个月）</h3><p>-<strong>功能完善</strong>：修复已知bug，优化用户体验</p>
-<p>-<strong>兼容性提升</strong>：支持更多网站和浏览器</p>
-<p>-<strong>翻译质量</strong>：提升识别准确率和翻译质量</p>
-<p>-<strong>用户反馈</strong>：收集用户意见，持续改进</p>
-<h3 id="中期目标（3-6个月）"><a href="#中期目标（3-6个月）" class="headerlink" title="中期目标（3-6个月）"></a>中期目标（3-6个月）</h3><p>-<strong>多语言支持</strong>：支持翻译为英文、日文等</p>
-<p>-<strong>离线功能</strong>：提供基础的离线翻译能力</p>
-<p>-<strong>学习模式</strong>：添加文言文学习辅助功能</p>
-<p>-<strong>社区功能</strong>：用户可分享翻译和学习心得</p>
-<h3 id="长期目标（6-12个月）"><a href="#长期目标（6-12个月）" class="headerlink" title="长期目标（6-12个月）"></a>长期目标（6-12个月）</h3><p>-<strong>移动端适配</strong>：开发移动浏览器版本</p>
-<p>-<strong>AI优化</strong>：训练专门的文言文翻译模型</p>
-<p>-<strong>教育合作</strong>：与教育机构合作推广</p>
-<p>-<strong>生态建设</strong>：构建完整的文言文学习生态</p>
-<h2 id="💡-使用建议"><a href="#💡-使用建议" class="headerlink" title="💡 使用建议"></a>💡 使用建议</h2><h3 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h3><p>1.<strong>合理设置</strong>：根据需要调整翻译敏感度</p>
-<p>2.<strong>网络环境</strong>：确保网络连接稳定</p>
-<p>3.<strong>API使用</strong>：合理使用API避免超额费用</p>
-<p>4.<strong>学习结合</strong>：将翻译作为学习辅助工具</p>
-<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>1.<strong>翻译准确性</strong>：AI翻译仅供参考，重要场合需人工校验</p>
-<p>2.<strong>版权问题</strong>：注意翻译内容的版权和使用范围</p>
-<p>3.<strong>隐私保护</strong>：不要翻译包含敏感信息的内容</p>
-<p>4.<strong>网站兼容</strong>：某些网站可能存在兼容性问题</p>
-<h2 id="📞-支持与反馈"><a href="#📞-支持与反馈" class="headerlink" title="📞 支持与反馈"></a>📞 支持与反馈</h2><h3 id="获取帮助"><a href="#获取帮助" class="headerlink" title="获取帮助"></a>获取帮助</h3><p>-<strong>使用说明</strong>：查看README.md和发布指南</p>
-<p>-<strong>常见问题</strong>：查看FAQ部分</p>
-<p>-<strong>社区讨论</strong>：GitHub Issues讨论区</p>
-<p>-<strong>开发者联系</strong>：通过GitHub联系开发者</p>
-<h3 id="反馈渠道"><a href="#反馈渠道" class="headerlink" title="反馈渠道"></a>反馈渠道</h3><p>-<strong>Bug报告</strong>：通过GitHub Issues报告问题</p>
-<p>-<strong>功能建议</strong>：提交Feature Request</p>
-<p>-<strong>使用体验</strong>：在Chrome Web Store评价</p>
-<p>-<strong>直接联系</strong>：通过邮件联系开发团队</p>
-<hr>
-<p><em>本文档将持续更新，反映插件的最新功能和改进。感谢您使用文言文现代翻译助手！</em></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>health</title>
-    <url>/2025/06/12/health/</url>
-    <content><![CDATA[<table>
-<thead>
-<tr>
-<th>Habit</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>Regular Physical Activity: Engage in 150 min&#x2F;week of moderate aerobic exercise or 75 min&#x2F;week of vigorous exercise, plus strength training twice weekly.</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Balanced Diet: Consume fruits, vegetables, whole grains, lean proteins, and healthy fats; limit processed foods, sugar, and salt.</td>
-</tr>
-<tr>
-<td>3</td>
-<td>Regular Health Screenings: Monitor blood pressure, cholesterol, and blood sugar; follow age-appropriate check-up schedules.</td>
-</tr>
-<tr>
-<td>4</td>
-<td>Prostate Health: Be aware of prostate issues; consider screening from age 50 or earlier if at risk.</td>
-</tr>
-<tr>
-<td>5</td>
-<td>Avoid Tobacco, Limit Alcohol: Quit smoking; limit alcohol to two drinks&#x2F;day.</td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th>习惯</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>定期体育锻炼：每周进行 150 分钟的中等强度有氧运动或 75 分钟&#x2F;周的剧烈运动，外加每周两次的力量训练。</td>
-</tr>
-<tr>
-<td>2</td>
-<td>均衡饮食：食用水果、蔬菜、全谷物、瘦肉蛋白和健康脂肪;限制加工食品、糖和盐。</td>
-</tr>
-<tr>
-<td>3</td>
-<td>定期健康检查：监测血压、胆固醇和血糖;遵循适合年龄的体检时间表。</td>
-</tr>
-<tr>
-<td>4</td>
-<td>前列腺健康：注意前列腺问题;如果有风险，考虑从 50 岁或更早开始进行筛查。</td>
-</tr>
-<tr>
-<td>5</td>
-<td>避免吸烟，限制饮酒：戒烟;将酒精限制在每天两杯。</td>
-</tr>
-</tbody></table>
-]]></content>
-      <tags>
-        <tag>health</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>EOS 菜单树 NodeID 与 ObjectID 说明</title>
     <url>/2026/07/31/eos-role-tree-nodeid-objectid/</url>
     <content><![CDATA[<p>本文档说明 eosrole 页面「配置 EOS 菜单权限」树节点中 <strong>NodeID</strong>（前端 zTree 的 <code>id</code>）与 <strong>ObjectID</strong>（前端 <code>objectId</code>）的含义、数据库来源、后端组装与前端使用方式。</p>
@@ -1906,6 +1691,221 @@
       </tags>
   </entry>
   <entry>
+    <title>classical chinese translation</title>
+    <url>/2025/06/23/classical-chinese-translation/</url>
+    <content><![CDATA[<h1 id="文言文现代翻译助手-内容说明"><a href="#文言文现代翻译助手-内容说明" class="headerlink" title="文言文现代翻译助手 - 内容说明"></a>文言文现代翻译助手 - 内容说明</h1><h2 id="📖-插件简介"><a href="#📖-插件简介" class="headerlink" title="📖 插件简介"></a>📖 插件简介</h2><p>文言文现代翻译助手是一款专为古典文学爱好者和学习者设计的Chrome浏览器插件。它能够智能识别网页中的文言文内容，并通过先进的AI技术将其翻译为现代汉语，帮助用户更好地理解古典文献。</p>
+<h2 id="🎯-目标用户"><a href="#🎯-目标用户" class="headerlink" title="🎯 目标用户"></a>🎯 目标用户</h2><h3 id="主要用户群体"><a href="#主要用户群体" class="headerlink" title="主要用户群体"></a>主要用户群体</h3><p>-<strong>学生群体</strong>：学习古代汉语、古典文学的中学生和大学生</p>
+<p>-<strong>教育工作者</strong>：语文教师、古典文学研究者</p>
+<p>-<strong>文学爱好者</strong>：对古诗词、文言文感兴趣的普通用户</p>
+<p>-<strong>研究人员</strong>：从事历史、文学、哲学研究的学者</p>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
+<li>阅读古典文学网站时需要理解文言文内容</li>
+<li>学习古诗词时需要快速了解含义</li>
+<li>研究历史文献时需要翻译参考</li>
+<li>日常浏览遇到文言文内容时的即时翻译需求</li>
+</ul>
+<h2 id="✨-核心功能详解"><a href="#✨-核心功能详解" class="headerlink" title="✨ 核心功能详解"></a>✨ 核心功能详解</h2><h3 id="1-智能文言文识别"><a href="#1-智能文言文识别" class="headerlink" title="1. 智能文言文识别"></a>1. 智能文言文识别</h3><h4 id="识别原理"><a href="#识别原理" class="headerlink" title="识别原理"></a>识别原理</h4><p>插件采用多层次识别算法：</p>
+<p><strong>词汇匹配层</strong>：</p>
+<ul>
+<li>检测常见文言虚词：之、乎、者、也、焉、哉、矣、耳等</li>
+<li>识别文言实词：曰、云、谓、谓之、是以、故等</li>
+<li>匹配古代人名、地名、官职名称</li>
+</ul>
+<p><strong>语法模式层</strong>：</p>
+<ul>
+<li>识别倒装句式：宾语前置、定语后置等</li>
+<li>检测省略句式：主语省略、谓语省略等</li>
+<li>判断特殊句式：判断句、被动句、疑问句等</li>
+</ul>
+<p><strong>统计分析层</strong>：</p>
+<ul>
+<li>计算文言词汇密度（文言词汇数&#x2F;总词汇数）</li>
+<li>分析句子长度和结构复杂度</li>
+<li>评估整体文本的文言文特征</li>
+</ul>
+<h4 id="识别精度"><a href="#识别精度" class="headerlink" title="识别精度"></a>识别精度</h4><p>-<strong>高精度场景</strong>：古诗词、经典文言文片段（准确率&gt;90%）</p>
+<p>-<strong>中等精度场景</strong>：现代文中夹杂的文言词汇（准确率&gt;80%）</p>
+<p>-<strong>低精度场景</strong>：口语化表达中的文言元素（准确率&gt;70%）</p>
+<h3 id="2-AI翻译技术"><a href="#2-AI翻译技术" class="headerlink" title="2. AI翻译技术"></a>2. AI翻译技术</h3><h4 id="翻译引擎"><a href="#翻译引擎" class="headerlink" title="翻译引擎"></a>翻译引擎</h4><p>采用DeepSeek大语言模型，具备：</p>
+<p>-<strong>上下文理解</strong>：能够理解文言文的语境和背景</p>
+<p>-<strong>文化内涵保持</strong>：保留原文的文化内涵和意境</p>
+<p>-<strong>现代表达</strong>：用现代汉语准确表达古文含义</p>
+<h4 id="翻译质量"><a href="#翻译质量" class="headerlink" title="翻译质量"></a>翻译质量</h4><p>-<strong>词汇翻译</strong>：准确翻译古今异义词、通假字</p>
+<p>-<strong>语法转换</strong>：将文言语法转换为现代汉语语法</p>
+<p>-<strong>语气保持</strong>：尽量保持原文的语气和感情色彩</p>
+<h3 id="3-沉浸式显示"><a href="#3-沉浸式显示" class="headerlink" title="3. 沉浸式显示"></a>3. 沉浸式显示</h3><h4 id="显示方式"><a href="#显示方式" class="headerlink" title="显示方式"></a>显示方式</h4><p>-<strong>原文保留</strong>：原始文言文内容保持不变</p>
+<p>-<strong>下方显示</strong>：翻译结果显示在原文正下方</p>
+<p>-<strong>视觉区分</strong>：通过背景色、边框等视觉元素区分原文和译文</p>
+<h4 id="样式设计"><a href="#样式设计" class="headerlink" title="样式设计"></a>样式设计</h4><p>-<strong>渐变背景</strong>：使用柔和的渐变色突出翻译内容</p>
+<p>-<strong>圆角边框</strong>：现代化的圆角设计，提升视觉体验</p>
+<p>-<strong>阴影效果</strong>：轻微的阴影增加层次感</p>
+<p>-<strong>响应式布局</strong>：适配不同屏幕尺寸</p>
+<h3 id="4-用户交互"><a href="#4-用户交互" class="headerlink" title="4. 用户交互"></a>4. 用户交互</h3><h4 id="自动翻译"><a href="#自动翻译" class="headerlink" title="自动翻译"></a>自动翻译</h4><p>-<strong>页面扫描</strong>：加载页面时自动扫描文言文内容</p>
+<p>-<strong>动态监听</strong>：监听页面内容变化，翻译新增的文言文</p>
+<p>-<strong>智能过滤</strong>：避免翻译过短或明显不是文言文的内容</p>
+<h4 id="手动翻译"><a href="#手动翻译" class="headerlink" title="手动翻译"></a>手动翻译</h4><p>-<strong>右键菜单</strong>：选中文本后右键选择翻译</p>
+<p>-<strong>快捷操作</strong>：通过插件图标快速开启&#x2F;关闭功能</p>
+<p>-<strong>设置管理</strong>：详细的设置界面管理各项功能</p>
+<h2 id="🔧-技术架构"><a href="#🔧-技术架构" class="headerlink" title="🔧 技术架构"></a>🔧 技术架构</h2><h3 id="前端技术栈"><a href="#前端技术栈" class="headerlink" title="前端技术栈"></a>前端技术栈</h3><p>-<strong>HTML5</strong>：现代化的页面结构</p>
+<p>-<strong>CSS3</strong>：使用Grid、Flexbox等现代布局技术</p>
+<p>-**JavaScript ES6+**：使用现代JavaScript特性</p>
+<p>-<strong>Chrome Extension API</strong>：Manifest V3规范</p>
+<h3 id="核心模块"><a href="#核心模块" class="headerlink" title="核心模块"></a>核心模块</h3><h4 id="Content-Script（内容脚本）"><a href="#Content-Script（内容脚本）" class="headerlink" title="Content Script（内容脚本）"></a>Content Script（内容脚本）</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 主要功能：</span></span><br><span class="line"></span><br><span class="line">- <span class="variable constant_">DOM</span>监听和文本识别</span><br><span class="line"></span><br><span class="line">- 翻译结果插入和显示</span><br><span class="line"></span><br><span class="line">- 用户交互事件处理</span><br><span class="line"></span><br><span class="line">- 页面样式动态调整</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="Background-Script（后台脚本）"><a href="#Background-Script（后台脚本）" class="headerlink" title="Background Script（后台脚本）"></a>Background Script（后台脚本）</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 主要功能：</span></span><br><span class="line"></span><br><span class="line">- <span class="variable constant_">API</span>请求处理</span><br><span class="line"></span><br><span class="line">- 右键菜单管理</span><br><span class="line"></span><br><span class="line">- 存储数据管理</span><br><span class="line"></span><br><span class="line">- 跨页面通信</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="Popup-Interface（弹窗界面）"><a href="#Popup-Interface（弹窗界面）" class="headerlink" title="Popup Interface（弹窗界面）"></a>Popup Interface（弹窗界面）</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 主要功能：</span></span><br><span class="line"></span><br><span class="line">- 用户设置管理</span><br><span class="line"></span><br><span class="line">- <span class="variable constant_">API</span>密钥配置</span><br><span class="line"></span><br><span class="line">- 功能开关控制</span><br><span class="line"></span><br><span class="line">- 状态显示和反馈</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="数据流程"><a href="#数据流程" class="headerlink" title="数据流程"></a>数据流程</h3><p>1.<strong>识别阶段</strong>：Content Script扫描页面文本</p>
+<p>2.<strong>判断阶段</strong>：使用识别算法判断是否为文言文</p>
+<p>3.<strong>请求阶段</strong>：Background Script调用DeepSeek API</p>
+<p>4.<strong>翻译阶段</strong>：AI模型处理并返回翻译结果</p>
+<p>5.<strong>显示阶段</strong>：Content Script将结果插入页面</p>
+<h2 id="🎨-用户界面设计"><a href="#🎨-用户界面设计" class="headerlink" title="🎨 用户界面设计"></a>🎨 用户界面设计</h2><h3 id="设计理念"><a href="#设计理念" class="headerlink" title="设计理念"></a>设计理念</h3><p>-<strong>简洁现代</strong>：采用现代化的设计语言</p>
+<p>-<strong>文化融合</strong>：融入中国传统文化元素</p>
+<p>-<strong>用户友好</strong>：操作简单，学习成本低</p>
+<p>-<strong>视觉舒适</strong>：配色柔和，减少视觉疲劳</p>
+<h3 id="色彩方案"><a href="#色彩方案" class="headerlink" title="色彩方案"></a>色彩方案</h3><p>-<strong>主色调</strong>：蓝紫渐变（#667eea - #764ba2）</p>
+<p>-<strong>辅助色</strong>：清新蓝绿（#4facfe - #00f2fe）</p>
+<p>-<strong>强调色</strong>：温暖橙黄（#fbbf24）</p>
+<p>-<strong>文本色</strong>：深灰色（#2c3e50）</p>
+<h3 id="图标设计"><a href="#图标设计" class="headerlink" title="图标设计"></a>图标设计</h3><p>-<strong>主图标</strong>：📜 卷轴，象征古典文献</p>
+<p>-<strong>备选图标</strong>：✒️ 毛笔、📖 书本、🎋 竹子</p>
+<p>-<strong>尺寸规格</strong>：16x16、48x48、128x128像素</p>
+<h2 id="📊-使用数据分析"><a href="#📊-使用数据分析" class="headerlink" title="📊 使用数据分析"></a>📊 使用数据分析</h2><h3 id="适用网站类型"><a href="#适用网站类型" class="headerlink" title="适用网站类型"></a>适用网站类型</h3><p>1.<strong>古典文学网站</strong>（使用频率最高）</p>
+<ul>
+<li>古诗文网、诗词名句网等</li>
+<li>国学经典网站</li>
+<li>文言文学习平台</li>
+</ul>
+<p>2.<strong>教育学习网站</strong>（使用频率较高）</p>
+<ul>
+<li>在线课程平台</li>
+<li>学术论文网站</li>
+<li>教育资源网站</li>
+</ul>
+<p>3.<strong>新闻资讯网站</strong>（偶尔使用）</p>
+<ul>
+<li>文化类新闻报道</li>
+<li>历史类文章</li>
+<li>书评和文学评论</li>
+</ul>
+<h3 id="用户行为模式"><a href="#用户行为模式" class="headerlink" title="用户行为模式"></a>用户行为模式</h3><p>-<strong>学习型用户</strong>：经常使用，关注翻译准确性</p>
+<p>-<strong>浏览型用户</strong>：偶尔使用，追求便捷性</p>
+<p>-<strong>研究型用户</strong>：深度使用，需要详细功能</p>
+<h2 id="🔒-隐私和安全"><a href="#🔒-隐私和安全" class="headerlink" title="🔒 隐私和安全"></a>🔒 隐私和安全</h2><h3 id="数据处理原则"><a href="#数据处理原则" class="headerlink" title="数据处理原则"></a>数据处理原则</h3><p>-<strong>最小化收集</strong>：只收集必要的翻译文本</p>
+<p>-<strong>本地存储</strong>：API密钥等敏感信息仅本地存储</p>
+<p>-<strong>透明处理</strong>：明确告知用户数据使用方式</p>
+<p>-<strong>用户控制</strong>：用户可随时删除存储的数据</p>
+<h3 id="安全措施"><a href="#安全措施" class="headerlink" title="安全措施"></a>安全措施</h3><p>-<strong>HTTPS传输</strong>：所有API请求使用HTTPS加密</p>
+<p>-<strong>输入验证</strong>：对用户输入进行安全验证</p>
+<p>-<strong>权限最小化</strong>：只申请必要的浏览器权限</p>
+<p>-<strong>定期更新</strong>：及时修复安全漏洞</p>
+<h2 id="📈-性能优化"><a href="#📈-性能优化" class="headerlink" title="📈 性能优化"></a>📈 性能优化</h2><h3 id="识别性能"><a href="#识别性能" class="headerlink" title="识别性能"></a>识别性能</h3><p>-<strong>延迟加载</strong>：避免阻塞页面渲染</p>
+<p>-<strong>缓存机制</strong>：缓存已翻译的内容</p>
+<p>-<strong>批量处理</strong>：将多个翻译请求合并处理</p>
+<p>-<strong>智能节流</strong>：控制API请求频率</p>
+<h3 id="显示性能"><a href="#显示性能" class="headerlink" title="显示性能"></a>显示性能</h3><p>-<strong>CSS优化</strong>：使用硬件加速的CSS属性</p>
+<p>-<strong>DOM操作优化</strong>：减少不必要的DOM操作</p>
+<p>-<strong>内存管理</strong>：及时清理不需要的数据</p>
+<p>-<strong>响应式设计</strong>：适配不同设备性能</p>
+<h2 id="🚀-未来发展规划"><a href="#🚀-未来发展规划" class="headerlink" title="🚀 未来发展规划"></a>🚀 未来发展规划</h2><h3 id="短期目标（1-3个月）"><a href="#短期目标（1-3个月）" class="headerlink" title="短期目标（1-3个月）"></a>短期目标（1-3个月）</h3><p>-<strong>功能完善</strong>：修复已知bug，优化用户体验</p>
+<p>-<strong>兼容性提升</strong>：支持更多网站和浏览器</p>
+<p>-<strong>翻译质量</strong>：提升识别准确率和翻译质量</p>
+<p>-<strong>用户反馈</strong>：收集用户意见，持续改进</p>
+<h3 id="中期目标（3-6个月）"><a href="#中期目标（3-6个月）" class="headerlink" title="中期目标（3-6个月）"></a>中期目标（3-6个月）</h3><p>-<strong>多语言支持</strong>：支持翻译为英文、日文等</p>
+<p>-<strong>离线功能</strong>：提供基础的离线翻译能力</p>
+<p>-<strong>学习模式</strong>：添加文言文学习辅助功能</p>
+<p>-<strong>社区功能</strong>：用户可分享翻译和学习心得</p>
+<h3 id="长期目标（6-12个月）"><a href="#长期目标（6-12个月）" class="headerlink" title="长期目标（6-12个月）"></a>长期目标（6-12个月）</h3><p>-<strong>移动端适配</strong>：开发移动浏览器版本</p>
+<p>-<strong>AI优化</strong>：训练专门的文言文翻译模型</p>
+<p>-<strong>教育合作</strong>：与教育机构合作推广</p>
+<p>-<strong>生态建设</strong>：构建完整的文言文学习生态</p>
+<h2 id="💡-使用建议"><a href="#💡-使用建议" class="headerlink" title="💡 使用建议"></a>💡 使用建议</h2><h3 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h3><p>1.<strong>合理设置</strong>：根据需要调整翻译敏感度</p>
+<p>2.<strong>网络环境</strong>：确保网络连接稳定</p>
+<p>3.<strong>API使用</strong>：合理使用API避免超额费用</p>
+<p>4.<strong>学习结合</strong>：将翻译作为学习辅助工具</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>1.<strong>翻译准确性</strong>：AI翻译仅供参考，重要场合需人工校验</p>
+<p>2.<strong>版权问题</strong>：注意翻译内容的版权和使用范围</p>
+<p>3.<strong>隐私保护</strong>：不要翻译包含敏感信息的内容</p>
+<p>4.<strong>网站兼容</strong>：某些网站可能存在兼容性问题</p>
+<h2 id="📞-支持与反馈"><a href="#📞-支持与反馈" class="headerlink" title="📞 支持与反馈"></a>📞 支持与反馈</h2><h3 id="获取帮助"><a href="#获取帮助" class="headerlink" title="获取帮助"></a>获取帮助</h3><p>-<strong>使用说明</strong>：查看README.md和发布指南</p>
+<p>-<strong>常见问题</strong>：查看FAQ部分</p>
+<p>-<strong>社区讨论</strong>：GitHub Issues讨论区</p>
+<p>-<strong>开发者联系</strong>：通过GitHub联系开发者</p>
+<h3 id="反馈渠道"><a href="#反馈渠道" class="headerlink" title="反馈渠道"></a>反馈渠道</h3><p>-<strong>Bug报告</strong>：通过GitHub Issues报告问题</p>
+<p>-<strong>功能建议</strong>：提交Feature Request</p>
+<p>-<strong>使用体验</strong>：在Chrome Web Store评价</p>
+<p>-<strong>直接联系</strong>：通过邮件联系开发团队</p>
+<hr>
+<p><em>本文档将持续更新，反映插件的最新功能和改进。感谢您使用文言文现代翻译助手！</em></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>health</title>
+    <url>/2025/06/12/health/</url>
+    <content><![CDATA[<table>
+<thead>
+<tr>
+<th>Habit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Regular Physical Activity: Engage in 150 min&#x2F;week of moderate aerobic exercise or 75 min&#x2F;week of vigorous exercise, plus strength training twice weekly.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Balanced Diet: Consume fruits, vegetables, whole grains, lean proteins, and healthy fats; limit processed foods, sugar, and salt.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Regular Health Screenings: Monitor blood pressure, cholesterol, and blood sugar; follow age-appropriate check-up schedules.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Prostate Health: Be aware of prostate issues; consider screening from age 50 or earlier if at risk.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Avoid Tobacco, Limit Alcohol: Quit smoking; limit alcohol to two drinks&#x2F;day.</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>习惯</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>定期体育锻炼：每周进行 150 分钟的中等强度有氧运动或 75 分钟&#x2F;周的剧烈运动，外加每周两次的力量训练。</td>
+</tr>
+<tr>
+<td>2</td>
+<td>均衡饮食：食用水果、蔬菜、全谷物、瘦肉蛋白和健康脂肪;限制加工食品、糖和盐。</td>
+</tr>
+<tr>
+<td>3</td>
+<td>定期健康检查：监测血压、胆固醇和血糖;遵循适合年龄的体检时间表。</td>
+</tr>
+<tr>
+<td>4</td>
+<td>前列腺健康：注意前列腺问题;如果有风险，考虑从 50 岁或更早开始进行筛查。</td>
+</tr>
+<tr>
+<td>5</td>
+<td>避免吸烟，限制饮酒：戒烟;将酒精限制在每天两杯。</td>
+</tr>
+</tbody></table>
+]]></content>
+      <tags>
+        <tag>health</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/2026/07/06/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -1924,6 +1924,90 @@
 
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>kingbase</title>
+    <url>/2024/09/02/kingbase/</url>
+    <content><![CDATA[<h1 id="kingbase使用问题"><a href="#kingbase使用问题" class="headerlink" title="kingbase使用问题"></a>kingbase使用问题</h1><h2 id="乱码问题"><a href="#乱码问题" class="headerlink" title="乱码问题"></a>乱码问题</h2><p>创建gb18030的数据库，可以解决。</p>
+<img src="/2024/09/02/kingbase/1725264522588.png" class="" width="1725264522588">
+
+<img src="/2024/09/02/kingbase/1725264492761.png" class="" width="1725264492761">
+
+<p>更换驱动</p>
+<img src="/2024/09/02/kingbase/1725264867078.png" class="" width="1725264867078">
+
+<h2 id="不支持10"><a href="#不支持10" class="headerlink" title="不支持10"></a>不支持10</h2><img src="/2024/09/02/kingbase/1725264959146.png" class="" width="1725264959146">
+
+<h2 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pgjdbc: autodetected server-encoding to be ISO-8859-1, if the message is not readable, please check database logs and/or host, port, dbname, user, password, pg_hba.conf</span><br></pre></td></tr></table></figure>
+
+<h2 id="错误-1"><a href="#错误-1" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">See nested exception: org.postgresql.util.PSQLException: ERROR: 关系 &quot;qrtz_triggers&quot; 不存在</span><br></pre></td></tr></table></figure>
+
+<img src="/2024/09/02/kingbase/1725267331659.png" class="" width="1725267331659">
+
+<h2 id="查询数据库编码"><a href="#查询数据库编码" class="headerlink" title="查询数据库编码"></a>查询数据库编码</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT pg_encoding_to_char(encoding) FROM pg_database WHERE datname = &#x27;your_database_name&#x27;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="对模式xx权限不够"><a href="#对模式xx权限不够" class="headerlink" title="对模式xx权限不够"></a>对模式xx权限不够</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Caused by: org.postgresql.util.PSQLException: ERROR: 对模式 cems 权限不够</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>MES 2026 年 5 月工作小结</title>
+    <url>/2026/08/01/mes-monthly-2026-05/</url>
+    <content><![CDATA[<img src="/2026/08/01/mes-monthly-2026-05/cover.png" class="">
+
+<p>5 月（约 <strong>220+ 次提交</strong>、合并 PR <strong>#239–#281</strong>）主线落在业务现场能力：交接班 Docx 模型导入、液体码头&#x2F;船舶作业增强、仪表位号与报表关联，以及 RTDB&#x2F;ISYS 采集链路。改动最集中的是 <code>mes-operation</code>、<code>mes-measure</code>、<code>mes-vessel-operation</code>，辅以 <code>mes-web</code> &#x2F; <code>mes-rtdb</code>。</p>
+<h2 id="一、交接班-ShiftLog（中下旬主线）"><a href="#一、交接班-ShiftLog（中下旬主线）" class="headerlink" title="一、交接班 ShiftLog（中下旬主线）"></a>一、交接班 ShiftLog（中下旬主线）</h2><ul>
+<li>Docx 模型导入与解析预览（#263）：锚点注入、单元格模式、输入类型与公式处理。</li>
+<li>跳过孤儿锚点（#270）、批量删除与归属校验、调度日志预览。</li>
+<li>Docx 解析器持续增强（#278）：条目类型、标签推断、TABLE_STR_BC 批量生成等。</li>
+<li>月末补齐 docx_code 唯一性校验（#281）。</li>
+</ul>
+<h2 id="二、船舶-液体码头作业"><a href="#二、船舶-液体码头作业" class="headerlink" title="二、船舶 &#x2F; 液体码头作业"></a>二、船舶 &#x2F; 液体码头作业</h2><ul>
+<li>内外贸字段、管线名称、货种筛选与泊位告警（#239&#x2F;#241&#x2F;#246&#x2F;#248）。</li>
+<li>收发油罐按物料多选（#244）；船名模糊检索等终端体验。</li>
+<li>船舶动态导入：到港时间格式与提示信息修复（#258&#x2F;#276）。</li>
+<li>排船页接入真实 LLM 辅助（#275）。</li>
+</ul>
+<h2 id="三、仪表位号与报表"><a href="#三、仪表位号与报表" class="headerlink" title="三、仪表位号与报表"></a>三、仪表位号与报表</h2><ul>
+<li>手动采集按钮（#254）；位号配置、导入导出、唯一性与时间处理（#267）。</li>
+<li>关联报表模板展示与批量查询、模板维度（#252&#x2F;#265）。</li>
+<li>报表&#x2F;位号侧过滤与 jqGrid 行范围选择。</li>
+</ul>
+<h2 id="四、实时库与工程体验"><a href="#四、实时库与工程体验" class="headerlink" title="四、实时库与工程体验"></a>四、实时库与工程体验</h2><ul>
+<li>RTDB ISYS SDK RMI 回调（#271）；ISYS 配置与 HTTP 客户端增强。</li>
+<li>SpringDoc OpenAPI &#x2F; Swagger UI 接入。</li>
+<li>多 Tab 溢出箭头滚动（#273）、滚动条样式、模态间菜单切换；菜单关键词逗号 OR 搜索（#269）。</li>
+<li>反馈排程关闭&#x2F;驳回态隐藏按钮等细节（#250）。</li>
+</ul>
+<h2 id="五、月度节奏"><a href="#五、月度节奏" class="headerlink" title="五、月度节奏"></a>五、月度节奏</h2><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上旬</td>
+<td>液体码头罐&#x2F;管线&#x2F;货种、位号手动采集、报表模板维度</td>
+</tr>
+<tr>
+<td>中旬</td>
+<td>交接班 Docx 导入起步、位号关联报表、菜单搜索与 UI 修复</td>
+</tr>
+<tr>
+<td>下旬</td>
+<td>ShiftLog 解析深化、RTDB RMI、排船 AI、到港时间导入、docx 唯一性</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>一句话</strong>：5 月把交接班 Docx 导入做成可用链路，并加强液体码头作业与仪表采集&#x2F;报表关联；实时库回调与若干前端体验同步落地，为 6 月平台化（AI&#x2F;能耗&#x2F;图表）腾出业务底座。</p>
+]]></content>
+      <tags>
+        <tag>MES</tag>
+        <tag>交接班</tag>
+        <tag>船舶作业</tag>
+        <tag>工作小结</tag>
+        <tag>月报</tag>
+      </tags>
   </entry>
   <entry>
     <title>MES 计划范围文档：Excel 绿色区块解析核心</title>
@@ -1997,6 +2081,68 @@
         <tag>计划范围</tag>
         <tag>Excel</tag>
         <tag>POI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MES 2026 年 6 月工作小结</title>
+    <url>/2026/08/01/mes-monthly-2026-06/</url>
+    <content><![CDATA[<img src="/2026/08/01/mes-monthly-2026-06/cover.png" class="">
+
+<p>6 月（约 <strong>340+ 次提交</strong>、合并 PR <strong>#277–#310</strong>）是平台能力铺开的一个月：落地 <strong>mes-ai Agent 平台</strong> 与 <strong>mes-energy</strong> 模块，图表看板与 AI 向导增强，并同步推进 Eos 权限、OTP、在线消息与个人工作台。改动较均衡地落在 <code>mes-core</code> &#x2F; <code>mes-web</code> &#x2F; <code>mes-ai</code> &#x2F; <code>mes-energy</code> &#x2F; <code>mes-chart</code>。</p>
+<h2 id="一、MES-AI-Agent-平台（下旬主线，-305）"><a href="#一、MES-AI-Agent-平台（下旬主线，-305）" class="headerlink" title="一、MES-AI Agent 平台（下旬主线，#305）"></a>一、MES-AI Agent 平台（下旬主线，#305）</h2><ul>
+<li>新增 mes-ai 模块骨架：Agent 管理、聊天流式输出、thinking 步骤跟踪。</li>
+<li>SQL 工具执行与表格流式渲染、能耗 Agent SQL&#x2F;输出格式迭代。</li>
+<li>Schema Tool、菜单权限与助手推荐问题&#x2F;欢迎语等体验补齐。</li>
+</ul>
+<h2 id="二、能耗模块-mes-energy（中下旬）"><a href="#二、能耗模块-mes-energy（中下旬）" class="headerlink" title="二、能耗模块 mes-energy（中下旬）"></a>二、能耗模块 mes-energy（中下旬）</h2><ul>
+<li>独立 <code>mes-energy</code> 并接入 web 依赖；峰谷（TOU）时段配置、日统计、分页&#x2F;汇总&#x2F;导出。</li>
+<li>电表数据源管理、手动录入、相邻时段合并、能耗看板菜单与电压等级过滤等。</li>
+</ul>
+<h2 id="三、图表看板与-AI-向导（-304）"><a href="#三、图表看板与-AI-向导（-304）" class="headerlink" title="三、图表看板与 AI 向导（#304）"></a>三、图表看板与 AI 向导（#304）</h2><ul>
+<li>看板设计：布局预设、槽位、组件面板、主题与最大化查看。</li>
+<li>SQL 编辑（CodeMirror）、安全校验与试跑；AI 配置&#x2F;SQL 审查、图层面板主题说明。</li>
+</ul>
+<h2 id="四、权限、认证与消息"><a href="#四、权限、认证与消息" class="headerlink" title="四、权限、认证与消息"></a>四、权限、认证与消息</h2><ul>
+<li><strong>Eos 角色管理</strong>（#299）：对象级权限配置、菜单同步、权限详情与 UI 重构。</li>
+<li><strong>OTP 二期</strong>（#289&#x2F;#294）；runas 用户切换修复（#277）；权限 token 切换（#309）。</li>
+<li>在线消息通知（#307）与列表慢查询优化（#308）；系统菜单导航慢查询（#306）。</li>
+</ul>
+<h2 id="五、其它业务与工程"><a href="#五、其它业务与工程" class="headerlink" title="五、其它业务与工程"></a>五、其它业务与工程</h2><ul>
+<li><strong>个人工作台</strong>（#310）；首页用户下拉菜单（#295）。</li>
+<li>储罐体积&#x2F;导入导出（#298）；班组装置同步（#302）；交接班 shiftlog（#286&#x2F;#287）。</li>
+<li>Flowable&#x2F;请假流程与 Docker 配置；jqGrid 多表头紧凑样式；mes-core 单测补强。</li>
+<li>SysLog 注解与敏感字段、QRTZ&#x2F;监控相关增强。</li>
+</ul>
+<h2 id="六、月度节奏"><a href="#六、月度节奏" class="headerlink" title="六、月度节奏"></a>六、月度节奏</h2><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上旬</td>
+<td>runas&#x2F;OTP、交接班、jqGrid、mes-core 测试、反馈看板</td>
+</tr>
+<tr>
+<td>中旬</td>
+<td>Eos 角色权限、储罐体积、图表看板设计、mes-energy &#x2F; mes-ai 起步</td>
+</tr>
+<tr>
+<td>下旬</td>
+<td>AI Agent 平台合入、图表 AI 向导、能耗 TOU、消息与慢查询、个人工作台</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>一句话</strong>：6 月搭好了 AI Agent、能耗与图表看板三块新底座，并在 Eos 权限与登录安全上完成一轮可用交付，为 7 月能耗智能体与生产运行闭环打基础。</p>
+]]></content>
+      <tags>
+        <tag>MES</tag>
+        <tag>工作小结</tag>
+        <tag>月报</tag>
+        <tag>mes-ai</tag>
+        <tag>mes-energy</tag>
+        <tag>mes-chart</tag>
       </tags>
   </entry>
   <entry>
@@ -2115,90 +2261,6 @@
       </tags>
   </entry>
   <entry>
-    <title>kingbase</title>
-    <url>/2024/09/02/kingbase/</url>
-    <content><![CDATA[<h1 id="kingbase使用问题"><a href="#kingbase使用问题" class="headerlink" title="kingbase使用问题"></a>kingbase使用问题</h1><h2 id="乱码问题"><a href="#乱码问题" class="headerlink" title="乱码问题"></a>乱码问题</h2><p>创建gb18030的数据库，可以解决。</p>
-<img src="/2024/09/02/kingbase/1725264522588.png" class="" width="1725264522588">
-
-<img src="/2024/09/02/kingbase/1725264492761.png" class="" width="1725264492761">
-
-<p>更换驱动</p>
-<img src="/2024/09/02/kingbase/1725264867078.png" class="" width="1725264867078">
-
-<h2 id="不支持10"><a href="#不支持10" class="headerlink" title="不支持10"></a>不支持10</h2><img src="/2024/09/02/kingbase/1725264959146.png" class="" width="1725264959146">
-
-<h2 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pgjdbc: autodetected server-encoding to be ISO-8859-1, if the message is not readable, please check database logs and/or host, port, dbname, user, password, pg_hba.conf</span><br></pre></td></tr></table></figure>
-
-<h2 id="错误-1"><a href="#错误-1" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">See nested exception: org.postgresql.util.PSQLException: ERROR: 关系 &quot;qrtz_triggers&quot; 不存在</span><br></pre></td></tr></table></figure>
-
-<img src="/2024/09/02/kingbase/1725267331659.png" class="" width="1725267331659">
-
-<h2 id="查询数据库编码"><a href="#查询数据库编码" class="headerlink" title="查询数据库编码"></a>查询数据库编码</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT pg_encoding_to_char(encoding) FROM pg_database WHERE datname = &#x27;your_database_name&#x27;;</span><br></pre></td></tr></table></figure>
-
-<h2 id="对模式xx权限不够"><a href="#对模式xx权限不够" class="headerlink" title="对模式xx权限不够"></a>对模式xx权限不够</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Caused by: org.postgresql.util.PSQLException: ERROR: 对模式 cems 权限不够</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
-    <title>MES 2026 年 5 月工作小结</title>
-    <url>/2026/08/01/mes-monthly-2026-05/</url>
-    <content><![CDATA[<img src="/2026/08/01/mes-monthly-2026-05/cover.png" class="">
-
-<p>5 月（约 <strong>220+ 次提交</strong>、合并 PR <strong>#239–#281</strong>）主线落在业务现场能力：交接班 Docx 模型导入、液体码头&#x2F;船舶作业增强、仪表位号与报表关联，以及 RTDB&#x2F;ISYS 采集链路。改动最集中的是 <code>mes-operation</code>、<code>mes-measure</code>、<code>mes-vessel-operation</code>，辅以 <code>mes-web</code> &#x2F; <code>mes-rtdb</code>。</p>
-<h2 id="一、交接班-ShiftLog（中下旬主线）"><a href="#一、交接班-ShiftLog（中下旬主线）" class="headerlink" title="一、交接班 ShiftLog（中下旬主线）"></a>一、交接班 ShiftLog（中下旬主线）</h2><ul>
-<li>Docx 模型导入与解析预览（#263）：锚点注入、单元格模式、输入类型与公式处理。</li>
-<li>跳过孤儿锚点（#270）、批量删除与归属校验、调度日志预览。</li>
-<li>Docx 解析器持续增强（#278）：条目类型、标签推断、TABLE_STR_BC 批量生成等。</li>
-<li>月末补齐 docx_code 唯一性校验（#281）。</li>
-</ul>
-<h2 id="二、船舶-液体码头作业"><a href="#二、船舶-液体码头作业" class="headerlink" title="二、船舶 &#x2F; 液体码头作业"></a>二、船舶 &#x2F; 液体码头作业</h2><ul>
-<li>内外贸字段、管线名称、货种筛选与泊位告警（#239&#x2F;#241&#x2F;#246&#x2F;#248）。</li>
-<li>收发油罐按物料多选（#244）；船名模糊检索等终端体验。</li>
-<li>船舶动态导入：到港时间格式与提示信息修复（#258&#x2F;#276）。</li>
-<li>排船页接入真实 LLM 辅助（#275）。</li>
-</ul>
-<h2 id="三、仪表位号与报表"><a href="#三、仪表位号与报表" class="headerlink" title="三、仪表位号与报表"></a>三、仪表位号与报表</h2><ul>
-<li>手动采集按钮（#254）；位号配置、导入导出、唯一性与时间处理（#267）。</li>
-<li>关联报表模板展示与批量查询、模板维度（#252&#x2F;#265）。</li>
-<li>报表&#x2F;位号侧过滤与 jqGrid 行范围选择。</li>
-</ul>
-<h2 id="四、实时库与工程体验"><a href="#四、实时库与工程体验" class="headerlink" title="四、实时库与工程体验"></a>四、实时库与工程体验</h2><ul>
-<li>RTDB ISYS SDK RMI 回调（#271）；ISYS 配置与 HTTP 客户端增强。</li>
-<li>SpringDoc OpenAPI &#x2F; Swagger UI 接入。</li>
-<li>多 Tab 溢出箭头滚动（#273）、滚动条样式、模态间菜单切换；菜单关键词逗号 OR 搜索（#269）。</li>
-<li>反馈排程关闭&#x2F;驳回态隐藏按钮等细节（#250）。</li>
-</ul>
-<h2 id="五、月度节奏"><a href="#五、月度节奏" class="headerlink" title="五、月度节奏"></a>五、月度节奏</h2><table>
-<thead>
-<tr>
-<th>阶段</th>
-<th>重点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>上旬</td>
-<td>液体码头罐&#x2F;管线&#x2F;货种、位号手动采集、报表模板维度</td>
-</tr>
-<tr>
-<td>中旬</td>
-<td>交接班 Docx 导入起步、位号关联报表、菜单搜索与 UI 修复</td>
-</tr>
-<tr>
-<td>下旬</td>
-<td>ShiftLog 解析深化、RTDB RMI、排船 AI、到港时间导入、docx 唯一性</td>
-</tr>
-</tbody></table>
-<hr>
-<p><strong>一句话</strong>：5 月把交接班 Docx 导入做成可用链路，并加强液体码头作业与仪表采集&#x2F;报表关联；实时库回调与若干前端体验同步落地，为 6 月平台化（AI&#x2F;能耗&#x2F;图表）腾出业务底座。</p>
-]]></content>
-      <tags>
-        <tag>MES</tag>
-        <tag>交接班</tag>
-        <tag>船舶作业</tag>
-        <tag>工作小结</tag>
-        <tag>月报</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MES 2026 年 7 月工作小结</title>
     <url>/2026/08/01/mes-monthly-2026-07/</url>
     <content><![CDATA[<img src="/2026/08/01/mes-monthly-2026-07/cover.png" class="">
@@ -2310,68 +2372,6 @@
         <tag>月报</tag>
         <tag>mes-ai</tag>
         <tag>mes-chart</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MES 2026 年 6 月工作小结</title>
-    <url>/2026/08/01/mes-monthly-2026-06/</url>
-    <content><![CDATA[<img src="/2026/08/01/mes-monthly-2026-06/cover.png" class="">
-
-<p>6 月（约 <strong>340+ 次提交</strong>、合并 PR <strong>#277–#310</strong>）是平台能力铺开的一个月：落地 <strong>mes-ai Agent 平台</strong> 与 <strong>mes-energy</strong> 模块，图表看板与 AI 向导增强，并同步推进 Eos 权限、OTP、在线消息与个人工作台。改动较均衡地落在 <code>mes-core</code> &#x2F; <code>mes-web</code> &#x2F; <code>mes-ai</code> &#x2F; <code>mes-energy</code> &#x2F; <code>mes-chart</code>。</p>
-<h2 id="一、MES-AI-Agent-平台（下旬主线，-305）"><a href="#一、MES-AI-Agent-平台（下旬主线，-305）" class="headerlink" title="一、MES-AI Agent 平台（下旬主线，#305）"></a>一、MES-AI Agent 平台（下旬主线，#305）</h2><ul>
-<li>新增 mes-ai 模块骨架：Agent 管理、聊天流式输出、thinking 步骤跟踪。</li>
-<li>SQL 工具执行与表格流式渲染、能耗 Agent SQL&#x2F;输出格式迭代。</li>
-<li>Schema Tool、菜单权限与助手推荐问题&#x2F;欢迎语等体验补齐。</li>
-</ul>
-<h2 id="二、能耗模块-mes-energy（中下旬）"><a href="#二、能耗模块-mes-energy（中下旬）" class="headerlink" title="二、能耗模块 mes-energy（中下旬）"></a>二、能耗模块 mes-energy（中下旬）</h2><ul>
-<li>独立 <code>mes-energy</code> 并接入 web 依赖；峰谷（TOU）时段配置、日统计、分页&#x2F;汇总&#x2F;导出。</li>
-<li>电表数据源管理、手动录入、相邻时段合并、能耗看板菜单与电压等级过滤等。</li>
-</ul>
-<h2 id="三、图表看板与-AI-向导（-304）"><a href="#三、图表看板与-AI-向导（-304）" class="headerlink" title="三、图表看板与 AI 向导（#304）"></a>三、图表看板与 AI 向导（#304）</h2><ul>
-<li>看板设计：布局预设、槽位、组件面板、主题与最大化查看。</li>
-<li>SQL 编辑（CodeMirror）、安全校验与试跑；AI 配置&#x2F;SQL 审查、图层面板主题说明。</li>
-</ul>
-<h2 id="四、权限、认证与消息"><a href="#四、权限、认证与消息" class="headerlink" title="四、权限、认证与消息"></a>四、权限、认证与消息</h2><ul>
-<li><strong>Eos 角色管理</strong>（#299）：对象级权限配置、菜单同步、权限详情与 UI 重构。</li>
-<li><strong>OTP 二期</strong>（#289&#x2F;#294）；runas 用户切换修复（#277）；权限 token 切换（#309）。</li>
-<li>在线消息通知（#307）与列表慢查询优化（#308）；系统菜单导航慢查询（#306）。</li>
-</ul>
-<h2 id="五、其它业务与工程"><a href="#五、其它业务与工程" class="headerlink" title="五、其它业务与工程"></a>五、其它业务与工程</h2><ul>
-<li><strong>个人工作台</strong>（#310）；首页用户下拉菜单（#295）。</li>
-<li>储罐体积&#x2F;导入导出（#298）；班组装置同步（#302）；交接班 shiftlog（#286&#x2F;#287）。</li>
-<li>Flowable&#x2F;请假流程与 Docker 配置；jqGrid 多表头紧凑样式；mes-core 单测补强。</li>
-<li>SysLog 注解与敏感字段、QRTZ&#x2F;监控相关增强。</li>
-</ul>
-<h2 id="六、月度节奏"><a href="#六、月度节奏" class="headerlink" title="六、月度节奏"></a>六、月度节奏</h2><table>
-<thead>
-<tr>
-<th>阶段</th>
-<th>重点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>上旬</td>
-<td>runas&#x2F;OTP、交接班、jqGrid、mes-core 测试、反馈看板</td>
-</tr>
-<tr>
-<td>中旬</td>
-<td>Eos 角色权限、储罐体积、图表看板设计、mes-energy &#x2F; mes-ai 起步</td>
-</tr>
-<tr>
-<td>下旬</td>
-<td>AI Agent 平台合入、图表 AI 向导、能耗 TOU、消息与慢查询、个人工作台</td>
-</tr>
-</tbody></table>
-<hr>
-<p><strong>一句话</strong>：6 月搭好了 AI Agent、能耗与图表看板三块新底座，并在 Eos 权限与登录安全上完成一轮可用交付，为 7 月能耗智能体与生产运行闭环打基础。</p>
-]]></content>
-      <tags>
-        <tag>MES</tag>
-        <tag>工作小结</tag>
-        <tag>月报</tag>
-        <tag>mes-ai</tag>
-        <tag>mes-chart</tag>
-        <tag>mes-energy</tag>
       </tags>
   </entry>
   <entry>
@@ -2500,6 +2500,56 @@
       </tags>
   </entry>
   <entry>
+    <title>MES 2026 年第 32 周工作小结</title>
+    <url>/2026/08/06/mes-weekly-2026-w32/</url>
+    <content><![CDATA[<img src="/2026/08/06/mes-weekly-2026-w32/cover.png" class="">
+
+<p>本周（8&#x2F;3–8&#x2F;6，约 <strong>50 次提交</strong>、合并 PR <strong>#360、#374</strong>）主线在 <strong>AI 图表内联渲染</strong>与<strong>相对月份推理修复</strong>，同时推进运行日志可观测性和 ExternalApi 集成。主力模块 <code>mes-ai</code>（167 文件触达），次为 <code>mes-chart</code>（15 文件）。</p>
+<h2 id="一、AI-图表内联与看板增强（-360）"><a href="#一、AI-图表内联与看板增强（-360）" class="headerlink" title="一、AI 图表内联与看板增强（#360）"></a>一、AI 图表内联与看板增强（#360）</h2><p>在 AI 聊天中落地面向 SQL 工具的内联图表渲染，并增强看板筛选能力：</p>
+<ul>
+<li><strong>SqlToolChartPolicy</strong>：新增图表配置编辑入口，支持为 SQL 工具指定折线&#x2F;柱状&#x2F;表格等图表类型，查询结果直接在对话中渲染</li>
+<li><strong>看板增强</strong>：Tab 筛选与可见性管理、月份过滤支持、<code>renderFilterBar</code> 异步时序修复</li>
+<li><strong>健壮性修复</strong>：<code>ClassCastException</code>（图表配置为标量值时）、<code>NumberUtil</code> 统一替代自定义数值解析方法</li>
+</ul>
+<h2 id="二、相对月份查询修复（-985、-992）"><a href="#二、相对月份查询修复（-985、-992）" class="headerlink" title="二、相对月份查询修复（#985、#992）"></a>二、相对月份查询修复（#985、#992）</h2><p>针对性修复”上个月”等相对月份提示词输出错误日历月份的问题：</p>
+<ul>
+<li><code>RelativeMonthOverviewNormalizer</code>：正则从 <code>RELATIVE_MONTH_PHRASES</code> 集中化短语列表动态构建，消除分散常量</li>
+<li><code>AgentReactExecutor</code>：注入已解析年月提示，防止 Agent 在强制结单前过早输出 JSON 导致月份错误</li>
+<li>新增单测覆盖多种相对月份表述场景</li>
+</ul>
+<h2 id="三、AI-运行日志可观测性（-374）"><a href="#三、AI-运行日志可观测性（-374）" class="headerlink" title="三、AI 运行日志可观测性（#374）"></a>三、AI 运行日志可观测性（#374）</h2><ul>
+<li>运行日志列表新增<strong>会话详情弹窗</strong>，支持按 sessionId 匹配 assistant 消息并展示</li>
+<li><code>AiChatRunLogEntity</code> 关联 <code>SysUserEntity</code>，日志列表展示用户信息（用户名&#x2F;姓名）</li>
+<li><code>AgentChatController</code> 会话管理功能增强：分页、搜索、会话切换</li>
+<li><code>AgentAnswerParser</code> 新增 <code>intentional_choices</code> JSON 解析</li>
+</ul>
+<h2 id="四、ExternalApi-工具增强"><a href="#四、ExternalApi-工具增强" class="headerlink" title="四、ExternalApi 工具增强"></a>四、ExternalApi 工具增强</h2><ul>
+<li>URI 构造与编码重构，<code>urlEncode</code> 冗余方法移除</li>
+<li>测试用例覆盖 URI 特殊字符编码场景</li>
+<li>文档补充：高德天气工具、通用 External API 接入示例</li>
+</ul>
+<h2 id="五、文档与基础设施"><a href="#五、文档与基础设施" class="headerlink" title="五、文档与基础设施"></a>五、文档与基础设施</h2><ul>
+<li>MES vs Dify &#x2F; AgentScope 对比文档大幅更新，详列成本&#x2F;标注反馈闭环等维度差距</li>
+<li>mes-ai 工具配置复杂度分析文档</li>
+<li>新增 <code>mes-count-loc</code> Skill</li>
+<li><code>.mcp.json</code> 加入 <code>.gitignore</code>，清理过期 LLM 文档和已吸收的单次 SQL 补丁</li>
+</ul>
+<h2 id="六、物料查询"><a href="#六、物料查询" class="headerlink" title="六、物料查询"></a>六、物料查询</h2><ul>
+<li>新增物料 ZZTJ 日进出 SQL 工具种子及文档索引</li>
+<li>物料单位 IO 明细查询增加含量、类别筛选参数</li>
+</ul>
+<hr>
+<p><strong>一句话</strong>：本周以 AI 图表内联和相对月份修复落地为主，运行日志可观测性明显提升，ExternalApi 和物料查询逐步补全。</p>
+]]></content>
+      <tags>
+        <tag>MES</tag>
+        <tag>工作小结</tag>
+        <tag>mes-ai</tag>
+        <tag>mes-chart</tag>
+        <tag>周报</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MES 本周工作小结（2026-07-28 ~ 08-01）</title>
     <url>/2026/08/01/mes-weekly-2026-w31/</url>
     <content><![CDATA[<img src="/2026/08/01/mes-weekly-2026-w31/cover.png" class="">
@@ -2585,261 +2635,6 @@
         <tag>mes-ai</tag>
         <tag>mes-chart</tag>
         <tag>周报</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MES 2026 年第 32 周工作小结</title>
-    <url>/2026/08/06/mes-weekly-2026-w32/</url>
-    <content><![CDATA[<img src="/2026/08/06/mes-weekly-2026-w32/cover.png" class="">
-
-<p>本周（8&#x2F;3–8&#x2F;6，约 <strong>50 次提交</strong>、合并 PR <strong>#360、#374</strong>）主线在 <strong>AI 图表内联渲染</strong>与<strong>相对月份推理修复</strong>，同时推进运行日志可观测性和 ExternalApi 集成。主力模块 <code>mes-ai</code>（167 文件触达），次为 <code>mes-chart</code>（15 文件）。</p>
-<h2 id="一、AI-图表内联与看板增强（-360）"><a href="#一、AI-图表内联与看板增强（-360）" class="headerlink" title="一、AI 图表内联与看板增强（#360）"></a>一、AI 图表内联与看板增强（#360）</h2><p>在 AI 聊天中落地面向 SQL 工具的内联图表渲染，并增强看板筛选能力：</p>
-<ul>
-<li><strong>SqlToolChartPolicy</strong>：新增图表配置编辑入口，支持为 SQL 工具指定折线&#x2F;柱状&#x2F;表格等图表类型，查询结果直接在对话中渲染</li>
-<li><strong>看板增强</strong>：Tab 筛选与可见性管理、月份过滤支持、<code>renderFilterBar</code> 异步时序修复</li>
-<li><strong>健壮性修复</strong>：<code>ClassCastException</code>（图表配置为标量值时）、<code>NumberUtil</code> 统一替代自定义数值解析方法</li>
-</ul>
-<h2 id="二、相对月份查询修复（-985、-992）"><a href="#二、相对月份查询修复（-985、-992）" class="headerlink" title="二、相对月份查询修复（#985、#992）"></a>二、相对月份查询修复（#985、#992）</h2><p>针对性修复”上个月”等相对月份提示词输出错误日历月份的问题：</p>
-<ul>
-<li><code>RelativeMonthOverviewNormalizer</code>：正则从 <code>RELATIVE_MONTH_PHRASES</code> 集中化短语列表动态构建，消除分散常量</li>
-<li><code>AgentReactExecutor</code>：注入已解析年月提示，防止 Agent 在强制结单前过早输出 JSON 导致月份错误</li>
-<li>新增单测覆盖多种相对月份表述场景</li>
-</ul>
-<h2 id="三、AI-运行日志可观测性（-374）"><a href="#三、AI-运行日志可观测性（-374）" class="headerlink" title="三、AI 运行日志可观测性（#374）"></a>三、AI 运行日志可观测性（#374）</h2><ul>
-<li>运行日志列表新增<strong>会话详情弹窗</strong>，支持按 sessionId 匹配 assistant 消息并展示</li>
-<li><code>AiChatRunLogEntity</code> 关联 <code>SysUserEntity</code>，日志列表展示用户信息（用户名&#x2F;姓名）</li>
-<li><code>AgentChatController</code> 会话管理功能增强：分页、搜索、会话切换</li>
-<li><code>AgentAnswerParser</code> 新增 <code>intentional_choices</code> JSON 解析</li>
-</ul>
-<h2 id="四、ExternalApi-工具增强"><a href="#四、ExternalApi-工具增强" class="headerlink" title="四、ExternalApi 工具增强"></a>四、ExternalApi 工具增强</h2><ul>
-<li>URI 构造与编码重构，<code>urlEncode</code> 冗余方法移除</li>
-<li>测试用例覆盖 URI 特殊字符编码场景</li>
-<li>文档补充：高德天气工具、通用 External API 接入示例</li>
-</ul>
-<h2 id="五、文档与基础设施"><a href="#五、文档与基础设施" class="headerlink" title="五、文档与基础设施"></a>五、文档与基础设施</h2><ul>
-<li>MES vs Dify &#x2F; AgentScope 对比文档大幅更新，详列成本&#x2F;标注反馈闭环等维度差距</li>
-<li>mes-ai 工具配置复杂度分析文档</li>
-<li>新增 <code>mes-count-loc</code> Skill</li>
-<li><code>.mcp.json</code> 加入 <code>.gitignore</code>，清理过期 LLM 文档和已吸收的单次 SQL 补丁</li>
-</ul>
-<h2 id="六、物料查询"><a href="#六、物料查询" class="headerlink" title="六、物料查询"></a>六、物料查询</h2><ul>
-<li>新增物料 ZZTJ 日进出 SQL 工具种子及文档索引</li>
-<li>物料单位 IO 明细查询增加含量、类别筛选参数</li>
-</ul>
-<hr>
-<p><strong>一句话</strong>：本周以 AI 图表内联和相对月份修复落地为主，运行日志可观测性明显提升，ExternalApi 和物料查询逐步补全。</p>
-]]></content>
-      <tags>
-        <tag>MES</tag>
-        <tag>工作小结</tag>
-        <tag>mes-ai</tag>
-        <tag>mes-chart</tag>
-        <tag>周报</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MES 2026 年第 35 周工作小结</title>
-    <url>/2026/08/31/mes-weekly-2026-w35/</url>
-    <content><![CDATA[<img src="/2026/08/31/mes-weekly-2026-w35/cover.png" class="">
-
-<p>本周（8&#x2F;24–8&#x2F;29，约 <strong>85 次提交</strong>，合并 PR <strong>#174</strong>、**#382** 等）主线在 <strong>壳层导航体验</strong>（全局搜索、侧栏、模块 Tab）、<strong>LIMS 数据源与位号对接</strong>、<strong>本地 bge-m3 embedding</strong>，以及工作台到期提醒与 EOS 权限移除。主力模块 <code>mes-web</code> &#x2F; <code>mes-visual</code> &#x2F; <code>mes-factory</code> &#x2F; <code>mes-ai</code>。</p>
-<h2 id="一、壳层导航与全局搜索（-174）"><a href="#一、壳层导航与全局搜索（-174）" class="headerlink" title="一、壳层导航与全局搜索（#174）"></a>一、壳层导航与全局搜索（#174）</h2><ul>
-<li><strong>全局菜单搜索</strong>：组件布局、响应式样式与状态管理；z-index 与下拉交互</li>
-<li><strong>侧栏</strong>：折叠态展示、滚动行为、本地过滤；菜单加载后再初始化路由</li>
-<li><strong>模块 Tab &#x2F; 导航栏</strong>：Tab 布局与样式、打开方式项；页脚版权年份动态化</li>
-<li>角色详情页布局可读性调整</li>
-</ul>
-<h2 id="二、LIMS-数据源与位号"><a href="#二、LIMS-数据源与位号" class="headerlink" title="二、LIMS 数据源与位号"></a>二、LIMS 数据源与位号</h2><ul>
-<li><strong>LIMS 数据源配置</strong>：RDB SQL 数据源实现；精度保留；<code>sys_config</code> value 扩至 4000</li>
-<li><strong>结果数据</strong>：筛选排序、网格配置与菜单 SQL</li>
-<li><strong>位号（fm）</strong>：导入下载对接 LIMS；采集流程与样式收敛</li>
-<li>数据源配置页 JSON 编辑器</li>
-</ul>
-<h2 id="三、AI-embedding-与知识库"><a href="#三、AI-embedding-与知识库" class="headerlink" title="三、AI embedding 与知识库"></a>三、AI embedding 与知识库</h2><ul>
-<li>默认改用本地 <strong>bge-m3</strong> embedding（免 API Key）；Docker 环境配置同步</li>
-<li>知识库 <strong>测试检索</strong> 能力与 UI</li>
-<li>当前时间预调用（系统消息前置合并）；SQL 工具参数解析增强</li>
-</ul>
-<h2 id="四、工作台、到期提醒与容器"><a href="#四、工作台、到期提醒与容器" class="headerlink" title="四、工作台、到期提醒与容器"></a>四、工作台、到期提醒与容器</h2><ul>
-<li>首页 badge 接口与工作台快照&#x2F;超时处理</li>
-<li>到期提醒：状态判定、聚合调度、复制；工作台提醒汇总</li>
-<li>容器工作台 providers 与状态计数；任务组参数加载</li>
-<li>首页提示统一为 <code>msg</code> &#x2F; <code>alert</code></li>
-</ul>
-<h2 id="五、工艺可视化、过程控制与安全"><a href="#五、工艺可视化、过程控制与安全" class="headerlink" title="五、工艺可视化、过程控制与安全"></a>五、工艺可视化、过程控制与安全</h2><ul>
-<li><strong>P&amp;ID</strong>：集成 draw.io Stencils、ISA 符号管理；SVG 描边与样式归一</li>
-<li><strong>过程控制</strong>（#382）：超限异常记录时长计算与写入</li>
-<li><strong>EOS 权限</strong>：角色权限「移除授权」模式；清理孤立空目录</li>
-<li>Docker 本地直连端口映射、Flowable schema 自动升级等开发便利项</li>
-</ul>
-<hr>
-<p><strong>一句话</strong>：本周以壳层导航与全局搜索落地为主，LIMS 数据源&#x2F;位号与本地 embedding 并进，工作台到期提醒与 P&amp;ID 图元、EOS 权限移除补齐平台与安全侧能力。</p>
-]]></content>
-      <tags>
-        <tag>MES</tag>
-        <tag>工作小结</tag>
-        <tag>mes-ai</tag>
-        <tag>周报</tag>
-        <tag>mes-web</tag>
-        <tag>LIMS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MES 2026 年第 38 周工作小结</title>
-    <url>/2026/09/18/mes-weekly-2026-w38/</url>
-    <content><![CDATA[<img src="/2026/09/18/mes-weekly-2026-w38/cover.png" class="">
-
-<p>本周（9&#x2F;14–9&#x2F;18，约 <strong>41 次提交</strong>）主线是 <strong>计量器具台账与菜单落地</strong>，同时补齐 <strong>菜单管理 V2</strong>、<strong>AI 协作并行</strong> 与 <strong>LLM 用量记录</strong>。合入 master 的功能分支：<code>feature/llm-api-usage</code>、<code>feature/ai-collab-parallel-children</code>、<code>feature/msr-measuring-instrument-menu</code>；GitHub <a href="https://github.com/eppen/mes-parent/pull/385">#385</a> 于周一合入。主力模块 <code>mes-measure</code>、<code>mes-workflow</code>、<code>mes-ai</code>、<code>mes-core</code>、<code>mes-web</code>。</p>
-<h2 id="一、计量器具（mes-measure）"><a href="#一、计量器具（mes-measure）" class="headerlink" title="一、计量器具（mes-measure）"></a>一、计量器具（mes-measure）</h2><ul>
-<li>菜单排除部门，字典种子补齐</li>
-<li>运行部菜单可配置挂载目录，按 URL 识别；菜单挪出「计量器具」后不再误判未生成，同步时按配置目录创建或迁入</li>
-<li>台账列表扩展字段，增加人员关联</li>
-<li>模版下载、出厂日期选择、Excel 属性转换、周期单位选项收了一轮</li>
-</ul>
-<h2 id="二、菜单与目录"><a href="#二、菜单与目录" class="headerlink" title="二、菜单与目录"></a>二、菜单与目录</h2><ul>
-<li>菜单拖拽排序、批量改上级；选择上级树跳过 <code>parentId</code> 自引用脏数据</li>
-<li>EOS 目录树节点处理与交互收简</li>
-<li>安全侧支持把 MES 目录挂到已有 EOS 节点，不再新建树节点，并校验菜单与节点类型</li>
-</ul>
-<h2 id="三、AI-协作、用量与流程图（mes-ai）"><a href="#三、AI-协作、用量与流程图（mes-ai）" class="headerlink" title="三、AI 协作、用量与流程图（mes-ai）"></a>三、AI 协作、用量与流程图（mes-ai）</h2><ul>
-<li>协作子智能体并行执行、上下文隔离，新增 <code>child_concurrency</code> 限制并发</li>
-<li>对话与图表调用记录 LLM API 用量</li>
-<li>BPMN：自动布局与导入、名称属性清洗与校验、条件表达式清洗</li>
-<li>图表批量上限 <code>EXEC_BATCH_MAX_ITEMS</code> 从 20 提到 30</li>
-</ul>
-<h2 id="四、图表、报表与附件"><a href="#四、图表、报表与附件" class="headerlink" title="四、图表、报表与附件"></a>四、图表、报表与附件</h2><ul>
-<li>船舶图：近期计划船舶及数量查询、对应组件与下钻</li>
-<li>报表模版公式检查随 #385 合入；Excel 模版支持手动保存检查点</li>
-<li>附件删除同步回写 EOS 表头附件数，删除前校验权限</li>
-<li>文档全屏预览样式、船舶天气表单对齐小修</li>
-</ul>
-<h3 id="节奏"><a href="#节奏" class="headerlink" title="节奏"></a>节奏</h3><table>
-<thead>
-<tr>
-<th>日期</th>
-<th>提交约数</th>
-<th>重心</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>09-14</td>
-<td>3</td>
-<td>#385 合入；模版检查点、文档预览</td>
-</tr>
-<tr>
-<td>09-15</td>
-<td>10</td>
-<td>LLM 用量、协作并行、计划船舶；两条 AI 分支合入 master</td>
-</tr>
-<tr>
-<td>09-16</td>
-<td>6</td>
-<td>BPMN 条件清洗、LLM 客户端、工程配置清理</td>
-</tr>
-<tr>
-<td>09-17</td>
-<td>11</td>
-<td>菜单拖拽与挂载目录；计量器具菜单分支合入 master</td>
-</tr>
-<tr>
-<td>09-18</td>
-<td>13</td>
-<td>器具台账字段与日期、目录挂接、附件删除</td>
-</tr>
-</tbody></table>
-<hr>
-<p><strong>一句话</strong>：计量器具从菜单到台账基本能用，菜单管理 V2 和 AI 调用侧也各收了一截。</p>
-]]></content>
-      <tags>
-        <tag>MES</tag>
-        <tag>工作小结</tag>
-        <tag>mes-ai</tag>
-        <tag>mes-measure</tag>
-        <tag>周报</tag>
-        <tag>mes-web</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MES 2026 年第 37 周工作小结</title>
-    <url>/2026/09/12/mes-weekly-2026-w37/</url>
-    <content><![CDATA[<img src="/2026/09/12/mes-weekly-2026-w37/cover.png" class="">
-
-<p>本周（9&#x2F;7–9&#x2F;12，约 <strong>59 次提交</strong>，合入 <code>feature/ai-config-snapshot</code>）主线在 <strong>报表&#x2F;文档模板版本史与回滚</strong>、<strong>能源计量公式检查（含 AI 公式检查）</strong>，以及 <strong>计划范围导入体验</strong> 与 <strong>看板数值卡下钻</strong>。主力模块 <code>mes-report</code> &#x2F; <code>mes-plan</code> &#x2F; <code>mes-factory</code>，另有 <code>mes-web</code>、<code>mes-ai</code>、<code>mes-chart</code>、<code>mes-vessel-operation</code>。</p>
-<h2 id="一、报表与文档模板：历史、快照、回滚（mes-report）"><a href="#一、报表与文档模板：历史、快照、回滚（mes-report）" class="headerlink" title="一、报表与文档模板：历史、快照、回滚（mes-report）"></a>一、报表与文档模板：历史、快照、回滚（mes-report）</h2><ul>
-<li><strong>报表模板</strong>：归档元数据、历史版本、回滚；上传进度与重复文件状态</li>
-<li><strong>XLS 模板</strong>：历史管理、版本对比、回滚；<code>mergeCells</code> 重叠区域与样式保留优化</li>
-<li><strong>DOCX 模板</strong>：版本历史与快照</li>
-<li><strong>计划范围文档（jhfwdoc）</strong>：文档历史管理与快照</li>
-</ul>
-<h2 id="二、公式检查与能源计量报表"><a href="#二、公式检查与能源计量报表" class="headerlink" title="二、公式检查与能源计量报表"></a>二、公式检查与能源计量报表</h2><ul>
-<li>荣盛能源计量报表公式检查报告、复检结论与模板文档</li>
-<li><strong>AI 公式检查</strong>：报表模板侧入口与解析加固、报告渲染与样式、尾随空格检测</li>
-<li>菜单 SQL 与父菜单识别修正，支撑公式检查按钮挂载</li>
-</ul>
-<h2 id="三、计划范围导入与摘要（mes-plan）"><a href="#三、计划范围导入与摘要（mes-plan）" class="headerlink" title="三、计划范围导入与摘要（mes-plan）"></a>三、计划范围导入与摘要（mes-plan）</h2><ul>
-<li>Excel 解析、导入摘要与未匹配装置名展示；导入结果 UI 简化</li>
-<li>计划范围布局增强；计划日期拆分年月工具方法</li>
-<li>过程名 &#x2F; 未匹配装置名日志，便于排错</li>
-</ul>
-<h2 id="四、看板下钻与罐区体验"><a href="#四、看板下钻与罐区体验" class="headerlink" title="四、看板下钻与罐区体验"></a>四、看板下钻与罐区体验</h2><ul>
-<li><strong>Chart</strong>：数值卡下钻能力与配置；船舶管理、任务管理看板下钻</li>
-<li><strong>罐存平衡 &#x2F; 罐日</strong>：网格布局与初始化、数据校验与加载优化、UI 对齐</li>
-</ul>
-<h2 id="五、船舶黑名单与装置日报"><a href="#五、船舶黑名单与装置日报" class="headerlink" title="五、船舶黑名单与装置日报"></a>五、船舶黑名单与装置日报</h2><ul>
-<li>船舶黑名单：IMO &#x2F; 船名检索；导入导出</li>
-<li>新增装置日报（pdr）模块起步</li>
-<li>位号表单增加取数类型；表格文字列自适应</li>
-</ul>
-<h2 id="六、AI-与平台杂项（mes-ai-sys）"><a href="#六、AI-与平台杂项（mes-ai-sys）" class="headerlink" title="六、AI 与平台杂项（mes-ai &#x2F; sys）"></a>六、AI 与平台杂项（mes-ai &#x2F; sys）</h2><ul>
-<li>合入 AI 配置快照分支；协作与配置管理文档增强</li>
-<li>Agent 工具调用处理增强；装置开停工 &#x2F; 停工区间 SQL；三率配置同步本地</li>
-<li>用户已分配角色查询；AesUtil-obf 安装脚本；本地热重载开发说明</li>
-</ul>
-<h3 id="节奏"><a href="#节奏" class="headerlink" title="节奏"></a>节奏</h3><table>
-<thead>
-<tr>
-<th>日期</th>
-<th>提交约数</th>
-<th>重心</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>09-08</td>
-<td>10</td>
-<td>报表历史上传回滚、装置日报、位号</td>
-</tr>
-<tr>
-<td>09-09</td>
-<td>9</td>
-<td>XLS&#x2F;计划文档历史、罐存网格、角色</td>
-</tr>
-<tr>
-<td>09-10</td>
-<td>14</td>
-<td>DOCX 历史、看板下钻、罐日重构</td>
-</tr>
-<tr>
-<td>09-11</td>
-<td>13</td>
-<td>计划导入摘要、能源公式检查、船舶黑名单</td>
-</tr>
-<tr>
-<td>09-12</td>
-<td>15</td>
-<td>AI 公式检查、Agent&#x2F;开停工 SQL、导入收尾</td>
-</tr>
-</tbody></table>
-<hr>
-<p><strong>一句话</strong>：本周把报表与文档模板的「可回滚版本史」铺开，能源计量公式检查（含 AI）落地，并补齐计划导入摘要、看板下钻与船舶黑名单等业务体验。</p>
-]]></content>
-      <tags>
-        <tag>MES</tag>
-        <tag>工作小结</tag>
-        <tag>mes-ai</tag>
-        <tag>mes-chart</tag>
-        <tag>周报</tag>
-        <tag>mes-report</tag>
-        <tag>mes-plan</tag>
       </tags>
   </entry>
   <entry>
@@ -2980,6 +2775,89 @@
       </tags>
   </entry>
   <entry>
+    <title>MES 2026 年第 37 周工作小结</title>
+    <url>/2026/09/12/mes-weekly-2026-w37/</url>
+    <content><![CDATA[<img src="/2026/09/12/mes-weekly-2026-w37/cover.png" class="">
+
+<p>本周（9&#x2F;7–9&#x2F;12，约 <strong>59 次提交</strong>，合入 <code>feature/ai-config-snapshot</code>）主线在 <strong>报表&#x2F;文档模板版本史与回滚</strong>、<strong>能源计量公式检查（含 AI 公式检查）</strong>，以及 <strong>计划范围导入体验</strong> 与 <strong>看板数值卡下钻</strong>。主力模块 <code>mes-report</code> &#x2F; <code>mes-plan</code> &#x2F; <code>mes-factory</code>，另有 <code>mes-web</code>、<code>mes-ai</code>、<code>mes-chart</code>、<code>mes-vessel-operation</code>。</p>
+<h2 id="一、报表与文档模板：历史、快照、回滚（mes-report）"><a href="#一、报表与文档模板：历史、快照、回滚（mes-report）" class="headerlink" title="一、报表与文档模板：历史、快照、回滚（mes-report）"></a>一、报表与文档模板：历史、快照、回滚（mes-report）</h2><ul>
+<li><strong>报表模板</strong>：归档元数据、历史版本、回滚；上传进度与重复文件状态</li>
+<li><strong>XLS 模板</strong>：历史管理、版本对比、回滚；<code>mergeCells</code> 重叠区域与样式保留优化</li>
+<li><strong>DOCX 模板</strong>：版本历史与快照</li>
+<li><strong>计划范围文档（jhfwdoc）</strong>：文档历史管理与快照</li>
+</ul>
+<h2 id="二、公式检查与能源计量报表"><a href="#二、公式检查与能源计量报表" class="headerlink" title="二、公式检查与能源计量报表"></a>二、公式检查与能源计量报表</h2><ul>
+<li>荣盛能源计量报表公式检查报告、复检结论与模板文档</li>
+<li><strong>AI 公式检查</strong>：报表模板侧入口与解析加固、报告渲染与样式、尾随空格检测</li>
+<li>菜单 SQL 与父菜单识别修正，支撑公式检查按钮挂载</li>
+</ul>
+<h2 id="三、计划范围导入与摘要（mes-plan）"><a href="#三、计划范围导入与摘要（mes-plan）" class="headerlink" title="三、计划范围导入与摘要（mes-plan）"></a>三、计划范围导入与摘要（mes-plan）</h2><ul>
+<li>Excel 解析、导入摘要与未匹配装置名展示；导入结果 UI 简化</li>
+<li>计划范围布局增强；计划日期拆分年月工具方法</li>
+<li>过程名 &#x2F; 未匹配装置名日志，便于排错</li>
+</ul>
+<h2 id="四、看板下钻与罐区体验"><a href="#四、看板下钻与罐区体验" class="headerlink" title="四、看板下钻与罐区体验"></a>四、看板下钻与罐区体验</h2><ul>
+<li><strong>Chart</strong>：数值卡下钻能力与配置；船舶管理、任务管理看板下钻</li>
+<li><strong>罐存平衡 &#x2F; 罐日</strong>：网格布局与初始化、数据校验与加载优化、UI 对齐</li>
+</ul>
+<h2 id="五、船舶黑名单与装置日报"><a href="#五、船舶黑名单与装置日报" class="headerlink" title="五、船舶黑名单与装置日报"></a>五、船舶黑名单与装置日报</h2><ul>
+<li>船舶黑名单：IMO &#x2F; 船名检索；导入导出</li>
+<li>新增装置日报（pdr）模块起步</li>
+<li>位号表单增加取数类型；表格文字列自适应</li>
+</ul>
+<h2 id="六、AI-与平台杂项（mes-ai-sys）"><a href="#六、AI-与平台杂项（mes-ai-sys）" class="headerlink" title="六、AI 与平台杂项（mes-ai &#x2F; sys）"></a>六、AI 与平台杂项（mes-ai &#x2F; sys）</h2><ul>
+<li>合入 AI 配置快照分支；协作与配置管理文档增强</li>
+<li>Agent 工具调用处理增强；装置开停工 &#x2F; 停工区间 SQL；三率配置同步本地</li>
+<li>用户已分配角色查询；AesUtil-obf 安装脚本；本地热重载开发说明</li>
+</ul>
+<h3 id="节奏"><a href="#节奏" class="headerlink" title="节奏"></a>节奏</h3><table>
+<thead>
+<tr>
+<th>日期</th>
+<th>提交约数</th>
+<th>重心</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>09-08</td>
+<td>10</td>
+<td>报表历史上传回滚、装置日报、位号</td>
+</tr>
+<tr>
+<td>09-09</td>
+<td>9</td>
+<td>XLS&#x2F;计划文档历史、罐存网格、角色</td>
+</tr>
+<tr>
+<td>09-10</td>
+<td>14</td>
+<td>DOCX 历史、看板下钻、罐日重构</td>
+</tr>
+<tr>
+<td>09-11</td>
+<td>13</td>
+<td>计划导入摘要、能源公式检查、船舶黑名单</td>
+</tr>
+<tr>
+<td>09-12</td>
+<td>15</td>
+<td>AI 公式检查、Agent&#x2F;开停工 SQL、导入收尾</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>一句话</strong>：本周把报表与文档模板的「可回滚版本史」铺开，能源计量公式检查（含 AI）落地，并补齐计划导入摘要、看板下钻与船舶黑名单等业务体验。</p>
+]]></content>
+      <tags>
+        <tag>MES</tag>
+        <tag>工作小结</tag>
+        <tag>mes-ai</tag>
+        <tag>mes-chart</tag>
+        <tag>周报</tag>
+        <tag>mes-report</tag>
+        <tag>mes-plan</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MES 2026 年第 40 周工作小结</title>
     <url>/2026/09/30/mes-weekly-2026-w40/</url>
     <content><![CDATA[<img src="/2026/09/30/mes-weekly-2026-w40/cover.png" class="">
@@ -3034,8 +2912,8 @@
         <tag>工作小结</tag>
         <tag>mes-rtdb</tag>
         <tag>周报</tag>
-        <tag>mes-web</tag>
         <tag>mes-security</tag>
+        <tag>mes-web</tag>
       </tags>
   </entry>
   <entry>
@@ -3095,134 +2973,196 @@
       </tags>
   </entry>
   <entry>
-    <title>在 Claude Code CLI 中使用 DeepSeek 作为模型</title>
-    <url>/2026/03/15/use-deepseek-as-model-in-claude-code-cli/</url>
-    <content><![CDATA[<p>Claude Code 是 Anthropic 的 AI 编程助手，默认只使用 Anthropic 的模型。通过环境变量 <code>ANTHROPIC_BASE_URL</code> 可以切换 API 端点，DeepSeek 官方提供了 <strong>Anthropic API 兼容</strong> 的接口，因此可以直接把 Claude Code CLI 接到 DeepSeek，无需代理或第三方路由。</p>
-<p>本文介绍如何配置 Claude Code CLI，使其使用 DeepSeek 作为后端模型。</p>
-<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><ul>
-<li>已安装 <a href="https://claude.ai/code">Claude Code</a>（官方安装：<code>curl -fsSL https://claude.ai/install.sh | bash</code>）</li>
-<li>已注册 <a href="https://platform.deepseek.com/">DeepSeek 开放平台</a> 并获取 <strong>API Key</strong>（<a href="https://platform.deepseek.com/api-keys">API Keys 页面</a>）</li>
+    <title>MES 2026 年第 35 周工作小结</title>
+    <url>/2026/08/31/mes-weekly-2026-w35/</url>
+    <content><![CDATA[<img src="/2026/08/31/mes-weekly-2026-w35/cover.png" class="">
+
+<p>本周（8&#x2F;24–8&#x2F;29，约 <strong>85 次提交</strong>，合并 PR <strong>#174</strong>、**#382** 等）主线在 <strong>壳层导航体验</strong>（全局搜索、侧栏、模块 Tab）、<strong>LIMS 数据源与位号对接</strong>、<strong>本地 bge-m3 embedding</strong>，以及工作台到期提醒与 EOS 权限移除。主力模块 <code>mes-web</code> &#x2F; <code>mes-visual</code> &#x2F; <code>mes-factory</code> &#x2F; <code>mes-ai</code>。</p>
+<h2 id="一、壳层导航与全局搜索（-174）"><a href="#一、壳层导航与全局搜索（-174）" class="headerlink" title="一、壳层导航与全局搜索（#174）"></a>一、壳层导航与全局搜索（#174）</h2><ul>
+<li><strong>全局菜单搜索</strong>：组件布局、响应式样式与状态管理；z-index 与下拉交互</li>
+<li><strong>侧栏</strong>：折叠态展示、滚动行为、本地过滤；菜单加载后再初始化路由</li>
+<li><strong>模块 Tab &#x2F; 导航栏</strong>：Tab 布局与样式、打开方式项；页脚版权年份动态化</li>
+<li>角色详情页布局可读性调整</li>
 </ul>
-<h2 id="方式一：官方-Anthropic-兼容-API（推荐）"><a href="#方式一：官方-Anthropic-兼容-API（推荐）" class="headerlink" title="方式一：官方 Anthropic 兼容 API（推荐）"></a>方式一：官方 Anthropic 兼容 API（推荐）</h2><p>DeepSeek 提供与 Anthropic Messages API 兼容的端点，只需改环境变量即可让 Claude Code 走 DeepSeek。</p>
-<h3 id="1-配置环境变量"><a href="#1-配置环境变量" class="headerlink" title="1. 配置环境变量"></a>1. 配置环境变量</h3><p>在终端中执行（将 <code>YOUR_DEEPSEEK_API_KEY</code> 换成你的 DeepSeek API Key）：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># DeepSeek Anthropic 兼容 API 端点</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定使用的模型（见下方「模型选择」）</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：避免长输出时客户端超时（单位毫秒，例如 10 分钟）</span></span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：禁用非必要流量（仅在使用第三方 API 时建议）</span></span><br><span class="line"><span class="built_in">export</span> CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-启动-Claude-Code"><a href="#2-启动-Claude-Code" class="headerlink" title="2. 启动 Claude Code"></a>2. 启动 Claude Code</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> your-project</span><br><span class="line">claude</span><br></pre></td></tr></table></figure>
-
-<p>之后 Claude Code 的请求会发往 DeepSeek，使用你配置的模型。</p>
-<h3 id="3-写入-Shell-配置（长期使用）"><a href="#3-写入-Shell-配置（长期使用）" class="headerlink" title="3. 写入 Shell 配置（长期使用）"></a>3. 写入 Shell 配置（长期使用）</h3><p>避免每次手动 export，可写入 <code>~/.bashrc</code>、<code>~/.zshrc</code> 或 Fish 的 <code>config.fish</code>。</p>
-<p><strong>Bash &#x2F; Zsh 示例：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># DeepSeek + Claude Code</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br></pre></td></tr></table></figure>
-
-<p><strong>Fish 示例：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function claude-deepseek</span><br><span class="line">    set -x ANTHROPIC_BASE_URL https://api.deepseek.com/anthropic</span><br><span class="line">    set -x ANTHROPIC_AUTH_TOKEN &quot;YOUR_DEEPSEEK_API_KEY&quot;</span><br><span class="line">    set -x ANTHROPIC_MODEL deepseek-chat</span><br><span class="line">    set -x ANTHROPIC_SMALL_FAST_MODEL deepseek-chat</span><br><span class="line">    set -x API_TIMEOUT_MS 600000</span><br><span class="line">    claude $argv</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<p>之后在 Fish 中执行 <code>claude-deepseek</code> 即用 DeepSeek；其他终端保持默认则仍用 Anthropic。</p>
-<h2 id="模型选择"><a href="#模型选择" class="headerlink" title="模型选择"></a>模型选择</h2><p>DeepSeek 在 Anthropic 兼容接口中常用模型名：</p>
-<table>
-<thead>
-<tr>
-<th>模型名</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>deepseek-chat</code></td>
-<td>通用对话，响应快，适合日常编码与问答</td>
-</tr>
-<tr>
-<td><code>deepseek-reasoner</code></td>
-<td>推理模式，步骤更详细，适合复杂分析与多步推理</td>
-</tr>
-</tbody></table>
-<p>通过修改 <code>ANTHROPIC_MODEL</code> 和 <code>ANTHROPIC_SMALL_FAST_MODEL</code> 即可切换。若传入 DeepSeek 不支持的模型名，接口会自动映射到 <code>deepseek-chat</code>。</p>
-<h2 id="方式二：通过-Claude-Code-Router-OpenRouter"><a href="#方式二：通过-Claude-Code-Router-OpenRouter" class="headerlink" title="方式二：通过 Claude Code Router + OpenRouter"></a>方式二：通过 Claude Code Router + OpenRouter</h2><p>若希望在同一套 Claude Code 里切换多种模型（如 Claude、GPT、DeepSeek），可使用 <a href="https://github.com/musistudio/claude-code-router">Claude Code Router</a>，通过 OpenRouter 统一接入。</p>
-<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 已安装 Claude Code 的前提下</span></span><br><span class="line">npm install -g @musistudio/claude-code-router</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-获取-OpenRouter-API-Key"><a href="#2-获取-OpenRouter-API-Key" class="headerlink" title="2. 获取 OpenRouter API Key"></a>2. 获取 OpenRouter API Key</h3><p>在 <a href="https://openrouter.ai/">OpenRouter</a> 注册并创建 API Key，按用量计费，可选用 DeepSeek 等模型。</p>
-<h3 id="3-配置文件"><a href="#3-配置文件" class="headerlink" title="3. 配置文件"></a>3. 配置文件</h3><p>创建并编辑 <code>~/.claude-code-router/config.json</code>：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;LOG&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;LOG_LEVEL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;info&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Providers&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_base_url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://openrouter.ai/api/v1/chat/completions&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;YOUR_OPENROUTER_API_KEY&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;transformer&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;use&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span> <span class="string">&quot;tooluse&quot;</span><span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;models&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;anthropic/claude-sonnet-4&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;openai/gpt-4o&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;deepseek/deepseek-chat&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Router&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;default&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;background&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;think&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>将 <code>YOUR_OPENROUTER_API_KEY</code> 换成你的 OpenRouter API Key。<code>transformer</code> 中的 <code>&quot;tooluse&quot;</code> 需保留，否则 Claude Code 的工具调用（编辑文件、执行命令等）会异常。</p>
-<h3 id="4-启动方式"><a href="#4-启动方式" class="headerlink" title="4. 启动方式"></a>4. 启动方式</h3><p>用 Router 启动 Claude Code（不再直接运行 <code>claude</code>）：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ccr code</span><br></pre></td></tr></table></figure>
-
-<p>会话中可切换模型，例如：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">/model openrouter,deepseek/deepseek-chat</span><br><span class="line">/status</span><br></pre></td></tr></table></figure>
-
-<h2 id="Anthropic-API-兼容性说明（方式一）"><a href="#Anthropic-API-兼容性说明（方式一）" class="headerlink" title="Anthropic API 兼容性说明（方式一）"></a>Anthropic API 兼容性说明（方式一）</h2><p>DeepSeek 的 Anthropic 兼容接口支持：</p>
-<ul>
-<li><strong>常用参数</strong>：<code>max_tokens</code>、<code>stop_sequences</code>、<code>stream</code>、<code>system</code>、<code>temperature</code>（0.0～2.0）、<code>top_p</code></li>
-<li><strong>工具调用</strong>：<code>tools</code>、<code>tool_choice</code>，适合 Claude Code 的编辑与执行等能力</li>
-<li><strong>内容类型</strong>：文本、thinking 类内容</li>
+<h2 id="二、LIMS-数据源与位号"><a href="#二、LIMS-数据源与位号" class="headerlink" title="二、LIMS 数据源与位号"></a>二、LIMS 数据源与位号</h2><ul>
+<li><strong>LIMS 数据源配置</strong>：RDB SQL 数据源实现；精度保留；<code>sys_config</code> value 扩至 4000</li>
+<li><strong>结果数据</strong>：筛选排序、网格配置与菜单 SQL</li>
+<li><strong>位号（fm）</strong>：导入下载对接 LIMS；采集流程与样式收敛</li>
+<li>数据源配置页 JSON 编辑器</li>
 </ul>
-<p>以下能力在 DeepSeek 端<strong>不支持</strong>或不生效：</p>
-<ul>
-<li>消息中的图片、文档等 multimodal 类型</li>
-<li>部分 MCP 相关类型（如 <code>mcp_tool_use</code>、<code>mcp_tool_result</code>）</li>
-<li>部分 Anthropic 专有字段（如 <code>anthropic-beta</code>、<code>container</code>、<code>metadata</code> 等）</li>
+<h2 id="三、AI-embedding-与知识库"><a href="#三、AI-embedding-与知识库" class="headerlink" title="三、AI embedding 与知识库"></a>三、AI embedding 与知识库</h2><ul>
+<li>默认改用本地 <strong>bge-m3</strong> embedding（免 API Key）；Docker 环境配置同步</li>
+<li>知识库 <strong>测试检索</strong> 能力与 UI</li>
+<li>当前时间预调用（系统消息前置合并）；SQL 工具参数解析增强</li>
 </ul>
-<p>仅使用「写代码、改文件、跑命令」等常见能力时，方式一即可满足需求。</p>
-<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><p><strong>Q: 必须用 Python 吗？</strong><br>A: 不必。方式一只是改环境变量，任意终端&#x2F;shell 均可；方式二需要 Node.js 来跑 <code>ccr</code>。</p>
-<p><strong>Q: DeepSeek 免费吗？</strong><br>A: 注册会有一定免费额度，超出后按官方定价计费，详见 <a href="https://platform.deepseek.com/">DeepSeek 定价页</a>。</p>
-<p><strong>Q: 如何确认当前用的是 DeepSeek？</strong><br>A: 方式一：看环境变量 <code>ANTHROPIC_BASE_URL</code> 是否为 <code>https://api.deepseek.com/anthropic</code>。方式二：在会话里输入 <code>/status</code> 查看当前模型。</p>
-<p><strong>Q: 长输出被截断或超时？</strong><br>A: 增大 <code>API_TIMEOUT_MS</code>（例如 <code>600000</code> 表示 10 分钟）。</p>
+<h2 id="四、工作台、到期提醒与容器"><a href="#四、工作台、到期提醒与容器" class="headerlink" title="四、工作台、到期提醒与容器"></a>四、工作台、到期提醒与容器</h2><ul>
+<li>首页 badge 接口与工作台快照&#x2F;超时处理</li>
+<li>到期提醒：状态判定、聚合调度、复制；工作台提醒汇总</li>
+<li>容器工作台 providers 与状态计数；任务组参数加载</li>
+<li>首页提示统一为 <code>msg</code> &#x2F; <code>alert</code></li>
+</ul>
+<h2 id="五、工艺可视化、过程控制与安全"><a href="#五、工艺可视化、过程控制与安全" class="headerlink" title="五、工艺可视化、过程控制与安全"></a>五、工艺可视化、过程控制与安全</h2><ul>
+<li><strong>P&amp;ID</strong>：集成 draw.io Stencils、ISA 符号管理；SVG 描边与样式归一</li>
+<li><strong>过程控制</strong>（#382）：超限异常记录时长计算与写入</li>
+<li><strong>EOS 权限</strong>：角色权限「移除授权」模式；清理孤立空目录</li>
+<li>Docker 本地直连端口映射、Flowable schema 自动升级等开发便利项</li>
+</ul>
 <hr>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
-<li><a href="https://api-docs.deepseek.com/zh-cn/guides/anthropic_api">DeepSeek 官方：Anthropic API 兼容说明</a></li>
-<li><a href="https://code.claude.com/docs/en/settings#environment-variables">Claude Code 环境变量说明</a></li>
-<li><a href="https://github.com/musistudio/claude-code-router">Claude Code Router</a></li>
-<li><a href="https://platform.deepseek.com/api-keys">DeepSeek 开放平台 &#x2F; API Keys</a></li>
-</ul>
+<p><strong>一句话</strong>：本周以壳层导航与全局搜索落地为主，LIMS 数据源&#x2F;位号与本地 embedding 并进，工作台到期提醒与 P&amp;ID 图元、EOS 权限移除补齐平台与安全侧能力。</p>
 ]]></content>
       <tags>
-        <tag>CLI</tag>
-        <tag>Claude Code</tag>
-        <tag>DeepSeek</tag>
-        <tag>AI</tag>
+        <tag>MES</tag>
+        <tag>工作小结</tag>
+        <tag>mes-ai</tag>
+        <tag>周报</tag>
+        <tag>mes-web</tag>
+        <tag>LIMS</tag>
       </tags>
   </entry>
   <entry>
-    <title>使用tailscale组网 使用家里打印机</title>
-    <url>/2026/03/15/%E4%BD%BF%E7%94%A8tailscale%E7%BB%84%E7%BD%91-%E4%BD%BF%E7%94%A8%E5%AE%B6%E9%87%8C%E6%89%93%E5%8D%B0%E6%9C%BA/</url>
-    <content><![CDATA[<p>在 Ubuntu 上开启子网广播</p>
-<h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p><strong>确定家里的网段：</strong> 通常是 <code>192.168.1.0/24</code> 或 <code>192.168.0.0/24</code></p>
-<p><strong>开启 IP 转发（内核层面）：</strong><br>运行以下命令：</p>
-<p><strong>Bash</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;net.ipv4.ip_forward = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">echo &#x27;net.ipv6.conf.all.forwarding = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">sudo sysctl -p /etc/sysctl.d/99-tailscale.conf</span><br></pre></td></tr></table></figure>
+    <title>MES 2026 年第 38 周工作小结</title>
+    <url>/2026/09/18/mes-weekly-2026-w38/</url>
+    <content><![CDATA[<img src="/2026/09/18/mes-weekly-2026-w38/cover.png" class="">
 
-
-<p><strong>启动子网路由：</strong><br>运行以下命令（将 <code>192.168.1.0/24</code> 替换为你家里的实际网段）：</p>
-<p><strong>Bash</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo tailscale up --advertise-routes=192.168.1.0/24</span><br></pre></td></tr></table></figure>
-
-
-
-
-<h3 id="第二步：在-Tailscale-控制面板允许路由"><a href="#第二步：在-Tailscale-控制面板允许路由" class="headerlink" title="第二步：在 Tailscale 控制面板允许路由"></a>第二步：在 Tailscale 控制面板允许路由</h3><p>为了安全，Tailscale 默认不会自动启用路由，需要你手动点一下：</p>
-<ol>
-<li>打开 <a href="https://login.tailscale.com/admin/machines">Tailscale Admin Console</a>。</li>
-<li>找到你的 <strong>Ubuntu</strong> 设备。</li>
-<li>点击右侧的三个点 <code>...</code> -&gt;  <strong>Edit route settings</strong> 。</li>
-<li>在 <strong>Subnet routes</strong> 下，勾选你刚才添加的网段，点击确认。</li>
-</ol>
+<p>本周（9&#x2F;14–9&#x2F;18，约 <strong>41 次提交</strong>）主线是 <strong>计量器具台账与菜单落地</strong>，同时补齐 <strong>菜单管理 V2</strong>、<strong>AI 协作并行</strong> 与 <strong>LLM 用量记录</strong>。合入 master 的功能分支：<code>feature/llm-api-usage</code>、<code>feature/ai-collab-parallel-children</code>、<code>feature/msr-measuring-instrument-menu</code>；GitHub <a href="https://github.com/eppen/mes-parent/pull/385">#385</a> 于周一合入。主力模块 <code>mes-measure</code>、<code>mes-workflow</code>、<code>mes-ai</code>、<code>mes-core</code>、<code>mes-web</code>。</p>
+<h2 id="一、计量器具（mes-measure）"><a href="#一、计量器具（mes-measure）" class="headerlink" title="一、计量器具（mes-measure）"></a>一、计量器具（mes-measure）</h2><ul>
+<li>菜单排除部门，字典种子补齐</li>
+<li>运行部菜单可配置挂载目录，按 URL 识别；菜单挪出「计量器具」后不再误判未生成，同步时按配置目录创建或迁入</li>
+<li>台账列表扩展字段，增加人员关联</li>
+<li>模版下载、出厂日期选择、Excel 属性转换、周期单位选项收了一轮</li>
+</ul>
+<h2 id="二、菜单与目录"><a href="#二、菜单与目录" class="headerlink" title="二、菜单与目录"></a>二、菜单与目录</h2><ul>
+<li>菜单拖拽排序、批量改上级；选择上级树跳过 <code>parentId</code> 自引用脏数据</li>
+<li>EOS 目录树节点处理与交互收简</li>
+<li>安全侧支持把 MES 目录挂到已有 EOS 节点，不再新建树节点，并校验菜单与节点类型</li>
+</ul>
+<h2 id="三、AI-协作、用量与流程图（mes-ai）"><a href="#三、AI-协作、用量与流程图（mes-ai）" class="headerlink" title="三、AI 协作、用量与流程图（mes-ai）"></a>三、AI 协作、用量与流程图（mes-ai）</h2><ul>
+<li>协作子智能体并行执行、上下文隔离，新增 <code>child_concurrency</code> 限制并发</li>
+<li>对话与图表调用记录 LLM API 用量</li>
+<li>BPMN：自动布局与导入、名称属性清洗与校验、条件表达式清洗</li>
+<li>图表批量上限 <code>EXEC_BATCH_MAX_ITEMS</code> 从 20 提到 30</li>
+</ul>
+<h2 id="四、图表、报表与附件"><a href="#四、图表、报表与附件" class="headerlink" title="四、图表、报表与附件"></a>四、图表、报表与附件</h2><ul>
+<li>船舶图：近期计划船舶及数量查询、对应组件与下钻</li>
+<li>报表模版公式检查随 #385 合入；Excel 模版支持手动保存检查点</li>
+<li>附件删除同步回写 EOS 表头附件数，删除前校验权限</li>
+<li>文档全屏预览样式、船舶天气表单对齐小修</li>
+</ul>
+<h3 id="节奏"><a href="#节奏" class="headerlink" title="节奏"></a>节奏</h3><table>
+<thead>
+<tr>
+<th>日期</th>
+<th>提交约数</th>
+<th>重心</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>09-14</td>
+<td>3</td>
+<td>#385 合入；模版检查点、文档预览</td>
+</tr>
+<tr>
+<td>09-15</td>
+<td>10</td>
+<td>LLM 用量、协作并行、计划船舶；两条 AI 分支合入 master</td>
+</tr>
+<tr>
+<td>09-16</td>
+<td>6</td>
+<td>BPMN 条件清洗、LLM 客户端、工程配置清理</td>
+</tr>
+<tr>
+<td>09-17</td>
+<td>11</td>
+<td>菜单拖拽与挂载目录；计量器具菜单分支合入 master</td>
+</tr>
+<tr>
+<td>09-18</td>
+<td>13</td>
+<td>器具台账字段与日期、目录挂接、附件删除</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>一句话</strong>：计量器具从菜单到台账基本能用，菜单管理 V2 和 AI 调用侧也各收了一截。</p>
 ]]></content>
+      <tags>
+        <tag>MES</tag>
+        <tag>工作小结</tag>
+        <tag>mes-ai</tag>
+        <tag>mes-measure</tag>
+        <tag>周报</tag>
+        <tag>mes-web</tag>
+      </tags>
   </entry>
   <entry>
-    <title>查看电脑的电池状态</title>
-    <url>/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/</url>
-    <content><![CDATA[<p>没有特殊软件的情况下，使用powershell命令生成电池使用情况报告</p>
-<p>在 PowerShell（管理员模式）输入 powercfg &#x2F;batteryreport，系统会生成一个 HTML 报告，包含电池设计容量、当前满电容量、充放电历史等信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">powercfg /batteryreport</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    <title>MES 2026 年第 42 周工作小结</title>
+    <url>/2026/10/16/mes-weekly-2026-w42/</url>
+    <content><![CDATA[<img src="/2026/10/16/mes-weekly-2026-w42/cover.png" class="">
 
-<p>运行后生成一个html文件 batteryreport.html</p>
-<p>使用浏览器打开这个html文件  </p>
-<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070792534.png" class="" width="1748070792534">
-
-
-<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070821322.png" class="" width="1748070821322">
-
+<p>本周（10&#x2F;12–10&#x2F;16，合入 master 的非合并提交 <strong>89</strong> 条，合并 <strong>7</strong> 次，含 PR #386、#284）主线是把 EOS 流程模块 <code>mes-nwf</code> 从 AI 起草做到可发布的图形设计器，并合入电厂小指标与手册 AI 问答。文件改动集中在 <code>mes-workflow</code>、<code>mes-core</code>、<code>mes-indicator</code>。</p>
+<h2 id="一、流程设计器（mes-nwf）"><a href="#一、流程设计器（mes-nwf）" class="headerlink" title="一、流程设计器（mes-nwf）"></a>一、流程设计器（mes-nwf）</h2><p>周四合入 <code>feature/mes-nwf</code>，周五补了图形编辑和版本比对。同周还合入 <code>feature/nwf-transition-props</code>、<code>feature/nwf-savegraph-allow-missing-entity</code>、<code>feature/nwf-test-bill-define</code>。</p>
+<ul>
+<li>新建 EOS NWF 流程模块：AI 起草、边标签、流程细化、多泳道布局，可还原原始布局</li>
+<li>轻量图形编辑：ELK 自动布局、汇聚&#x2F;分支模式、网格、对齐圈选、左右分隔</li>
+<li>发布与版本：版本签发校验、历史版本、流程 XML 按属性分行比对</li>
+<li>传递线属性编辑和条件表达式向导；设计器与预览里，校验列表点击可定位节点</li>
+<li>测试单据字段包，以及 <code>DjDy</code> &#x2F; <code>XmDy</code> 定义生成；关联单据缺失时仍允许 <code>saveGraph</code></li>
+<li>流程分类侧树、复制、类型筛选；流程 JSON 字段的 XSS 放行</li>
+</ul>
+<h2 id="二、电厂小指标（mes-indicator）"><a href="#二、电厂小指标（mes-indicator）" class="headerlink" title="二、电厂小指标（mes-indicator）"></a>二、电厂小指标（mes-indicator）</h2><p>周五合入 <code>feature/mes-indicator</code>。</p>
+<ul>
+<li>新增电厂小指标模块和打分引擎</li>
+<li>经济核算引导页、日期控件、配置页选择器，以及打分页的基础体验</li>
+<li>引导页卡片去掉粉色背景；修正成绩表 JPA 属性名，列表高度随 jqGrid 自适应</li>
+</ul>
+<h2 id="三、手册与船舶作业（PR-284）"><a href="#三、手册与船舶作业（PR-284）" class="headerlink" title="三、手册与船舶作业（PR #284）"></a>三、手册与船舶作业（PR #284）</h2><p>周二合入 <code>feature/manual-docs</code>。</p>
+<ul>
+<li>手册检索与 AI 问答，侧栏和上下文长度做了调整</li>
+<li>船舶作业、泊位规则、天气规则文档，以及 AI 船期页和帮助入口</li>
+</ul>
+<h2 id="四、计划范围与船舶看板"><a href="#四、计划范围与船舶看板" class="headerlink" title="四、计划范围与船舶看板"></a>四、计划范围与船舶看板</h2><ul>
+<li>周一合入 PR <strong>#386</strong>（<code>feature/jhfw-layout-import</code>）：计划范围 Excel 导入摘要、装置别称（<code>ZZBC</code>）、未匹配装置提示，以及按月删除、有数据月份查询</li>
+<li>船舶信息看板增加月度作业图、明细表和总重量</li>
+</ul>
+<h2 id="五、平台"><a href="#五、平台" class="headerlink" title="五、平台"></a>五、平台</h2><p>周五修复多 Tab 刷新时子应用页面短暂 404。</p>
+<h2 id="节奏"><a href="#节奏" class="headerlink" title="节奏"></a>节奏</h2><table>
+<thead>
+<tr>
+<th>时段</th>
+<th>侧重</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>周一</td>
+<td>计划范围导入 #386</td>
+</tr>
+<tr>
+<td>周二</td>
+<td>手册 AI 问答 #284；NWF 模块与 AI 起草起步</td>
+</tr>
+<tr>
+<td>周三</td>
+<td>设计器、ELK 布局、发布与历史版本比对</td>
+</tr>
+<tr>
+<td>周四</td>
+<td>NWF 合入；传递线、测试单据、AI 细化；小指标模块</td>
+</tr>
+<tr>
+<td>周五</td>
+<td>小指标合入；图形网格与对齐；版本比对按属性分行</td>
+</tr>
+</tbody></table>
+<p>能耗分析（<code>feature/energy-nhtj-analysis</code>）和平台 SSO 票据（<code>feature/mes-platform-sso-ticket</code>）本周有提交，尚未合入 master。</p>
+<p>一句话：流程从「能起草」走到「能画、能排版、能发布、能对版本」，小指标和手册问答同一周落地。</p>
 ]]></content>
+      <tags>
+        <tag>MES</tag>
+        <tag>工作小结</tag>
+        <tag>周报</tag>
+        <tag>mes-workflow</tag>
+        <tag>mes-indicator</tag>
+      </tags>
   </entry>
   <entry>
     <title>使用github和hexo构建个人博客门户</title>
@@ -3316,6 +3256,110 @@
 ]]></content>
   </entry>
   <entry>
+    <title>在 Claude Code CLI 中使用 DeepSeek 作为模型</title>
+    <url>/2026/03/15/use-deepseek-as-model-in-claude-code-cli/</url>
+    <content><![CDATA[<p>Claude Code 是 Anthropic 的 AI 编程助手，默认只使用 Anthropic 的模型。通过环境变量 <code>ANTHROPIC_BASE_URL</code> 可以切换 API 端点，DeepSeek 官方提供了 <strong>Anthropic API 兼容</strong> 的接口，因此可以直接把 Claude Code CLI 接到 DeepSeek，无需代理或第三方路由。</p>
+<p>本文介绍如何配置 Claude Code CLI，使其使用 DeepSeek 作为后端模型。</p>
+<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><ul>
+<li>已安装 <a href="https://claude.ai/code">Claude Code</a>（官方安装：<code>curl -fsSL https://claude.ai/install.sh | bash</code>）</li>
+<li>已注册 <a href="https://platform.deepseek.com/">DeepSeek 开放平台</a> 并获取 <strong>API Key</strong>（<a href="https://platform.deepseek.com/api-keys">API Keys 页面</a>）</li>
+</ul>
+<h2 id="方式一：官方-Anthropic-兼容-API（推荐）"><a href="#方式一：官方-Anthropic-兼容-API（推荐）" class="headerlink" title="方式一：官方 Anthropic 兼容 API（推荐）"></a>方式一：官方 Anthropic 兼容 API（推荐）</h2><p>DeepSeek 提供与 Anthropic Messages API 兼容的端点，只需改环境变量即可让 Claude Code 走 DeepSeek。</p>
+<h3 id="1-配置环境变量"><a href="#1-配置环境变量" class="headerlink" title="1. 配置环境变量"></a>1. 配置环境变量</h3><p>在终端中执行（将 <code>YOUR_DEEPSEEK_API_KEY</code> 换成你的 DeepSeek API Key）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># DeepSeek Anthropic 兼容 API 端点</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定使用的模型（见下方「模型选择」）</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：避免长输出时客户端超时（单位毫秒，例如 10 分钟）</span></span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：禁用非必要流量（仅在使用第三方 API 时建议）</span></span><br><span class="line"><span class="built_in">export</span> CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-启动-Claude-Code"><a href="#2-启动-Claude-Code" class="headerlink" title="2. 启动 Claude Code"></a>2. 启动 Claude Code</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> your-project</span><br><span class="line">claude</span><br></pre></td></tr></table></figure>
+
+<p>之后 Claude Code 的请求会发往 DeepSeek，使用你配置的模型。</p>
+<h3 id="3-写入-Shell-配置（长期使用）"><a href="#3-写入-Shell-配置（长期使用）" class="headerlink" title="3. 写入 Shell 配置（长期使用）"></a>3. 写入 Shell 配置（长期使用）</h3><p>避免每次手动 export，可写入 <code>~/.bashrc</code>、<code>~/.zshrc</code> 或 Fish 的 <code>config.fish</code>。</p>
+<p><strong>Bash &#x2F; Zsh 示例：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># DeepSeek + Claude Code</span></span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_AUTH_TOKEN=YOUR_DEEPSEEK_API_KEY</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat</span><br><span class="line"><span class="built_in">export</span> API_TIMEOUT_MS=600000</span><br></pre></td></tr></table></figure>
+
+<p><strong>Fish 示例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function claude-deepseek</span><br><span class="line">    set -x ANTHROPIC_BASE_URL https://api.deepseek.com/anthropic</span><br><span class="line">    set -x ANTHROPIC_AUTH_TOKEN &quot;YOUR_DEEPSEEK_API_KEY&quot;</span><br><span class="line">    set -x ANTHROPIC_MODEL deepseek-chat</span><br><span class="line">    set -x ANTHROPIC_SMALL_FAST_MODEL deepseek-chat</span><br><span class="line">    set -x API_TIMEOUT_MS 600000</span><br><span class="line">    claude $argv</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>之后在 Fish 中执行 <code>claude-deepseek</code> 即用 DeepSeek；其他终端保持默认则仍用 Anthropic。</p>
+<h2 id="模型选择"><a href="#模型选择" class="headerlink" title="模型选择"></a>模型选择</h2><p>DeepSeek 在 Anthropic 兼容接口中常用模型名：</p>
+<table>
+<thead>
+<tr>
+<th>模型名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>deepseek-chat</code></td>
+<td>通用对话，响应快，适合日常编码与问答</td>
+</tr>
+<tr>
+<td><code>deepseek-reasoner</code></td>
+<td>推理模式，步骤更详细，适合复杂分析与多步推理</td>
+</tr>
+</tbody></table>
+<p>通过修改 <code>ANTHROPIC_MODEL</code> 和 <code>ANTHROPIC_SMALL_FAST_MODEL</code> 即可切换。若传入 DeepSeek 不支持的模型名，接口会自动映射到 <code>deepseek-chat</code>。</p>
+<h2 id="方式二：通过-Claude-Code-Router-OpenRouter"><a href="#方式二：通过-Claude-Code-Router-OpenRouter" class="headerlink" title="方式二：通过 Claude Code Router + OpenRouter"></a>方式二：通过 Claude Code Router + OpenRouter</h2><p>若希望在同一套 Claude Code 里切换多种模型（如 Claude、GPT、DeepSeek），可使用 <a href="https://github.com/musistudio/claude-code-router">Claude Code Router</a>，通过 OpenRouter 统一接入。</p>
+<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 已安装 Claude Code 的前提下</span></span><br><span class="line">npm install -g @musistudio/claude-code-router</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-获取-OpenRouter-API-Key"><a href="#2-获取-OpenRouter-API-Key" class="headerlink" title="2. 获取 OpenRouter API Key"></a>2. 获取 OpenRouter API Key</h3><p>在 <a href="https://openrouter.ai/">OpenRouter</a> 注册并创建 API Key，按用量计费，可选用 DeepSeek 等模型。</p>
+<h3 id="3-配置文件"><a href="#3-配置文件" class="headerlink" title="3. 配置文件"></a>3. 配置文件</h3><p>创建并编辑 <code>~/.claude-code-router/config.json</code>：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;LOG&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;LOG_LEVEL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;info&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Providers&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_base_url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://openrouter.ai/api/v1/chat/completions&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;YOUR_OPENROUTER_API_KEY&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;transformer&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;use&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;openrouter&quot;</span><span class="punctuation">,</span> <span class="string">&quot;tooluse&quot;</span><span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;models&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;anthropic/claude-sonnet-4&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;openai/gpt-4o&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;deepseek/deepseek-chat&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Router&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;default&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;background&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;think&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openrouter,deepseek/deepseek-chat&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>将 <code>YOUR_OPENROUTER_API_KEY</code> 换成你的 OpenRouter API Key。<code>transformer</code> 中的 <code>&quot;tooluse&quot;</code> 需保留，否则 Claude Code 的工具调用（编辑文件、执行命令等）会异常。</p>
+<h3 id="4-启动方式"><a href="#4-启动方式" class="headerlink" title="4. 启动方式"></a>4. 启动方式</h3><p>用 Router 启动 Claude Code（不再直接运行 <code>claude</code>）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ccr code</span><br></pre></td></tr></table></figure>
+
+<p>会话中可切换模型，例如：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">/model openrouter,deepseek/deepseek-chat</span><br><span class="line">/status</span><br></pre></td></tr></table></figure>
+
+<h2 id="Anthropic-API-兼容性说明（方式一）"><a href="#Anthropic-API-兼容性说明（方式一）" class="headerlink" title="Anthropic API 兼容性说明（方式一）"></a>Anthropic API 兼容性说明（方式一）</h2><p>DeepSeek 的 Anthropic 兼容接口支持：</p>
+<ul>
+<li><strong>常用参数</strong>：<code>max_tokens</code>、<code>stop_sequences</code>、<code>stream</code>、<code>system</code>、<code>temperature</code>（0.0～2.0）、<code>top_p</code></li>
+<li><strong>工具调用</strong>：<code>tools</code>、<code>tool_choice</code>，适合 Claude Code 的编辑与执行等能力</li>
+<li><strong>内容类型</strong>：文本、thinking 类内容</li>
+</ul>
+<p>以下能力在 DeepSeek 端<strong>不支持</strong>或不生效：</p>
+<ul>
+<li>消息中的图片、文档等 multimodal 类型</li>
+<li>部分 MCP 相关类型（如 <code>mcp_tool_use</code>、<code>mcp_tool_result</code>）</li>
+<li>部分 Anthropic 专有字段（如 <code>anthropic-beta</code>、<code>container</code>、<code>metadata</code> 等）</li>
+</ul>
+<p>仅使用「写代码、改文件、跑命令」等常见能力时，方式一即可满足需求。</p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><p><strong>Q: 必须用 Python 吗？</strong><br>A: 不必。方式一只是改环境变量，任意终端&#x2F;shell 均可；方式二需要 Node.js 来跑 <code>ccr</code>。</p>
+<p><strong>Q: DeepSeek 免费吗？</strong><br>A: 注册会有一定免费额度，超出后按官方定价计费，详见 <a href="https://platform.deepseek.com/">DeepSeek 定价页</a>。</p>
+<p><strong>Q: 如何确认当前用的是 DeepSeek？</strong><br>A: 方式一：看环境变量 <code>ANTHROPIC_BASE_URL</code> 是否为 <code>https://api.deepseek.com/anthropic</code>。方式二：在会话里输入 <code>/status</code> 查看当前模型。</p>
+<p><strong>Q: 长输出被截断或超时？</strong><br>A: 增大 <code>API_TIMEOUT_MS</code>（例如 <code>600000</code> 表示 10 分钟）。</p>
+<hr>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a href="https://api-docs.deepseek.com/zh-cn/guides/anthropic_api">DeepSeek 官方：Anthropic API 兼容说明</a></li>
+<li><a href="https://code.claude.com/docs/en/settings#environment-variables">Claude Code 环境变量说明</a></li>
+<li><a href="https://github.com/musistudio/claude-code-router">Claude Code Router</a></li>
+<li><a href="https://platform.deepseek.com/api-keys">DeepSeek 开放平台 &#x2F; API Keys</a></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>CLI</tag>
+        <tag>Claude Code</tag>
+        <tag>DeepSeek</tag>
+        <tag>AI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>查看电脑的电池状态</title>
+    <url>/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/</url>
+    <content><![CDATA[<p>没有特殊软件的情况下，使用powershell命令生成电池使用情况报告</p>
+<p>在 PowerShell（管理员模式）输入 powercfg &#x2F;batteryreport，系统会生成一个 HTML 报告，包含电池设计容量、当前满电容量、充放电历史等信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">powercfg /batteryreport</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行后生成一个html文件 batteryreport.html</p>
+<p>使用浏览器打开这个html文件  </p>
+<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070792534.png" class="" width="1748070792534">
+
+
+<img src="/2025/05/24/%E6%9F%A5%E7%9C%8B%E7%94%B5%E8%84%91%E7%9A%84%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81/1748070821322.png" class="" width="1748070821322">
+
+]]></content>
+  </entry>
+  <entry>
     <title>浙石化序</title>
     <url>/2025/07/07/%E6%B5%99%E7%9F%B3%E5%8C%96%E5%BA%8F/</url>
     <content><![CDATA[<p>浙东形胜，三衢古郡，舟山新府。襟东海而带杭湾，控岛链而引巨舶。物华天宝，原油映碧海之光;人杰地灵，工匠聚寰宇之智。雄州雾列，塔器参天;货积云屯，管道织地。时维仲夏，序属清和，掌舵人邀宾朋于鱼山，展宏图于海隅。群贤毕至，少长成集，观此化工新城，敢竭鄙诚，恭疏短引。<br>若夫巨浸茫茫，沧波浩荡。昔者荒礁寂寥，渔火零星;今朝钢构峥，银灯璀璨。削峰填壑，六载功成;跨海连洲，百里势就。银罐如林，贮寰球之黑金;铁轨似弦，奏工业之强音。裂解装置耸若剑阁，催化高塔峻比雷峰。火炬凌雪，夜燃不灭之<br>炬;码头枕浪，朝发万吨之舟。<br>至若生产之盛，则见管道蟠空，银蛇舞壑;仪表星罗，明眸察微。中央控室，决胜千里之外;智能系统，运筹方寸之间。<br>原油分馏，轻质化而为汽柴;分子重构，烯烃聚而成塑胶。芳烃织锦衣之梦，PX解化纤之渴。硫黄变废为宝，尾气点石成金。<br>节能减排，树绿色标杆;循环利用，开生态新篇。若乃创新之道，院十工作站藏龙卧虎，博十后基地起凤腾蛟。专利千项，破外邦之垄断;标准百家，立行业之丰泉。纳米催化，巧夺造化;智能炼厂，智领未来。校企联姻，产学研一体;中外合作，技贸融三通。斯诚东海之硅谷，实乃化工之殿<br>早:嗟乎!石化兴衰，关乎国运。昔闻大庆精神，铁人泣血;今见浙石气象，海匠呕心。老牌炼厂，困陈规而式微;新兴基地，乘东风而崛起。屈子求索，路漫漫其修远;愚公移山，志巍巍而不改。岂效守成之辈，坐享其成?敢为天下先，方兄英雄色。<br>掌舵人，精神抖擞，壮志凌云。掌千亿之资，立百年之业。创新驱动，布新局如弈棋;安全为本，守红线若履冰。绿色低碳，岂止合规达标?数字智能，更求行业引领。呜呯!碧海蓝天，岂与黑烟共存?金山银山，终须绿水相伴。所赖转型及时，未雨绸缪。<br>敢竭鄙怀，恭疏短引。一言均赋，四韵俱成:鱼山螺岛起宏图，钢构连云海气殊。裂解千钧轻似羽，合成万象妙如珠。智能已破重洋术，绿色新开双碳途。莫道化工皆浊物，今看白舞银炉。</p>
@@ -3387,6 +3431,32 @@
         <tag>体重管理</tag>
         <tag>九体医学</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>使用tailscale组网 使用家里打印机</title>
+    <url>/2026/03/15/%E4%BD%BF%E7%94%A8tailscale%E7%BB%84%E7%BD%91-%E4%BD%BF%E7%94%A8%E5%AE%B6%E9%87%8C%E6%89%93%E5%8D%B0%E6%9C%BA/</url>
+    <content><![CDATA[<p>在 Ubuntu 上开启子网广播</p>
+<h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p><strong>确定家里的网段：</strong> 通常是 <code>192.168.1.0/24</code> 或 <code>192.168.0.0/24</code></p>
+<p><strong>开启 IP 转发（内核层面）：</strong><br>运行以下命令：</p>
+<p><strong>Bash</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;net.ipv4.ip_forward = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">echo &#x27;net.ipv6.conf.all.forwarding = 1&#x27; | sudo tee -a /etc/sysctl.d/99-tailscale.conf</span><br><span class="line">sudo sysctl -p /etc/sysctl.d/99-tailscale.conf</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>启动子网路由：</strong><br>运行以下命令（将 <code>192.168.1.0/24</code> 替换为你家里的实际网段）：</p>
+<p><strong>Bash</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo tailscale up --advertise-routes=192.168.1.0/24</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="第二步：在-Tailscale-控制面板允许路由"><a href="#第二步：在-Tailscale-控制面板允许路由" class="headerlink" title="第二步：在 Tailscale 控制面板允许路由"></a>第二步：在 Tailscale 控制面板允许路由</h3><p>为了安全，Tailscale 默认不会自动启用路由，需要你手动点一下：</p>
+<ol>
+<li>打开 <a href="https://login.tailscale.com/admin/machines">Tailscale Admin Console</a>。</li>
+<li>找到你的 <strong>Ubuntu</strong> 设备。</li>
+<li>点击右侧的三个点 <code>...</code> -&gt;  <strong>Edit route settings</strong> 。</li>
+<li>在 <strong>Subnet routes</strong> 下，勾选你刚才添加的网段，点击确认。</li>
+</ol>
+]]></content>
   </entry>
   <entry>
     <title>瘦身密码（三）：九体医学入门——解锁你的体质密码</title>
@@ -3488,225 +3558,6 @@
         <tag>健康</tag>
         <tag>九体医学</tag>
         <tag>中医体质</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>瘦身密码（二）：脂肪工厂的运作密码——科学减肥是场马拉松</title>
-    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%84%82%E8%82%AA%E5%B7%A5%E5%8E%82%E4%B8%8E%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/</url>
-    <content><![CDATA[<h2 id="你真的需要减肥吗？"><a href="#你真的需要减肥吗？" class="headerlink" title="你真的需要减肥吗？"></a>你真的需要减肥吗？</h2><h3 id="BMI：有用，但不万能"><a href="#BMI：有用，但不万能" class="headerlink" title="BMI：有用，但不万能"></a>BMI：有用，但不万能</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">BMI = 体重(kg) ÷ 身高²(m²)</span><br></pre></td></tr></table></figure>
-
-<p>中国成人标准：</p>
-<table>
-<thead>
-<tr>
-<th>分类</th>
-<th>BMI</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>体重过低</td>
-<td>&lt;18.5</td>
-</tr>
-<tr>
-<td>正常</td>
-<td>18.5～24</td>
-</tr>
-<tr>
-<td>超重</td>
-<td>24～28</td>
-</tr>
-<tr>
-<td>肥胖</td>
-<td>≥28</td>
-</tr>
-</tbody></table>
-<p>BMI 对普通成年人实用，但对运动员等肌肉发达者可能误判；对孕妇、儿童、老年人参考价值有限。<strong>更关键的是脂肪分布</strong>，而非单一数字。</p>
-<h3 id="肥胖三级预警"><a href="#肥胖三级预警" class="headerlink" title="肥胖三级预警"></a>肥胖三级预警</h3><ul>
-<li><strong>轻度</strong>（28～32.5）：糖尿病、高血压风险上升，关节负担加重</li>
-<li><strong>中度</strong>（32.5～37.5）：心血管风险加剧，易出现睡眠呼吸暂停</li>
-<li><strong>重度</strong>（≥37.5）：心衰、脑卒中风险极高，代谢综合征与多种癌症风险显著上升</li>
-</ul>
-<h3 id="体脂率与腰臀比"><a href="#体脂率与腰臀比" class="headerlink" title="体脂率与腰臀比"></a>体脂率与腰臀比</h3><p>健康体脂率：男性约 15%～20%，女性约 20%～25%。腰臀比反映脂肪分布——苹果型（腹型）远比梨型危险。</p>
-<h2 id="脂肪从哪来？"><a href="#脂肪从哪来？" class="headerlink" title="脂肪从哪来？"></a>脂肪从哪来？</h2><h3 id="中医视角：易胖体质的「培育土壤」"><a href="#中医视角：易胖体质的「培育土壤」" class="headerlink" title="中医视角：易胖体质的「培育土壤」"></a>中医视角：易胖体质的「培育土壤」</h3><ol>
-<li><strong>饮食不节</strong>：肥甘厚味、暴饮暴食，脾胃运化不及，聚为膏脂痰浊</li>
-<li><strong>缺乏运动</strong>：久坐少动，气血不畅，痰湿内生</li>
-<li><strong>情志失调</strong>：肝郁气滞、思虑伤脾，水湿代谢失常</li>
-<li><strong>脏腑失调</strong>：脾虚运化失司、肾阳虚水湿不化</li>
-</ol>
-<h3 id="西医视角：代谢失衡"><a href="#西医视角：代谢失衡" class="headerlink" title="西医视角：代谢失衡"></a>西医视角：代谢失衡</h3><p>遗传、高热量饮食、运动不足、内分泌疾病（甲减、库欣综合征）、肠道菌群失衡等，共同导致能量摄入大于消耗，多余能量以脂肪储存。</p>
-<h2 id="快速瘦身的陷阱"><a href="#快速瘦身的陷阱" class="headerlink" title="快速瘦身的陷阱"></a>快速瘦身的陷阱</h2><h3 id="过度节食：得不偿失"><a href="#过度节食：得不偿失" class="headerlink" title="过度节食：得不偿失"></a>过度节食：得不偿失</h3><p>节食初期体重下降，但身体会降低基础代谢率（BMR）进入「平台期」。恢复正常饮食后极易反弹，并可能带来：</p>
-<ul>
-<li>免疫力下降、肝肾功能失调</li>
-<li>女性月经紊乱甚至闭经</li>
-<li>脱发、抑郁焦虑</li>
-<li>反复节食形成恶性循环</li>
-</ul>
-<p><strong>BMR 估算公式（Mifflin-St Jeor）：</strong></p>
-<ul>
-<li>男性：10×体重(kg) + 6.25×身高(cm) − 5×年龄 + 5</li>
-<li>女性：10×体重(kg) + 6.25×身高(cm) − 5×年龄 − 161</li>
-</ul>
-<h3 id="代餐、排毒、极端断食"><a href="#代餐、排毒、极端断食" class="headerlink" title="代餐、排毒、极端断食"></a>代餐、排毒、极端断食</h3><ul>
-<li><strong>代餐</strong>：短期降重，但代谢减慢，恢复饮食后易反弹，长期可能影响消化与免疫</li>
-<li><strong>排毒</strong>：人体有自净能力；情志调节、均衡饮食、规律运动才是正道</li>
-<li><strong>轻断食</strong>：间歇性禁食有一定研究支持，但长时间不吃饭可能导致低血糖、电解质紊乱，糖尿病患者尤其危险</li>
-</ul>
-<h2 id="什么才是科学减肥？"><a href="#什么才是科学减肥？" class="headerlink" title="什么才是科学减肥？"></a>什么才是科学减肥？</h2><p>核心原则：<strong>减肥是马拉松，不是百米冲刺。</strong></p>
-<h3 id="能量平衡"><a href="#能量平衡" class="headerlink" title="能量平衡"></a>能量平衡</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">每日摄入（减重）= TDEE − 500 千卡</span><br><span class="line">TDEE = BMR × 活动因子</span><br></pre></td></tr></table></figure>
-
-<p>活动因子：久坐 1.2，轻度活动 1.375，中度 1.55，高度 1.725，极高 1.9。</p>
-<h3 id="三大营养素分配"><a href="#三大营养素分配" class="headerlink" title="三大营养素分配"></a>三大营养素分配</h3><ul>
-<li>碳水化合物：45%～65%（优选全谷物、薯类、豆类）</li>
-<li>蛋白质：10%～35%（瘦肉、鱼、蛋、奶、豆制品）</li>
-<li>脂肪：20%～30%（植物油、坚果，少饱和脂肪与反式脂肪）</li>
-</ul>
-<h3 id="饮食习惯"><a href="#饮食习惯" class="headerlink" title="饮食习惯"></a>饮食习惯</h3><ul>
-<li>定时进食，细嚼慢咽，七八分饱</li>
-<li>进食顺序：清汤 → 蔬菜 → 肉类 → 主食</li>
-<li>烹调以蒸、炖、煮为主，少油炸</li>
-<li>看懂营养成分表，警惕「低脂」但高热量的食品</li>
-</ul>
-<h3 id="运动：每天-6000-步起步"><a href="#运动：每天-6000-步起步" class="headerlink" title="运动：每天 6000 步起步"></a>运动：每天 6000 步起步</h3><ul>
-<li>每周至少 150 分钟中等强度有氧运动</li>
-<li>结合力量训练，提高基础代谢</li>
-<li>碎片化运动也有价值：通勤多走、爬楼梯、工间拉伸</li>
-</ul>
-<h3 id="情绪管理"><a href="#情绪管理" class="headerlink" title="情绪管理"></a>情绪管理</h3><p>压力肥、深夜暴食常与情绪相关。好心情是最佳「燃脂剂」——学会与焦虑和解，比盲目节食更重要。</p>
-<h2 id="懒人减肥武器库速览"><a href="#懒人减肥武器库速览" class="headerlink" title="懒人减肥武器库速览"></a>懒人减肥武器库速览</h2><table>
-<thead>
-<tr>
-<th>维度</th>
-<th>要点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>饮食</strong></td>
-<td>能量赤字 + 营养充足；外卖少点高糖高油；麻辣烫不加麻酱也是多样饮食的好选择</td>
-</tr>
-<tr>
-<td><strong>运动</strong></td>
-<td>每天 10 分钟碎片化运动也有累积效应；选自己喜欢的项目才能坚持</td>
-</tr>
-<tr>
-<td><strong>情绪</strong></td>
-<td>识别压力性进食；用运动、社交替代零食快感</td>
-</tr>
-<tr>
-<td><strong>中医适宜技术</strong></td>
-<td>针灸、埋线、拔罐、穴位按摩等可作为辅助，需在专业医师指导下进行</td>
-</tr>
-</tbody></table>
-<h2 id="管体-管重-不反弹"><a href="#管体-管重-不反弹" class="headerlink" title="管体 + 管重 &#x3D; 不反弹"></a>管体 + 管重 &#x3D; 不反弹</h2><p>单纯减重而不调体质，往往陷入「减—反弹—再减」循环。下一篇将介绍王琦院士创立的<strong>九体医学</strong>——先认清自己是哪种体质，再对症瘦身。</p>
-]]></content>
-      <tags>
-        <tag>健康</tag>
-        <tag>体重管理</tag>
-        <tag>科学减肥</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>瘦身密码（五）：甜蜜陷阱——肥胖引爆的八大健康地雷</title>
-    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%82%A5%E8%83%96%E5%85%AB%E5%A4%A7%E5%81%A5%E5%BA%B7%E5%9C%B0%E9%9B%B7/</url>
-    <content><![CDATA[<p>肥胖是健康的「隐形杀手」——影响的不只是外形，而是心血管、代谢、内分泌、呼吸、骨骼、生殖乃至心理的全系统连锁反应。以下梳理书中重点阐述的<strong>八大健康地雷</strong>及应对思路。</p>
-<hr>
-<h2 id="1-糖尿病：胰岛素遇上甜甜圈"><a href="#1-糖尿病：胰岛素遇上甜甜圈" class="headerlink" title="1. 糖尿病：胰岛素遇上甜甜圈"></a>1. 糖尿病：胰岛素遇上甜甜圈</h2><p>中国 20～79 岁人群糖尿病患病率约 10.6%，患病人数约 1.41 亿。肥胖与糖尿病如影随形：</p>
-<ul>
-<li>体重每增加 1 kg，糖尿病风险至少升 5%</li>
-<li>约 50% 肥胖者将来可能患 2 型糖尿病</li>
-<li>糖尿病患者中约 2&#x2F;3 超重或肥胖</li>
-</ul>
-<p><strong>机制</strong>：内脏脂肪像「棉袄」包裹细胞，胰岛素（钥匙）难以与受体（锁）结合，葡萄糖进不了细胞 → <strong>胰岛素抵抗</strong> → 代偿性高胰岛素 → 食欲增加 → 更胖 → 最终血糖失控。</p>
-<p><strong>逆转密码</strong>：</p>
-<ul>
-<li>少吃深加工食品、奶茶炸鸡；多吃蔬菜、粗粮</li>
-<li>中低强度有氧运动，餐后 30～60 分钟，每次 ≥30 分钟，约 200～300 千卡</li>
-<li>超重人群 35～70 岁应每 3 年筛查血糖</li>
-<li>九体医学统计：气虚质、阴虚质、痰湿质最易患糖尿病</li>
-</ul>
-<hr>
-<h2 id="2-冠心病：糖脂风暴下的冠状动脉"><a href="#2-冠心病：糖脂风暴下的冠状动脉" class="headerlink" title="2. 冠心病：糖脂风暴下的冠状动脉"></a>2. 冠心病：糖脂风暴下的冠状动脉</h2><p>冠心病患者超重&#x2F;肥胖率超 50%。BMI 越高，冠心病发病率越高；肥胖者患病概率约为常人 2～3 倍，超平均体重 40% 者死亡风险翻倍。</p>
-<p><strong>机制</strong>：肥胖 → 血脂紊乱 → 动脉粥样硬化斑块 → 冠脉狭窄 → 心肌缺血。心脏如同小发动机驱动重型卡车，长期超负荷终将「罢工」。</p>
-<p><strong>逆转密码</strong>：减重 + 控脂 + 戒烟限酒 + 规律运动；编写细胞层面的「燃脂程序」，减轻心脏负担。</p>
-<hr>
-<h2 id="3-睡眠呼吸暂停：内脏脂肪的午夜叛乱"><a href="#3-睡眠呼吸暂停：内脏脂肪的午夜叛乱" class="headerlink" title="3. 睡眠呼吸暂停：内脏脂肪的午夜叛乱"></a>3. 睡眠呼吸暂停：内脏脂肪的午夜叛乱</h2><p>腹型肥胖者脂肪堆积在呼吸道周围，气道变窄，睡眠时呼吸暂停 → 缺氧 → 睡眠质量差 → 日间嗜睡 → 活动减少 → 更胖，形成<strong>死亡循环</strong>。</p>
-<p><strong>逆转密码</strong>：减重是核心；侧睡、避免睡前饮酒；严重者需呼吸机等医学干预。</p>
-<hr>
-<h2 id="4-脂肪肝：内脏的「垃圾处理厂」瘫痪"><a href="#4-脂肪肝：内脏的「垃圾处理厂」瘫痪" class="headerlink" title="4. 脂肪肝：内脏的「垃圾处理厂」瘫痪"></a>4. 脂肪肝：内脏的「垃圾处理厂」瘫痪</h2><p>超重&#x2F;肥胖者并发症中，脂肪肝最常见之一。肝脏本应将脂肪打包运出，糖尿病与肥胖使这一过程效率降低，脂肪在肝内堆积。</p>
-<p><strong>常见认知陷阱</strong>（书中强调）：</p>
-<ul>
-<li>「不胖就不会脂肪肝」——瘦人脂肪肝也不少见</li>
-<li>「无症状就不用管」——可进展为肝纤维化</li>
-<li>「只吃素就能好」——关键在于总能量与代谢</li>
-<li>「护肝片够用了」——病因不除，难以逆转</li>
-</ul>
-<p><strong>逆转密码</strong>：减重 5%～10% 常可显著改善肝脂肪变；控糖控脂 + 运动。</p>
-<hr>
-<h2 id="5-骨关节炎：关节的载荷安全阈值"><a href="#5-骨关节炎：关节的载荷安全阈值" class="headerlink" title="5. 骨关节炎：关节的载荷安全阈值"></a>5. 骨关节炎：关节的载荷安全阈值</h2><p>体重每增加 1 kg，膝关节承受压力约增加 3～4 kg。肥胖 → 慢性炎症 → 软骨磨损加速。</p>
-<p><strong>逆转密码</strong>：减重减轻关节负荷；水中运动、肌力训练增强关节稳定性。</p>
-<hr>
-<h2 id="6-多囊卵巢综合征：激素风暴"><a href="#6-多囊卵巢综合征：激素风暴" class="headerlink" title="6. 多囊卵巢综合征：激素风暴"></a>6. 多囊卵巢综合征：激素风暴</h2><p>肥胖与多囊卵巢相互加剧：脂肪组织干扰激素平衡，胰岛素抵抗推高雄激素，影响排卵与生育。</p>
-<p><strong>逆转密码</strong>：减重 5%～10% 可显著改善月经与排卵；生活方式干预是一线治疗。</p>
-<hr>
-<h2 id="7-乳腺癌：癌变风险的土壤"><a href="#7-乳腺癌：癌变风险的土壤" class="headerlink" title="7. 乳腺癌：癌变风险的土壤"></a>7. 乳腺癌：癌变风险的土壤</h2><p>肥胖改变雌激素等激素水平，脂肪组织释放炎症因子，为癌细胞生长提供「土壤」。腹型肥胖与多种妇科、消化道肿瘤风险相关。</p>
-<p><strong>逆转密码</strong>：保持健康体重、规律筛查、减少久坐。</p>
-<hr>
-<h2 id="8-心理沼泽：身材焦虑与情绪雪崩"><a href="#8-心理沼泽：身材焦虑与情绪雪崩" class="headerlink" title="8. 心理沼泽：身材焦虑与情绪雪崩"></a>8. 心理沼泽：身材焦虑与情绪雪崩</h2><p>肥胖与心理相互纠缠：</p>
-<ul>
-<li>自尊心、自我形象受损</li>
-<li>焦虑 → 暴食 → 更胖 → 更焦虑</li>
-<li>脂肪组织炎症因子可能影响大脑情绪通路</li>
-<li>社会偏见与「体型歧视」加重心理负担</li>
-<li>极端节食或暴食交替，饮食成为情绪的「翻译器」</li>
-</ul>
-<p><strong>逆转密码</strong>：接纳与改变并行；寻求心理咨询；用运动、社交替代情绪性进食；体重管理应是关爱自己，而非自我惩罚。</p>
-<hr>
-<h2 id="九体视角下的并发症预防"><a href="#九体视角下的并发症预防" class="headerlink" title="九体视角下的并发症预防"></a>九体视角下的并发症预防</h2><p>不同体质易患不同慢病，调理应有的放矢：</p>
-<table>
-<thead>
-<tr>
-<th>体质</th>
-<th>相关风险</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>痰湿质</td>
-<td>肥胖、高血压、糖尿病、高血脂</td>
-</tr>
-<tr>
-<td>气虚质</td>
-<td>感冒、内脏下垂、乏力</td>
-</tr>
-<tr>
-<td>阳虚质</td>
-<td>畏寒、腹泻、痹证</td>
-</tr>
-<tr>
-<td>阴虚质</td>
-<td>失眠、咽痛、「三高」</td>
-</tr>
-<tr>
-<td>血瘀质</td>
-<td>肿瘤、痛证、卒中</td>
-</tr>
-<tr>
-<td>气郁质</td>
-<td>甲状腺、乳腺疾病、情绪障碍</td>
-</tr>
-</tbody></table>
-<p><strong>体质可调</strong>——在并发症尚未形成前调体，是最好的「逆转密码」。</p>
-<hr>
-<h2 id="系列结语"><a href="#系列结语" class="headerlink" title="系列结语"></a>系列结语</h2><p>《瘦身密码》传递的核心信息可以概括为三句话：</p>
-<ol>
-<li><strong>中国肥胖形势严峻</strong>，腰围与 BMI 同样值得每日关注</li>
-<li><strong>科学减肥是马拉松</strong>，忌节食、代餐、极端断食</li>
-<li><strong>九体医学提供个体化路径</strong>——先识体质，再管体重，方能健康瘦身不反弹</li>
-</ol>
-<p>2024 年国家「体重管理年」已经启程。愿我们都不再以「换大码裤子」为常态，而是在读懂自己身体密码的基础上，走出属于自己的健康之路。</p>
-]]></content>
-      <tags>
-        <tag>健康</tag>
-        <tag>肥胖</tag>
-        <tag>慢性病</tag>
       </tags>
   </entry>
   <entry>
@@ -3842,129 +3693,222 @@
       </tags>
   </entry>
   <entry>
-    <title>OptiPlex + 华为路由 网络图</title>
-    <url>/2026/09/22/%E7%BD%91%E7%BB%9C%E5%9B%BE-OptiPlex-%E5%8D%8E%E4%B8%BA%E8%B7%AF%E7%94%B1/</url>
-    <content><![CDATA[<blockquote>
-<p>用途：本机作为局域网 DNS 过滤机（AdGuard Home），拦截网络内游戏等域名访问。</p>
-</blockquote>
-<h2 id="设备一览"><a href="#设备一览" class="headerlink" title="设备一览"></a>设备一览</h2><table>
+    <title>瘦身密码（五）：甜蜜陷阱——肥胖引爆的八大健康地雷</title>
+    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%82%A5%E8%83%96%E5%85%AB%E5%A4%A7%E5%81%A5%E5%BA%B7%E5%9C%B0%E9%9B%B7/</url>
+    <content><![CDATA[<p>肥胖是健康的「隐形杀手」——影响的不只是外形，而是心血管、代谢、内分泌、呼吸、骨骼、生殖乃至心理的全系统连锁反应。以下梳理书中重点阐述的<strong>八大健康地雷</strong>及应对思路。</p>
+<hr>
+<h2 id="1-糖尿病：胰岛素遇上甜甜圈"><a href="#1-糖尿病：胰岛素遇上甜甜圈" class="headerlink" title="1. 糖尿病：胰岛素遇上甜甜圈"></a>1. 糖尿病：胰岛素遇上甜甜圈</h2><p>中国 20～79 岁人群糖尿病患病率约 10.6%，患病人数约 1.41 亿。肥胖与糖尿病如影随形：</p>
+<ul>
+<li>体重每增加 1 kg，糖尿病风险至少升 5%</li>
+<li>约 50% 肥胖者将来可能患 2 型糖尿病</li>
+<li>糖尿病患者中约 2&#x2F;3 超重或肥胖</li>
+</ul>
+<p><strong>机制</strong>：内脏脂肪像「棉袄」包裹细胞，胰岛素（钥匙）难以与受体（锁）结合，葡萄糖进不了细胞 → <strong>胰岛素抵抗</strong> → 代偿性高胰岛素 → 食欲增加 → 更胖 → 最终血糖失控。</p>
+<p><strong>逆转密码</strong>：</p>
+<ul>
+<li>少吃深加工食品、奶茶炸鸡；多吃蔬菜、粗粮</li>
+<li>中低强度有氧运动，餐后 30～60 分钟，每次 ≥30 分钟，约 200～300 千卡</li>
+<li>超重人群 35～70 岁应每 3 年筛查血糖</li>
+<li>九体医学统计：气虚质、阴虚质、痰湿质最易患糖尿病</li>
+</ul>
+<hr>
+<h2 id="2-冠心病：糖脂风暴下的冠状动脉"><a href="#2-冠心病：糖脂风暴下的冠状动脉" class="headerlink" title="2. 冠心病：糖脂风暴下的冠状动脉"></a>2. 冠心病：糖脂风暴下的冠状动脉</h2><p>冠心病患者超重&#x2F;肥胖率超 50%。BMI 越高，冠心病发病率越高；肥胖者患病概率约为常人 2～3 倍，超平均体重 40% 者死亡风险翻倍。</p>
+<p><strong>机制</strong>：肥胖 → 血脂紊乱 → 动脉粥样硬化斑块 → 冠脉狭窄 → 心肌缺血。心脏如同小发动机驱动重型卡车，长期超负荷终将「罢工」。</p>
+<p><strong>逆转密码</strong>：减重 + 控脂 + 戒烟限酒 + 规律运动；编写细胞层面的「燃脂程序」，减轻心脏负担。</p>
+<hr>
+<h2 id="3-睡眠呼吸暂停：内脏脂肪的午夜叛乱"><a href="#3-睡眠呼吸暂停：内脏脂肪的午夜叛乱" class="headerlink" title="3. 睡眠呼吸暂停：内脏脂肪的午夜叛乱"></a>3. 睡眠呼吸暂停：内脏脂肪的午夜叛乱</h2><p>腹型肥胖者脂肪堆积在呼吸道周围，气道变窄，睡眠时呼吸暂停 → 缺氧 → 睡眠质量差 → 日间嗜睡 → 活动减少 → 更胖，形成<strong>死亡循环</strong>。</p>
+<p><strong>逆转密码</strong>：减重是核心；侧睡、避免睡前饮酒；严重者需呼吸机等医学干预。</p>
+<hr>
+<h2 id="4-脂肪肝：内脏的「垃圾处理厂」瘫痪"><a href="#4-脂肪肝：内脏的「垃圾处理厂」瘫痪" class="headerlink" title="4. 脂肪肝：内脏的「垃圾处理厂」瘫痪"></a>4. 脂肪肝：内脏的「垃圾处理厂」瘫痪</h2><p>超重&#x2F;肥胖者并发症中，脂肪肝最常见之一。肝脏本应将脂肪打包运出，糖尿病与肥胖使这一过程效率降低，脂肪在肝内堆积。</p>
+<p><strong>常见认知陷阱</strong>（书中强调）：</p>
+<ul>
+<li>「不胖就不会脂肪肝」——瘦人脂肪肝也不少见</li>
+<li>「无症状就不用管」——可进展为肝纤维化</li>
+<li>「只吃素就能好」——关键在于总能量与代谢</li>
+<li>「护肝片够用了」——病因不除，难以逆转</li>
+</ul>
+<p><strong>逆转密码</strong>：减重 5%～10% 常可显著改善肝脂肪变；控糖控脂 + 运动。</p>
+<hr>
+<h2 id="5-骨关节炎：关节的载荷安全阈值"><a href="#5-骨关节炎：关节的载荷安全阈值" class="headerlink" title="5. 骨关节炎：关节的载荷安全阈值"></a>5. 骨关节炎：关节的载荷安全阈值</h2><p>体重每增加 1 kg，膝关节承受压力约增加 3～4 kg。肥胖 → 慢性炎症 → 软骨磨损加速。</p>
+<p><strong>逆转密码</strong>：减重减轻关节负荷；水中运动、肌力训练增强关节稳定性。</p>
+<hr>
+<h2 id="6-多囊卵巢综合征：激素风暴"><a href="#6-多囊卵巢综合征：激素风暴" class="headerlink" title="6. 多囊卵巢综合征：激素风暴"></a>6. 多囊卵巢综合征：激素风暴</h2><p>肥胖与多囊卵巢相互加剧：脂肪组织干扰激素平衡，胰岛素抵抗推高雄激素，影响排卵与生育。</p>
+<p><strong>逆转密码</strong>：减重 5%～10% 可显著改善月经与排卵；生活方式干预是一线治疗。</p>
+<hr>
+<h2 id="7-乳腺癌：癌变风险的土壤"><a href="#7-乳腺癌：癌变风险的土壤" class="headerlink" title="7. 乳腺癌：癌变风险的土壤"></a>7. 乳腺癌：癌变风险的土壤</h2><p>肥胖改变雌激素等激素水平，脂肪组织释放炎症因子，为癌细胞生长提供「土壤」。腹型肥胖与多种妇科、消化道肿瘤风险相关。</p>
+<p><strong>逆转密码</strong>：保持健康体重、规律筛查、减少久坐。</p>
+<hr>
+<h2 id="8-心理沼泽：身材焦虑与情绪雪崩"><a href="#8-心理沼泽：身材焦虑与情绪雪崩" class="headerlink" title="8. 心理沼泽：身材焦虑与情绪雪崩"></a>8. 心理沼泽：身材焦虑与情绪雪崩</h2><p>肥胖与心理相互纠缠：</p>
+<ul>
+<li>自尊心、自我形象受损</li>
+<li>焦虑 → 暴食 → 更胖 → 更焦虑</li>
+<li>脂肪组织炎症因子可能影响大脑情绪通路</li>
+<li>社会偏见与「体型歧视」加重心理负担</li>
+<li>极端节食或暴食交替，饮食成为情绪的「翻译器」</li>
+</ul>
+<p><strong>逆转密码</strong>：接纳与改变并行；寻求心理咨询；用运动、社交替代情绪性进食；体重管理应是关爱自己，而非自我惩罚。</p>
+<hr>
+<h2 id="九体视角下的并发症预防"><a href="#九体视角下的并发症预防" class="headerlink" title="九体视角下的并发症预防"></a>九体视角下的并发症预防</h2><p>不同体质易患不同慢病，调理应有的放矢：</p>
+<table>
 <thead>
 <tr>
-<th>设备</th>
-<th>角色</th>
-<th>地址 &#x2F; 端口</th>
+<th>体质</th>
+<th>相关风险</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>华为路由器 HUAWEI-EX1XZ2</td>
-<td>网关 &#x2F; DHCP</td>
-<td><code>192.168.3.1</code></td>
+<td>痰湿质</td>
+<td>肥胖、高血压、糖尿病、高血脂</td>
 </tr>
 <tr>
-<td>Dell OptiPlex 7040</td>
-<td>DNS 过滤机</td>
-<td>固定 IP <code>192.168.3.7</code>（WiFi <code>wlp3s0</code>）</td>
+<td>气虚质</td>
+<td>感冒、内脏下垂、乏力</td>
 </tr>
 <tr>
-<td>AdGuard Home</td>
-<td>DNS &#x2F; 管理界面</td>
-<td>DNS <code>:53</code>，管理 <code>http://192.168.3.7:3000</code></td>
+<td>阳虚质</td>
+<td>畏寒、腹泻、痹证</td>
 </tr>
 <tr>
-<td>手机 &#x2F; PC &#x2F; 游戏设备</td>
-<td>客户端</td>
-<td><code>192.168.3.x</code>（DHCP）</td>
+<td>阴虚质</td>
+<td>失眠、咽痛、「三高」</td>
+</tr>
+<tr>
+<td>血瘀质</td>
+<td>肿瘤、痛证、卒中</td>
+</tr>
+<tr>
+<td>气郁质</td>
+<td>甲状腺、乳腺疾病、情绪障碍</td>
 </tr>
 </tbody></table>
-<p>网段：<code>192.168.3.0/24</code></p>
-<h2 id="拓扑图"><a href="#拓扑图" class="headerlink" title="拓扑图"></a>拓扑图</h2><pre class="mermaid">flowchart TB
-  Internet((互联网))
-
-  subgraph WAN[&quot;外网侧&quot;]
-    Internet
-  end
-
-  Router[&quot;华为路由器&lt;br/&gt;HUAWEI-EX1XZ2&lt;br/&gt;LAN: 192.168.3.1&lt;br/&gt;DHCP / 网关&quot;]
-
-  Internet &lt;--&gt;|&quot;WAN&quot;| Router
-
-  subgraph LAN[&quot;局域网 192.168.3.0/24&quot;]
-    Opti[&quot;Dell OptiPlex 7040&lt;br/&gt;WiFi: wlp3s0&lt;br/&gt;固定 IP: 192.168.3.7&quot;]
-    AG[&quot;AdGuard Home&lt;br/&gt;DNS :53&lt;br/&gt;管理 :3000&quot;]
-    Clients[&quot;手机 / PC / 游戏设备&lt;br/&gt;经 DHCP 拿地址&quot;]
-
-    Opti --- AG
-  end
-
-  Router &lt;--&gt;|&quot;WiFi / 有线&quot;| Opti
-  Router &lt;--&gt;|&quot;WiFi / 有线&quot;| Clients
-
-  Clients -.-&gt;|&quot;① DNS 查询 → 192.168.3.7&quot;| AG
-  AG -.-&gt;|&quot;② 放行：向上游解析&lt;br/&gt;拦截：游戏域名不返回&quot;| Internet
-  Clients --&gt;|&quot;③ 普通上网流量&lt;br/&gt;仍走网关 192.168.3.1&quot;| Router</pre>
-
-
-<h2 id="DNS-拦截数据流"><a href="#DNS-拦截数据流" class="headerlink" title="DNS 拦截数据流"></a>DNS 拦截数据流</h2><pre class="mermaid">sequenceDiagram
-  participant D as 终端设备
-  participant R as 华为路由&lt;br/&gt;192.168.3.1
-  participant A as OptiPlex AdGuard&lt;br/&gt;192.168.3.7
-  participant U as 上游 DNS / 互联网
-
-  Note over R: DHCP 把 DNS 下发为 192.168.3.7
-  D-&gt;&gt;A: DNS 查询（如游戏域名）
-  alt 命中黑名单
-    A--&gt;&gt;D: 拦截（NXDOMAIN / 假 IP）
-  else 正常域名
-    A-&gt;&gt;U: 向上游解析
-    U--&gt;&gt;A: 返回真实 IP
-    A--&gt;&gt;D: 返回解析结果
-    D-&gt;&gt;R: 业务流量走默认网关
-    R-&gt;&gt;U: 转发上网
-  end</pre>
-
-
-<h2 id="要点说明"><a href="#要点说明" class="headerlink" title="要点说明"></a>要点说明</h2><ol>
-<li><strong>AdGuard 只拦 DNS</strong>：域名解析在 OptiPlex 上过滤；实际网页&#x2F;游戏数据包仍经华为路由上网。</li>
-<li><strong>全网生效前提</strong>：路由器 DHCP 的 DNS 服务器填 <code>192.168.3.7</code>，客户端重连 WiFi 后生效。</li>
-<li><strong>本机固定 IP</strong>：OptiPlex 已设为 <code>192.168.3.7/24</code>，网关 <code>192.168.3.1</code>。建议在路由里做 DHCP 地址保留，避免冲突。</li>
-<li><strong>53 端口</strong>：已关闭 <code>systemd-resolved</code> 的 <code>DNSStubListener</code>，由 AdGuard 监听 <code>*:53</code>。</li>
-<li><strong>绕过可能</strong>：客户端改用公共 DNS、DoH&#x2F;DoT、代理、直连 IP 时，DNS 黑名单可能失效。</li>
+<p><strong>体质可调</strong>——在并发症尚未形成前调体，是最好的「逆转密码」。</p>
+<hr>
+<h2 id="系列结语"><a href="#系列结语" class="headerlink" title="系列结语"></a>系列结语</h2><p>《瘦身密码》传递的核心信息可以概括为三句话：</p>
+<ol>
+<li><strong>中国肥胖形势严峻</strong>，腰围与 BMI 同样值得每日关注</li>
+<li><strong>科学减肥是马拉松</strong>，忌节食、代餐、极端断食</li>
+<li><strong>九体医学提供个体化路径</strong>——先识体质，再管体重，方能健康瘦身不反弹</li>
 </ol>
-<h2 id="相关路径"><a href="#相关路径" class="headerlink" title="相关路径"></a>相关路径</h2><table>
-<thead>
-<tr>
-<th>项目</th>
-<th>路径</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>AdGuard 数据目录</td>
-<td><code>/home/liu/adguardhome/</code></td>
-</tr>
-<tr>
-<td>游戏拦截示例规则</td>
-<td><code>/home/liu/adguardhome/game-blocklist.txt</code></td>
-</tr>
-<tr>
-<td>固定 IP 脚本</td>
-<td><code>/home/liu/adguardhome/set-static-ip.sh</code></td>
-</tr>
-<tr>
-<td>释放 53 端口脚本</td>
-<td><code>/home/liu/adguardhome/fix-port53.sh</code></td>
-</tr>
-<tr>
-<td>管理界面</td>
-<td><a href="http://192.168.3.7:3000/">http://192.168.3.7:3000</a></td>
-</tr>
-</tbody></table>
+<p>2024 年国家「体重管理年」已经启程。愿我们都不再以「换大码裤子」为常态，而是在读懂自己身体密码的基础上，走出属于自己的健康之路。</p>
 ]]></content>
       <tags>
-        <tag>网络</tag>
-        <tag>AdGuard Home</tag>
-        <tag>DNS</tag>
-        <tag>OptiPlex</tag>
-        <tag>华为路由</tag>
+        <tag>健康</tag>
+        <tag>肥胖</tag>
+        <tag>慢性病</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>瘦身密码（二）：脂肪工厂的运作密码——科学减肥是场马拉松</title>
+    <url>/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%84%82%E8%82%AA%E5%B7%A5%E5%8E%82%E4%B8%8E%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/</url>
+    <content><![CDATA[<h2 id="你真的需要减肥吗？"><a href="#你真的需要减肥吗？" class="headerlink" title="你真的需要减肥吗？"></a>你真的需要减肥吗？</h2><h3 id="BMI：有用，但不万能"><a href="#BMI：有用，但不万能" class="headerlink" title="BMI：有用，但不万能"></a>BMI：有用，但不万能</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">BMI = 体重(kg) ÷ 身高²(m²)</span><br></pre></td></tr></table></figure>
+
+<p>中国成人标准：</p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>BMI</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>体重过低</td>
+<td>&lt;18.5</td>
+</tr>
+<tr>
+<td>正常</td>
+<td>18.5～24</td>
+</tr>
+<tr>
+<td>超重</td>
+<td>24～28</td>
+</tr>
+<tr>
+<td>肥胖</td>
+<td>≥28</td>
+</tr>
+</tbody></table>
+<p>BMI 对普通成年人实用，但对运动员等肌肉发达者可能误判；对孕妇、儿童、老年人参考价值有限。<strong>更关键的是脂肪分布</strong>，而非单一数字。</p>
+<h3 id="肥胖三级预警"><a href="#肥胖三级预警" class="headerlink" title="肥胖三级预警"></a>肥胖三级预警</h3><ul>
+<li><strong>轻度</strong>（28～32.5）：糖尿病、高血压风险上升，关节负担加重</li>
+<li><strong>中度</strong>（32.5～37.5）：心血管风险加剧，易出现睡眠呼吸暂停</li>
+<li><strong>重度</strong>（≥37.5）：心衰、脑卒中风险极高，代谢综合征与多种癌症风险显著上升</li>
+</ul>
+<h3 id="体脂率与腰臀比"><a href="#体脂率与腰臀比" class="headerlink" title="体脂率与腰臀比"></a>体脂率与腰臀比</h3><p>健康体脂率：男性约 15%～20%，女性约 20%～25%。腰臀比反映脂肪分布——苹果型（腹型）远比梨型危险。</p>
+<h2 id="脂肪从哪来？"><a href="#脂肪从哪来？" class="headerlink" title="脂肪从哪来？"></a>脂肪从哪来？</h2><h3 id="中医视角：易胖体质的「培育土壤」"><a href="#中医视角：易胖体质的「培育土壤」" class="headerlink" title="中医视角：易胖体质的「培育土壤」"></a>中医视角：易胖体质的「培育土壤」</h3><ol>
+<li><strong>饮食不节</strong>：肥甘厚味、暴饮暴食，脾胃运化不及，聚为膏脂痰浊</li>
+<li><strong>缺乏运动</strong>：久坐少动，气血不畅，痰湿内生</li>
+<li><strong>情志失调</strong>：肝郁气滞、思虑伤脾，水湿代谢失常</li>
+<li><strong>脏腑失调</strong>：脾虚运化失司、肾阳虚水湿不化</li>
+</ol>
+<h3 id="西医视角：代谢失衡"><a href="#西医视角：代谢失衡" class="headerlink" title="西医视角：代谢失衡"></a>西医视角：代谢失衡</h3><p>遗传、高热量饮食、运动不足、内分泌疾病（甲减、库欣综合征）、肠道菌群失衡等，共同导致能量摄入大于消耗，多余能量以脂肪储存。</p>
+<h2 id="快速瘦身的陷阱"><a href="#快速瘦身的陷阱" class="headerlink" title="快速瘦身的陷阱"></a>快速瘦身的陷阱</h2><h3 id="过度节食：得不偿失"><a href="#过度节食：得不偿失" class="headerlink" title="过度节食：得不偿失"></a>过度节食：得不偿失</h3><p>节食初期体重下降，但身体会降低基础代谢率（BMR）进入「平台期」。恢复正常饮食后极易反弹，并可能带来：</p>
+<ul>
+<li>免疫力下降、肝肾功能失调</li>
+<li>女性月经紊乱甚至闭经</li>
+<li>脱发、抑郁焦虑</li>
+<li>反复节食形成恶性循环</li>
+</ul>
+<p><strong>BMR 估算公式（Mifflin-St Jeor）：</strong></p>
+<ul>
+<li>男性：10×体重(kg) + 6.25×身高(cm) − 5×年龄 + 5</li>
+<li>女性：10×体重(kg) + 6.25×身高(cm) − 5×年龄 − 161</li>
+</ul>
+<h3 id="代餐、排毒、极端断食"><a href="#代餐、排毒、极端断食" class="headerlink" title="代餐、排毒、极端断食"></a>代餐、排毒、极端断食</h3><ul>
+<li><strong>代餐</strong>：短期降重，但代谢减慢，恢复饮食后易反弹，长期可能影响消化与免疫</li>
+<li><strong>排毒</strong>：人体有自净能力；情志调节、均衡饮食、规律运动才是正道</li>
+<li><strong>轻断食</strong>：间歇性禁食有一定研究支持，但长时间不吃饭可能导致低血糖、电解质紊乱，糖尿病患者尤其危险</li>
+</ul>
+<h2 id="什么才是科学减肥？"><a href="#什么才是科学减肥？" class="headerlink" title="什么才是科学减肥？"></a>什么才是科学减肥？</h2><p>核心原则：<strong>减肥是马拉松，不是百米冲刺。</strong></p>
+<h3 id="能量平衡"><a href="#能量平衡" class="headerlink" title="能量平衡"></a>能量平衡</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">每日摄入（减重）= TDEE − 500 千卡</span><br><span class="line">TDEE = BMR × 活动因子</span><br></pre></td></tr></table></figure>
+
+<p>活动因子：久坐 1.2，轻度活动 1.375，中度 1.55，高度 1.725，极高 1.9。</p>
+<h3 id="三大营养素分配"><a href="#三大营养素分配" class="headerlink" title="三大营养素分配"></a>三大营养素分配</h3><ul>
+<li>碳水化合物：45%～65%（优选全谷物、薯类、豆类）</li>
+<li>蛋白质：10%～35%（瘦肉、鱼、蛋、奶、豆制品）</li>
+<li>脂肪：20%～30%（植物油、坚果，少饱和脂肪与反式脂肪）</li>
+</ul>
+<h3 id="饮食习惯"><a href="#饮食习惯" class="headerlink" title="饮食习惯"></a>饮食习惯</h3><ul>
+<li>定时进食，细嚼慢咽，七八分饱</li>
+<li>进食顺序：清汤 → 蔬菜 → 肉类 → 主食</li>
+<li>烹调以蒸、炖、煮为主，少油炸</li>
+<li>看懂营养成分表，警惕「低脂」但高热量的食品</li>
+</ul>
+<h3 id="运动：每天-6000-步起步"><a href="#运动：每天-6000-步起步" class="headerlink" title="运动：每天 6000 步起步"></a>运动：每天 6000 步起步</h3><ul>
+<li>每周至少 150 分钟中等强度有氧运动</li>
+<li>结合力量训练，提高基础代谢</li>
+<li>碎片化运动也有价值：通勤多走、爬楼梯、工间拉伸</li>
+</ul>
+<h3 id="情绪管理"><a href="#情绪管理" class="headerlink" title="情绪管理"></a>情绪管理</h3><p>压力肥、深夜暴食常与情绪相关。好心情是最佳「燃脂剂」——学会与焦虑和解，比盲目节食更重要。</p>
+<h2 id="懒人减肥武器库速览"><a href="#懒人减肥武器库速览" class="headerlink" title="懒人减肥武器库速览"></a>懒人减肥武器库速览</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>要点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>饮食</strong></td>
+<td>能量赤字 + 营养充足；外卖少点高糖高油；麻辣烫不加麻酱也是多样饮食的好选择</td>
+</tr>
+<tr>
+<td><strong>运动</strong></td>
+<td>每天 10 分钟碎片化运动也有累积效应；选自己喜欢的项目才能坚持</td>
+</tr>
+<tr>
+<td><strong>情绪</strong></td>
+<td>识别压力性进食；用运动、社交替代零食快感</td>
+</tr>
+<tr>
+<td><strong>中医适宜技术</strong></td>
+<td>针灸、埋线、拔罐、穴位按摩等可作为辅助，需在专业医师指导下进行</td>
+</tr>
+</tbody></table>
+<h2 id="管体-管重-不反弹"><a href="#管体-管重-不反弹" class="headerlink" title="管体 + 管重 &#x3D; 不反弹"></a>管体 + 管重 &#x3D; 不反弹</h2><p>单纯减重而不调体质，往往陷入「减—反弹—再减」循环。下一篇将介绍王琦院士创立的<strong>九体医学</strong>——先认清自己是哪种体质，再对症瘦身。</p>
+]]></content>
+      <tags>
+        <tag>健康</tag>
+        <tag>体重管理</tag>
+        <tag>科学减肥</tag>
       </tags>
   </entry>
   <entry>
@@ -4120,5 +4064,131 @@
 
 <img src="/2025/07/12/%E9%AD%94%E6%96%B9/1752334486991.png" class="" width="1752334486991">
 ]]></content>
+  </entry>
+  <entry>
+    <title>OptiPlex + 华为路由 网络图</title>
+    <url>/2026/09/22/%E7%BD%91%E7%BB%9C%E5%9B%BE-OptiPlex-%E5%8D%8E%E4%B8%BA%E8%B7%AF%E7%94%B1/</url>
+    <content><![CDATA[<blockquote>
+<p>用途：本机作为局域网 DNS 过滤机（AdGuard Home），拦截网络内游戏等域名访问。</p>
+</blockquote>
+<h2 id="设备一览"><a href="#设备一览" class="headerlink" title="设备一览"></a>设备一览</h2><table>
+<thead>
+<tr>
+<th>设备</th>
+<th>角色</th>
+<th>地址 &#x2F; 端口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>华为路由器 HUAWEI-EX1XZ2</td>
+<td>网关 &#x2F; DHCP</td>
+<td><code>192.168.3.1</code></td>
+</tr>
+<tr>
+<td>Dell OptiPlex 7040</td>
+<td>DNS 过滤机</td>
+<td>固定 IP <code>192.168.3.7</code>（WiFi <code>wlp3s0</code>）</td>
+</tr>
+<tr>
+<td>AdGuard Home</td>
+<td>DNS &#x2F; 管理界面</td>
+<td>DNS <code>:53</code>，管理 <code>http://192.168.3.7:3000</code></td>
+</tr>
+<tr>
+<td>手机 &#x2F; PC &#x2F; 游戏设备</td>
+<td>客户端</td>
+<td><code>192.168.3.x</code>（DHCP）</td>
+</tr>
+</tbody></table>
+<p>网段：<code>192.168.3.0/24</code></p>
+<h2 id="拓扑图"><a href="#拓扑图" class="headerlink" title="拓扑图"></a>拓扑图</h2><pre class="mermaid">flowchart TB
+  Internet((互联网))
+
+  subgraph WAN[&quot;外网侧&quot;]
+    Internet
+  end
+
+  Router[&quot;华为路由器&lt;br/&gt;HUAWEI-EX1XZ2&lt;br/&gt;LAN: 192.168.3.1&lt;br/&gt;DHCP / 网关&quot;]
+
+  Internet &lt;--&gt;|&quot;WAN&quot;| Router
+
+  subgraph LAN[&quot;局域网 192.168.3.0/24&quot;]
+    Opti[&quot;Dell OptiPlex 7040&lt;br/&gt;WiFi: wlp3s0&lt;br/&gt;固定 IP: 192.168.3.7&quot;]
+    AG[&quot;AdGuard Home&lt;br/&gt;DNS :53&lt;br/&gt;管理 :3000&quot;]
+    Clients[&quot;手机 / PC / 游戏设备&lt;br/&gt;经 DHCP 拿地址&quot;]
+
+    Opti --- AG
+  end
+
+  Router &lt;--&gt;|&quot;WiFi / 有线&quot;| Opti
+  Router &lt;--&gt;|&quot;WiFi / 有线&quot;| Clients
+
+  Clients -.-&gt;|&quot;① DNS 查询 → 192.168.3.7&quot;| AG
+  AG -.-&gt;|&quot;② 放行：向上游解析&lt;br/&gt;拦截：游戏域名不返回&quot;| Internet
+  Clients --&gt;|&quot;③ 普通上网流量&lt;br/&gt;仍走网关 192.168.3.1&quot;| Router</pre>
+
+
+<h2 id="DNS-拦截数据流"><a href="#DNS-拦截数据流" class="headerlink" title="DNS 拦截数据流"></a>DNS 拦截数据流</h2><pre class="mermaid">sequenceDiagram
+  participant D as 终端设备
+  participant R as 华为路由&lt;br/&gt;192.168.3.1
+  participant A as OptiPlex AdGuard&lt;br/&gt;192.168.3.7
+  participant U as 上游 DNS / 互联网
+
+  Note over R: DHCP 把 DNS 下发为 192.168.3.7
+  D-&gt;&gt;A: DNS 查询（如游戏域名）
+  alt 命中黑名单
+    A--&gt;&gt;D: 拦截（NXDOMAIN / 假 IP）
+  else 正常域名
+    A-&gt;&gt;U: 向上游解析
+    U--&gt;&gt;A: 返回真实 IP
+    A--&gt;&gt;D: 返回解析结果
+    D-&gt;&gt;R: 业务流量走默认网关
+    R-&gt;&gt;U: 转发上网
+  end</pre>
+
+
+<h2 id="要点说明"><a href="#要点说明" class="headerlink" title="要点说明"></a>要点说明</h2><ol>
+<li><strong>AdGuard 只拦 DNS</strong>：域名解析在 OptiPlex 上过滤；实际网页&#x2F;游戏数据包仍经华为路由上网。</li>
+<li><strong>全网生效前提</strong>：路由器 DHCP 的 DNS 服务器填 <code>192.168.3.7</code>，客户端重连 WiFi 后生效。</li>
+<li><strong>本机固定 IP</strong>：OptiPlex 已设为 <code>192.168.3.7/24</code>，网关 <code>192.168.3.1</code>。建议在路由里做 DHCP 地址保留，避免冲突。</li>
+<li><strong>53 端口</strong>：已关闭 <code>systemd-resolved</code> 的 <code>DNSStubListener</code>，由 AdGuard 监听 <code>*:53</code>。</li>
+<li><strong>绕过可能</strong>：客户端改用公共 DNS、DoH&#x2F;DoT、代理、直连 IP 时，DNS 黑名单可能失效。</li>
+</ol>
+<h2 id="相关路径"><a href="#相关路径" class="headerlink" title="相关路径"></a>相关路径</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>路径</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AdGuard 数据目录</td>
+<td><code>/home/liu/adguardhome/</code></td>
+</tr>
+<tr>
+<td>游戏拦截示例规则</td>
+<td><code>/home/liu/adguardhome/game-blocklist.txt</code></td>
+</tr>
+<tr>
+<td>固定 IP 脚本</td>
+<td><code>/home/liu/adguardhome/set-static-ip.sh</code></td>
+</tr>
+<tr>
+<td>释放 53 端口脚本</td>
+<td><code>/home/liu/adguardhome/fix-port53.sh</code></td>
+</tr>
+<tr>
+<td>管理界面</td>
+<td><a href="http://192.168.3.7:3000/">http://192.168.3.7:3000</a></td>
+</tr>
+</tbody></table>
+]]></content>
+      <tags>
+        <tag>网络</tag>
+        <tag>AdGuard Home</tag>
+        <tag>DNS</tag>
+        <tag>OptiPlex</tag>
+        <tag>华为路由</tag>
+      </tags>
   </entry>
 </search>
