@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Maven 项目还能像 Sysdeo 那样用 Tomcat 插件启动吗？Eclipse 与 Cursor 选型 | Hua Liang&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="早年用 Sysdeo Tomcat Plugin 管「普通 Java EE 工程」很顺手：指定本机 Tomcat、挂上 web 工程、工具栏启停。迁到 Maven、再迁到 Spring Boot &#x2F; Cursor 之后，常会问三件事：  Maven 项目还能不能像以前那样用 Tomcat 插件启动？ 现在的 Eclipse Tomcat Plugin（Sysdeo 后继）能不能管 M">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Maven 项目还能像 Sysdeo 那样用 Tomcat 插件启动吗？Eclipse 与 Cursor 选型">
+<meta property="og:url" content="https://eppencn.com/2026/10/12/maven-tomcat-eclipse-cursor/index.html">
+<meta property="og:site_name" content="Hua Liang&#39;s Blog">
+<meta property="og:description" content="早年用 Sysdeo Tomcat Plugin 管「普通 Java EE 工程」很顺手：指定本机 Tomcat、挂上 web 工程、工具栏启停。迁到 Maven、再迁到 Spring Boot &#x2F; Cursor 之后，常会问三件事：  Maven 项目还能不能像以前那样用 Tomcat 插件启动？ 现在的 Eclipse Tomcat Plugin（Sysdeo 后继）能不能管 M">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://eppencn.com/2026/10/12/maven-tomcat-eclipse-cursor/cover.png">
+<meta property="article:published_time" content="2026-10-12T01:30:00.000Z">
+<meta property="article:modified_time" content="2026-10-17T12:08:41.212Z">
+<meta property="article:author" content="eppen">
+<meta property="article:tag" content="MES">
+<meta property="article:tag" content="Cursor">
+<meta property="article:tag" content="Maven">
+<meta property="article:tag" content="Tomcat">
+<meta property="article:tag" content="Eclipse">
+<meta property="article:tag" content="Spring Boot">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eppencn.com/2026/10/12/maven-tomcat-eclipse-cursor/cover.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hua Liang's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<!-- hexo injector head_end start --><meta name="google-adsense-account" content="ca-pub-2045994937692573">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2045994937692573" crossorigin="anonymous"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hua Liang&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://eppencn.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-maven-tomcat-eclipse-cursor" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/10/12/maven-tomcat-eclipse-cursor/" class="article-date">
+  <time class="dt-published" datetime="2026-10-12T01:30:00.000Z" itemprop="datePublished">2026-10-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Maven 项目还能像 Sysdeo 那样用 Tomcat 插件启动吗？Eclipse 与 Cursor 选型
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <img src="/2026/10/12/maven-tomcat-eclipse-cursor/cover.png" class="">
+
+<p>早年用 Sysdeo Tomcat Plugin 管「普通 Java EE 工程」很顺手：指定本机 Tomcat、挂上 web 工程、工具栏启停。迁到 Maven、再迁到 Spring Boot &#x2F; Cursor 之后，常会问三件事：</p>
+<ol>
+<li>Maven 项目还能不能像以前那样用 Tomcat 插件启动？</li>
+<li>现在的 Eclipse Tomcat Plugin（Sysdeo 后继）能不能管 Maven？</li>
+<li>Cursor 里有没有类似插件管 Maven 项目启动？</li>
+</ol>
+<p>下面按结论 → 差异 → IDE 选型 → 实践建议说明。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ol>
+<li><strong>可以</strong>，但体验和旧「非 Maven Java EE + Sysdeo」不完全一样：Maven 负责依赖与打包，Tomcat 插件负责启动&#x2F;部署，两者要配合，不能指望只点一下「启动 Tomcat」就自动搞定全部 classpath。</li>
+<li><strong>Eclipse Tomcat Plugin</strong>（Sysdeo 的维护分支）<strong>能管 Maven 项目</strong>，并支持 Maven classpath；复杂多模块工程更稳妥的是 <strong>m2e + m2e-wtp + WTP Servers</strong>。</li>
+<li><strong>Cursor</strong> 可装 VS Code 系扩展管理外置 Tomcat；对 <strong>Spring Boot</strong> 工程，日常更推荐 <code>mvn spring-boot:run</code> 或 Java Launch，而不是硬造 Sysdeo 式外挂 Tomcat。</li>
+</ol>
+<h2 id="和旧-Sysdeo-非-Maven-项目差在哪"><a href="#和旧-Sysdeo-非-Maven-项目差在哪" class="headerlink" title="和旧 Sysdeo 非 Maven 项目差在哪"></a>和旧 Sysdeo 非 Maven 项目差在哪</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>旧普通 Java EE</th>
+<th>Maven 项目</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>classpath</td>
+<td>手加 lib &#x2F; 项目引用</td>
+<td>由 <code>pom.xml</code> 解析到本地仓库</td>
+</tr>
+<tr>
+<td>部署单元</td>
+<td>工程目录 &#x2F; 手工 WAR</td>
+<td><code>mvn package</code> 出 WAR&#x2F;JAR，或 exploded <code>target/...</code></td>
+</tr>
+<tr>
+<td>插件职责</td>
+<td>启动 Tomcat + 挂 context</td>
+<td>仍可挂 context，但依赖须先被 Maven&#x2F;IDE 解析好</td>
+</tr>
+</tbody></table>
+<p>所以：<strong>不是「Maven 就不能用 Tomcat 插件」</strong>，而是 <strong>「先让 Maven&#x2F;IDE 建好运行 classpath 与 web 资源，再交给 Tomcat」</strong>。</p>
+<h2 id="三条常见启动路径"><a href="#三条常见启动路径" class="headerlink" title="三条常见启动路径"></a>三条常见启动路径</h2><ol>
+<li><strong>IDE 插件</strong>：m2e（或等价工具）解析依赖 → WTP &#x2F; Eclipse Tomcat Plugin &#x2F; Community Server Connectors → 外置 Tomcat。接近 Sysdeo 的工具栏体验。</li>
+<li><strong>Maven 插件</strong>：在 <code>pom</code> 里配 <code>tomcat7-maven-plugin</code> &#x2F; Cargo 等，跑 <code>mvn tomcat7:run</code>。不依赖 IDE，适合命令行与 CI。</li>
+<li><strong>Spring Boot 内嵌 Tomcat</strong>：<code>spring-boot-maven-plugin</code> + <code>spring-boot:run</code>（或打可执行 JAR）。许多现代工程（含我们这边的 MES <code>mes-web</code>）日常走这条。</li>
+</ol>
+<p>路径 1&#x2F;2 适合「传统 WAR + 独立 Tomcat」；路径 3 适合「内嵌容器开发」。选型要看项目打包形态，而不是只看有没有装 Tomcat 插件。</p>
+<h2 id="Eclipse：Eclipse-Tomcat-Plugin-能否管-Maven？"><a href="#Eclipse：Eclipse-Tomcat-Plugin-能否管-Maven？" class="headerlink" title="Eclipse：Eclipse Tomcat Plugin 能否管 Maven？"></a>Eclipse：Eclipse Tomcat Plugin 能否管 Maven？</h2><p>能，但别把两条产品线混为一谈。</p>
+<h3 id="Eclipse-Tomcat-Plugin（Sysdeo-后继）"><a href="#Eclipse-Tomcat-Plugin（Sysdeo-后继）" class="headerlink" title="Eclipse Tomcat Plugin（Sysdeo 后继）"></a>Eclipse Tomcat Plugin（Sysdeo 后继）</h3><ul>
+<li>Marketplace 名称：<strong>Eclipse Tomcat Plugin</strong>，仓库见 <a target="_blank" rel="noopener" href="https://github.com/tomcatplugin/tomcatplugin">tomcatplugin&#x2F;tomcatplugin</a>。</li>
+<li>已支持 <strong>Maven classpath management</strong>。</li>
+<li>适合：想轻量「指一个 Tomcat 安装目录 + 挂 web 工程」的开发者。</li>
+<li>局限：复杂多模块、<code>provided</code> 作用域的 servlet API、Spring Boot fat JAR&#x2F;WAR 与「传统 exploded webapp」模型不一致时，容易踩 classpath &#x2F; <code>ServletContainerInitializer</code> 一类问题。</li>
+</ul>
+<h3 id="更推荐的-Eclipse-Maven-Web-组合"><a href="#更推荐的-Eclipse-Maven-Web-组合" class="headerlink" title="更推荐的 Eclipse Maven Web 组合"></a>更推荐的 Eclipse Maven Web 组合</h3><ul>
+<li><strong>M2E</strong> + <strong>m2e-wtp</strong> + <strong>WTP Servers</strong>（Run on Server）。</li>
+<li>m2e-wtp 负责把 war 工程配成 Dynamic Web Facet、把依赖装进部署装配。</li>
+<li>这才是 Eclipse 生态里管理 <strong>Maven WAR → Tomcat</strong> 的主流做法。</li>
+</ul>
+<p>若工程是 Spring Boot：日常用内嵌 Tomcat；外置 Tomcat 通常另走 WAR 打包（例如独立 <code>pom-war.xml</code>），再交给 WTP 或 Tomcat Plugin 部署。<strong>不宜</strong>用 Sysdeo 后继插件替代日常的 <code>spring-boot:run</code>。</p>
+<h2 id="Cursor：有没有「管理-Maven-项目启动」的插件？"><a href="#Cursor：有没有「管理-Maven-项目启动」的插件？" class="headerlink" title="Cursor：有没有「管理 Maven 项目启动」的插件？"></a>Cursor：有没有「管理 Maven 项目启动」的插件？</h2><p>Cursor 兼容 VS Code 扩展市场，<strong>没有</strong>与 Sysdeo 同级、专门为「大型多模块 Maven」深度定制的官方插件。常用组合：</p>
+<table>
+<thead>
+<tr>
+<th>扩展</th>
+<th>作用</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Extension Pack for Java &#x2F; Maven for Java</td>
+<td>导入 Maven、跑 goals</td>
+<td>基础必装</td>
+</tr>
+<tr>
+<td>Community Server Connectors（Red Hat）</td>
+<td>管理本地 Tomcat、部署 WAR</td>
+<td>较新，倾向替代旧 Tomcat 扩展</td>
+</tr>
+<tr>
+<td>Tomcat for Java（adashen）</td>
+<td>启停 Tomcat、跑&#x2F;调试 WAR</td>
+<td>偏旧，新项目慎用</td>
+</tr>
+<tr>
+<td>Tomcat Auto Deploy 等</td>
+<td>保存后同步&#x2F;热部署</td>
+<td>偏传统 WAR</td>
+</tr>
+</tbody></table>
+<p>对 Spring Boot 类项目，Cursor 侧更贴合的启动方式：</p>
+<ol>
+<li><strong>终端 &#x2F; Maven 视图</strong>：<code>mvn spring-boot:run -Dspring-boot.run.profiles=...</code></li>
+<li><strong>Java 扩展 Launch</strong>：给主类（如 <code>MesApplication</code>）建 <code>launch.json</code></li>
+<li><strong>外置 Tomcat</strong>：仅在需要验证 WAR 产物时，用 Community Server Connectors 部署 <code>target/*.war</code></li>
+</ol>
+<p>不建议在 Cursor 里硬造「Sysdeo 式一键外置 Tomcat」当日常主路径——和内嵌 Tomcat、本地 Docker 中间件工作流容易打架，维护成本高。</p>
+<h2 id="结合-Spring-Boot-MES-的实践建议"><a href="#结合-Spring-Boot-MES-的实践建议" class="headerlink" title="结合 Spring Boot &#x2F; MES 的实践建议"></a>结合 Spring Boot &#x2F; MES 的实践建议</h2><p>以常见的 Spring Boot 多模块 Web 工程为例：</p>
+<ul>
+<li><strong>日常开发</strong>：<code>spring-boot:run</code>（内嵌 Tomcat）+ 本机或 Docker 起 MySQL&#x2F;Redis。</li>
+<li><strong>Eclipse 怀旧体验</strong>：若必须工具栏管 Tomcat，优先 <strong>WTP + m2e-wtp</strong> 部署 WAR；Sysdeo 后继仅作轻量备选。</li>
+<li><strong>正式&#x2F;生产形态</strong>：WAR 打进外置 Tomcat（或现有热补丁流程），与本地插件启动解耦。</li>
+</ul>
+<p>一句话：<strong>Maven 可以用 Tomcat 插件；Eclipse 后继能管，但复杂工程更信 WTP；Cursor 能管外置 Tomcat，Spring Boot 日常仍优先内嵌启动。</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://eppencn.com/2026/10/12/maven-tomcat-eclipse-cursor/" data-id="cmvcdcciw000indca79vz1n9c" data-title="Maven 项目还能像 Sysdeo 那样用 Tomcat 插件启动吗？Eclipse 与 Cursor 选型" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cursor/" rel="tag">Cursor</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Eclipse/" rel="tag">Eclipse</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring-Boot/" rel="tag">Spring Boot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tomcat/" rel="tag">Tomcat</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2026/10/16/mes-weekly-2026-w42/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          MES 2026 年第 42 周工作小结
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2026/10/10/mes-weekly-2026-w41/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MES 2026 年第 41 周工作小结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/0AD/" rel="tag">0AD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Daily/" rel="tag">AI Daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AdGuard-Home/" rel="tag">AdGuard Home</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Agent/" rel="tag">Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Automation/" rel="tag">Automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CLI/" rel="tag">CLI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Calendar/" rel="tag">Calendar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Claude-Code/" rel="tag">Claude Code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CodingAgent/" rel="tag">CodingAgent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cursor/" rel="tag">Cursor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DNS/" rel="tag">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EOS/" rel="tag">EOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eclipse/" rel="tag">Eclipse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eos/" rel="tag">Eos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Excel/" rel="tag">Excel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Harness/" rel="tag">Harness</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LIMS/" rel="tag">LIMS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCP/" rel="tag">MCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacBook/" rel="tag">MacBook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenSource/" rel="tag">OpenSource</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OptiPlex/" rel="tag">OptiPlex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PI/" rel="tag">PI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PowerShell/" rel="tag">PowerShell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RBAC/" rel="tag">RBAC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTS/" rel="tag">RTS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTX-Spark/" rel="tag">RTX Spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Boot/" rel="tag">Spring Boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/T480/" rel="tag">T480</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Terminal/" rel="tag">Terminal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThinkPad/" rel="tag">ThinkPad</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tomcat/" rel="tag">Tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/health/" rel="tag">health</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/macOS/" rel="tag">macOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-energy/" rel="tag">mes-energy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-factory/" rel="tag">mes-factory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-indicator/" rel="tag">mes-indicator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-measure/" rel="tag">mes-measure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-plan/" rel="tag">mes-plan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-quartz/" rel="tag">mes-quartz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-report/" rel="tag">mes-report</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-rtdb/" rel="tag">mes-rtdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-security/" rel="tag">mes-security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-web/" rel="tag">mes-web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-workflow/" rel="tag">mes-workflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zTree/" rel="tag">zTree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" rel="tag">中医体质</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" rel="tag">九体医学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" rel="tag">交接班</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" rel="tag">体质调理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" rel="tag">体重管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%81%A5%E5%BA%B7/" rel="tag">健康</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8E%E4%B8%BA%E8%B7%AF%E7%94%B1/" rel="tag">华为路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A3%E6%8A%A5/" rel="tag">季报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" rel="tag">慢性病</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" rel="tag">科学减肥</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%82%A5%E8%83%96/" rel="tag">肥胖</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" rel="tag">能耗分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" rel="tag">船舶作业</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E5%88%92%E8%8C%83%E5%9B%B4/" rel="tag">计划范围</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/0AD/" style="font-size: 10px;">0AD</a> <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/AI-Daily/" style="font-size: 10px;">AI Daily</a> <a href="/tags/AdGuard-Home/" style="font-size: 10px;">AdGuard Home</a> <a href="/tags/Agent/" style="font-size: 10px;">Agent</a> <a href="/tags/Automation/" style="font-size: 10px;">Automation</a> <a href="/tags/CLI/" style="font-size: 11.11px;">CLI</a> <a href="/tags/Calendar/" style="font-size: 10px;">Calendar</a> <a href="/tags/Claude-Code/" style="font-size: 10px;">Claude Code</a> <a href="/tags/CodingAgent/" style="font-size: 10px;">CodingAgent</a> <a href="/tags/Cursor/" style="font-size: 12.22px;">Cursor</a> <a href="/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/EOS/" style="font-size: 11.11px;">EOS</a> <a href="/tags/Eclipse/" style="font-size: 10px;">Eclipse</a> <a href="/tags/Eos/" style="font-size: 10px;">Eos</a> <a href="/tags/Excel/" style="font-size: 10px;">Excel</a> <a href="/tags/Game/" style="font-size: 10px;">Game</a> <a href="/tags/Harness/" style="font-size: 10px;">Harness</a> <a href="/tags/LIMS/" style="font-size: 10px;">LIMS</a> <a href="/tags/MCP/" style="font-size: 10px;">MCP</a> <a href="/tags/MES/" style="font-size: 20px;">MES</a> <a href="/tags/MacBook/" style="font-size: 10px;">MacBook</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/OpenSource/" style="font-size: 10px;">OpenSource</a> <a href="/tags/OptiPlex/" style="font-size: 10px;">OptiPlex</a> <a href="/tags/PI/" style="font-size: 10px;">PI</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/PowerShell/" style="font-size: 10px;">PowerShell</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RBAC/" style="font-size: 10px;">RBAC</a> <a href="/tags/RTS/" style="font-size: 10px;">RTS</a> <a href="/tags/RTX-Spark/" style="font-size: 10px;">RTX Spark</a> <a href="/tags/SQL-Server/" style="font-size: 11.11px;">SQL Server</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Spring-Boot/" style="font-size: 10px;">Spring Boot</a> <a href="/tags/T480/" style="font-size: 10px;">T480</a> <a href="/tags/Terminal/" style="font-size: 10px;">Terminal</a> <a href="/tags/ThinkPad/" style="font-size: 10px;">ThinkPad</a> <a href="/tags/Tomcat/" style="font-size: 10px;">Tomcat</a> <a href="/tags/Windows/" style="font-size: 11.11px;">Windows</a> <a href="/tags/health/" style="font-size: 10px;">health</a> <a href="/tags/macOS/" style="font-size: 10px;">macOS</a> <a href="/tags/mes-ai/" style="font-size: 17.78px;">mes-ai</a> <a href="/tags/mes-chart/" style="font-size: 15.56px;">mes-chart</a> <a href="/tags/mes-energy/" style="font-size: 10px;">mes-energy</a> <a href="/tags/mes-factory/" style="font-size: 10px;">mes-factory</a> <a href="/tags/mes-indicator/" style="font-size: 10px;">mes-indicator</a> <a href="/tags/mes-measure/" style="font-size: 13.33px;">mes-measure</a> <a href="/tags/mes-plan/" style="font-size: 10px;">mes-plan</a> <a href="/tags/mes-quartz/" style="font-size: 10px;">mes-quartz</a> <a href="/tags/mes-report/" style="font-size: 10px;">mes-report</a> <a href="/tags/mes-rtdb/" style="font-size: 13.33px;">mes-rtdb</a> <a href="/tags/mes-security/" style="font-size: 10px;">mes-security</a> <a href="/tags/mes-web/" style="font-size: 12.22px;">mes-web</a> <a href="/tags/mes-workflow/" style="font-size: 10px;">mes-workflow</a> <a href="/tags/zTree/" style="font-size: 10px;">zTree</a> <a href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" style="font-size: 10px;">中医体质</a> <a href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" style="font-size: 12.22px;">九体医学</a> <a href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" style="font-size: 10px;">交接班</a> <a href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" style="font-size: 10px;">体质调理</a> <a href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" style="font-size: 11.11px;">体重管理</a> <a href="/tags/%E5%81%A5%E5%BA%B7/" style="font-size: 14.44px;">健康</a> <a href="/tags/%E5%8D%8E%E4%B8%BA%E8%B7%AF%E7%94%B1/" style="font-size: 10px;">华为路由</a> <a href="/tags/%E5%91%A8%E6%8A%A5/" style="font-size: 16.67px;">周报</a> <a href="/tags/%E5%AD%A3%E6%8A%A5/" style="font-size: 10px;">季报</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" style="font-size: 18.89px;">工作小结</a> <a href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" style="font-size: 10px;">慢性病</a> <a href="/tags/%E6%9C%88%E6%8A%A5/" style="font-size: 14.44px;">月报</a> <a href="/tags/%E6%9D%83%E9%99%90/" style="font-size: 11.11px;">权限</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" style="font-size: 10px;">科学减肥</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">网络</a> <a href="/tags/%E8%82%A5%E8%83%96/" style="font-size: 10px;">肥胖</a> <a href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" style="font-size: 10px;">能耗分析</a> <a href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" style="font-size: 10px;">船舶作业</a> <a href="/tags/%E8%AE%A1%E5%88%92%E8%8C%83%E5%9B%B4/" style="font-size: 10px;">计划范围</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/10/">October 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/09/">September 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">June 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">March 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/12/">December 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">July 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">May 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/09/">September 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">August 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/10/17/t480-48g-vs-mac-rtx-spark/">同样写着 48GB，T480 和 MacBook、RTX Spark 差多少钱</a>
+          </li>
+        
+          <li>
+            <a href="/2026/10/17/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2026/10/17/macOS%E7%BB%88%E7%AB%AF%E8%BF%9E%E6%8E%A5Windows-SSH%E5%90%8E%E5%B4%A9%E6%BA%83/">macOS 终端连接 Windows SSH 后崩溃</a>
+          </li>
+        
+          <li>
+            <a href="/2026/10/16/mes-weekly-2026-w42/">MES 2026 年第 42 周工作小结</a>
+          </li>
+        
+          <li>
+            <a href="/2026/10/12/maven-tomcat-eclipse-cursor/">Maven 项目还能像 Sysdeo 那样用 Tomcat 插件启动吗？Eclipse 与 Cursor 选型</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 eppen<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+<!-- hexo injector body_end start --><div class="adsense-wrap" style="margin:24px 0;text-align:center;min-height:90px;overflow:hidden;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2045994937692573" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, securityLevel: "loose" });</script><!-- hexo injector body_end end --></body>
+</html>
