@@ -71,6 +71,100 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-mes-weekly-2026-w44" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/10/30/mes-weekly-2026-w44/" class="article-date">
+  <time class="dt-published" datetime="2026-10-30T08:55:00.000Z" itemprop="datePublished">2026-10-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/10/30/mes-weekly-2026-w44/">MES 2026 年第 44 周工作小结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <img src="/2026/10/30/mes-weekly-2026-w44/cover.png" class="">
+
+<p>本周（10&#x2F;26–10&#x2F;30，约 <strong>37</strong> 条提交）主线从「流程设计器」切到「小指标公式能力」和「在线操作说明」铺开：周一重构类别树，周二把班组&#x2F;日&#x2F;月取数与公式编辑器一口气补齐，周三到周五把手册机制接到计划&#x2F;报表&#x2F;小指标&#x2F;计量多个模块，周五同时推进 <code>eos-nwf</code> 安装向导与联锁 AI 图表。文件改动触达面仍以 <code>mes-workflow</code>、<code>mes-core</code>、<code>mes-measure</code>、<code>mes-web</code>、<code>mes-ai</code> 等为主。</p>
+<h2 id="一、小指标公式编辑器（本周主战场）"><a href="#一、小指标公式编辑器（本周主战场）" class="headerlink" title="一、小指标公式编辑器（本周主战场）"></a>一、小指标公式编辑器（本周主战场）</h2><p>电厂小指标本周把「能配什么公式」往前推了一大截，编辑器与后端解析一起改：</p>
+<ul>
+<li>支持班组 &#x2F; 日 &#x2F; 月取数公式，复用既有 DB 解析链路</li>
+<li>公式编辑器补齐班组、仪表、条件值类型与级联选择；日&#x2F;月口径展示完整仪表取值类型</li>
+<li>W 条件支持班次口径；仪表页增加计算符号列并补齐比较符</li>
+<li>修正表元数据加载为空、编辑表单布局与初始化报错；条件值级联的侧线取值与响应式预置</li>
+<li>文档与样例同步：按口径显示说明，明确统一入口对 <code>DD</code> &#x2F; <code>if</code> 的支持边界</li>
+<li>周四再加一层：公式编辑器支持 <strong>LIMS 取数</strong>，补齐 mesdata 脚本；Shiro &#x2F; 拦截器为 LIMS API 放开匿名访问</li>
+</ul>
+<p>单位树也改名为类别树（<code>category tree</code>），和页面语义对齐。</p>
+<h2 id="二、在线操作说明机制铺开"><a href="#二、在线操作说明机制铺开" class="headerlink" title="二、在线操作说明机制铺开"></a>二、在线操作说明机制铺开</h2><p>「页面右上角能点帮助」继续从试点变成多模块标配：</p>
+<ul>
+<li><strong>计划</strong>：计划范围 JHFW 页面增加操作说明文档与帮助按钮</li>
+<li><strong>报表</strong>：报表模块 7 个页面接入在线操作说明</li>
+<li><strong>小指标</strong>：电厂小指标 7 个页面接入；顺带去掉旧 <code>pi-guide</code> 上多余的帮助按钮</li>
+<li><strong>计量</strong>：新增计量管理在线手册（6 篇文档 + 9 张截图），并为 15 个计量页面加上使用说明按钮</li>
+<li><code>ManualController</code> 支持多级 <code>docId</code> 与资源路径，方便手册按目录组织</li>
+</ul>
+<h2 id="三、eos-nwf-与安装向导"><a href="#三、eos-nwf-与安装向导" class="headerlink" title="三、eos-nwf 与安装向导"></a>三、eos-nwf 与安装向导</h2><p>独立前端 <code>eos-nwf-web</code> 本周继续打磨部署与交互：</p>
+<ul>
+<li>安装向导按系统库自动建角色权限表，减少手工灌库</li>
+<li>首页左侧导航支持收缩为图标栏，1366 窄屏更省空间</li>
+<li><code>eos2</code> profile 的 Redis 改为连接本机，方便本机联调</li>
+</ul>
+<h2 id="四、AI-联锁与其它支线"><a href="#四、AI-联锁与其它支线" class="headerlink" title="四、AI 联锁与其它支线"></a>四、AI 联锁与其它支线</h2><ul>
+<li><code>mes-ai</code>：联锁多日合计经 <code>chart_from_tool</code> 自动附每日趋势图，合计结果旁能直接看走势</li>
+<li>应用日志目录切换（<code>logfile</code>），排查多实例日志更方便</li>
+<li>树组件 base URL 改为 IP 占位配置，部署时少改死地址</li>
+</ul>
+<h2 id="节奏"><a href="#节奏" class="headerlink" title="节奏"></a>节奏</h2><table>
+<thead>
+<tr>
+<th>日期</th>
+<th>10&#x2F;26 一</th>
+<th>10&#x2F;27 二</th>
+<th>10&#x2F;28 三</th>
+<th>10&#x2F;29 四</th>
+<th>10&#x2F;30 五</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>侧重</td>
+<td>小指标单位树→类别树</td>
+<td>班组&#x2F;日&#x2F;月公式、编辑器类型与文档大修</td>
+<td>报表&#x2F;计划手册、日志目录切换</td>
+<td>LIMS 取数、小指标手册、多级 docId</td>
+<td>计量手册、eos-nwf 向导&#x2F;导航、联锁趋势图</td>
+</tr>
+</tbody></table>
+<p>一句话：小指标先把「公式能配全、说明写清楚」做实，再把在线手册铺到计划&#x2F;报表&#x2F;计量，周五顺手把 eos-nwf 安装与联锁图表补上。</p>
+<p>下周待办：小指标公式在现场口径上继续回归（班次 &#x2F; LIMS &#x2F; 条件值级联），手册继续按模块补齐截图与入口；eos-nwf 安装向导与角色权限在目标库走通一遍。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://eppencn.com/2026/10/30/mes-weekly-2026-w44/" data-id="cmvuqo0re001kd8v54l0x0zo4" data-title="MES 2026 年第 44 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/eos-nwf/" rel="tag">eos-nwf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-indicator/" rel="tag">mes-indicator</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-manual/" rel="tag">mes-manual</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-mes-weekly-2026-w43" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/10/24/mes-weekly-2026-w43/" class="article-date">
@@ -164,7 +258,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/10/24/mes-weekly-2026-w43/" data-id="cmvm1kby70059jwv52tne47i8" data-title="MES 2026 年第 43 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/10/24/mes-weekly-2026-w43/" data-id="cmvuqo0sn008wd8v54dad74vc" data-title="MES 2026 年第 43 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -241,7 +335,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/10/20/ai-learning-time/" data-id="cmvm1kbwo0005jwv5gnoj4l4l" data-title="有 AI 之后，人类的学习时间是否可以缩短了？" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/10/20/ai-learning-time/" data-id="cmvuqo0qp0001d8v58te51d04" data-title="有 AI 之后，人类的学习时间是否可以缩短了？" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -348,7 +442,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/10/17/t480-48g-vs-mac-rtx-spark/" data-id="cmvm1kbyg005sjwv5avqzeicg" data-title="同样写着 48GB，T480 和 MacBook、RTX Spark 差多少钱" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/10/17/t480-48g-vs-mac-rtx-spark/" data-id="cmvuqo0sn008xd8v5hkzbcyd2" data-title="同样写着 48GB，T480 和 MacBook、RTX Spark 差多少钱" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -457,7 +551,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/10/17/macOS%E7%BB%88%E7%AB%AF%E8%BF%9E%E6%8E%A5Windows-SSH%E5%90%8E%E5%B4%A9%E6%BA%83/" data-id="cmvm1kbwx000gjwv594z27l6a" data-title="macOS 终端连接 Windows SSH 后崩溃" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/10/17/macOS%E7%BB%88%E7%AB%AF%E8%BF%9E%E6%8E%A5Windows-SSH%E5%90%8E%E5%B4%A9%E6%BA%83/" data-id="cmvuqo0r1000ld8v5fvuqbiww" data-title="macOS 终端连接 Windows SSH 后崩溃" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -555,7 +649,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/10/16/mes-weekly-2026-w42/" data-id="cmvm1kbyc005jjwv5cwbud50o" data-title="MES 2026 年第 42 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/10/16/mes-weekly-2026-w42/" data-id="cmvuqo0rd001hd8v50v7l8quu" data-title="MES 2026 年第 42 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -697,7 +791,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/10/12/maven-tomcat-eclipse-cursor/" data-id="cmvm1kbwv000ejwv5ak358z1g" data-title="Maven 项目还能像 Sysdeo 那样用 Tomcat 插件启动吗？Eclipse 与 Cursor 选型" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/10/12/maven-tomcat-eclipse-cursor/" data-id="cmvuqo0r1000kd8v53qzmdbhf" data-title="Maven 项目还能像 Sysdeo 那样用 Tomcat 插件启动吗？Eclipse 与 Cursor 选型" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -780,7 +874,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/10/10/mes-weekly-2026-w41/" data-id="cmvm1kby60057jwv5cocx62sx" data-title="MES 2026 年第 41 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/10/10/mes-weekly-2026-w41/" data-id="cmvuqo0rd001id8v5bvmw9nq5" data-title="MES 2026 年第 41 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -866,7 +960,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/09/30/mes-weekly-2026-w40/" data-id="cmvm1kby8005bjwv541iog0xi" data-title="MES 2026 年第 40 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/09/30/mes-weekly-2026-w40/" data-id="cmvuqo0rc001gd8v5cj7g9omb" data-title="MES 2026 年第 40 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -954,103 +1048,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/09/29/mes-monthly-2026-09/" data-id="cmvm1kby2004zjwv5cu8z1ufi" data-title="MES 2026 年 9 月工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://eppencn.com/2026/09/29/mes-monthly-2026-09/" data-id="cmvuqo0r6000zd8v5akts0x8s" data-title="MES 2026 年 9 月工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-measure/" rel="tag">mes-measure</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-rtdb/" rel="tag">mes-rtdb</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-mes-quarterly-2026-q3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/09/29/mes-quarterly-2026-q3/" class="article-date">
-  <time class="dt-published" datetime="2026-09-29T02:00:00.000Z" itemprop="datePublished">2026-09-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/09/29/mes-quarterly-2026-q3/">MES 2026 年三季度工作小结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <img src="/2026/09/29/mes-quarterly-2026-q3/cover.png" class="">
-
-<p>2026 年三季度（7–9 月，约 <strong>1108</strong> 次提交：7 月 402 &#x2F; 8 月 428 &#x2F; 9 月 278）合并 PR 约 <strong>#312–#385</strong>（约 61 个）。主线是把 <strong>mes-ai</strong> 从「能问」推进到「能查、能画、可观测、可回滚」，并同步加深看板能力、计量导入闭环，以及多应用拆分与实时库底座。触达最多模块：<code>mes-ai</code> ≫ <code>mes-chart</code> &#x2F; <code>mes-web</code> &#x2F; <code>mes-measure</code> &#x2F; <code>mes-core</code>；另有 <code>mes-security</code>、<code>mes-report</code>、<code>mes-rtdb</code>、<code>mes-visual</code> 等持续迭代。</p>
-<h2 id="一、MES-AI：工具链、多-Agent-与可观测"><a href="#一、MES-AI：工具链、多-Agent-与可观测" class="headerlink" title="一、MES-AI：工具链、多 Agent 与可观测"></a>一、MES-AI：工具链、多 Agent 与可观测</h2><ul>
-<li><strong>多 Agent &#x2F; 路由</strong>：多 Agent 入口、协作子 Agent 并行与隔离上下文、工具互斥与示例增强、Planner 多专业、工具移交编辑（#352、#368、#369 等）。</li>
-<li><strong>SQL &#x2F; 存储过程工具链</strong>：参数槽位、存储过程工具、相对月份参数、<code>excludeFromUiTable</code>、双周期对比图、<code>sql_compose</code> 配方化拼装（#344、#356、#357、#365、#371）。</li>
-<li><strong>对话体验</strong>：停止生成、内联图表、Markdown 展示、表格列组&#x2F;着色&#x2F;合计行、答案选择、会话历史（#326、#360、#377、#358–#361）。</li>
-<li><strong>可观测与治理</strong>：运行轨迹、重试&#x2F;复测反馈、LLM API 用量记录、Agent&#x2F;Tool 配置快照备份回滚、本地 LLM profile（#328、#333、#374、#314）。</li>
-<li><strong>业务场景</strong>：生产运行 FC、能耗日查询&#x2F;饼图趋势、联锁投用率、装置开停工区间、工程师日志录入（#324、#363、#381、#366）。</li>
-<li><strong>AgentScope</strong>：8 月引入子运行时，子 Agent 配置、权限模式与协作编排联动。</li>
-</ul>
-<h2 id="二、看板与图表（mes-chart）"><a href="#二、看板与图表（mes-chart）" class="headerlink" title="二、看板与图表（mes-chart）"></a>二、看板与图表（mes-chart）</h2><ul>
-<li><strong>能力增强合入 #384</strong>：书签 URL、筛选联动、透视、虚拟滚动、看板导出、数字卡下钻、SQL 安全校验（Druid）等。</li>
-<li><strong>能耗与下钻</strong>：饼图&#x2F;趋势&#x2F;同比、图表下钻到明细、嵌套饼色相与零值过滤。</li>
-<li><strong>演示与运维</strong>：DEMO 组织看板 KPI 与末级部门人数表、数据库监控阻塞数报警并跳转解锁页。</li>
-<li><strong>工艺可视化</strong>：ISA &#x2F; P&amp;ID 符号面板与相关资产页交互。</li>
-</ul>
-<h2 id="三、业务模块：计量、报表、船舶与计划"><a href="#三、业务模块：计量、报表、船舶与计划" class="headerlink" title="三、业务模块：计量、报表、船舶与计划"></a>三、业务模块：计量、报表、船舶与计划</h2><ul>
-<li><strong>计量器具（msr）</strong>：菜单&#x2F;字典种子、xlsm 模板与 VBA、部门&#x2F;装置筛选、导入 zip 与本机一键准备、VLOOKUP 装置查找。</li>
-<li><strong>报表</strong>：模板历史&#x2F;回滚&#x2F;检查点、AI 公式检查（#385）、报表调度与 Quartz 联动（任务卡、上次结果&#x2F;下次执行）。</li>
-<li><strong>船舶 &#x2F; 罐区 &#x2F; 计划</strong>：月度运行 widget、黑名单导入导出、罐日与库存平衡 UI 优化、计划范围导入摘要与未匹配装置提示。</li>
-<li><strong>工作台</strong>：P0–P2、到期提醒工作台（#327、#383）。</li>
-</ul>
-<h2 id="四、平台、权限与基础设施"><a href="#四、平台、权限与基础设施" class="headerlink" title="四、平台、权限与基础设施"></a>四、平台、权限与基础设施</h2><ul>
-<li><strong>EOS 权限与菜单</strong>：角色对象权限、批量删权、菜单 v2（拖拽排序、按 app 检索、刷新 EOS URL &#x2F; hash）。</li>
-<li><strong>多应用拆分</strong>：平台抽出，mes-web &#x2F; 报表 &#x2F; 调度独立子应用（<code>feat/mes-app</code>），依赖与文档同步整理。</li>
-<li><strong>安全与通用</strong>：JSON 请求加密、用户导出、jqGrid 全局错误处理、在线消息详情。</li>
-<li><strong>调度与实时库</strong>：Quartz P0–P2 工程化；TSDB &#x2F; ISYS SDK 接入、实时&#x2F;历史 client 池与分锁、监控页挂菜单。</li>
-<li><strong>其它</strong>：LIMS 数据源配置、EOS 文档数据、可视化工艺面板等。</li>
-</ul>
-<h2 id="五、季度节奏"><a href="#五、季度节奏" class="headerlink" title="五、季度节奏"></a>五、季度节奏</h2><table>
-<thead>
-<tr>
-<th>月份</th>
-<th>重点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>7 月</strong></td>
-<td>AI 工具链与多 Agent 底座、Quartz 工程化、工作台 P0–P2、EOS 权限与工程师日志</td>
-</tr>
-<tr>
-<td><strong>8 月</strong></td>
-<td>对话内联图 &#x2F; 能耗图、sql_compose 与双区间、AgentScope、看板下钻、计量与到期提醒；发版 <code>release-2026-08-25</code></td>
-</tr>
-<tr>
-<td><strong>9 月</strong></td>
-<td>看板能力合入（#384）、报表公式检查（#385）、计量 xlsm、多应用 &#x2F; 菜单 v2、TSDB、报表调度</td>
-</tr>
-</tbody></table>
-<hr>
-<p><strong>一句话</strong>：三季度把 MES-AI 做成可查询、可出图、可追踪与可回滚的生产能力，看板与计量导入闭环同步成型，并启动多应用拆分与实时库底座，为后续独立部署与时序数据接入铺路。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/09/29/mes-quarterly-2026-q3/" data-id="cmvm1kbx5000zjwv56k4799ec" data-title="MES 2026 年三季度工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A3%E6%8A%A5/" rel="tag">季报</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li></ul>
 
     </footer>
   </div>
@@ -1078,7 +1080,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/0AD/" rel="tag">0AD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Daily/" rel="tag">AI Daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AdGuard-Home/" rel="tag">AdGuard Home</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Agent/" rel="tag">Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Automation/" rel="tag">Automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CLI/" rel="tag">CLI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Calendar/" rel="tag">Calendar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Claude-Code/" rel="tag">Claude Code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CodingAgent/" rel="tag">CodingAgent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cursor/" rel="tag">Cursor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DNS/" rel="tag">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EOS/" rel="tag">EOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eclipse/" rel="tag">Eclipse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eos/" rel="tag">Eos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Excel/" rel="tag">Excel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Harness/" rel="tag">Harness</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LIMS/" rel="tag">LIMS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCP/" rel="tag">MCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacBook/" rel="tag">MacBook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenSource/" rel="tag">OpenSource</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OptiPlex/" rel="tag">OptiPlex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PI/" rel="tag">PI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PowerShell/" rel="tag">PowerShell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RBAC/" rel="tag">RBAC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTS/" rel="tag">RTS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTX-Spark/" rel="tag">RTX Spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Boot/" rel="tag">Spring Boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/T480/" rel="tag">T480</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Terminal/" rel="tag">Terminal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThinkPad/" rel="tag">ThinkPad</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tomcat/" rel="tag">Tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/health/" rel="tag">health</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/macOS/" rel="tag">macOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-energy/" rel="tag">mes-energy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-factory/" rel="tag">mes-factory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-indicator/" rel="tag">mes-indicator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-measure/" rel="tag">mes-measure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-nwf/" rel="tag">mes-nwf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-plan/" rel="tag">mes-plan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-quartz/" rel="tag">mes-quartz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-report/" rel="tag">mes-report</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-rtdb/" rel="tag">mes-rtdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-security/" rel="tag">mes-security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-web/" rel="tag">mes-web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-workflow/" rel="tag">mes-workflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zTree/" rel="tag">zTree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" rel="tag">中医体质</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" rel="tag">九体医学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" rel="tag">交接班</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" rel="tag">体质调理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" rel="tag">体重管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%81%A5%E5%BA%B7/" rel="tag">健康</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8E%E4%B8%BA%E8%B7%AF%E7%94%B1/" rel="tag">华为路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A3%E6%8A%A5/" rel="tag">季报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" rel="tag">慢性病</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%88%E7%8E%87/" rel="tag">效率</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" rel="tag">科学减肥</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%82%A5%E8%83%96/" rel="tag">肥胖</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" rel="tag">能耗分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" rel="tag">船舶作业</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E5%88%92%E8%8C%83%E5%9B%B4/" rel="tag">计划范围</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/0AD/" rel="tag">0AD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Daily/" rel="tag">AI Daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AdGuard-Home/" rel="tag">AdGuard Home</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Agent/" rel="tag">Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Automation/" rel="tag">Automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CLI/" rel="tag">CLI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Calendar/" rel="tag">Calendar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Claude-Code/" rel="tag">Claude Code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CodingAgent/" rel="tag">CodingAgent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cursor/" rel="tag">Cursor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DNS/" rel="tag">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EOS/" rel="tag">EOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eclipse/" rel="tag">Eclipse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eos/" rel="tag">Eos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Excel/" rel="tag">Excel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Harness/" rel="tag">Harness</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LIMS/" rel="tag">LIMS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCP/" rel="tag">MCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacBook/" rel="tag">MacBook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenSource/" rel="tag">OpenSource</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OptiPlex/" rel="tag">OptiPlex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PI/" rel="tag">PI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PowerShell/" rel="tag">PowerShell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RBAC/" rel="tag">RBAC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTS/" rel="tag">RTS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTX-Spark/" rel="tag">RTX Spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Boot/" rel="tag">Spring Boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/T480/" rel="tag">T480</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Terminal/" rel="tag">Terminal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThinkPad/" rel="tag">ThinkPad</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tomcat/" rel="tag">Tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eos-nwf/" rel="tag">eos-nwf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/health/" rel="tag">health</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/macOS/" rel="tag">macOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-energy/" rel="tag">mes-energy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-factory/" rel="tag">mes-factory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-indicator/" rel="tag">mes-indicator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-manual/" rel="tag">mes-manual</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-measure/" rel="tag">mes-measure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-nwf/" rel="tag">mes-nwf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-plan/" rel="tag">mes-plan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-quartz/" rel="tag">mes-quartz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-report/" rel="tag">mes-report</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-rtdb/" rel="tag">mes-rtdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-security/" rel="tag">mes-security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-web/" rel="tag">mes-web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-workflow/" rel="tag">mes-workflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zTree/" rel="tag">zTree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" rel="tag">中医体质</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" rel="tag">九体医学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" rel="tag">交接班</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" rel="tag">体质调理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" rel="tag">体重管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%81%A5%E5%BA%B7/" rel="tag">健康</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8E%E4%B8%BA%E8%B7%AF%E7%94%B1/" rel="tag">华为路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A3%E6%8A%A5/" rel="tag">季报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" rel="tag">慢性病</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%88%E7%8E%87/" rel="tag">效率</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" rel="tag">科学减肥</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%82%A5%E8%83%96/" rel="tag">肥胖</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" rel="tag">能耗分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" rel="tag">船舶作业</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E5%88%92%E8%8C%83%E5%9B%B4/" rel="tag">计划范围</a></li></ul>
     </div>
   </div>
 
@@ -1088,7 +1090,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/0AD/" style="font-size: 10px;">0AD</a> <a href="/tags/AI/" style="font-size: 11.25px;">AI</a> <a href="/tags/AI-Daily/" style="font-size: 10px;">AI Daily</a> <a href="/tags/AdGuard-Home/" style="font-size: 10px;">AdGuard Home</a> <a href="/tags/Agent/" style="font-size: 10px;">Agent</a> <a href="/tags/Automation/" style="font-size: 10px;">Automation</a> <a href="/tags/CLI/" style="font-size: 11.25px;">CLI</a> <a href="/tags/Calendar/" style="font-size: 10px;">Calendar</a> <a href="/tags/Claude-Code/" style="font-size: 10px;">Claude Code</a> <a href="/tags/CodingAgent/" style="font-size: 10px;">CodingAgent</a> <a href="/tags/Cursor/" style="font-size: 12.5px;">Cursor</a> <a href="/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/EOS/" style="font-size: 11.25px;">EOS</a> <a href="/tags/Eclipse/" style="font-size: 10px;">Eclipse</a> <a href="/tags/Eos/" style="font-size: 10px;">Eos</a> <a href="/tags/Excel/" style="font-size: 10px;">Excel</a> <a href="/tags/Game/" style="font-size: 10px;">Game</a> <a href="/tags/Harness/" style="font-size: 10px;">Harness</a> <a href="/tags/LIMS/" style="font-size: 10px;">LIMS</a> <a href="/tags/MCP/" style="font-size: 10px;">MCP</a> <a href="/tags/MES/" style="font-size: 20px;">MES</a> <a href="/tags/MacBook/" style="font-size: 10px;">MacBook</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/OpenSource/" style="font-size: 10px;">OpenSource</a> <a href="/tags/OptiPlex/" style="font-size: 10px;">OptiPlex</a> <a href="/tags/PI/" style="font-size: 10px;">PI</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/PowerShell/" style="font-size: 10px;">PowerShell</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RBAC/" style="font-size: 10px;">RBAC</a> <a href="/tags/RTS/" style="font-size: 10px;">RTS</a> <a href="/tags/RTX-Spark/" style="font-size: 10px;">RTX Spark</a> <a href="/tags/SQL-Server/" style="font-size: 11.25px;">SQL Server</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Spring-Boot/" style="font-size: 10px;">Spring Boot</a> <a href="/tags/T480/" style="font-size: 10px;">T480</a> <a href="/tags/Terminal/" style="font-size: 10px;">Terminal</a> <a href="/tags/ThinkPad/" style="font-size: 10px;">ThinkPad</a> <a href="/tags/Tomcat/" style="font-size: 10px;">Tomcat</a> <a href="/tags/Windows/" style="font-size: 11.25px;">Windows</a> <a href="/tags/health/" style="font-size: 10px;">health</a> <a href="/tags/macOS/" style="font-size: 10px;">macOS</a> <a href="/tags/mes-ai/" style="font-size: 17.5px;">mes-ai</a> <a href="/tags/mes-chart/" style="font-size: 16.25px;">mes-chart</a> <a href="/tags/mes-energy/" style="font-size: 10px;">mes-energy</a> <a href="/tags/mes-factory/" style="font-size: 10px;">mes-factory</a> <a href="/tags/mes-indicator/" style="font-size: 10px;">mes-indicator</a> <a href="/tags/mes-measure/" style="font-size: 13.75px;">mes-measure</a> <a href="/tags/mes-nwf/" style="font-size: 10px;">mes-nwf</a> <a href="/tags/mes-plan/" style="font-size: 10px;">mes-plan</a> <a href="/tags/mes-quartz/" style="font-size: 10px;">mes-quartz</a> <a href="/tags/mes-report/" style="font-size: 10px;">mes-report</a> <a href="/tags/mes-rtdb/" style="font-size: 13.75px;">mes-rtdb</a> <a href="/tags/mes-security/" style="font-size: 10px;">mes-security</a> <a href="/tags/mes-web/" style="font-size: 12.5px;">mes-web</a> <a href="/tags/mes-workflow/" style="font-size: 11.25px;">mes-workflow</a> <a href="/tags/zTree/" style="font-size: 10px;">zTree</a> <a href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" style="font-size: 10px;">中医体质</a> <a href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" style="font-size: 12.5px;">九体医学</a> <a href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" style="font-size: 10px;">交接班</a> <a href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" style="font-size: 10px;">体质调理</a> <a href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" style="font-size: 11.25px;">体重管理</a> <a href="/tags/%E5%81%A5%E5%BA%B7/" style="font-size: 15px;">健康</a> <a href="/tags/%E5%8D%8E%E4%B8%BA%E8%B7%AF%E7%94%B1/" style="font-size: 10px;">华为路由</a> <a href="/tags/%E5%91%A8%E6%8A%A5/" style="font-size: 17.5px;">周报</a> <a href="/tags/%E5%AD%A3%E6%8A%A5/" style="font-size: 10px;">季报</a> <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">学习</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" style="font-size: 18.75px;">工作小结</a> <a href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" style="font-size: 10px;">慢性病</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 10px;">效率</a> <a href="/tags/%E6%9C%88%E6%8A%A5/" style="font-size: 15px;">月报</a> <a href="/tags/%E6%9D%83%E9%99%90/" style="font-size: 11.25px;">权限</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" style="font-size: 10px;">科学减肥</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">网络</a> <a href="/tags/%E8%82%A5%E8%83%96/" style="font-size: 10px;">肥胖</a> <a href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" style="font-size: 10px;">能耗分析</a> <a href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" style="font-size: 10px;">船舶作业</a> <a href="/tags/%E8%AE%A1%E5%88%92%E8%8C%83%E5%9B%B4/" style="font-size: 10px;">计划范围</a>
+      <a href="/tags/0AD/" style="font-size: 10px;">0AD</a> <a href="/tags/AI/" style="font-size: 11.11px;">AI</a> <a href="/tags/AI-Daily/" style="font-size: 10px;">AI Daily</a> <a href="/tags/AdGuard-Home/" style="font-size: 10px;">AdGuard Home</a> <a href="/tags/Agent/" style="font-size: 10px;">Agent</a> <a href="/tags/Automation/" style="font-size: 10px;">Automation</a> <a href="/tags/CLI/" style="font-size: 11.11px;">CLI</a> <a href="/tags/Calendar/" style="font-size: 10px;">Calendar</a> <a href="/tags/Claude-Code/" style="font-size: 10px;">Claude Code</a> <a href="/tags/CodingAgent/" style="font-size: 10px;">CodingAgent</a> <a href="/tags/Cursor/" style="font-size: 12.22px;">Cursor</a> <a href="/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/EOS/" style="font-size: 11.11px;">EOS</a> <a href="/tags/Eclipse/" style="font-size: 10px;">Eclipse</a> <a href="/tags/Eos/" style="font-size: 10px;">Eos</a> <a href="/tags/Excel/" style="font-size: 10px;">Excel</a> <a href="/tags/Game/" style="font-size: 10px;">Game</a> <a href="/tags/Harness/" style="font-size: 10px;">Harness</a> <a href="/tags/LIMS/" style="font-size: 10px;">LIMS</a> <a href="/tags/MCP/" style="font-size: 10px;">MCP</a> <a href="/tags/MES/" style="font-size: 20px;">MES</a> <a href="/tags/MacBook/" style="font-size: 10px;">MacBook</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/OpenSource/" style="font-size: 10px;">OpenSource</a> <a href="/tags/OptiPlex/" style="font-size: 10px;">OptiPlex</a> <a href="/tags/PI/" style="font-size: 10px;">PI</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/PowerShell/" style="font-size: 10px;">PowerShell</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RBAC/" style="font-size: 10px;">RBAC</a> <a href="/tags/RTS/" style="font-size: 10px;">RTS</a> <a href="/tags/RTX-Spark/" style="font-size: 10px;">RTX Spark</a> <a href="/tags/SQL-Server/" style="font-size: 11.11px;">SQL Server</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Spring-Boot/" style="font-size: 10px;">Spring Boot</a> <a href="/tags/T480/" style="font-size: 10px;">T480</a> <a href="/tags/Terminal/" style="font-size: 10px;">Terminal</a> <a href="/tags/ThinkPad/" style="font-size: 10px;">ThinkPad</a> <a href="/tags/Tomcat/" style="font-size: 10px;">Tomcat</a> <a href="/tags/Windows/" style="font-size: 11.11px;">Windows</a> <a href="/tags/eos-nwf/" style="font-size: 10px;">eos-nwf</a> <a href="/tags/health/" style="font-size: 10px;">health</a> <a href="/tags/macOS/" style="font-size: 10px;">macOS</a> <a href="/tags/mes-ai/" style="font-size: 16.67px;">mes-ai</a> <a href="/tags/mes-chart/" style="font-size: 15.56px;">mes-chart</a> <a href="/tags/mes-energy/" style="font-size: 10px;">mes-energy</a> <a href="/tags/mes-factory/" style="font-size: 10px;">mes-factory</a> <a href="/tags/mes-indicator/" style="font-size: 11.11px;">mes-indicator</a> <a href="/tags/mes-manual/" style="font-size: 10px;">mes-manual</a> <a href="/tags/mes-measure/" style="font-size: 13.33px;">mes-measure</a> <a href="/tags/mes-nwf/" style="font-size: 10px;">mes-nwf</a> <a href="/tags/mes-plan/" style="font-size: 10px;">mes-plan</a> <a href="/tags/mes-quartz/" style="font-size: 10px;">mes-quartz</a> <a href="/tags/mes-report/" style="font-size: 10px;">mes-report</a> <a href="/tags/mes-rtdb/" style="font-size: 13.33px;">mes-rtdb</a> <a href="/tags/mes-security/" style="font-size: 10px;">mes-security</a> <a href="/tags/mes-web/" style="font-size: 12.22px;">mes-web</a> <a href="/tags/mes-workflow/" style="font-size: 11.11px;">mes-workflow</a> <a href="/tags/zTree/" style="font-size: 10px;">zTree</a> <a href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" style="font-size: 10px;">中医体质</a> <a href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" style="font-size: 12.22px;">九体医学</a> <a href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" style="font-size: 10px;">交接班</a> <a href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" style="font-size: 10px;">体质调理</a> <a href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" style="font-size: 11.11px;">体重管理</a> <a href="/tags/%E5%81%A5%E5%BA%B7/" style="font-size: 14.44px;">健康</a> <a href="/tags/%E5%8D%8E%E4%B8%BA%E8%B7%AF%E7%94%B1/" style="font-size: 10px;">华为路由</a> <a href="/tags/%E5%91%A8%E6%8A%A5/" style="font-size: 17.78px;">周报</a> <a href="/tags/%E5%AD%A3%E6%8A%A5/" style="font-size: 10px;">季报</a> <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">学习</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" style="font-size: 18.89px;">工作小结</a> <a href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" style="font-size: 10px;">慢性病</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 10px;">效率</a> <a href="/tags/%E6%9C%88%E6%8A%A5/" style="font-size: 14.44px;">月报</a> <a href="/tags/%E6%9D%83%E9%99%90/" style="font-size: 11.11px;">权限</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" style="font-size: 10px;">科学减肥</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">网络</a> <a href="/tags/%E8%82%A5%E8%83%96/" style="font-size: 10px;">肥胖</a> <a href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" style="font-size: 10px;">能耗分析</a> <a href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" style="font-size: 10px;">船舶作业</a> <a href="/tags/%E8%AE%A1%E5%88%92%E8%8C%83%E5%9B%B4/" style="font-size: 10px;">计划范围</a>
     </div>
   </div>
 
@@ -1110,6 +1112,10 @@
       <ul>
         
           <li>
+            <a href="/2026/10/30/mes-weekly-2026-w44/">MES 2026 年第 44 周工作小结</a>
+          </li>
+        
+          <li>
             <a href="/2026/10/24/mes-weekly-2026-w43/">MES 2026 年第 43 周工作小结</a>
           </li>
         
@@ -1123,10 +1129,6 @@
         
           <li>
             <a href="/2026/10/17/macOS%E7%BB%88%E7%AB%AF%E8%BF%9E%E6%8E%A5Windows-SSH%E5%90%8E%E5%B4%A9%E6%BA%83/">macOS 终端连接 Windows SSH 后崩溃</a>
-          </li>
-        
-          <li>
-            <a href="/2026/10/16/mes-weekly-2026-w42/">MES 2026 年第 42 周工作小结</a>
           </li>
         
       </ul>
