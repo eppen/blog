@@ -1,0 +1,516 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化 | Hua Liang's Blog</title><meta name="author" content="eppen"><meta name="copyright" content="eppen"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="中文版はこちら → 采购订单（注文书）系统：从订单生成到到货验收的电子化流程  本文は、ある製造企業における購買注文システムの導入過程を整理したものです。実際のシステム名は POFlow（ピーオーフロー） で表しています。  一言で言えば：POFlow の購買注文書モジュールは、TPICS システムの Web 拡張（アドオン）です。購買注文書（注文書）の「生成 → 確認 → 承認 → 印刷&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化">
+<meta property="og:url" content="https://eppencn.com/2026/10/24/purchase-order-workflow-ja/index.html">
+<meta property="og:site_name" content="Hua Liang&#39;s Blog">
+<meta property="og:description" content="中文版はこちら → 采购订单（注文书）系统：从订单生成到到货验收的电子化流程  本文は、ある製造企業における購買注文システムの導入過程を整理したものです。実際のシステム名は POFlow（ピーオーフロー） で表しています。  一言で言えば：POFlow の購買注文書モジュールは、TPICS システムの Web 拡張（アドオン）です。購買注文書（注文書）の「生成 → 確認 → 承認 → 印刷&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eppencn.com/2026/10/24/purchase-order-workflow-ja/cover.svg">
+<meta property="article:published_time" content="2026-10-24T12:05:00.000Z">
+<meta property="article:modified_time" content="2026-10-24T12:20:00.000Z">
+<meta property="article:author" content="eppen">
+<meta property="article:tag" content="Mermaid">
+<meta property="article:tag" content="製造業">
+<meta property="article:tag" content="購買注文書">
+<meta property="article:tag" content="注文書">
+<meta property="article:tag" content="電子承認">
+<meta property="article:tag" content="業務フロー">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eppencn.com/2026/10/24/purchase-order-workflow-ja/cover.svg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化",
+  "url": "https://eppencn.com/2026/10/24/purchase-order-workflow-ja/",
+  "image": "https://eppencn.com/2026/10/24/purchase-order-workflow-ja/cover.svg",
+  "datePublished": "2026-10-24T12:05:00.000Z",
+  "dateModified": "2026-10-24T12:20:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "eppen",
+      "url": "https://eppencn.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://eppencn.com/2026/10/24/purchase-order-workflow-ja/index.html"><link rel="preconnect"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="/pluginsSrc/@fortawesome/fontawesome-free/css/all.min.css?v=7.3.1"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: '/pluginsSrc/@egjs/infinitegrid/dist/infinitegrid.min.js?v=4.13.0',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><!-- hexo injector head_end start --><meta name="google-adsense-account" content="ca-pub-2045994937692573">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2045994937692573" crossorigin="anonymous"></script><!-- hexo injector head_end end --><style>
+.post-content > pre.mermaid {
+  background: #fff;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 1.5em 0;
+  padding: 12px 8px;
+  overflow-x: auto;
+  text-align: center;
+  line-height: 1.5;
+  text-shadow: none;
+}
+.post-content > pre.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+.post-content > pre.mermaid:not([data-processed]) {
+  white-space: pre-wrap;
+  text-align: left;
+  font-size: 12px;
+}
+</style><style id="article-table-style">
+/* 正文表格：补网格线、内边距、表头底色与斑马纹 */
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 1.5em 0;
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+.post-content thead th,
+.post-content tbody td {
+  border: 1px solid #dcdcdc;
+  padding: 8px 10px;
+  vertical-align: top;
+}
+.post-content thead th {
+  background: #f6f6f6;
+  text-align: left;
+  font-weight: bold;
+  white-space: nowrap;
+}
+.post-content tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+/* 代码块高亮内部的表格是行号 + 代码的双列布局，不能被正文表格样式污染 */
+.post-content .highlight table,
+.post-content .highlight thead,
+.post-content .highlight tbody {
+  border: none;
+  margin: 0;
+  width: auto;
+}
+.post-content .highlight tbody tr:nth-child(even) {
+  background: none;
+}
+.post-content .highlight td {
+  border: none;
+  padding: 0;
+  white-space: pre;
+}
+/* 窄屏：Butterfly 已经把表格包在 .table-wrap 里并给了横向滚动，
+   这里只需保证单元格文字正常换行，不再额外把 table 改成 block，
+   否则会和控制滚动的外层容器打架 */
+@media screen and (max-width: 767px) {
+  .post-content thead th {
+    white-space: normal;
+  }
+}
+</style><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">50</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">92</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Hua Liang's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-24T12:05:00.000Z" title="发表于 2026-10-24 20:05:00">2026-10-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-24T12:20:00.000Z" title="更新于 2026-10-24 20:20:00">2026-10-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/products/">产品介绍</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><img src="/2026/10/24/purchase-order-workflow-ja/cover.svg" class="">
+
+<blockquote>
+<p>中文版はこちら → <a href="/2026/10/24/purchase-order-workflow-zh/">采购订单（注文书）系统：从订单生成到到货验收的电子化流程</a></p>
+</blockquote>
+<p>本文は、ある製造企業における購買注文システムの導入過程を整理したものです。実際のシステム名は <strong>POFlow（ピーオーフロー）</strong> で表しています。</p>
+<blockquote>
+<p>一言で言えば：POFlow の購買注文書モジュールは、TPICS システムの Web 拡張（アドオン）です。購買注文書（注文書）の「生成 → 確認 → 承認 → 印刷&#x2F;送信 → 入荷検収」という一連の業務を電子化し、従来の紙による運用を置き換えます。</p>
+</blockquote>
+<h2 id="1-背景と位置づけ"><a href="#1-背景と位置づけ" class="headerlink" title="1. 背景と位置づけ"></a>1. 背景と位置づけ</h2><ul>
+<li><strong>POFlow とは</strong>：独立した Web アプリケーションで、技術的には TPICS システムの「外部拡張（アドオン）」です。TPICS と<strong>同じ業務データベースを共有</strong>し、ログインアカウントと権限も <strong>TPICS のセキュリティ体系を再利用</strong>するため、業務担当者は新たにアカウントを作る必要がありません。</li>
+<li><strong>モジュールは注文書を新規作成しない</strong>：購買注文書は TPICS の MRP（所要量計画）によって自動生成されます。本モジュールはその注文書の<strong>後続処理</strong>（確認・承認・印刷・送信・入荷検収）を担い、ゼロから注文書を作成するものではありません。</li>
+</ul>
+<p>モジュール全体は、システム上では相互に連携する 3 つの機能が一体となって構成されています：<strong>購買注文書の承認</strong>、<strong>注文書と納品書の印刷</strong>、<strong>入荷検収</strong>。</p>
+<h3 id="1-1-システム位置づけ図"><a href="#1-1-システム位置づけ図" class="headerlink" title="1.1 システム位置づけ図"></a>1.1 システム位置づけ図</h3><pre class="mermaid">flowchart LR
+    MRP[&quot;TPICS · MRP&lt;br/&gt;所要量計画&quot;] --&gt;|購買注文書を自動生成| MW[&quot;POFlow&lt;br/&gt;購買注文書モジュール&quot;]
+    SEC[&quot;TPICS · セキュリティ体系&lt;br/&gt;アカウント / 権限&quot;] -.-&gt;|ログイン・権限を再利用| MW
+    MW &lt;--&gt;|同一の業務データを読み書き| DB[(&quot;TPICS 業務データベース&lt;br/&gt;（共有）&quot;)]
+    MW --&gt;|PDF をメール送信| VN[&quot;メーカー（仕入先）&quot;]</pre>
+
+
+<blockquote>
+<p>ポイント：本モジュールは注文書を<strong>新規作成しません</strong>。注文書は MRP が生成し、モジュールは<strong>確認 → 承認 → 印刷&#x2F;送信 → 検収</strong>という後続業務のみを担います。</p>
+</blockquote>
+<h2 id="2-主な機能"><a href="#2-主な機能" class="headerlink" title="2. 主な機能"></a>2. 主な機能</h2><table>
+<thead>
+<tr>
+<th>機能</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>購買注文書の承認</td>
+<td>注文書を複数段階の確認を経て上長へ承認申請。<strong>承認 &#x2F; 却下 &#x2F; 取消</strong>に対応。システムが注文金額に応じて承認者を自動割り当て。</td>
+</tr>
+<tr>
+<td>注文書と納品書の印刷</td>
+<td>承認後に PDF を生成し、承認者の<strong>電子署名</strong>を付与可能。注文書と納品書を<strong>メーカーへメール送信</strong>可能。</td>
+</tr>
+<tr>
+<td>入荷検収</td>
+<td>入荷時に「受入」数量を入力し、注文書と「検収」を照合。期限内に検収されない場合は自動で赤字表示。未完了分は「残伝票」を印刷可能。</td>
+</tr>
+</tbody></table>
+<h2 id="3-業務フロー"><a href="#3-業務フロー" class="headerlink" title="3. 業務フロー"></a>3. 業務フロー</h2><h3 id="3-1-全体業務フロー図"><a href="#3-1-全体業務フロー図" class="headerlink" title="3.1 全体業務フロー図"></a>3.1 全体業務フロー図</h3><pre class="mermaid">flowchart TB
+    subgraph S1[&quot;① 確認段階&quot;]
+        direction TB
+        A1[&quot;調達グループ確認&lt;br/&gt;step1&quot;]
+        A2[&quot;需給グループ確認&lt;br/&gt;step2&lt;br/&gt;備考追記 / 削除フラグ&quot;]
+        A3[&quot;調達グループ再確認&lt;br/&gt;step3 · 承認申請&quot;]
+        A1 --&gt; A2 --&gt; A3
+    end
+
+    subgraph S2[&quot;② 承認段階&quot;]
+        direction TB
+        B1[&quot;上長承認&quot;]
+        B2{&quot;承認結果&quot;}
+        B1 --&gt; B2
+    end
+
+    subgraph S3[&quot;③ 印刷 / 送信段階&quot;]
+        direction TB
+        C1[&quot;PDF 生成&lt;br/&gt;注文書 + 納品書&quot;]
+        C2[&quot;承認者の電子署名&quot;]
+        C3[&quot;メーカーへメール送信&quot;]
+        C1 --&gt; C2 --&gt; C3
+    end
+
+    subgraph S4[&quot;④ 入荷検収段階&quot;]
+        direction TB
+        D1[&quot;受入&lt;br/&gt;入荷数量を入力&quot;]
+        D2[&quot;検収照合（注文書と照合）&quot;]
+        D3{&quot;全数量が完了？&quot;}
+        D4[&quot;残伝票を印刷&lt;br/&gt;追跡を継続&quot;]
+        D5[&quot;検収完了&quot;]
+        D1 --&gt; D2 --&gt; D3
+        D3 --&gt;|はい| D5
+        D3 --&gt;|いいえ| D4
+    end
+
+    A3 --&gt; B1
+    B2 --&gt;|承認| C1
+    B2 --&gt;|却下| A3
+    B2 --&gt;|取消| X[&quot;申請取消&lt;br/&gt;フロー終了&quot;]
+    C3 --&gt; D1</pre>
+
+
+<ol>
+<li><strong>確認段階</strong>：購買注文書はまず調達グループで確認され、次に需給グループで確認（備考の追記・削除フラグの付与が可能）、最後に調達グループが再確認して承認申請します。</li>
+<li><strong>承認段階</strong>：上長が承認します。<strong>承認</strong>なら印刷&#x2F;送信へ進み、<strong>却下</strong>なら再確認へ差し戻します（却下理由の記入が必要）。申請後・承認前に<strong>取消</strong>することも可能です。</li>
+<li><strong>印刷&#x2F;送信段階</strong>：承認後、注文書と納品書が PDF として生成され、承認者の電子署名が付与されたうえで、該当メーカーへメール送信されます。</li>
+<li><strong>検収段階</strong>：入荷時に受入数量を入力し、注文書と検収照合を行います。受入後<strong>3 営業日を超えても検収されていない</strong>記録は赤字表示されます。未完了の注文書は「残伝票」を印刷して追跡を続けられます。</li>
+</ol>
+<h3 id="3-2-承認ステータスの遷移"><a href="#3-2-承認ステータスの遷移" class="headerlink" title="3.2 承認ステータスの遷移"></a>3.2 承認ステータスの遷移</h3><pre class="mermaid">stateDiagram-v2
+    [*] --&gt; 確認待ち
+
+    確認待ち --&gt; 承認申請待ち : 調達 step1 → 需給 step2 → 調達 step3 確認完了
+    承認申請待ち --&gt; 承認中 : 上長へ申請
+    承認中 --&gt; 承認済み : 承認
+    承認中 --&gt; 却下 : 却下（理由の記入が必要）
+    承認中 --&gt; 取消済み : 申請後・承認前の取消
+
+    却下 --&gt; 確認待ち : 再確認へ差し戻し
+
+    承認済み --&gt; 送信済み : 注文書 / 納品書をメーカーへメール送信
+    承認済み --&gt; 承認済み : PDF 印刷 + 電子署名
+
+    送信済み --&gt; [*]
+    取消済み --&gt; [*]</pre>
+
+
+<table>
+<thead>
+<tr>
+<th>ステータス</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>確認待ち</td>
+<td>注文書が調達グループ（または需給グループ）の確認待ち</td>
+</tr>
+<tr>
+<td>承認申請待ち</td>
+<td>確認完了、上長への申請待ち</td>
+</tr>
+<tr>
+<td>承認中</td>
+<td>申請済み、上長の承認待ち</td>
+</tr>
+<tr>
+<td>却下</td>
+<td>承認不成立、再確認へ差し戻し</td>
+</tr>
+<tr>
+<td>承認済み</td>
+<td>承認成立、印刷・メーカー送信が可能</td>
+</tr>
+<tr>
+<td>送信済み</td>
+<td>注文書と納品書をメーカーへメール送信済み</td>
+</tr>
+<tr>
+<td>取消済み</td>
+<td>申請後・承認前に申請者が取り消した状態</td>
+</tr>
+</tbody></table>
+<h3 id="3-3-役割シーケンス図（承認-→-印刷-→-送信）"><a href="#3-3-役割シーケンス図（承認-→-印刷-→-送信）" class="headerlink" title="3.3 役割シーケンス図（承認 → 印刷 → 送信）"></a>3.3 役割シーケンス図（承認 → 印刷 → 送信）</h3><pre class="mermaid">sequenceDiagram
+    autonumber
+    actor T as 調達グループ
+    actor J as 需給グループ
+    actor U as 上長（承認者）
+    participant M as POFlow
+    participant V as メーカー
+
+    T-&gt;&gt;M: 注文書を確認（step1）
+    J-&gt;&gt;M: 注文書を確認 + 備考 / 削除フラグ（step2）
+    T-&gt;&gt;M: 再確認して承認申請（step3）
+    M-&gt;&gt;U: 承認待ちをメール通知
+    U-&gt;&gt;M: 承認 / 却下 / 取消
+    alt 承認
+        M-&gt;&gt;M: PDF 生成 + 電子署名
+        M-&gt;&gt;V: 注文書 + 納品書をメール送信
+        M-&gt;&gt;T: 承認結果をメール通知
+    else 却下
+        M-&gt;&gt;T: 再確認へ差し戻し（却下理由を通知）
+    else 取消
+        M-&gt;&gt;T: 申請取消、フロー終了
+    end</pre>
+
+
+<h2 id="4-役割と責務"><a href="#4-役割と責務" class="headerlink" title="4. 役割と責務"></a>4. 役割と責務</h2><table>
+<thead>
+<tr>
+<th>役割</th>
+<th>責務</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>調達グループ</td>
+<td>初回確認と最終再確認、承認申請</td>
+</tr>
+<tr>
+<td>需給グループ</td>
+<td>中間確認、備考追記・削除フラグ付与</td>
+</tr>
+<tr>
+<td>上長（承認者）</td>
+<td>承認・却下・取消、電子署名</td>
+</tr>
+<tr>
+<td>メーカー（仕入先）</td>
+<td>システムからメール送信された注文書・納品書の受領</td>
+</tr>
+</tbody></table>
+<h2 id="5-対応する注文書種別"><a href="#5-対応する注文書種別" class="headerlink" title="5. 対応する注文書種別"></a>5. 対応する注文書種別</h2><table>
+<thead>
+<tr>
+<th>種別</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MRP 注文（PO）</td>
+<td>MRP により自動生成された通常の購買注文書</td>
+</tr>
+<tr>
+<td>手書き注文（HD）</td>
+<td>手入力で作成された注文書</td>
+</tr>
+<tr>
+<td>設計注文（SJ）</td>
+<td>設計部門（設計課）の注文書</td>
+</tr>
+<tr>
+<td>破壊品注文（BP）</td>
+<td>破壊部品／破壊品の注文書</td>
+</tr>
+</tbody></table>
+<h2 id="6-導入効果のまとめ"><a href="#6-導入効果のまとめ" class="headerlink" title="6. 導入効果のまとめ"></a>6. 導入効果のまとめ</h2><ul>
+<li><strong>全工程の電子化・トレーサビリティ</strong>：確認・承認・印刷・送信の各ステップが記録され、紙の運用を置き換えます。</li>
+<li><strong>承認の記録と電子署名</strong>：承認結果と署名を電子的に保管し、責任の所在が明確になります。</li>
+<li><strong>自動通知</strong>：申請・承認結果・メーカー送信をメールで関係者へ自動通知します。</li>
+<li><strong>検収の管理</strong>：入荷数量と注文書を照合し、期限内未検収を自動で注意喚起して検収漏れを防ぎます。</li>
+</ul>
+<hr>
+<h2 id="お問い合わせ"><a href="#お問い合わせ" class="headerlink" title="お問い合わせ"></a>お問い合わせ</h2><p>本記事は実際の導入経験をもとに整理したものです。文中のフローについてのご質問、同種システムの導入事例についての情報交換、あるいは記載内容と実運用の相違点などがあれば、お気軽にご連絡ください。</p>
+<ul>
+<li><strong>GitHub</strong>：<a target="_blank" rel="noopener" href="https://github.com/eppen">@eppen</a></li>
+<li><strong>ブログ</strong>：<a href="https://eppencn.com/">eppencn.com</a></li>
+</ul>
+<blockquote>
+<p>この記事がお役に立てば、フォローや、必要としている同僚への共有をいただけると嬉しいです。</p>
+</blockquote>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Mermaid/">Mermaid</a><a class="post-meta__tags" href="/tags/%E8%A3%BD%E9%80%A0%E6%A5%AD/">製造業</a><a class="post-meta__tags" href="/tags/%E8%B3%BC%E8%B2%B7%E6%B3%A8%E6%96%87%E6%9B%B8/">購買注文書</a><a class="post-meta__tags" href="/tags/%E6%B3%A8%E6%96%87%E6%9B%B8/">注文書</a><a class="post-meta__tags" href="/tags/%E9%9B%BB%E5%AD%90%E6%89%BF%E8%AA%8D/">電子承認</a><a class="post-meta__tags" href="/tags/%E6%A5%AD%E5%8B%99%E3%83%95%E3%83%AD%E3%83%BC/">業務フロー</a></div><div class="post-share"><div class="social-share" data-image="/2026/10/24/purchase-order-workflow-ja/cover.svg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="/pluginsSrc/butterfly-extsrc/sharejs/dist/css/share.min.css?v=1.1.6" media="print" onload="this.media='all'"><script src="/pluginsSrc/butterfly-extsrc/sharejs/dist/js/social-share.min.js?v=1.1.6" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/10/30/mes-weekly-2026-w44/" title="MES 2026 年第 44 周工作小结"><img class="cover" src="/2026/10/30/mes-weekly-2026-w44/cover.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">MES 2026 年第 44 周工作小结</div></div><div class="info-2"><div class="info-item-1">  本周（10&#x2F;26–10&#x2F;30，约 37 条提交）主线从「流程设计器」切到「小指标公式能力」和「在线操作说明」铺开：周一重构类别树，周二把班组&#x2F;日&#x2F;月取数与公式编辑器一口气补齐，周三到周五把手册机制接到计划&#x2F;报表&#x2F;小指标&#x2F;计量多个模块，周五同时推进 eos-nwf 安装向导与联锁 AI 图表。文件改动触达面仍以 mes-workflow、mes-core、mes-measure、mes-web、mes-ai 等为主。 一、小指标公式编辑器（本周主战场）电厂小指标本周把「能配什么公式」往前推了一大截，编辑器与后端解析一起改：  支持班组 &#x2F; 日 &#x2F; 月取数公式，复用既有 DB 解析链路 公式编辑器补齐班组、仪表、条件值类型与级联选择；日&#x2F;月口径展示完整仪表取值类型 W 条件支持班次口径；仪表页增加计算符号列并补齐比较符 修正表元数据加载为空、编辑表单布局与初始化报错；条件值级联的侧线取值与响应式预置 文档与样例同步：按口径显示说明，明确统一入口对 DD &#x2F; if 的支持边...</div></div></div></a><a class="pagination-related" href="/2026/10/24/purchase-order-workflow-zh/" title="采购订单（注文书）系统：从订单生成到到货验收的电子化流程"><img class="cover" src="/2026/10/24/purchase-order-workflow-zh/cover.svg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">采购订单（注文书）系统：从订单生成到到货验收的电子化流程</div></div><div class="info-2"><div class="info-item-1">   日本語版はこちら → 購買注文書システムの業務フロー（日本語版）  本文整理自某制造企业内部的采购订单系统实施过程，实际系统名以 POFlow 指代。  一句话定位：POFlow 采购订单模块是 TPICS 系统的一个 Web 扩展（addon），它把采购订单（注文书）从「生成 → 确认 → 审批 → 打印&#x2F;发送 → 到货验收」的整个业务链条做成了电子化流程，替代了过去的纸质流转。  1. 背景与定位 POFlow 是什么：一个独立的 Web 应用，在技术上是 TPICS 系统的「外挂扩展」，与 TPICS 共用同一套业务数据库，登录账号和权限也复用 TPICS 的安全体系——业务人员无需另行开账号。 模块不「新建」订单：采购订单由 TPICS 中的 MRP（物料需求计划）自动生成。本模块负责这些订单的后续处理：确认、审批、打印、发送和到货验收，而不是从零创建订单。  整个模块在系统内实际由三个相互衔接的功能组成一个整体：采购订单审批、打印订单与纳品书、到货验收。 1.1 系统定位图flowchart LR     MRP[&quot;TPICS · MRP&lt...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/10/24/purchase-order-workflow-zh/" title="采购订单（注文书）系统：从订单生成到到货验收的电子化流程"><img class="cover" src="/2026/10/24/purchase-order-workflow-zh/cover.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-24</div><div class="info-item-2">采购订单（注文书）系统：从订单生成到到货验收的电子化流程</div></div><div class="info-2"><div class="info-item-1">   日本語版はこちら → 購買注文書システムの業務フロー（日本語版）  本文整理自某制造企业内部的采购订单系统实施过程，实际系统名以 POFlow 指代。  一句话定位：POFlow 采购订单模块是 TPICS 系统的一个 Web 扩展（addon），它把采购订单（注文书）从「生成 → 确认 → 审批 → 打印&#x2F;发送 → 到货验收」的整个业务链条做成了电子化流程，替代了过去的纸质流转。  1. 背景与定位 POFlow 是什么：一个独立的 Web 应用，在技术上是 TPICS 系统的「外挂扩展」，与 TPICS 共用同一套业务数据库，登录账号和权限也复用 TPICS 的安全体系——业务人员无需另行开账号。 模块不「新建」订单：采购订单由 TPICS 中的 MRP（物料需求计划）自动生成。本模块负责这些订单的后续处理：确认、审批、打印、发送和到货验收，而不是从零创建订单。  整个模块在系统内实际由三个相互衔接的功能组成一个整体：采购订单审批、打印订单与纳品书、到货验收。 1.1 系统定位图flowchart LR     MRP[&quot;TPICS · MRP&lt...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E8%83%8C%E6%99%AF%E3%81%A8%E4%BD%8D%E7%BD%AE%E3%81%A5%E3%81%91"><span class="toc-text">1. 背景と位置づけ</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E4%BD%8D%E7%BD%AE%E3%81%A5%E3%81%91%E5%9B%B3"><span class="toc-text">1.1 システム位置づけ図</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%B8%BB%E3%81%AA%E6%A9%9F%E8%83%BD"><span class="toc-text">2. 主な機能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%A5%AD%E5%8B%99%E3%83%95%E3%83%AD%E3%83%BC"><span class="toc-text">3. 業務フロー</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%85%A8%E4%BD%93%E6%A5%AD%E5%8B%99%E3%83%95%E3%83%AD%E3%83%BC%E5%9B%B3"><span class="toc-text">3.1 全体業務フロー図</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%89%BF%E8%AA%8D%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9%E3%81%AE%E9%81%B7%E7%A7%BB"><span class="toc-text">3.2 承認ステータスの遷移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E5%BD%B9%E5%89%B2%E3%82%B7%E3%83%BC%E3%82%B1%E3%83%B3%E3%82%B9%E5%9B%B3%EF%BC%88%E6%89%BF%E8%AA%8D-%E2%86%92-%E5%8D%B0%E5%88%B7-%E2%86%92-%E9%80%81%E4%BF%A1%EF%BC%89"><span class="toc-text">3.3 役割シーケンス図（承認 → 印刷 → 送信）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%BD%B9%E5%89%B2%E3%81%A8%E8%B2%AC%E5%8B%99"><span class="toc-text">4. 役割と責務</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%AF%BE%E5%BF%9C%E3%81%99%E3%82%8B%E6%B3%A8%E6%96%87%E6%9B%B8%E7%A8%AE%E5%88%A5"><span class="toc-text">5. 対応する注文書種別</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%B0%8E%E5%85%A5%E5%8A%B9%E6%9E%9C%E3%81%AE%E3%81%BE%E3%81%A8%E3%82%81"><span class="toc-text">6. 導入効果のまとめ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B"><span class="toc-text">お問い合わせ</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/10/30/hello-world/" title="Hello World"><img src="/2026/10/30/hello-world/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2026/10/30/hello-world/" title="Hello World">Hello World</a><time datetime="2026-10-30T08:58:24.200Z" title="发表于 2026-10-30 16:58:24">2026-10-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/30/mes-weekly-2026-w44/" title="MES 2026 年第 44 周工作小结"><img src="/2026/10/30/mes-weekly-2026-w44/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年第 44 周工作小结"/></a><div class="content"><a class="title" href="/2026/10/30/mes-weekly-2026-w44/" title="MES 2026 年第 44 周工作小结">MES 2026 年第 44 周工作小结</a><time datetime="2026-10-30T08:55:00.000Z" title="发表于 2026-10-30 16:55:00">2026-10-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/24/purchase-order-workflow-ja/" title="購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化"><img src="/2026/10/24/purchase-order-workflow-ja/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化"/></a><div class="content"><a class="title" href="/2026/10/24/purchase-order-workflow-ja/" title="購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化">購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化</a><time datetime="2026-10-24T12:05:00.000Z" title="发表于 2026-10-24 20:05:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/24/purchase-order-workflow-zh/" title="采购订单（注文书）系统：从订单生成到到货验收的电子化流程"><img src="/2026/10/24/purchase-order-workflow-zh/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="采购订单（注文书）系统：从订单生成到到货验收的电子化流程"/></a><div class="content"><a class="title" href="/2026/10/24/purchase-order-workflow-zh/" title="采购订单（注文书）系统：从订单生成到到货验收的电子化流程">采购订单（注文书）系统：从订单生成到到货验收的电子化流程</a><time datetime="2026-10-24T12:00:00.000Z" title="发表于 2026-10-24 20:00:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/24/mes-weekly-2026-w43/" title="MES 2026 年第 43 周工作小结"><img src="/2026/10/24/mes-weekly-2026-w43/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年第 43 周工作小结"/></a><div class="content"><a class="title" href="/2026/10/24/mes-weekly-2026-w43/" title="MES 2026 年第 43 周工作小结">MES 2026 年第 43 周工作小结</a><time datetime="2026-10-24T07:10:00.000Z" title="发表于 2026-10-24 15:10:00">2026-10-24</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By eppen</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div><!-- hexo injector body_end start --><div class="adsense-wrap" style="margin:24px 0;text-align:center;min-height:90px;overflow:hidden;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2045994937692573" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><!-- hexo injector body_end end --><script src="/js/vendor/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, securityLevel: "loose", theme: "default", flowchart: { useMaxWidth: true }, sequence: { useMaxWidth: true }, state: { useMaxWidth: true } });</script></body></html>

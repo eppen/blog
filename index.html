@@ -1,1182 +1,278 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  
-  <title>Hua Liang&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Hua Liang's Blog</title><meta name="author" content="eppen"><meta name="copyright" content="eppen"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta property="og:type" content="website">
 <meta property="og:title" content="Hua Liang&#39;s Blog">
 <meta property="og:url" content="https://eppencn.com/index.html">
 <meta property="og:site_name" content="Hua Liang&#39;s Blog">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eppencn.com/img/butterfly-icon.png">
 <meta property="article:author" content="eppen">
 <meta property="article:tag" content="liuhualiang,Hua Liang,blog,hexo,github,pages">
 <meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hua Liang's Blog" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
-  
-  
-<!-- hexo injector head_end start --><meta name="google-adsense-account" content="ca-pub-2045994937692573">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2045994937692573" crossorigin="anonymous"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hua Liang&#39;s Blog</a>
-      </h1>
+<meta name="twitter:image" content="https://eppencn.com/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Hua Liang's Blog",
+  "alternateName": [
+    "eppencn.com"
+  ],
+  "url": "https://eppencn.com/"
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://eppencn.com/index.html"><link rel="preconnect"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="/pluginsSrc/@fortawesome/fontawesome-free/css/all.min.css?v=7.3.1"><script>
+    (() => {
       
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
         
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://eppencn.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-mes-weekly-2026-w44" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/10/30/mes-weekly-2026-w44/" class="article-date">
-  <time class="dt-published" datetime="2026-10-30T08:55:00.000Z" itemprop="datePublished">2026-10-30</time>
-</a>
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/10/30/mes-weekly-2026-w44/">MES 2026 年第 44 周工作小结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
       
-        <img src="/2026/10/30/mes-weekly-2026-w44/cover.png" class="">
-
-<p>本周（10&#x2F;26–10&#x2F;30，约 <strong>37</strong> 条提交）主线从「流程设计器」切到「小指标公式能力」和「在线操作说明」铺开：周一重构类别树，周二把班组&#x2F;日&#x2F;月取数与公式编辑器一口气补齐，周三到周五把手册机制接到计划&#x2F;报表&#x2F;小指标&#x2F;计量多个模块，周五同时推进 <code>eos-nwf</code> 安装向导与联锁 AI 图表。文件改动触达面仍以 <code>mes-workflow</code>、<code>mes-core</code>、<code>mes-measure</code>、<code>mes-web</code>、<code>mes-ai</code> 等为主。</p>
-<h2 id="一、小指标公式编辑器（本周主战场）"><a href="#一、小指标公式编辑器（本周主战场）" class="headerlink" title="一、小指标公式编辑器（本周主战场）"></a>一、小指标公式编辑器（本周主战场）</h2><p>电厂小指标本周把「能配什么公式」往前推了一大截，编辑器与后端解析一起改：</p>
-<ul>
-<li>支持班组 &#x2F; 日 &#x2F; 月取数公式，复用既有 DB 解析链路</li>
-<li>公式编辑器补齐班组、仪表、条件值类型与级联选择；日&#x2F;月口径展示完整仪表取值类型</li>
-<li>W 条件支持班次口径；仪表页增加计算符号列并补齐比较符</li>
-<li>修正表元数据加载为空、编辑表单布局与初始化报错；条件值级联的侧线取值与响应式预置</li>
-<li>文档与样例同步：按口径显示说明，明确统一入口对 <code>DD</code> &#x2F; <code>if</code> 的支持边界</li>
-<li>周四再加一层：公式编辑器支持 <strong>LIMS 取数</strong>，补齐 mesdata 脚本；Shiro &#x2F; 拦截器为 LIMS API 放开匿名访问</li>
-</ul>
-<p>单位树也改名为类别树（<code>category tree</code>），和页面语义对齐。</p>
-<h2 id="二、在线操作说明机制铺开"><a href="#二、在线操作说明机制铺开" class="headerlink" title="二、在线操作说明机制铺开"></a>二、在线操作说明机制铺开</h2><p>「页面右上角能点帮助」继续从试点变成多模块标配：</p>
-<ul>
-<li><strong>计划</strong>：计划范围 JHFW 页面增加操作说明文档与帮助按钮</li>
-<li><strong>报表</strong>：报表模块 7 个页面接入在线操作说明</li>
-<li><strong>小指标</strong>：电厂小指标 7 个页面接入；顺带去掉旧 <code>pi-guide</code> 上多余的帮助按钮</li>
-<li><strong>计量</strong>：新增计量管理在线手册（6 篇文档 + 9 张截图），并为 15 个计量页面加上使用说明按钮</li>
-<li><code>ManualController</code> 支持多级 <code>docId</code> 与资源路径，方便手册按目录组织</li>
-</ul>
-<h2 id="三、eos-nwf-与安装向导"><a href="#三、eos-nwf-与安装向导" class="headerlink" title="三、eos-nwf 与安装向导"></a>三、eos-nwf 与安装向导</h2><p>独立前端 <code>eos-nwf-web</code> 本周继续打磨部署与交互：</p>
-<ul>
-<li>安装向导按系统库自动建角色权限表，减少手工灌库</li>
-<li>首页左侧导航支持收缩为图标栏，1366 窄屏更省空间</li>
-<li><code>eos2</code> profile 的 Redis 改为连接本机，方便本机联调</li>
-</ul>
-<h2 id="四、AI-联锁与其它支线"><a href="#四、AI-联锁与其它支线" class="headerlink" title="四、AI 联锁与其它支线"></a>四、AI 联锁与其它支线</h2><ul>
-<li><code>mes-ai</code>：联锁多日合计经 <code>chart_from_tool</code> 自动附每日趋势图，合计结果旁能直接看走势</li>
-<li>应用日志目录切换（<code>logfile</code>），排查多实例日志更方便</li>
-<li>树组件 base URL 改为 IP 占位配置，部署时少改死地址</li>
-</ul>
-<h2 id="节奏"><a href="#节奏" class="headerlink" title="节奏"></a>节奏</h2><table>
-<thead>
-<tr>
-<th>日期</th>
-<th>10&#x2F;26 一</th>
-<th>10&#x2F;27 二</th>
-<th>10&#x2F;28 三</th>
-<th>10&#x2F;29 四</th>
-<th>10&#x2F;30 五</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>侧重</td>
-<td>小指标单位树→类别树</td>
-<td>班组&#x2F;日&#x2F;月公式、编辑器类型与文档大修</td>
-<td>报表&#x2F;计划手册、日志目录切换</td>
-<td>LIMS 取数、小指标手册、多级 docId</td>
-<td>计量手册、eos-nwf 向导&#x2F;导航、联锁趋势图</td>
-</tr>
-</tbody></table>
-<p>一句话：小指标先把「公式能配全、说明写清楚」做实，再把在线手册铺到计划&#x2F;报表&#x2F;计量，周五顺手把 eos-nwf 安装与联锁图表补上。</p>
-<p>下周待办：小指标公式在现场口径上继续回归（班次 &#x2F; LIMS &#x2F; 条件值级联），手册继续按模块补齐截图与入口；eos-nwf 安装向导与角色权限在目标库走通一遍。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/10/30/mes-weekly-2026-w44/" data-id="cmvuqo0re001kd8v54l0x0zo4" data-title="MES 2026 年第 44 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/eos-nwf/" rel="tag">eos-nwf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-indicator/" rel="tag">mes-indicator</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-manual/" rel="tag">mes-manual</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li></ul>
-
-    </footer>
-  </div>
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
   
-</article>
-
-
-
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: '/pluginsSrc/@egjs/infinitegrid/dist/infinitegrid.min.js?v=4.13.0',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Hua Liang\'s Blog',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'home'
+}</script><!-- hexo injector head_end start --><meta name="google-adsense-account" content="ca-pub-2045994937692573">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2045994937692573" crossorigin="anonymous"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">50</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">92</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Hua Liang's Blog</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><h1 class="title-seo">Hua Liang's Blog</h1></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="post_cover left"><a href="/2026/10/30/hello-world/" title="Hello World"><img class="post-bg" src="/2026/10/30/hello-world/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/10/30/hello-world/" title="Hello World">Hello World</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-10-30T08:58:24.200Z" title="发表于 2026-10-30 16:58:24">2026-10-30</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/tech/">技术</a></span></div><div class="content">  Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick Start  Create a new post1$ hexo new &quot;My New Post&quot;  More info: Writing Run server1$ hexo server  More info: Server Generate static files1$ hexo generate  More info: Generating Deploy to remote sites1$ hexo deploy  More info: Deployment </div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2026/10/30/mes-weekly-2026-w44/" title="MES 2026 年第 44 周工作小结"><img class="post-bg" src="/2026/10/30/mes-weekly-2026-w44/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年第 44 周工作小结"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/10/30/mes-weekly-2026-w44/" title="MES 2026 年第 44 周工作小结">MES 2026 年第 44 周工作小结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-10-30T08:55:00.000Z" title="发表于 2026-10-30 16:55:00">2026-10-30</time></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/MES/">MES</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/">工作小结</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%91%A8%E6%8A%A5/">周报</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-indicator/">mes-indicator</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-manual/">mes-manual</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/eos-nwf/">eos-nwf</a></span></div><div class="content">  本周（10&#x2F;26–10&#x2F;30，约 37 条提交）主线从「流程设计器」切到「小指标公式能力」和「在线操作说明」铺开：周一重构类别树，周二把班组&#x2F;日&#x2F;月取数与公式编辑器一口气补齐，周三到周五把手册机制接到计划&#x2F;报表&#x2F;小指标&#x2F;计量多个模块，周五同时推进 eos-nwf 安装向导与联锁 AI 图表。文件改动触达面仍以 mes-workflow、mes-core、mes-measure、mes-web、mes-ai 等为主。 一、小指标公式编辑器（本周主战场）电厂小指标本周把「能配什么公式」往前推了一大截，编辑器与后端解析一起改：  支持班组 &#x2F; 日 &#x2F; 月取数公式，复用既有 DB 解析链路 公式编辑器补齐班组、仪表、条件值类型与级联选择；日&#x2F;月口径展示完整仪表取值类型 W 条件支持班次口径；仪表页增加计算符号列并补齐比较符 修正表元数据加载为空、编辑表单布局与初始化报错；条件值级联的侧线取值与响应式预置 文档与样例同步：按口径显示说明，明确统一入口对 DD &#x2F; if 的支持边...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2026/10/24/purchase-order-workflow-ja/" title="購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化"><img class="post-bg" src="/2026/10/24/purchase-order-workflow-ja/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/10/24/purchase-order-workflow-ja/" title="購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化">購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-10-24T12:05:00.000Z" title="发表于 2026-10-24 20:05:00">2026-10-24</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/products/">产品介绍</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Mermaid/">Mermaid</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E8%A3%BD%E9%80%A0%E6%A5%AD/">製造業</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E8%B3%BC%E8%B2%B7%E6%B3%A8%E6%96%87%E6%9B%B8/">購買注文書</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%B3%A8%E6%96%87%E6%9B%B8/">注文書</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E9%9B%BB%E5%AD%90%E6%89%BF%E8%AA%8D/">電子承認</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%A5%AD%E5%8B%99%E3%83%95%E3%83%AD%E3%83%BC/">業務フロー</a></span></div><div class="content">   中文版はこちら → 采购订单（注文书）系统：从订单生成到到货验收的电子化流程  本文は、ある製造企業における購買注文システムの導入過程を整理したものです。実際のシステム名は POFlow（ピーオーフロー） で表しています。  一言で言えば：POFlow の購買注文書モジュールは、TPICS システムの Web 拡張（アドオン）です。購買注文書（注文書）の「生成 → 確認 → 承認 → 印刷&#x2F;送信 → 入荷検収」という一連の業務を電子化し、従来の紙による運用を置き換えます。  1. 背景と位置づけ POFlow とは：独立した Web アプリケーションで、技術的には TPICS システムの「外部拡張（アドオン）」です。TPICS と同じ業務データベースを共有し、ログインアカウントと権限も TPICS のセキュリティ体系を再利用するため、業務担当者は新たにアカウントを作る必要がありません。 モジュールは注文書を新規作成しない：購買注文書は TPICS の MRP（所要量計画）によって自動生成されます。本モジュールはその注文書の後続処理（確認・承認・印刷・送信・入荷検収...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2026/10/24/purchase-order-workflow-zh/" title="采购订单（注文书）系统：从订单生成到到货验收的电子化流程"><img class="post-bg" src="/2026/10/24/purchase-order-workflow-zh/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="采购订单（注文书）系统：从订单生成到到货验收的电子化流程"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/10/24/purchase-order-workflow-zh/" title="采购订单（注文书）系统：从订单生成到到货验收的电子化流程">采购订单（注文书）系统：从订单生成到到货验收的电子化流程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-10-24T12:00:00.000Z" title="发表于 2026-10-24 20:00:00">2026-10-24</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/products/">产品介绍</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%88%B6%E9%80%A0%E4%B8%9A/">制造业</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E9%87%87%E8%B4%AD%E8%AE%A2%E5%8D%95/">采购订单</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%B3%A8%E6%96%87%E4%B9%A6/">注文书</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E7%94%B5%E5%AD%90%E5%AE%A1%E6%89%B9/">电子审批</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B/">业务流程</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Mermaid/">Mermaid</a></span></div><div class="content">   日本語版はこちら → 購買注文書システムの業務フロー（日本語版）  本文整理自某制造企业内部的采购订单系统实施过程，实际系统名以 POFlow 指代。  一句话定位：POFlow 采购订单模块是 TPICS 系统的一个 Web 扩展（addon），它把采购订单（注文书）从「生成 → 确认 → 审批 → 打印&#x2F;发送 → 到货验收」的整个业务链条做成了电子化流程，替代了过去的纸质流转。  1. 背景与定位 POFlow 是什么：一个独立的 Web 应用，在技术上是 TPICS 系统的「外挂扩展」，与 TPICS 共用同一套业务数据库，登录账号和权限也复用 TPICS 的安全体系——业务人员无需另行开账号。 模块不「新建」订单：采购订单由 TPICS 中的 MRP（物料需求计划）自动生成。本模块负责这些订单的后续处理：确认、审批、打印、发送和到货验收，而不是从零创建订单。  整个模块在系统内实际由三个相互衔接的功能组成一个整体：采购订单审批、打印订单与纳品书、到货验收。 1.1 系统定位图flowchart LR     MRP[&quot;TPICS · MRP&lt...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2026/10/24/mes-weekly-2026-w43/" title="MES 2026 年第 43 周工作小结"><img class="post-bg" src="/2026/10/24/mes-weekly-2026-w43/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年第 43 周工作小结"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/10/24/mes-weekly-2026-w43/" title="MES 2026 年第 43 周工作小结">MES 2026 年第 43 周工作小结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-10-24T07:10:00.000Z" title="发表于 2026-10-24 15:10:00">2026-10-24</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/logs/">日志</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/MES/">MES</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/">工作小结</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%91%A8%E6%8A%A5/">周报</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-workflow/">mes-workflow</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-nwf/">mes-nwf</a></span></div><div class="content">  本周（10&#x2F;19–10&#x2F;24，合入 master 的非合并提交 77 条，非快进合并 1 次）主线是把 EOS 流程设计器做到「和 EOS 一致」，并让流程在上线前可模拟自测：周一到周六，mes-nwf 的设计器模型、XML 导出、表达式向导、模拟器轮番推进，周四合入 feature/eos-nwf-setup-wizard。文件改动集中在 mes-workflow（mes-nwf 311 个、eos-nwf-web 58 个），其次是 mes-security、mes-core、mes-process-interlock、mes-quartz、mes-process-card。 一、NWF XML 对齐 EOS设计器产出的流程定义要和 EOS 客户端生成的一致，本周把差异一条条收掉了：  CustomizedBtns 输出位置对齐 EOS，置于 MultiWorkItemSet 之后、InformSetting 之前 EnableTerminate=false 时不再写出 TerminateConditionC &#x2F; TerminateCondi...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2026/10/20/ai-learning-time/" title="有 AI 之后，人类的学习时间是否可以缩短了？"><img class="post-bg" src="/2026/10/20/ai-learning-time/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="有 AI 之后，人类的学习时间是否可以缩短了？"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/10/20/ai-learning-time/" title="有 AI 之后，人类的学习时间是否可以缩短了？">有 AI 之后，人类的学习时间是否可以缩短了？</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-10-20T03:25:00.000Z" title="发表于 2026-10-20 11:25:00">2026-10-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/life/">生活</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/AI/">AI</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0/">学习</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%95%88%E7%8E%87/">效率</a></span></div><div class="content">  可以缩短，但缩短的是入门与检索时间，不是把「真正学会」压缩成捷径。 能缩短的部分 找答案、读文档、试错：以前要翻书、搜论坛、等同事，现在几分钟就能得到方向。 上手与模仿：写第一版代码、理解陌生概念、做练习题的反馈更快。 跨领域摸底：快速建立地图（有哪些概念、怎么连起来），少走冤枉路。  所以「从 0 到能干活」往往确实更快。 很难缩短的部分 长期记忆与熟练：不练、不自己做错题，知识留不住。 判断力：知道何时该信 AI、何时要怀疑、如何验证。 深度与迁移：能在新场景自己设计方案，而不是只会跟着提示改。 责任与品味：工程里的取舍、风格、边界，仍靠经验积累。  AI 像加速器：你踩油门更猛，但车还是你开；不会开的人开得再快也容易撞。 更准确的说法   目标 有 AI 后    「知道大概、能跑通」 明显更快   「考试&#x2F;认证级熟练」 略快，仍靠练习   「专家级直觉」 几乎不缩短，甚至可能因过度依赖而变慢   结论有 AI 后，人类的学习时间线可以缩短，尤其是入门与效率；但若把「学会」理解成形成可靠能力，核心仍是练习、反思、验证。用得好是放大器；只抄答案，学得更浅、更慢。 </div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2026/10/17/t480-48g-vs-mac-rtx-spark/" title="同样写着 48GB，T480 和 MacBook、RTX Spark 差多少钱"><img class="post-bg" src="/2026/10/17/t480-48g-vs-mac-rtx-spark/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="同样写着 48GB，T480 和 MacBook、RTX Spark 差多少钱"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/10/17/t480-48g-vs-mac-rtx-spark/" title="同样写着 48GB，T480 和 MacBook、RTX Spark 差多少钱">同样写着 48GB，T480 和 MacBook、RTX Spark 差多少钱</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-10-17T12:10:00.000Z" title="发表于 2026-10-17 20:10:00">2026-10-17</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/tech/">技术</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/ThinkPad/">ThinkPad</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/T480/">T480</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/MacBook/">MacBook</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/RTX-Spark/">RTX Spark</a></span></div><div class="content">  手里这台是联想 ThinkPad T480（20L6Z3TGUS），CPU 是 i5-8250U。任务管理器里大约 48GB，拆开是两条：32GB（RMSA3330ME88HCF-3200）加 16GB（RMSA3300MH78HBF-2666），实际都跑在 2400。今天拿「同样 48GB」去对 MacBook Pro 和刚开卖的 RTX Spark 笔记本，比的是标价，不是跑分。 价格取 2026-10-17 能公开核对到的国内渠道。促销会变，下面每一行都标了出处。 三台机器    这台 T480 MacBook Pro 14（M5 Pro） Surface Laptop Ultra（RTX Spark）    内存 48GB DDR4-2400，两条可换（32+16） 48GB 统一内存，焊死 48GB LPDDR5X 统一内存，焊死   处理器 i5-8250U，4 核 8 线程，15W M5 Pro，公开在售的 48GB&#x2F;1TB 是 15 核 CPU + 16 核 GPU RTX Spark N1X 满血，20 核 CPU，GPU 6144 CUDA   ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2026/10/17/macOS%E7%BB%88%E7%AB%AF%E8%BF%9E%E6%8E%A5Windows-SSH%E5%90%8E%E5%B4%A9%E6%BA%83/" title="macOS 终端连接 Windows SSH 后崩溃"><img class="post-bg" src="/2026/10/17/macOS%E7%BB%88%E7%AB%AF%E8%BF%9E%E6%8E%A5Windows-SSH%E5%90%8E%E5%B4%A9%E6%BA%83/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="macOS 终端连接 Windows SSH 后崩溃"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/10/17/macOS%E7%BB%88%E7%AB%AF%E8%BF%9E%E6%8E%A5Windows-SSH%E5%90%8E%E5%B4%A9%E6%BA%83/" title="macOS 终端连接 Windows SSH 后崩溃">macOS 终端连接 Windows SSH 后崩溃</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-10-17T12:05:00.000Z" title="发表于 2026-10-17 20:05:00">2026-10-17</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/tech/">技术</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Windows/">Windows</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/macOS/">macOS</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Terminal/">Terminal</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/SSH/">SSH</a></span></div><div class="content">  从 Mac 用系统自带「终端」执行 ssh liuhualiang@192.168.3.9 后，Terminal.app 在同一天崩溃了 5 次。崩溃的是 macOS 终端本身，不是本机 ssh，也不是 Windows 上的 OpenSSH 服务。 现象   时间 进程已运行 异常    13:42 约 26 分钟 EXC_BAD_ACCESS &#x2F; SIGSEGV，Swift Observation   15:44 约 2 小时 EXC_BREAKPOINT &#x2F; SIGTRAP，CoreGraphics 分配阴影样式时 malloc 元数据损坏   19:18 约 3.5 小时 EXC_BAD_ACCESS，画屏时 __CFStringCreateImmutableFunnel3   19:31 约 13 分钟 SIGBUS，Terminal 内部同一函数无限递归，栈被打穿   19:44 约 12 分钟 EXC_BAD_ACCESS &#x2F; PAC，同样死在画屏创建字符串；坏指针里带有空格字节 0x20   进程都是 /System/Applica...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2026/10/16/mes-weekly-2026-w42/" title="MES 2026 年第 42 周工作小结"><img class="post-bg" src="/2026/10/16/mes-weekly-2026-w42/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年第 42 周工作小结"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/10/16/mes-weekly-2026-w42/" title="MES 2026 年第 42 周工作小结">MES 2026 年第 42 周工作小结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-10-16T06:10:00.000Z" title="发表于 2026-10-16 14:10:00">2026-10-16</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/logs/">日志</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/MES/">MES</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/">工作小结</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%91%A8%E6%8A%A5/">周报</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-workflow/">mes-workflow</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-indicator/">mes-indicator</a></span></div><div class="content">  本周（10&#x2F;12–10&#x2F;16，合入 master 的非合并提交 89 条，合并 7 次，含 PR #386、#284）主线是把 EOS 流程模块 mes-nwf 从 AI 起草做到可发布的图形设计器，并合入电厂小指标与手册 AI 问答。文件改动集中在 mes-workflow、mes-core、mes-indicator。 一、流程设计器（mes-nwf）周四合入 feature/mes-nwf，周五补了图形编辑和版本比对。同周还合入 feature/nwf-transition-props、feature/nwf-savegraph-allow-missing-entity、feature/nwf-test-bill-define。  新建 EOS NWF 流程模块：AI 起草、边标签、流程细化、多泳道布局，可还原原始布局 轻量图形编辑：ELK 自动布局、汇聚&#x2F;分支模式、网格、对齐圈选、左右分隔 发布与版本：版本签发校验、历史版本、流程 XML 按属性分行比对 传递线属性编辑和条件表达式向导；设计器与预览里，校验列表点击可定位节点 测试单据字段...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2026/10/12/maven-tomcat-eclipse-cursor/" title="Maven 项目还能像 Sysdeo 那样用 Tomcat 插件启动吗？Eclipse 与 Cursor 选型"><img class="post-bg" src="/2026/10/12/maven-tomcat-eclipse-cursor/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Maven 项目还能像 Sysdeo 那样用 Tomcat 插件启动吗？Eclipse 与 Cursor 选型"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/10/12/maven-tomcat-eclipse-cursor/" title="Maven 项目还能像 Sysdeo 那样用 Tomcat 插件启动吗？Eclipse 与 Cursor 选型">Maven 项目还能像 Sysdeo 那样用 Tomcat 插件启动吗？Eclipse 与 Cursor 选型</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-10-12T01:30:00.000Z" title="发表于 2026-10-12 09:30:00">2026-10-12</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/tech/">技术</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/MES/">MES</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Cursor/">Cursor</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Maven/">Maven</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Tomcat/">Tomcat</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Eclipse/">Eclipse</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Spring-Boot/">Spring Boot</a></span></div><div class="content">  早年用 Sysdeo Tomcat Plugin 管「普通 Java EE 工程」很顺手：指定本机 Tomcat、挂上 web 工程、工具栏启停。迁到 Maven、再迁到 Spring Boot &#x2F; Cursor 之后，常会问三件事：  Maven 项目还能不能像以前那样用 Tomcat 插件启动？ 现在的 Eclipse Tomcat Plugin（Sysdeo 后继）能不能管 Maven？ Cursor 里有没有类似插件管 Maven 项目启动？  下面按结论 → 差异 → IDE 选型 → 实践建议说明。 结论 可以，但体验和旧「非 Maven Java EE + Sysdeo」不完全一样：Maven 负责依赖与打包，Tomcat 插件负责启动&#x2F;部署，两者要配合，不能指望只点一下「启动 Tomcat」就自动搞定全部 classpath。 Eclipse Tomcat Plugin（Sysdeo 的维护分支）能管 Maven 项目，并支持 Maven classpath；复杂多模块工程更稳妥的是 m2e + m2e-wtp + WTP Servers。...</div></div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/#content-inner">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/#content-inner">5</a><a class="extend next" rel="next" href="/page/2/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/10/30/hello-world/" title="Hello World"><img src="/2026/10/30/hello-world/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2026/10/30/hello-world/" title="Hello World">Hello World</a><time datetime="2026-10-30T08:58:24.200Z" title="发表于 2026-10-30 16:58:24">2026-10-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/30/mes-weekly-2026-w44/" title="MES 2026 年第 44 周工作小结"><img src="/2026/10/30/mes-weekly-2026-w44/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年第 44 周工作小结"/></a><div class="content"><a class="title" href="/2026/10/30/mes-weekly-2026-w44/" title="MES 2026 年第 44 周工作小结">MES 2026 年第 44 周工作小结</a><time datetime="2026-10-30T08:55:00.000Z" title="发表于 2026-10-30 16:55:00">2026-10-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/24/purchase-order-workflow-ja/" title="購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化"><img src="/2026/10/24/purchase-order-workflow-ja/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化"/></a><div class="content"><a class="title" href="/2026/10/24/purchase-order-workflow-ja/" title="購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化">購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化</a><time datetime="2026-10-24T12:05:00.000Z" title="发表于 2026-10-24 20:05:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/24/purchase-order-workflow-zh/" title="采购订单（注文书）系统：从订单生成到到货验收的电子化流程"><img src="/2026/10/24/purchase-order-workflow-zh/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="采购订单（注文书）系统：从订单生成到到货验收的电子化流程"/></a><div class="content"><a class="title" href="/2026/10/24/purchase-order-workflow-zh/" title="采购订单（注文书）系统：从订单生成到到货验收的电子化流程">采购订单（注文书）系统：从订单生成到到货验收的电子化流程</a><time datetime="2026-10-24T12:00:00.000Z" title="发表于 2026-10-24 20:00:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/24/mes-weekly-2026-w43/" title="MES 2026 年第 43 周工作小结"><img src="/2026/10/24/mes-weekly-2026-w43/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年第 43 周工作小结"/></a><div class="content"><a class="title" href="/2026/10/24/mes-weekly-2026-w43/" title="MES 2026 年第 43 周工作小结">MES 2026 年第 43 周工作小结</a><time datetime="2026-10-24T07:10:00.000Z" title="发表于 2026-10-24 15:10:00">2026-10-24</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/products/"><span class="card-category-list-name">产品介绍</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/tech/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">14</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/logs/"><span class="card-category-list-name">日志</span><span class="card-category-list-count">19</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/life/"><span class="card-category-list-name">生活</span><span class="card-category-list-count">9</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/Windows/" style="font-size: 1.18em; color: #999ca1">Windows</a> <a href="/tags/mes-nwf/" style="font-size: 1.1em; color: #999">mes-nwf</a> <a href="/tags/Agent/" style="font-size: 1.1em; color: #999">Agent</a> <a href="/tags/Eclipse/" style="font-size: 1.1em; color: #999">Eclipse</a> <a href="/tags/mes-web/" style="font-size: 1.26em; color: #999fa8">mes-web</a> <a href="/tags/Automation/" style="font-size: 1.1em; color: #999">Automation</a> <a href="/tags/POI/" style="font-size: 1.1em; color: #999">POI</a> <a href="/tags/ThinkPad/" style="font-size: 1.1em; color: #999">ThinkPad</a> <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="font-size: 1.1em; color: #999">学习</a> <a href="/tags/%E5%91%A8%E6%8A%A5/" style="font-size: 1.42em; color: #99a6b7">周报</a> <a href="/tags/CLI/" style="font-size: 1.18em; color: #999ca1">CLI</a> <a href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" style="font-size: 1.1em; color: #999">慢性病</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 1.1em; color: #999">效率</a> <a href="/tags/%E5%8D%8E%E4%B8%BA%E8%B7%AF%E7%94%B1/" style="font-size: 1.1em; color: #999">华为路由</a> <a href="/tags/%E9%87%87%E8%B4%AD%E8%AE%A2%E5%8D%95/" style="font-size: 1.1em; color: #999">采购订单</a> <a href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" style="font-size: 1.1em; color: #999">船舶作业</a> <a href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" style="font-size: 1.26em; color: #999fa8">九体医学</a> <a href="/tags/EOS/" style="font-size: 1.18em; color: #999ca1">EOS</a> <a href="/tags/mes-rtdb/" style="font-size: 1.34em; color: #99a3b0">mes-rtdb</a> <a href="/tags/mes-workflow/" style="font-size: 1.18em; color: #999ca1">mes-workflow</a> <a href="/tags/DeepSeek/" style="font-size: 1.1em; color: #999">DeepSeek</a> <a href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" style="font-size: 1.1em; color: #999">中医体质</a> <a href="/tags/mes-energy/" style="font-size: 1.1em; color: #999">mes-energy</a> <a href="/tags/%E6%A5%AD%E5%8B%99%E3%83%95%E3%83%AD%E3%83%BC/" style="font-size: 1.1em; color: #999">業務フロー</a> <a href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" style="font-size: 1.1em; color: #999">交接班</a> <a href="/tags/SQL-Server/" style="font-size: 1.18em; color: #999ca1">SQL Server</a> <a href="/tags/CodingAgent/" style="font-size: 1.1em; color: #999">CodingAgent</a> <a href="/tags/mes-factory/" style="font-size: 1.1em; color: #999">mes-factory</a> <a href="/tags/OptiPlex/" style="font-size: 1.1em; color: #999">OptiPlex</a> <a href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" style="font-size: 1.1em; color: #999">体质调理</a> <a href="/tags/Maven/" style="font-size: 1.1em; color: #999">Maven</a> <a href="/tags/RTX-Spark/" style="font-size: 1.1em; color: #999">RTX Spark</a> <a href="/tags/%E8%B3%BC%E8%B2%B7%E6%B3%A8%E6%96%87%E6%9B%B8/" style="font-size: 1.1em; color: #999">購買注文書</a> <a href="/tags/%E9%9B%BB%E5%AD%90%E6%89%BF%E8%AA%8D/" style="font-size: 1.1em; color: #999">電子承認</a> <a href="/tags/Claude-Code/" style="font-size: 1.1em; color: #999">Claude Code</a> <a href="/tags/PI/" style="font-size: 1.1em; color: #999">PI</a> <a href="/tags/Tomcat/" style="font-size: 1.1em; color: #999">Tomcat</a> <a href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" style="font-size: 1.1em; color: #999">能耗分析</a> <a href="/tags/Calendar/" style="font-size: 1.1em; color: #999">Calendar</a> <a href="/tags/MES/" style="font-size: 1.5em; color: #99a9bf">MES</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline"><i class="fas fa-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/"
+            title="查看更多">
+            <i class="fas fa-angle-right"></i>
+          </a></div>
   
-    <article id="post-mes-weekly-2026-w43" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/10/24/mes-weekly-2026-w43/" class="article-date">
-  <time class="dt-published" datetime="2026-10-24T07:10:00.000Z" itemprop="datePublished">2026-10-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/10/24/mes-weekly-2026-w43/">MES 2026 年第 43 周工作小结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
+    <ul class="card-archive-list">
       
-        <img src="/2026/10/24/mes-weekly-2026-w43/cover.png" class="">
-
-<p>本周（10&#x2F;19–10&#x2F;24，合入 master 的非合并提交 <strong>77</strong> 条，非快进合并 <strong>1</strong> 次）主线是把 EOS 流程设计器做到「和 EOS 一致」，并让流程在上线前可模拟自测：周一到周六，<code>mes-nwf</code> 的设计器模型、XML 导出、表达式向导、模拟器轮番推进，周四合入 <code>feature/eos-nwf-setup-wizard</code>。文件改动集中在 <code>mes-workflow</code>（<code>mes-nwf</code> 311 个、<code>eos-nwf-web</code> 58 个），其次是 <code>mes-security</code>、<code>mes-core</code>、<code>mes-process-interlock</code>、<code>mes-quartz</code>、<code>mes-process-card</code>。</p>
-<h2 id="一、NWF-XML-对齐-EOS"><a href="#一、NWF-XML-对齐-EOS" class="headerlink" title="一、NWF XML 对齐 EOS"></a>一、NWF XML 对齐 EOS</h2><p>设计器产出的流程定义要和 EOS 客户端生成的一致，本周把差异一条条收掉了：</p>
-<ul>
-<li><code>CustomizedBtns</code> 输出位置对齐 EOS，置于 <code>MultiWorkItemSet</code> 之后、<code>InformSetting</code> 之前</li>
-<li><code>EnableTerminate=false</code> 时不再写出 <code>TerminateConditionC</code> &#x2F; <code>TerminateConditionE</code>；<code>AllowRollBack=false</code> 时不再写出 <code>RbRemarksC</code> &#x2F; <code>RbRemarksE</code> &#x2F; <code>RollBackTrigEvent</code></li>
-<li>保存时保留 <code>ProcParams</code> 参数列表，避免存储过程参数丢失；版本比对也不再输出空白参与者属性</li>
-<li>去掉列表容器样板 <code>Description</code>，但保留 <code>ProcessViewerList</code></li>
-<li>修正换行解析与序列化，处理表达式转义时丢失 EOS 表名分区后缀的问题</li>
-<li>发布版本号改为「同名流程最大版本 +1」，并把版本状态判断与文案统一到一处</li>
-</ul>
-<h2 id="二、流程模拟器（本周从零到可用）"><a href="#二、流程模拟器（本周从零到可用）" class="headerlink" title="二、流程模拟器（本周从零到可用）"></a>二、流程模拟器（本周从零到可用）</h2><p>周三起新增流程模拟测试页，随后几天几乎每天补一层：</p>
-<ul>
-<li>单据字段可预填生成单据定义，也能直接从业务表头数据填充；录入时同步中英字段别名，同一条传递线上的中英同义字段自动合并</li>
-<li>表达式求值覆盖 <code>iif</code> &#x2F; <code>runsql</code> &#x2F; <code>GetXm</code> &#x2F; <code>GetXmValueArray</code> &#x2F; <code>djicount</code>，并支持 <code>DjDy</code> 中文解析；修掉了 Pascal 字符串拼接（<code>+</code> 与 <code>&amp;</code>）求值错误</li>
-<li>审批人校验会展开角色成员、判断审批人是否可取；左侧展示传递线判定并可折叠</li>
-<li>分支对齐 <code>splitMode=or</code> 多路分支；排除审批人视图中 <code>dbo.uf_*</code> 被误抽为业务字段</li>
-<li>回退能力增强：动态显示终止活动与回退轨迹、支持终止其它待办实例、审批结果处理</li>
-<li>有版本管理与模拟器按钮图标；页面高度随窗口自适应</li>
-<li>去掉模拟外层事务，避免异常被吞导致提交失败；加载单据字段时改为挂起外层事务</li>
-</ul>
-<h2 id="三、表达式向导与审批人配置"><a href="#三、表达式向导与审批人配置" class="headerlink" title="三、表达式向导与审批人配置"></a>三、表达式向导与审批人配置</h2><ul>
-<li>向导窗口放大并支持函数搜索，自定义函数可维护、可加载多示例；业务实例描述与业务详细描述接入向导</li>
-<li>支持选择其它 EOS 单据字段，并可自动生成英文表达式</li>
-<li>审批人改为配置表驱动的 <code>uf_*</code> 函数并配套维护页，补充采购付款申请节点的审批人函数与映射</li>
-<li>测试单据&#x2F;模拟填单排除审批人视图与其他表字段</li>
-</ul>
-<h2 id="四、EOS-安装向导与独立前端"><a href="#四、EOS-安装向导与独立前端" class="headerlink" title="四、EOS 安装向导与独立前端"></a>四、EOS 安装向导与独立前端</h2><ul>
-<li>新增安装向导与角色权限初始化；支持配置系统库&#x2F;用户库并把映射落盘到 <code>schema.properties</code></li>
-<li>周四合入后立刻修了配置覆盖、库映射与安全问题</li>
-<li>新增 <code>eos-nwf-web</code>：以 EOS public token 作为身份，映射到 MES 角色权限，流程设计器有了独立入口</li>
-</ul>
-<h2 id="五、权限与系统"><a href="#五、权限与系统" class="headerlink" title="五、权限与系统"></a>五、权限与系统</h2><ul>
-<li>用户详情的数据权限改为按「被查看用户的实际授权」返回，不再按当前登录人</li>
-<li>用户详情的工作组信息改为展示该用户拥有权限的工作组；补充用户组查询接口与页面联动</li>
-<li>EOS 单据设计器：单据字段类型对齐 EOS 项目类型；生成单据必须先选目录；支持拖动单据到目录调整分类</li>
-</ul>
-<h2 id="六、支线与现场问题"><a href="#六、支线与现场问题" class="headerlink" title="六、支线与现场问题"></a>六、支线与现场问题</h2><ul>
-<li><code>mes-process-interlock</code>：<code>CardSteadyRateService</code> 新增 <code>calculateStabilityMetrics</code>（装置三率），补了 08:00 时间窗的单元测试；另补充动力站综合指标计算公式文档</li>
-<li><code>mes-process-card</code>：正式环境指标变更定时器持续报 <code>NonUniqueResultException</code>——<code>PROCESS_CARDB</code> 中同一 <code>SOURCE_ID</code> 同时对应公司级&#x2F;部门级两行，而 <code>findBySourceId</code> 返回单实体。改为按「来源 + 指标等级」精确定位，新增分支做幂等，0&#x2F;多条时记录明细并保留变更单状态，顺带增强任务异常日志；已出热补丁包</li>
-<li><code>mes-quartz</code>：定时任务日志跨应用读取改造，修复平台查看日志时提示文件不存在</li>
-</ul>
-<h2 id="节奏"><a href="#节奏" class="headerlink" title="节奏"></a>节奏</h2><table>
-<thead>
-<tr>
-<th>日期</th>
-<th>10&#x2F;19 一</th>
-<th>10&#x2F;20 二</th>
-<th>10&#x2F;21 三</th>
-<th>10&#x2F;22 四</th>
-<th>10&#x2F;23 五</th>
-<th>10&#x2F;24 六</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>侧重</td>
-<td>单据字段预填、EOS 单据目录与字段类型</td>
-<td>模拟求值 <code>iif</code>&#x2F;<code>runsql</code>&#x2F;<code>GetXm</code>、表达式向导</td>
-<td>模拟器回退轨迹、多工作项集、<code>eos-nwf-web</code></td>
-<td>安装向导合入、表达式向导选它单字段、用户组权限</td>
-<td>XML 对齐 EOS 细节、分区后缀</td>
-<td>指标变更 <code>NonUniqueResultException</code>、任务日志</td>
-</tr>
-</tbody></table>
-<p>一句话：设计器先把「写出来的 XML 要像 EOS 写的」这件事做完，再给设计师一个能自己跑流程的模拟器，流程上线前的验证不再只靠人肉推演。</p>
-<p>下周待办：继续收口模拟器的边界场景（多工作项集、动态回退），把 NWF 遗留分支（转场属性、备注、单据定义）逐个合入并回归。</p>
-
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/10/">
+            <span class="card-archive-list-date">
+              十月 2026
+            </span>
+            <span class="card-archive-list-count">11</span>
+          </a>
+        </li>
       
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/10/24/mes-weekly-2026-w43/" data-id="cmvuqo0sn008wd8v54dad74vc" data-title="MES 2026 年第 43 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/09/">
+            <span class="card-archive-list-date">
+              九月 2026
+            </span>
+            <span class="card-archive-list-count">10</span>
+          </a>
+        </li>
       
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/08/">
+            <span class="card-archive-list-date">
+              八月 2026
+            </span>
+            <span class="card-archive-list-count">8</span>
+          </a>
+        </li>
       
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/07/">
+            <span class="card-archive-list-date">
+              七月 2026
+            </span>
+            <span class="card-archive-list-count">7</span>
+          </a>
+        </li>
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-nwf/" rel="tag">mes-nwf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-workflow/" rel="tag">mes-workflow</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-ai-learning-time" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/10/20/ai-learning-time/" class="article-date">
-  <time class="dt-published" datetime="2026-10-20T03:25:00.000Z" itemprop="datePublished">2026-10-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/10/20/ai-learning-time/">有 AI 之后，人类的学习时间是否可以缩短了？</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/06/">
+            <span class="card-archive-list-date">
+              六月 2026
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
       
-        <img src="/2026/10/20/ai-learning-time/cover.png" class="">
-
-<p>可以缩短，但缩短的是<strong>入门与检索时间</strong>，不是把「真正学会」压缩成捷径。</p>
-<h2 id="能缩短的部分"><a href="#能缩短的部分" class="headerlink" title="能缩短的部分"></a>能缩短的部分</h2><ul>
-<li><strong>找答案、读文档、试错</strong>：以前要翻书、搜论坛、等同事，现在几分钟就能得到方向。</li>
-<li><strong>上手与模仿</strong>：写第一版代码、理解陌生概念、做练习题的反馈更快。</li>
-<li><strong>跨领域摸底</strong>：快速建立地图（有哪些概念、怎么连起来），少走冤枉路。</li>
-</ul>
-<p>所以「从 0 到能干活」往往确实更快。</p>
-<h2 id="很难缩短的部分"><a href="#很难缩短的部分" class="headerlink" title="很难缩短的部分"></a>很难缩短的部分</h2><ul>
-<li><strong>长期记忆与熟练</strong>：不练、不自己做错题，知识留不住。</li>
-<li><strong>判断力</strong>：知道何时该信 AI、何时要怀疑、如何验证。</li>
-<li><strong>深度与迁移</strong>：能在新场景自己设计方案，而不是只会跟着提示改。</li>
-<li><strong>责任与品味</strong>：工程里的取舍、风格、边界，仍靠经验积累。</li>
-</ul>
-<p>AI 像加速器：你踩油门更猛，但车还是你开；不会开的人开得再快也容易撞。</p>
-<h2 id="更准确的说法"><a href="#更准确的说法" class="headerlink" title="更准确的说法"></a>更准确的说法</h2><table>
-<thead>
-<tr>
-<th>目标</th>
-<th>有 AI 后</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>「知道大概、能跑通」</td>
-<td>明显更快</td>
-</tr>
-<tr>
-<td>「考试&#x2F;认证级熟练」</td>
-<td>略快，仍靠练习</td>
-</tr>
-<tr>
-<td>「专家级直觉」</td>
-<td>几乎不缩短，甚至可能因过度依赖而变慢</td>
-</tr>
-</tbody></table>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>有 AI 后，人类的学习<strong>时间线可以缩短</strong>，尤其是入门与效率；但若把「学会」理解成形成可靠能力，核心仍是练习、反思、验证。用得好是放大器；只抄答案，学得更浅、更慢。</p>
-
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/03/">
+            <span class="card-archive-list-date">
+              三月 2026
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
       
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/10/20/ai-learning-time/" data-id="cmvuqo0qp0001d8v58te51d04" data-title="有 AI 之后，人类的学习时间是否可以缩短了？" class="article-share-link"><span class="fa fa-share">Share</span></a>
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/12/">
+            <span class="card-archive-list-date">
+              十二月 2025
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
       
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/07/">
+            <span class="card-archive-list-date">
+              七月 2025
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
       
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%88%E7%8E%87/" rel="tag">效率</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-t480-48g-vs-mac-rtx-spark" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/10/17/t480-48g-vs-mac-rtx-spark/" class="article-date">
-  <time class="dt-published" datetime="2026-10-17T12:10:00.000Z" itemprop="datePublished">2026-10-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/10/17/t480-48g-vs-mac-rtx-spark/">同样写着 48GB，T480 和 MacBook、RTX Spark 差多少钱</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>手里这台是联想 ThinkPad T480（20L6Z3TGUS），CPU 是 i5-8250U。任务管理器里大约 48GB，拆开是两条：32GB（RMSA3330ME88HCF-3200）加 16GB（RMSA3300MH78HBF-2666），实际都跑在 2400。今天拿「同样 48GB」去对 MacBook Pro 和刚开卖的 RTX Spark 笔记本，比的是标价，不是跑分。</p>
-<p>价格取 2026-10-17 能公开核对到的国内渠道。促销会变，下面每一行都标了出处。</p>
-<h2 id="三台机器"><a href="#三台机器" class="headerlink" title="三台机器"></a>三台机器</h2><table>
-<thead>
-<tr>
-<th></th>
-<th>这台 T480</th>
-<th>MacBook Pro 14（M5 Pro）</th>
-<th>Surface Laptop Ultra（RTX Spark）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>内存</td>
-<td>48GB DDR4-2400，两条可换（32+16）</td>
-<td>48GB 统一内存，焊死</td>
-<td>48GB LPDDR5X 统一内存，焊死</td>
-</tr>
-<tr>
-<td>处理器</td>
-<td>i5-8250U，4 核 8 线程，15W</td>
-<td>M5 Pro，公开在售的 48GB&#x2F;1TB 是 15 核 CPU + 16 核 GPU</td>
-<td>RTX Spark N1X 满血，20 核 CPU，GPU 6144 CUDA</td>
-</tr>
-<tr>
-<td>存储</td>
-<td>本机另算，二手常见 256GB&#x2F;512GB</td>
-<td>1TB</td>
-<td>1TB</td>
-</tr>
-<tr>
-<td>系统</td>
-<td>Windows 11 企业版</td>
-<td>macOS</td>
-<td>Windows 11 专业版</td>
-</tr>
-<tr>
-<td>价格</td>
-<td>见下，重置大约三千到五千</td>
-<td>京东活动价 27874，国补后 26374</td>
-<td>京东&#x2F;官网 33188；商用版 33588</td>
-</tr>
-</tbody></table>
-<p>Mac 这一行来自什么值得买 2026-09-24 的京东自营记录：14 英寸 M5 Pro、48GB+1TB、深空黑，活动价 27874 元，国家补贴 1500 元后 26374 元。苹果 2026-03 新闻稿里，M5 Pro 14 英寸起售价是 17999 元，那是入门内存，不是 48GB。</p>
-<p>RTX Spark 这一行来自芯硬件 2026-10-17 对京东自营和官网的汇总。同为 48GB、1TB、20 核的 Surface Laptop Ultra 消费版是 33188 元（夜幕色、Windows 11 专业版），商用版 33588 元。华硕、联想、微星同一天也有 RTX Spark，但公开价要么是 32GB（ProArt P14，20 核 + 1TB，18999 元），要么直接跳到 64GB、128GB，没有另一条干净的 48GB 标价，所以表里只用 Surface。</p>
-<h2 id="T480-这一列怎么算"><a href="#T480-这一列怎么算" class="headerlink" title="T480 这一列怎么算"></a>T480 这一列怎么算</h2><p>没有给这台机器单独的成交价，用的是重置成本，不是当年买内存的发票。</p>
-<p>裸机按 2026 年闲鱼个人直卖：i5-8250U、8GB、256GB、成色好的大约 850–1300 元；带质保的翻新商家大约 1500 元上下（什么值得买对闲鱼和知乎报价的整理）。这台已经是 48GB，裸机行情不含这两根条。</p>
-<p>内存按现在重买。2026 年 DDR4 不便宜：台湾零售里 Crucial DDR4-3200 32GB 笔记本条约新台币 9090 元，大约人民币 2000 元出头；大陆有铨兴同规格挂 1599 元。16GB 按容量粗算大约一半。两条一起，大约 2400–3200 元。加上裸机，凑出一台同样 48GB 的 T480，大约 3400–4700 元。下面对比取中间，按 4000 元。</p>
-<p>这是估算。内存一周一个价，闲鱼成色差一截价也差一截。</p>
-<h2 id="差几倍"><a href="#差几倍" class="headerlink" title="差几倍"></a>差几倍</h2><p>按 4000 元重置：</p>
-<ul>
-<li>MacBook Pro 14，48GB&#x2F;1TB，国补后 26374 元，大约 <strong>6.6 倍</strong>。不吃补贴按 27874 元，大约 7 倍。</li>
-<li>Surface Laptop Ultra，48GB&#x2F;1TB，33188 元，大约 <strong>8.3 倍</strong>。商用版 33588 元，差不多。</li>
-</ul>
-<p>只拿裸机行情 1200 元去比，会算出二十多倍。那一列把已经插在主板上的 48GB 当成零成本，2026 年不算数。贵的是内存条，不是 2018 年的模具。</p>
-<p>反过来说，48GB 这个数字在三台机器上不是同一种东西。</p>
-<p>T480 是双通道 DDR4-2400，带宽大约 38GB&#x2F;s，槽子还在，坏了能换。Mac 的 48GB 是统一内存，CPU 和 GPU 共用，不能加。RTX Spark 的 48GB 是 256-bit LPDDR5X，芯硬件写的峰值带宽 300GB&#x2F;s，另外还有 CPU 和 GPU 之间 600GB&#x2F;s 的 NVLink-C2C；满血版标称 FP4 约 1 PFLOPS，用来本地跑大模型。同样四个字，一个是办公内存，一个是显存。</p>
-<h2 id="这笔钱买到什么"><a href="#这笔钱买到什么" class="headerlink" title="这笔钱买到什么"></a>这笔钱买到什么</h2><p>T480 继续用，买的是键盘、双电池、接口和能自己换件。i5-8250U 在 Windows 11 上写代码、开浏览器够用，本地大模型和剪 4K 不是它的活。C 盘满、常驻太多，会比 CPU 更先让人觉得卡。</p>
-<p>26374 元的 MacBook，买的是续航、屏幕、系统和一块能当显存用的 48GB。它不是「内存多 48GB 的 T480」。</p>
-<p>33188 元的 Surface，买的是 20 核 Arm CPU 加 6144 个 CUDA 核心，内存带宽比这台 T480 高一个数量级。48GB 在这里是入门档：同系列 128GB 的 Surface 到 48388 元，华硕 ProArt P14 的 128GB 是 35999 元。</p>
-<p>所以这台机器现在的位置很具体。内存容量已经和两万六的 Mac、三万三的 RTX Spark 写在同一行；处理器和带宽不在同一行。差出去的五六倍到八倍，是芯片和焊死的高速内存，不是多出来的那几十 GB。</p>
-<h2 id="出处"><a href="#出处" class="headerlink" title="出处"></a>出处</h2><ul>
-<li>本机配置：2026-10-17 在这台 T480 上读的内存条和 CPU</li>
-<li>T480 二手行情：<a target="_blank" rel="noopener" href="https://post.smzdm.com/p/a4qpldn8/">内存涨价后的老商务本</a>，<a target="_blank" rel="noopener" href="https://post.smzdm.com/p/anv30792/">T480 2026 行情</a></li>
-<li>DDR4-3200 32GB 笔记本条：<a target="_blank" rel="noopener" href="https://biggo.com.tw/s/ddr4%203200%2032g%20%E7%AD%86%E8%A8%98">BigGo 台湾零售</a></li>
-<li>MacBook：<a target="_blank" rel="noopener" href="https://www.smzdm.com/p/182905124/">什么值得买，2026-09-24</a>；<a target="_blank" rel="noopener" href="https://www.apple.com.cn/newsroom/2026/03/apple-introduces-macbook-pro-with-all-new-m5-pro-and-m5-max/">苹果新闻稿起售价</a></li>
-<li>RTX Spark：<a target="_blank" rel="noopener" href="https://www.163.com/dy/article/L9EJGM2D0556OH4N.html">芯硬件，2026-10-17</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/10/17/t480-48g-vs-mac-rtx-spark/" data-id="cmvuqo0sn008xd8v5hkzbcyd2" data-title="同样写着 48GB，T480 和 MacBook、RTX Spark 差多少钱" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MacBook/" rel="tag">MacBook</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RTX-Spark/" rel="tag">RTX Spark</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/T480/" rel="tag">T480</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ThinkPad/" rel="tag">ThinkPad</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-macOS终端连接Windows-SSH后崩溃" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/10/17/macOS%E7%BB%88%E7%AB%AF%E8%BF%9E%E6%8E%A5Windows-SSH%E5%90%8E%E5%B4%A9%E6%BA%83/" class="article-date">
-  <time class="dt-published" datetime="2026-10-17T12:05:00.000Z" itemprop="datePublished">2026-10-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/10/17/macOS%E7%BB%88%E7%AB%AF%E8%BF%9E%E6%8E%A5Windows-SSH%E5%90%8E%E5%B4%A9%E6%BA%83/">macOS 终端连接 Windows SSH 后崩溃</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>从 Mac 用系统自带「终端」执行 <code>ssh liuhualiang@192.168.3.9</code> 后，Terminal.app 在同一天崩溃了 5 次。崩溃的是 macOS 终端本身，不是本机 <code>ssh</code>，也不是 Windows 上的 OpenSSH 服务。</p>
-<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><table>
-<thead>
-<tr>
-<th>时间</th>
-<th>进程已运行</th>
-<th>异常</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>13:42</td>
-<td>约 26 分钟</td>
-<td><code>EXC_BAD_ACCESS</code> &#x2F; <code>SIGSEGV</code>，Swift Observation</td>
-</tr>
-<tr>
-<td>15:44</td>
-<td>约 2 小时</td>
-<td><code>EXC_BREAKPOINT</code> &#x2F; <code>SIGTRAP</code>，CoreGraphics 分配阴影样式时 malloc 元数据损坏</td>
-</tr>
-<tr>
-<td>19:18</td>
-<td>约 3.5 小时</td>
-<td><code>EXC_BAD_ACCESS</code>，画屏时 <code>__CFStringCreateImmutableFunnel3</code></td>
-</tr>
-<tr>
-<td>19:31</td>
-<td>约 13 分钟</td>
-<td><code>SIGBUS</code>，Terminal 内部同一函数无限递归，栈被打穿</td>
-</tr>
-<tr>
-<td>19:44</td>
-<td>约 12 分钟</td>
-<td><code>EXC_BAD_ACCESS</code> &#x2F; PAC，同样死在画屏创建字符串；坏指针里带有空格字节 <code>0x20</code></td>
-</tr>
-</tbody></table>
-<p>进程都是 <code>/System/Applications/Utilities/Terminal.app</code>（2.15，build 488），系统是 macOS 27.0.1。会话不是握手失败立刻断开，而是连上之后跑了一段时间，在重绘窗口时崩溃。</p>
-<h2 id="对端"><a href="#对端" class="headerlink" title="对端"></a>对端</h2><p>本机客户端是 OpenSSH 10.3。对端横幅是 <code>OpenSSH_for_Windows_9.5</code>。Windows OpenSSH 用 ConPTY 把控制台输出转成 VT 转义序列，这些序列进入 Terminal.app 的解析和绘制路径。</p>
-<p>19:31 那次同一栈帧反复出现，是转义序列解析递归没有出口。19:18 和 19:44 两次则是画文字时字符串内存已经被写坏。</p>
-<h2 id="社区里有没有同样的报告"><a href="#社区里有没有同样的报告" class="headerlink" title="社区里有没有同样的报告"></a>社区里有没有同样的报告</h2><p>没有一份公开报告和这组签名完全一致：macOS 27 的 Terminal 2.15，连 <code>OpenSSH_for_Windows_9.5</code>，死在 <code>CFStringCreateImmutableFunnel3</code> 或 Terminal 内部递归。</p>
-<p>相近的记录：</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/openai/codex/issues/39265">openai&#x2F;codex#39265</a>：Terminal.app 在 SSH 里跑较重的终端界面时反复崩溃，签名包括 <code>EXC_BAD_ACCESS</code>、堆损坏和 CoreText。远程是 Linux。</li>
-<li><a target="_blank" rel="noopener" href="https://note.chiilabo.jp/2026-06/terminal-savedstate-crash-macos-ssh-codex/">SSH 会话把 Terminal 的 savedState 写坏</a>：画屏时内存损坏，窗口状态被写进 savedState，下次启动接着崩。文中建议改用 iTerm2、Ghostty 或 WezTerm。</li>
-</ul>
-<p>Windows 侧另有一类相反的问题：客户端把鼠标上报序列发回 ConPTY，把 <code>conhost</code> 打崩，SSH 会话一起被拆掉（<a target="_blank" rel="noopener" href="https://github.com/psmux/psmux/issues/457">psmux#457</a>）。那是 Windows 进程崩溃，对不上这次的 Terminal.app 报告。</p>
-<h2 id="可以换的终端"><a href="#可以换的终端" class="headerlink" title="可以换的终端"></a>可以换的终端</h2><p>这台 Mac 上当时只有系统自带终端。下面几个都走自己的模拟器，仍然用本机 <code>ssh</code>：</p>
-<table>
-<thead>
-<tr>
-<th>终端</th>
-<th>安装</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>iTerm2</td>
-<td><code>brew install --cask iterm2</code></td>
-</tr>
-<tr>
-<td>Ghostty</td>
-<td><code>brew install --cask ghostty</code></td>
-</tr>
-<tr>
-<td>WezTerm</td>
-<td><code>brew install --cask wezterm</code></td>
-</tr>
-</tbody></table>
-<p>Cursor 的集成终端也是另一套实现，不会走 Terminal.app 这条绘制路径。</p>
-<p>如果暂时还用系统终端，可以把终端类型收窄后再连：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TERM=xterm ssh liuhualiang@192.168.3.9</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/10/17/macOS%E7%BB%88%E7%AB%AF%E8%BF%9E%E6%8E%A5Windows-SSH%E5%90%8E%E5%B4%A9%E6%BA%83/" data-id="cmvuqo0r1000ld8v5fvuqbiww" data-title="macOS 终端连接 Windows SSH 后崩溃" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSH/" rel="tag">SSH</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Terminal/" rel="tag">Terminal</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/macOS/" rel="tag">macOS</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-mes-weekly-2026-w42" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/10/16/mes-weekly-2026-w42/" class="article-date">
-  <time class="dt-published" datetime="2026-10-16T06:10:00.000Z" itemprop="datePublished">2026-10-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/10/16/mes-weekly-2026-w42/">MES 2026 年第 42 周工作小结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <img src="/2026/10/16/mes-weekly-2026-w42/cover.png" class="">
-
-<p>本周（10&#x2F;12–10&#x2F;16，合入 master 的非合并提交 <strong>89</strong> 条，合并 <strong>7</strong> 次，含 PR #386、#284）主线是把 EOS 流程模块 <code>mes-nwf</code> 从 AI 起草做到可发布的图形设计器，并合入电厂小指标与手册 AI 问答。文件改动集中在 <code>mes-workflow</code>、<code>mes-core</code>、<code>mes-indicator</code>。</p>
-<h2 id="一、流程设计器（mes-nwf）"><a href="#一、流程设计器（mes-nwf）" class="headerlink" title="一、流程设计器（mes-nwf）"></a>一、流程设计器（mes-nwf）</h2><p>周四合入 <code>feature/mes-nwf</code>，周五补了图形编辑和版本比对。同周还合入 <code>feature/nwf-transition-props</code>、<code>feature/nwf-savegraph-allow-missing-entity</code>、<code>feature/nwf-test-bill-define</code>。</p>
-<ul>
-<li>新建 EOS NWF 流程模块：AI 起草、边标签、流程细化、多泳道布局，可还原原始布局</li>
-<li>轻量图形编辑：ELK 自动布局、汇聚&#x2F;分支模式、网格、对齐圈选、左右分隔</li>
-<li>发布与版本：版本签发校验、历史版本、流程 XML 按属性分行比对</li>
-<li>传递线属性编辑和条件表达式向导；设计器与预览里，校验列表点击可定位节点</li>
-<li>测试单据字段包，以及 <code>DjDy</code> &#x2F; <code>XmDy</code> 定义生成；关联单据缺失时仍允许 <code>saveGraph</code></li>
-<li>流程分类侧树、复制、类型筛选；流程 JSON 字段的 XSS 放行</li>
-</ul>
-<h2 id="二、电厂小指标（mes-indicator）"><a href="#二、电厂小指标（mes-indicator）" class="headerlink" title="二、电厂小指标（mes-indicator）"></a>二、电厂小指标（mes-indicator）</h2><p>周五合入 <code>feature/mes-indicator</code>。</p>
-<ul>
-<li>新增电厂小指标模块和打分引擎</li>
-<li>经济核算引导页、日期控件、配置页选择器，以及打分页的基础体验</li>
-<li>引导页卡片去掉粉色背景；修正成绩表 JPA 属性名，列表高度随 jqGrid 自适应</li>
-</ul>
-<h2 id="三、手册与船舶作业（PR-284）"><a href="#三、手册与船舶作业（PR-284）" class="headerlink" title="三、手册与船舶作业（PR #284）"></a>三、手册与船舶作业（PR #284）</h2><p>周二合入 <code>feature/manual-docs</code>。</p>
-<ul>
-<li>手册检索与 AI 问答，侧栏和上下文长度做了调整</li>
-<li>船舶作业、泊位规则、天气规则文档，以及 AI 船期页和帮助入口</li>
-</ul>
-<h2 id="四、计划范围与船舶看板"><a href="#四、计划范围与船舶看板" class="headerlink" title="四、计划范围与船舶看板"></a>四、计划范围与船舶看板</h2><ul>
-<li>周一合入 PR <strong>#386</strong>（<code>feature/jhfw-layout-import</code>）：计划范围 Excel 导入摘要、装置别称（<code>ZZBC</code>）、未匹配装置提示，以及按月删除、有数据月份查询</li>
-<li>船舶信息看板增加月度作业图、明细表和总重量</li>
-</ul>
-<h2 id="五、平台"><a href="#五、平台" class="headerlink" title="五、平台"></a>五、平台</h2><p>周五修复多 Tab 刷新时子应用页面短暂 404。</p>
-<h2 id="节奏"><a href="#节奏" class="headerlink" title="节奏"></a>节奏</h2><table>
-<thead>
-<tr>
-<th>时段</th>
-<th>侧重</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>周一</td>
-<td>计划范围导入 #386</td>
-</tr>
-<tr>
-<td>周二</td>
-<td>手册 AI 问答 #284；NWF 模块与 AI 起草起步</td>
-</tr>
-<tr>
-<td>周三</td>
-<td>设计器、ELK 布局、发布与历史版本比对</td>
-</tr>
-<tr>
-<td>周四</td>
-<td>NWF 合入；传递线、测试单据、AI 细化；小指标模块</td>
-</tr>
-<tr>
-<td>周五</td>
-<td>小指标合入；图形网格与对齐；版本比对按属性分行</td>
-</tr>
-</tbody></table>
-<p>能耗分析（<code>feature/energy-nhtj-analysis</code>）和平台 SSO 票据（<code>feature/mes-platform-sso-ticket</code>）本周有提交，尚未合入 master。</p>
-<p>一句话：流程从「能起草」走到「能画、能排版、能发布、能对版本」，小指标和手册问答同一周落地。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/10/16/mes-weekly-2026-w42/" data-id="cmvuqo0rd001hd8v50v7l8quu" data-title="MES 2026 年第 42 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-indicator/" rel="tag">mes-indicator</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-workflow/" rel="tag">mes-workflow</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-maven-tomcat-eclipse-cursor" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/10/12/maven-tomcat-eclipse-cursor/" class="article-date">
-  <time class="dt-published" datetime="2026-10-12T01:30:00.000Z" itemprop="datePublished">2026-10-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/10/12/maven-tomcat-eclipse-cursor/">Maven 项目还能像 Sysdeo 那样用 Tomcat 插件启动吗？Eclipse 与 Cursor 选型</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <img src="/2026/10/12/maven-tomcat-eclipse-cursor/cover.png" class="">
-
-<p>早年用 Sysdeo Tomcat Plugin 管「普通 Java EE 工程」很顺手：指定本机 Tomcat、挂上 web 工程、工具栏启停。迁到 Maven、再迁到 Spring Boot &#x2F; Cursor 之后，常会问三件事：</p>
-<ol>
-<li>Maven 项目还能不能像以前那样用 Tomcat 插件启动？</li>
-<li>现在的 Eclipse Tomcat Plugin（Sysdeo 后继）能不能管 Maven？</li>
-<li>Cursor 里有没有类似插件管 Maven 项目启动？</li>
-</ol>
-<p>下面按结论 → 差异 → IDE 选型 → 实践建议说明。</p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ol>
-<li><strong>可以</strong>，但体验和旧「非 Maven Java EE + Sysdeo」不完全一样：Maven 负责依赖与打包，Tomcat 插件负责启动&#x2F;部署，两者要配合，不能指望只点一下「启动 Tomcat」就自动搞定全部 classpath。</li>
-<li><strong>Eclipse Tomcat Plugin</strong>（Sysdeo 的维护分支）<strong>能管 Maven 项目</strong>，并支持 Maven classpath；复杂多模块工程更稳妥的是 <strong>m2e + m2e-wtp + WTP Servers</strong>。</li>
-<li><strong>Cursor</strong> 可装 VS Code 系扩展管理外置 Tomcat；对 <strong>Spring Boot</strong> 工程，日常更推荐 <code>mvn spring-boot:run</code> 或 Java Launch，而不是硬造 Sysdeo 式外挂 Tomcat。</li>
-</ol>
-<h2 id="和旧-Sysdeo-非-Maven-项目差在哪"><a href="#和旧-Sysdeo-非-Maven-项目差在哪" class="headerlink" title="和旧 Sysdeo 非 Maven 项目差在哪"></a>和旧 Sysdeo 非 Maven 项目差在哪</h2><table>
-<thead>
-<tr>
-<th>维度</th>
-<th>旧普通 Java EE</th>
-<th>Maven 项目</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>classpath</td>
-<td>手加 lib &#x2F; 项目引用</td>
-<td>由 <code>pom.xml</code> 解析到本地仓库</td>
-</tr>
-<tr>
-<td>部署单元</td>
-<td>工程目录 &#x2F; 手工 WAR</td>
-<td><code>mvn package</code> 出 WAR&#x2F;JAR，或 exploded <code>target/...</code></td>
-</tr>
-<tr>
-<td>插件职责</td>
-<td>启动 Tomcat + 挂 context</td>
-<td>仍可挂 context，但依赖须先被 Maven&#x2F;IDE 解析好</td>
-</tr>
-</tbody></table>
-<p>所以：<strong>不是「Maven 就不能用 Tomcat 插件」</strong>，而是 <strong>「先让 Maven&#x2F;IDE 建好运行 classpath 与 web 资源，再交给 Tomcat」</strong>。</p>
-<h2 id="三条常见启动路径"><a href="#三条常见启动路径" class="headerlink" title="三条常见启动路径"></a>三条常见启动路径</h2><ol>
-<li><strong>IDE 插件</strong>：m2e（或等价工具）解析依赖 → WTP &#x2F; Eclipse Tomcat Plugin &#x2F; Community Server Connectors → 外置 Tomcat。接近 Sysdeo 的工具栏体验。</li>
-<li><strong>Maven 插件</strong>：在 <code>pom</code> 里配 <code>tomcat7-maven-plugin</code> &#x2F; Cargo 等，跑 <code>mvn tomcat7:run</code>。不依赖 IDE，适合命令行与 CI。</li>
-<li><strong>Spring Boot 内嵌 Tomcat</strong>：<code>spring-boot-maven-plugin</code> + <code>spring-boot:run</code>（或打可执行 JAR）。许多现代工程（含我们这边的 MES <code>mes-web</code>）日常走这条。</li>
-</ol>
-<p>路径 1&#x2F;2 适合「传统 WAR + 独立 Tomcat」；路径 3 适合「内嵌容器开发」。选型要看项目打包形态，而不是只看有没有装 Tomcat 插件。</p>
-<h2 id="Eclipse：Eclipse-Tomcat-Plugin-能否管-Maven？"><a href="#Eclipse：Eclipse-Tomcat-Plugin-能否管-Maven？" class="headerlink" title="Eclipse：Eclipse Tomcat Plugin 能否管 Maven？"></a>Eclipse：Eclipse Tomcat Plugin 能否管 Maven？</h2><p>能，但别把两条产品线混为一谈。</p>
-<h3 id="Eclipse-Tomcat-Plugin（Sysdeo-后继）"><a href="#Eclipse-Tomcat-Plugin（Sysdeo-后继）" class="headerlink" title="Eclipse Tomcat Plugin（Sysdeo 后继）"></a>Eclipse Tomcat Plugin（Sysdeo 后继）</h3><ul>
-<li>Marketplace 名称：<strong>Eclipse Tomcat Plugin</strong>，仓库见 <a target="_blank" rel="noopener" href="https://github.com/tomcatplugin/tomcatplugin">tomcatplugin&#x2F;tomcatplugin</a>。</li>
-<li>已支持 <strong>Maven classpath management</strong>。</li>
-<li>适合：想轻量「指一个 Tomcat 安装目录 + 挂 web 工程」的开发者。</li>
-<li>局限：复杂多模块、<code>provided</code> 作用域的 servlet API、Spring Boot fat JAR&#x2F;WAR 与「传统 exploded webapp」模型不一致时，容易踩 classpath &#x2F; <code>ServletContainerInitializer</code> 一类问题。</li>
-</ul>
-<h3 id="更推荐的-Eclipse-Maven-Web-组合"><a href="#更推荐的-Eclipse-Maven-Web-组合" class="headerlink" title="更推荐的 Eclipse Maven Web 组合"></a>更推荐的 Eclipse Maven Web 组合</h3><ul>
-<li><strong>M2E</strong> + <strong>m2e-wtp</strong> + <strong>WTP Servers</strong>（Run on Server）。</li>
-<li>m2e-wtp 负责把 war 工程配成 Dynamic Web Facet、把依赖装进部署装配。</li>
-<li>这才是 Eclipse 生态里管理 <strong>Maven WAR → Tomcat</strong> 的主流做法。</li>
-</ul>
-<p>若工程是 Spring Boot：日常用内嵌 Tomcat；外置 Tomcat 通常另走 WAR 打包（例如独立 <code>pom-war.xml</code>），再交给 WTP 或 Tomcat Plugin 部署。<strong>不宜</strong>用 Sysdeo 后继插件替代日常的 <code>spring-boot:run</code>。</p>
-<h2 id="Cursor：有没有「管理-Maven-项目启动」的插件？"><a href="#Cursor：有没有「管理-Maven-项目启动」的插件？" class="headerlink" title="Cursor：有没有「管理 Maven 项目启动」的插件？"></a>Cursor：有没有「管理 Maven 项目启动」的插件？</h2><p>Cursor 兼容 VS Code 扩展市场，<strong>没有</strong>与 Sysdeo 同级、专门为「大型多模块 Maven」深度定制的官方插件。常用组合：</p>
-<table>
-<thead>
-<tr>
-<th>扩展</th>
-<th>作用</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Extension Pack for Java &#x2F; Maven for Java</td>
-<td>导入 Maven、跑 goals</td>
-<td>基础必装</td>
-</tr>
-<tr>
-<td>Community Server Connectors（Red Hat）</td>
-<td>管理本地 Tomcat、部署 WAR</td>
-<td>较新，倾向替代旧 Tomcat 扩展</td>
-</tr>
-<tr>
-<td>Tomcat for Java（adashen）</td>
-<td>启停 Tomcat、跑&#x2F;调试 WAR</td>
-<td>偏旧，新项目慎用</td>
-</tr>
-<tr>
-<td>Tomcat Auto Deploy 等</td>
-<td>保存后同步&#x2F;热部署</td>
-<td>偏传统 WAR</td>
-</tr>
-</tbody></table>
-<p>对 Spring Boot 类项目，Cursor 侧更贴合的启动方式：</p>
-<ol>
-<li><strong>终端 &#x2F; Maven 视图</strong>：<code>mvn spring-boot:run -Dspring-boot.run.profiles=...</code></li>
-<li><strong>Java 扩展 Launch</strong>：给主类（如 <code>MesApplication</code>）建 <code>launch.json</code></li>
-<li><strong>外置 Tomcat</strong>：仅在需要验证 WAR 产物时，用 Community Server Connectors 部署 <code>target/*.war</code></li>
-</ol>
-<p>不建议在 Cursor 里硬造「Sysdeo 式一键外置 Tomcat」当日常主路径——和内嵌 Tomcat、本地 Docker 中间件工作流容易打架，维护成本高。</p>
-<h2 id="结合-Spring-Boot-MES-的实践建议"><a href="#结合-Spring-Boot-MES-的实践建议" class="headerlink" title="结合 Spring Boot &#x2F; MES 的实践建议"></a>结合 Spring Boot &#x2F; MES 的实践建议</h2><p>以常见的 Spring Boot 多模块 Web 工程为例：</p>
-<ul>
-<li><strong>日常开发</strong>：<code>spring-boot:run</code>（内嵌 Tomcat）+ 本机或 Docker 起 MySQL&#x2F;Redis。</li>
-<li><strong>Eclipse 怀旧体验</strong>：若必须工具栏管 Tomcat，优先 <strong>WTP + m2e-wtp</strong> 部署 WAR；Sysdeo 后继仅作轻量备选。</li>
-<li><strong>正式&#x2F;生产形态</strong>：WAR 打进外置 Tomcat（或现有热补丁流程），与本地插件启动解耦。</li>
-</ul>
-<p>一句话：<strong>Maven 可以用 Tomcat 插件；Eclipse 后继能管，但复杂工程更信 WTP；Cursor 能管外置 Tomcat，Spring Boot 日常仍优先内嵌启动。</strong></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/10/12/maven-tomcat-eclipse-cursor/" data-id="cmvuqo0r1000kd8v53qzmdbhf" data-title="Maven 项目还能像 Sysdeo 那样用 Tomcat 插件启动吗？Eclipse 与 Cursor 选型" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cursor/" rel="tag">Cursor</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Eclipse/" rel="tag">Eclipse</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring-Boot/" rel="tag">Spring Boot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tomcat/" rel="tag">Tomcat</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-mes-weekly-2026-w41" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/10/10/mes-weekly-2026-w41/" class="article-date">
-  <time class="dt-published" datetime="2026-10-10T08:50:00.000Z" itemprop="datePublished">2026-10-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/10/10/mes-weekly-2026-w41/">MES 2026 年第 41 周工作小结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <img src="/2026/10/10/mes-weekly-2026-w41/cover.png" class="">
-
-<p>本周（10&#x2F;6–10&#x2F;10，master 约 <strong>18 次提交</strong>）主线是 <strong>PI API（piapi64）Java 封装</strong> 与 <strong>实时库通讯完整性（Comm Int）</strong>，并顺带统一 <strong>Jackson 时间格式</strong>、清理 IO 模型与本地开发文档。合入分支：<code>copilot/add-java-wrapper-for-piapi64</code>、<code>feature/rtdb-comm-int</code>。主力模块 <code>mes-rtdb</code>、<code>mes-factory</code>、<code>mes-process-*</code>。</p>
-<h2 id="一、PI-API-piapi64-Java-封装（mes-rtdb-pi）"><a href="#一、PI-API-piapi64-Java-封装（mes-rtdb-pi）" class="headerlink" title="一、PI API &#x2F; piapi64 Java 封装（mes-rtdb-pi）"></a>一、PI API &#x2F; piapi64 Java 封装（mes-rtdb-pi）</h2><ul>
-<li>合入 <code>copilot/add-java-wrapper-for-piapi64</code>：JNA 对接 <code>piapi64</code> 原生库，经 RMI 对外提供快照等能力（<code>mes-rtdb-pi</code> &#x2F; <code>mes-rtdb-pi-core</code>）</li>
-<li>封装 <code>pisn_getsnapshots</code> <strong>批量读快照</strong>；完善快照取数错误处理</li>
-<li>支持 <strong>字符串点（string points）</strong>；补充 PI C API 参考与库加载测试文档</li>
-</ul>
-<h2 id="二、实时库通讯完整性-Comm-Int（mes-rtdb-process）"><a href="#二、实时库通讯完整性-Comm-Int（mes-rtdb-process）" class="headerlink" title="二、实时库通讯完整性 Comm Int（mes-rtdb &#x2F; process）"></a>二、实时库通讯完整性 Comm Int（mes-rtdb &#x2F; process）</h2><ul>
-<li>合入 <code>feature/rtdb-comm-int</code>：工艺卡 &#x2F; 自控 &#x2F; 联锁侧通讯完整性实体、服务、任务与前端列表页</li>
-<li>数据源侧增强 <strong>质量位校验</strong> 与空值处理；新增 <code>RtdbMissTracker</code> 及单测</li>
-<li>配套 SQL：<code>doc/sql/process_rtdb_comm_int.sql</code></li>
-</ul>
-<h2 id="三、IO-模型整理（InstrumentResult-Parameter）"><a href="#三、IO-模型整理（InstrumentResult-Parameter）" class="headerlink" title="三、IO 模型整理（InstrumentResult &#x2F; Parameter）"></a>三、IO 模型整理（InstrumentResult &#x2F; Parameter）</h2><ul>
-<li><code>InstrumentResult</code>：补文档、收敛旧方法并标废弃，配合数据源改造</li>
-<li><code>InstrumentParameter</code>：清理无用字段与注释</li>
-</ul>
-<h2 id="四、平台与文档杂项"><a href="#四、平台与文档杂项" class="headerlink" title="四、平台与文档杂项"></a>四、平台与文档杂项</h2><ul>
-<li>多子应用补齐 <code>spring.jackson</code> 时间格式；<code>SysRole</code> &#x2F; <code>SysUser</code> 等实体 <code>createTime</code> 显式 JSON 格式</li>
-<li>Docx 模板 <code>sortOrder</code> 处理修正</li>
-<li>本地开发：STS &#x2F; Nginx 文档整理、<code>/mes/</code> location 说明；API Key 占位改为 <code>local-no-key</code>；去掉无用 <code>hc4j-intf</code> 依赖</li>
-</ul>
-<h2 id="节奏"><a href="#节奏" class="headerlink" title="节奏"></a>节奏</h2><table>
-<thead>
-<tr>
-<th>时段</th>
-<th>侧重</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>周三</td>
-<td>PI wrapper 与 Comm Int 合入；Jackson &#x2F; Docx &#x2F; 本地文档</td>
-</tr>
-<tr>
-<td>周四</td>
-<td>批量快照、字符串点、PI 文档与 Instrument 清理</td>
-</tr>
-<tr>
-<td>周五</td>
-<td>InstrumentResult 文档化与废弃收敛</td>
-</tr>
-</tbody></table>
-<p>一句话：把 PI 原生能力接到 Java RMI 链路上，同时把工艺侧实时库「通讯是否断了」做成可查的 Comm Int 能力。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/10/10/mes-weekly-2026-w41/" data-id="cmvuqo0rd001id8v5bvmw9nq5" data-title="MES 2026 年第 41 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PI/" rel="tag">PI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-factory/" rel="tag">mes-factory</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-rtdb/" rel="tag">mes-rtdb</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-mes-weekly-2026-w40" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/09/30/mes-weekly-2026-w40/" class="article-date">
-  <time class="dt-published" datetime="2026-09-30T06:40:00.000Z" itemprop="datePublished">2026-09-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/09/30/mes-weekly-2026-w40/">MES 2026 年第 40 周工作小结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <img src="/2026/09/30/mes-weekly-2026-w40/cover.png" class="">
-
-<p>本周（9&#x2F;28–9&#x2F;30，约 <strong>17 次提交</strong>）主线是 <strong>多应用拆分落地</strong> 与 <strong>RTDB &#x2F; ISYS SDK</strong>，并修正 <strong>LIMS 位号</strong>、<strong>EOS 菜单 URL</strong>。合入分支主要包括：<code>wip/tsdb-sdk-decompiled</code>、<code>feature/lims-tag-optional-sample-name</code>、<code>feat/mes-app</code>。主力模块 <code>mes-web</code>、<code>mes-factory</code>、<code>mes-rtdb</code>、<code>mes-security</code>、<code>mes-report</code>。</p>
-<h2 id="一、实时库-ISYS-SDK（mes-rtdb）"><a href="#一、实时库-ISYS-SDK（mes-rtdb）" class="headerlink" title="一、实时库 &#x2F; ISYS SDK（mes-rtdb）"></a>一、实时库 &#x2F; ISYS SDK（mes-rtdb）</h2><ul>
-<li>合入 <code>wip/tsdb-sdk-decompiled</code>，沉淀 TSDB SDK 反编译参考</li>
-<li>新增 <strong>ISYS SDK</strong> 接入：独立端口与上下文、Nginx 代理、监控相关配置与文档</li>
-<li>完善 ISYS SDK 与多应用说明文档</li>
-</ul>
-<h2 id="二、多应用拆分与基础设施（mes-web-scripts）"><a href="#二、多应用拆分与基础设施（mes-web-scripts）" class="headerlink" title="二、多应用拆分与基础设施（mes-web &#x2F; scripts）"></a>二、多应用拆分与基础设施（mes-web &#x2F; scripts）</h2><ul>
-<li>应用拆分后 <strong>日志文件按应用拆分</strong>；补充 <code>mes-utils</code> &#x2F; <code>mes-chart</code> &#x2F; <code>mes-message-eos</code> 等依赖</li>
-<li>Nginx 兼容历史 PDF 路径；清理部分测试子工程</li>
-<li>整理 <code>scripts/build-all</code> 目录处理与错误管理</li>
-</ul>
-<h2 id="三、LIMS-位号（mes-factory）"><a href="#三、LIMS-位号（mes-factory）" class="headerlink" title="三、LIMS 位号（mes-factory）"></a>三、LIMS 位号（mes-factory）</h2><ul>
-<li>样品名可空：导入 DTO、位号生成与取数逻辑同步调整，并更新说明与单测</li>
-<li>合入 <code>feature/lims-tag-optional-sample-name</code></li>
-</ul>
-<h2 id="四、EOS-菜单与安全（mes-security）"><a href="#四、EOS-菜单与安全（mes-security）" class="headerlink" title="四、EOS 菜单与安全（mes-security）"></a>四、EOS 菜单与安全（mes-security）</h2><ul>
-<li>EOS 菜单 URL 刷新：仅改写 <code>.html</code>，跳过 jt-web hash 路由</li>
-<li>补充 <code>EosMenuTypeHelper</code> 与相关单测</li>
-</ul>
-<h2 id="五、文档"><a href="#五、文档" class="headerlink" title="五、文档"></a>五、文档</h2><ul>
-<li>报表定时操作手册（md &#x2F; docx + 截图）</li>
-<li>新增《JSON 请求体传输加密说明》</li>
-</ul>
-<h2 id="节奏"><a href="#节奏" class="headerlink" title="节奏"></a>节奏</h2><table>
-<thead>
-<tr>
-<th>时段</th>
-<th>侧重</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>周一</td>
-<td>ISYS SDK &#x2F; TSDB 反编译参考合入；LIMS 样品名可空</td>
-</tr>
-<tr>
-<td>周二</td>
-<td>EOS 菜单 URL；多应用依赖与日志拆分；nginx PDF；报表手册</td>
-</tr>
-<tr>
-<td>周三</td>
-<td>build-all 脚本整理；传输加密说明文档</td>
-</tr>
-</tbody></table>
-<p>一句话：把多应用拆分从依赖与日志侧再推进一步，同时把 ISYS SDK 与 LIMS&#x2F;菜单边界问题收干净。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/09/30/mes-weekly-2026-w40/" data-id="cmvuqo0rc001gd8v5cj7g9omb" data-title="MES 2026 年第 40 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-rtdb/" rel="tag">mes-rtdb</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-security/" rel="tag">mes-security</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-web/" rel="tag">mes-web</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-mes-monthly-2026-09" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/09/29/mes-monthly-2026-09/" class="article-date">
-  <time class="dt-published" datetime="2026-09-29T03:00:00.000Z" itemprop="datePublished">2026-09-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/09/29/mes-monthly-2026-09/">MES 2026 年 9 月工作小结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <img src="/2026/09/29/mes-monthly-2026-09/cover.png" class="">
-
-<p>9 月（约 <strong>278</strong> 次提交）主线从「AI 对话能力」转向 <strong>看板能力合入、报表公式检查、计量器具导入闭环</strong>，并启动 <strong>多应用拆分</strong> 与 <strong>TSDB&#x2F;ISYS 实时库底座</strong>。正式合并 PR 含 <strong>#384</strong>（看板能力增强）、**#385**（报表模板 AI 公式检查），另有大量功能分支直接合入 master &#x2F; <code>feat/mes-app</code>。改动最集中的模块是 <code>mes-core</code>、<code>mes-measure</code>、<code>mes-rtdb</code>、<code>mes-report</code>，其次 <code>mes-ai</code> &#x2F; <code>mes-chart</code> &#x2F; <code>mes-web</code>。</p>
-<h2 id="一、看板与图表（-384）"><a href="#一、看板与图表（-384）" class="headerlink" title="一、看板与图表（#384）"></a>一、看板与图表（#384）</h2><ul>
-<li><strong>能力包合入</strong>：书签 URL、筛选联动、透视、虚拟滚动、看板导出、数字卡&#x2F;表格增强、SQL 安全校验（Druid）等。</li>
-<li><strong>下钻与运维</strong>：数字卡下钻、船舶&#x2F;任务看板下钻；数据库监控阻塞数报警并跳转解锁页。</li>
-<li><strong>演示看板</strong>：DEMO 能力看板、DEMO 组织看板 KPI 数字卡与末级部门&#x2F;岗位人数表。</li>
-</ul>
-<h2 id="二、报表与公式检查（-385）"><a href="#二、报表与公式检查（-385）" class="headerlink" title="二、报表与公式检查（#385）"></a>二、报表与公式检查（#385）</h2><ul>
-<li><strong>AI 公式检查</strong>：报表模板公式校验、LIMS 语义检查、与 Python 语义对齐、检查报告渲染与复检文档。</li>
-<li><strong>模板治理</strong>：上传进度&#x2F;重复提示、历史归档元数据、回滚与检查点、XLS&#x2F;DOCX 版本对比与快照。</li>
-<li><strong>报表调度</strong>：任务卡 UI、上次结果&#x2F;下次执行、按应用过滤、提交后同步 Quartz Job。</li>
-</ul>
-<h2 id="三、计量器具与业务模块"><a href="#三、计量器具与业务模块" class="headerlink" title="三、计量器具与业务模块"></a>三、计量器具与业务模块</h2><ul>
-<li><strong>计量（msr）</strong>：运行部菜单挂载、xlsm 模板与 VBA、VLOOKUP 装置查找、按管理部门筛装置、导入 zip + 本机一键准备。</li>
-<li><strong>计划范围</strong>：导入摘要、未匹配装置名、布局与错误反馈增强。</li>
-<li><strong>船舶 &#x2F; 罐区</strong>：黑名单导入导出与 IMO&#x2F;船名检索、月度运行 widget；罐日与库存平衡网格优化。</li>
-<li><strong>装置日报（pdr）</strong>：新增装置日报模块雏形；位号数据源筛选与列自适应。</li>
-</ul>
-<h2 id="四、平台、菜单与实时库"><a href="#四、平台、菜单与实时库" class="headerlink" title="四、平台、菜单与实时库"></a>四、平台、菜单与实时库</h2><ul>
-<li><strong>多应用拆分</strong>：抽出平台，将 mes-web、报表、调度拆成独立子应用（<code>feat/mes-app</code>），依赖与部署初始化整理。</li>
-<li><strong>菜单 v2</strong>：拖拽排序、批量改上级、按 app 检索、刷新 EOS 菜单 URL &#x2F; hash。</li>
-<li><strong>TSDB &#x2F; ISYS</strong>：SDK 接入与文档、实时&#x2F;历史 client 固定池与分锁、监控页挂平台菜单。</li>
-<li><strong>AI 侧续作</strong>：Agent&#x2F;Tool 配置快照备份回滚、LLM 用量记录、协作子 Agent 并行、装置开停工区间、BPMN 生成与布局。</li>
-<li><strong>运维</strong>：运行时&#x2F;Tomcat 状态监控可视化。</li>
-</ul>
-<h2 id="五、月度节奏"><a href="#五、月度节奏" class="headerlink" title="五、月度节奏"></a>五、月度节奏</h2><table>
-<thead>
-<tr>
-<th>阶段</th>
-<th>重点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>上旬</td>
-<td>计量导出与菜单、运行时监控、装置开停工、看板能力合入（#384）、AI 配置快照</td>
-</tr>
-<tr>
-<td>中旬</td>
-<td>模板历史&#x2F;回滚、公式检查（#385）、计划导入摘要、船舶黑名单、LLM 用量与协作并行</td>
-</tr>
-<tr>
-<td>下旬</td>
-<td>多应用拆分、菜单 v2 &#x2F; EOS 刷新、报表调度、计量 xlsm、TSDB client 池与 ISYS</td>
-</tr>
-</tbody></table>
-<hr>
-<p><strong>一句话</strong>：9 月把看板能力与报表公式检查正式落地，计量导入闭环成型，并启动多应用拆分与 TSDB 实时库底座，为独立部署和时序接入铺路。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/09/29/mes-monthly-2026-09/" data-id="cmvuqo0r6000zd8v5akts0x8s" data-title="MES 2026 年 9 月工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-measure/" rel="tag">mes-measure</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-rtdb/" rel="tag">mes-rtdb</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-
-
-  <nav id="page-nav">
-    
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-  </nav>
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/0AD/" rel="tag">0AD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Daily/" rel="tag">AI Daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AdGuard-Home/" rel="tag">AdGuard Home</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Agent/" rel="tag">Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Automation/" rel="tag">Automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CLI/" rel="tag">CLI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Calendar/" rel="tag">Calendar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Claude-Code/" rel="tag">Claude Code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CodingAgent/" rel="tag">CodingAgent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cursor/" rel="tag">Cursor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DNS/" rel="tag">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EOS/" rel="tag">EOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eclipse/" rel="tag">Eclipse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eos/" rel="tag">Eos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Excel/" rel="tag">Excel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Harness/" rel="tag">Harness</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LIMS/" rel="tag">LIMS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCP/" rel="tag">MCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacBook/" rel="tag">MacBook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenSource/" rel="tag">OpenSource</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OptiPlex/" rel="tag">OptiPlex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PI/" rel="tag">PI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PowerShell/" rel="tag">PowerShell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RBAC/" rel="tag">RBAC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTS/" rel="tag">RTS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTX-Spark/" rel="tag">RTX Spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Boot/" rel="tag">Spring Boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/T480/" rel="tag">T480</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Terminal/" rel="tag">Terminal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThinkPad/" rel="tag">ThinkPad</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tomcat/" rel="tag">Tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eos-nwf/" rel="tag">eos-nwf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/health/" rel="tag">health</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/macOS/" rel="tag">macOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-energy/" rel="tag">mes-energy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-factory/" rel="tag">mes-factory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-indicator/" rel="tag">mes-indicator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-manual/" rel="tag">mes-manual</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-measure/" rel="tag">mes-measure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-nwf/" rel="tag">mes-nwf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-plan/" rel="tag">mes-plan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-quartz/" rel="tag">mes-quartz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-report/" rel="tag">mes-report</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-rtdb/" rel="tag">mes-rtdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-security/" rel="tag">mes-security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-web/" rel="tag">mes-web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-workflow/" rel="tag">mes-workflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zTree/" rel="tag">zTree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" rel="tag">中医体质</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" rel="tag">九体医学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" rel="tag">交接班</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" rel="tag">体质调理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" rel="tag">体重管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%81%A5%E5%BA%B7/" rel="tag">健康</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8E%E4%B8%BA%E8%B7%AF%E7%94%B1/" rel="tag">华为路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A3%E6%8A%A5/" rel="tag">季报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" rel="tag">慢性病</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%88%E7%8E%87/" rel="tag">效率</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" rel="tag">科学减肥</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%82%A5%E8%83%96/" rel="tag">肥胖</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" rel="tag">能耗分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" rel="tag">船舶作业</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E5%88%92%E8%8C%83%E5%9B%B4/" rel="tag">计划范围</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/0AD/" style="font-size: 10px;">0AD</a> <a href="/tags/AI/" style="font-size: 11.11px;">AI</a> <a href="/tags/AI-Daily/" style="font-size: 10px;">AI Daily</a> <a href="/tags/AdGuard-Home/" style="font-size: 10px;">AdGuard Home</a> <a href="/tags/Agent/" style="font-size: 10px;">Agent</a> <a href="/tags/Automation/" style="font-size: 10px;">Automation</a> <a href="/tags/CLI/" style="font-size: 11.11px;">CLI</a> <a href="/tags/Calendar/" style="font-size: 10px;">Calendar</a> <a href="/tags/Claude-Code/" style="font-size: 10px;">Claude Code</a> <a href="/tags/CodingAgent/" style="font-size: 10px;">CodingAgent</a> <a href="/tags/Cursor/" style="font-size: 12.22px;">Cursor</a> <a href="/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/EOS/" style="font-size: 11.11px;">EOS</a> <a href="/tags/Eclipse/" style="font-size: 10px;">Eclipse</a> <a href="/tags/Eos/" style="font-size: 10px;">Eos</a> <a href="/tags/Excel/" style="font-size: 10px;">Excel</a> <a href="/tags/Game/" style="font-size: 10px;">Game</a> <a href="/tags/Harness/" style="font-size: 10px;">Harness</a> <a href="/tags/LIMS/" style="font-size: 10px;">LIMS</a> <a href="/tags/MCP/" style="font-size: 10px;">MCP</a> <a href="/tags/MES/" style="font-size: 20px;">MES</a> <a href="/tags/MacBook/" style="font-size: 10px;">MacBook</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/OpenSource/" style="font-size: 10px;">OpenSource</a> <a href="/tags/OptiPlex/" style="font-size: 10px;">OptiPlex</a> <a href="/tags/PI/" style="font-size: 10px;">PI</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/PowerShell/" style="font-size: 10px;">PowerShell</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RBAC/" style="font-size: 10px;">RBAC</a> <a href="/tags/RTS/" style="font-size: 10px;">RTS</a> <a href="/tags/RTX-Spark/" style="font-size: 10px;">RTX Spark</a> <a href="/tags/SQL-Server/" style="font-size: 11.11px;">SQL Server</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Spring-Boot/" style="font-size: 10px;">Spring Boot</a> <a href="/tags/T480/" style="font-size: 10px;">T480</a> <a href="/tags/Terminal/" style="font-size: 10px;">Terminal</a> <a href="/tags/ThinkPad/" style="font-size: 10px;">ThinkPad</a> <a href="/tags/Tomcat/" style="font-size: 10px;">Tomcat</a> <a href="/tags/Windows/" style="font-size: 11.11px;">Windows</a> <a href="/tags/eos-nwf/" style="font-size: 10px;">eos-nwf</a> <a href="/tags/health/" style="font-size: 10px;">health</a> <a href="/tags/macOS/" style="font-size: 10px;">macOS</a> <a href="/tags/mes-ai/" style="font-size: 16.67px;">mes-ai</a> <a href="/tags/mes-chart/" style="font-size: 15.56px;">mes-chart</a> <a href="/tags/mes-energy/" style="font-size: 10px;">mes-energy</a> <a href="/tags/mes-factory/" style="font-size: 10px;">mes-factory</a> <a href="/tags/mes-indicator/" style="font-size: 11.11px;">mes-indicator</a> <a href="/tags/mes-manual/" style="font-size: 10px;">mes-manual</a> <a href="/tags/mes-measure/" style="font-size: 13.33px;">mes-measure</a> <a href="/tags/mes-nwf/" style="font-size: 10px;">mes-nwf</a> <a href="/tags/mes-plan/" style="font-size: 10px;">mes-plan</a> <a href="/tags/mes-quartz/" style="font-size: 10px;">mes-quartz</a> <a href="/tags/mes-report/" style="font-size: 10px;">mes-report</a> <a href="/tags/mes-rtdb/" style="font-size: 13.33px;">mes-rtdb</a> <a href="/tags/mes-security/" style="font-size: 10px;">mes-security</a> <a href="/tags/mes-web/" style="font-size: 12.22px;">mes-web</a> <a href="/tags/mes-workflow/" style="font-size: 11.11px;">mes-workflow</a> <a href="/tags/zTree/" style="font-size: 10px;">zTree</a> <a href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" style="font-size: 10px;">中医体质</a> <a href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" style="font-size: 12.22px;">九体医学</a> <a href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" style="font-size: 10px;">交接班</a> <a href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" style="font-size: 10px;">体质调理</a> <a href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" style="font-size: 11.11px;">体重管理</a> <a href="/tags/%E5%81%A5%E5%BA%B7/" style="font-size: 14.44px;">健康</a> <a href="/tags/%E5%8D%8E%E4%B8%BA%E8%B7%AF%E7%94%B1/" style="font-size: 10px;">华为路由</a> <a href="/tags/%E5%91%A8%E6%8A%A5/" style="font-size: 17.78px;">周报</a> <a href="/tags/%E5%AD%A3%E6%8A%A5/" style="font-size: 10px;">季报</a> <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">学习</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" style="font-size: 18.89px;">工作小结</a> <a href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" style="font-size: 10px;">慢性病</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 10px;">效率</a> <a href="/tags/%E6%9C%88%E6%8A%A5/" style="font-size: 14.44px;">月报</a> <a href="/tags/%E6%9D%83%E9%99%90/" style="font-size: 11.11px;">权限</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" style="font-size: 10px;">科学减肥</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">网络</a> <a href="/tags/%E8%82%A5%E8%83%96/" style="font-size: 10px;">肥胖</a> <a href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" style="font-size: 10px;">能耗分析</a> <a href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" style="font-size: 10px;">船舶作业</a> <a href="/tags/%E8%AE%A1%E5%88%92%E8%8C%83%E5%9B%B4/" style="font-size: 10px;">计划范围</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/10/">October 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/09/">September 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">June 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">March 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/12/">December 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">July 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">May 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/09/">September 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">August 2024</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2026/10/30/mes-weekly-2026-w44/">MES 2026 年第 44 周工作小结</a>
-          </li>
-        
-          <li>
-            <a href="/2026/10/24/mes-weekly-2026-w43/">MES 2026 年第 43 周工作小结</a>
-          </li>
-        
-          <li>
-            <a href="/2026/10/20/ai-learning-time/">有 AI 之后，人类的学习时间是否可以缩短了？</a>
-          </li>
-        
-          <li>
-            <a href="/2026/10/17/t480-48g-vs-mac-rtx-spark/">同样写着 48GB，T480 和 MacBook、RTX Spark 差多少钱</a>
-          </li>
-        
-          <li>
-            <a href="/2026/10/17/macOS%E7%BB%88%E7%AB%AF%E8%BF%9E%E6%8E%A5Windows-SSH%E5%90%8E%E5%B4%A9%E6%BA%83/">macOS 终端连接 Windows SSH 后崩溃</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2026 eppen<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.6.4.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
-<!-- hexo injector body_end start --><div class="adsense-wrap" style="margin:24px 0;text-align:center;min-height:90px;overflow:hidden;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2045994937692573" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><!-- hexo injector body_end end --></body>
-</html>
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">50</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-10-30T09:10:25.558Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By eppen</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div><!-- hexo injector body_end start --><div class="adsense-wrap" style="margin:24px 0;text-align:center;min-height:90px;overflow:hidden;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2045994937692573" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><!-- hexo injector body_end end --></body></html>

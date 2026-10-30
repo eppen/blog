@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="EOS 菜单与角色关联关系说明封面">
+<title>EOS 菜单与角色关联关系说明封面</title>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#0a1220"/>
+    <stop offset="1" stop-color="#101f34"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+    <stop offset="0" stop-color="#38bdf8" stop-opacity="0.24"/>
+    <stop offset="0.65" stop-color="#38bdf8" stop-opacity="0.07"/>
+    <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#0a1220" stop-opacity="0.9"/>
+    <stop offset="1" stop-color="#0a1220" stop-opacity="0"/>
+  </linearGradient>
+  <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+    <path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity="0.045" stroke-width="1"/>
+  </pattern>
+</defs>
+<rect width="1280" height="720" fill="url(#bg)"/>
+<rect width="1280" height="720" fill="url(#grid)"/>
+<circle cx="1000" cy="330" r="430" fill="url(#glow)"/>
+<rect x="0" y="0" width="700" height="720" fill="url(#fade)"/>
+<g opacity="0.9">
+  
+  <circle cx="980" cy="236" r="58" fill="#38bdf8" fill-opacity="0.12" stroke="#38bdf8" stroke-width="3"/>
+  <text x="980" y="246" text-anchor="middle" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="26" fill="#e2e8f0">角色</text>
+  <g stroke="#38bdf8" stroke-opacity="0.45" stroke-width="2" fill="none" stroke-dasharray="7 7">
+    <path d="M948 282 C900 320 880 340 876 380"/>
+    <path d="M1012 282 C1060 320 1084 340 1084 380"/>
+    <path d="M950 292 C910 350 886 420 880 490"/>
+    <path d="M1010 292 C1052 350 1076 420 1080 490"/>
+  </g>
+  
+  <g>
+    <rect x="802" y="386" width="152" height="62" rx="12" fill="#ffffff" fill-opacity="0.05" stroke="#38bdf8" stroke-opacity="0.45"/>
+    <rect x="818" y="410" width="14" height="14" rx="3" fill="none" stroke="#38bdf8" stroke-opacity="0.8"/>
+    <text x="846" y="425" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="19" fill="#cbd5e1">菜单 1</text>
+  </g>
+  <g>
+    <rect x="1006" y="386" width="152" height="62" rx="12" fill="#ffffff" fill-opacity="0.05" stroke="#38bdf8" stroke-opacity="0.45"/>
+    <rect x="1022" y="410" width="14" height="14" rx="3" fill="none" stroke="#38bdf8" stroke-opacity="0.8"/>
+    <text x="1050" y="425" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="19" fill="#cbd5e1">菜单 2</text>
+  </g>
+  <g>
+    <rect x="802" y="496" width="152" height="62" rx="12" fill="#ffffff" fill-opacity="0.05" stroke="#38bdf8" stroke-opacity="0.45"/>
+    <rect x="818" y="520" width="14" height="14" rx="3" fill="none" stroke="#38bdf8" stroke-opacity="0.8"/>
+    <text x="846" y="535" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="19" fill="#cbd5e1">菜单 3</text>
+  </g>
+  <g>
+    <rect x="1006" y="496" width="152" height="62" rx="12" fill="#ffffff" fill-opacity="0.05" stroke="#38bdf8" stroke-opacity="0.45"/>
+    <rect x="1022" y="520" width="14" height="14" rx="3" fill="none" stroke="#38bdf8" stroke-opacity="0.8"/>
+    <text x="1050" y="535" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="19" fill="#cbd5e1">菜单 4</text>
+  </g>
+
+</g>
+<g>
+  <rect x="96" y="112" width="82" height="38" rx="19" fill="none" stroke="#38bdf8" stroke-opacity="0.55" stroke-width="1.5"/>
+  <text x="137" y="138" text-anchor="middle" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="17" fill="#38bdf8" letter-spacing="3">技术</text>
+  <rect x="96" y="248" width="6" height="58" rx="3" fill="#38bdf8"/>
+  <text x="96" y="320" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="58" font-weight="700" fill="#f8fafc" letter-spacing="1">EOS 菜单与角色</text>
+  <text x="96" y="398" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="58" font-weight="700" fill="#f8fafc" letter-spacing="1">关联关系说明</text>
+  <text x="96" y="464" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="25" fill="#94a3b8" letter-spacing="1">Role Based Access Control</text>
+  <line x1="96" y1="612" x2="196" y2="612" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+  <text x="96" y="654" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="16" fill="#64748b">eppencn.com</text>
+  <text x="1216" y="654" text-anchor="end" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="16" fill="#475569">HUALLIANG / BLOG</text>
+</g>
+</svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="健康习惯清单封面">
+<title>健康习惯清单封面</title>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#071310"/>
+    <stop offset="1" stop-color="#0d231c"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+    <stop offset="0" stop-color="#34d399" stop-opacity="0.24"/>
+    <stop offset="0.65" stop-color="#34d399" stop-opacity="0.07"/>
+    <stop offset="1" stop-color="#34d399" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#071310" stop-opacity="0.9"/>
+    <stop offset="1" stop-color="#071310" stop-opacity="0"/>
+  </linearGradient>
+  <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+    <path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity="0.045" stroke-width="1"/>
+  </pattern>
+</defs>
+<rect width="1280" height="720" fill="url(#bg)"/>
+<rect width="1280" height="720" fill="url(#grid)"/>
+<circle cx="1000" cy="330" r="430" fill="url(#glow)"/>
+<rect x="0" y="0" width="700" height="720" fill="url(#fade)"/>
+<g opacity="0.9">
+  
+  <path d="M980 500 C 890 410 826 352 826 292 C826 232 878 196 924 196 C950 196 970 208 980 222 C990 208 1010 196 1036 196 C1082 196 1134 232 1134 292 C1134 352 1070 410 980 500 Z" fill="#34d399" fill-opacity="0.1" stroke="#34d399" stroke-width="4"/>
+  <path d="M790 330 H884 L912 284 L944 386 L978 244 L1012 386 L1042 330 H1170" fill="none" stroke="#e2e8f0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="790" cy="330" r="6" fill="#34d399"/>
+  <circle cx="1170" cy="330" r="6" fill="#34d399"/>
+
+</g>
+<g>
+  <rect x="96" y="112" width="82" height="38" rx="19" fill="none" stroke="#34d399" stroke-opacity="0.55" stroke-width="1.5"/>
+  <text x="137" y="138" text-anchor="middle" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="17" fill="#34d399" letter-spacing="3">生活</text>
+  <rect x="96" y="287" width="6" height="58" rx="3" fill="#34d399"/>
+  <text x="96" y="359" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="58" font-weight="700" fill="#f8fafc" letter-spacing="1">健康习惯清单</text>
+  <text x="96" y="425" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="25" fill="#94a3b8" letter-spacing="1">Healthy Daily Habits</text>
+  <line x1="96" y1="612" x2="196" y2="612" stroke="#34d399" stroke-width="3" stroke-linecap="round"/>
+  <text x="96" y="654" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="16" fill="#64748b">eppencn.com</text>
+  <text x="1216" y="654" text-anchor="end" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="16" fill="#475569">HUALLIANG / BLOG</text>
+</g>
+</svg>

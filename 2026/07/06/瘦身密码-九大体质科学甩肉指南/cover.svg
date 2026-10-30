@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="九大体质科学甩肉指南封面">
+<title>九大体质科学甩肉指南封面</title>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#071310"/>
+    <stop offset="1" stop-color="#0d231c"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+    <stop offset="0" stop-color="#2dd4bf" stop-opacity="0.24"/>
+    <stop offset="0.65" stop-color="#2dd4bf" stop-opacity="0.07"/>
+    <stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#071310" stop-opacity="0.9"/>
+    <stop offset="1" stop-color="#071310" stop-opacity="0"/>
+  </linearGradient>
+  <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+    <path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity="0.045" stroke-width="1"/>
+  </pattern>
+</defs>
+<rect width="1280" height="720" fill="url(#bg)"/>
+<rect width="1280" height="720" fill="url(#grid)"/>
+<circle cx="1000" cy="330" r="430" fill="url(#glow)"/>
+<rect x="0" y="0" width="700" height="720" fill="url(#fade)"/>
+<g opacity="0.9">
+  
+  <g>
+      <circle cx="870" cy="240" r="38" fill="#ffffff" fill-opacity="0.04" stroke="#2dd4bf" stroke-opacity="0.4" stroke-width="1.5"/>
+      
+      
+    </g><g>
+      <circle cx="980" cy="240" r="38" fill="#ffffff" fill-opacity="0.04" stroke="#2dd4bf" stroke-opacity="0.4" stroke-width="1.5"/>
+      
+      
+    </g><g>
+      <circle cx="1090" cy="240" r="38" fill="#ffffff" fill-opacity="0.04" stroke="#2dd4bf" stroke-opacity="0.4" stroke-width="1.5"/>
+      
+      
+    </g><g>
+      <circle cx="870" cy="350" r="38" fill="#ffffff" fill-opacity="0.04" stroke="#2dd4bf" stroke-opacity="0.4" stroke-width="1.5"/>
+      
+      
+    </g><g>
+      <circle cx="980" cy="350" r="38" fill="#2dd4bf" fill-opacity="0.22" stroke="#2dd4bf" stroke-opacity="0.95" stroke-width="3"/>
+      <circle cx="980" cy="350" r="52" fill="none" stroke="#2dd4bf" stroke-opacity="0.45" stroke-width="1.5" stroke-dasharray="5 5"/><circle cx="980" cy="350" r="10" fill="#2dd4bf"/>
+      
+    </g><g>
+      <circle cx="1090" cy="350" r="38" fill="#ffffff" fill-opacity="0.04" stroke="#2dd4bf" stroke-opacity="0.4" stroke-width="1.5"/>
+      
+      
+    </g><g>
+      <circle cx="870" cy="460" r="38" fill="#ffffff" fill-opacity="0.04" stroke="#2dd4bf" stroke-opacity="0.4" stroke-width="1.5"/>
+      
+      
+    </g><g>
+      <circle cx="980" cy="460" r="38" fill="#ffffff" fill-opacity="0.04" stroke="#2dd4bf" stroke-opacity="0.4" stroke-width="1.5"/>
+      
+      
+    </g><g>
+      <circle cx="1090" cy="460" r="38" fill="#ffffff" fill-opacity="0.04" stroke="#2dd4bf" stroke-opacity="0.4" stroke-width="1.5"/>
+      
+      
+    </g>
+  
+  <text x="980" y="600" text-anchor="middle" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="18" fill="#94a3b8">管体 + 管重</text>
+
+</g>
+<g>
+  <rect x="96" y="112" width="82" height="38" rx="19" fill="none" stroke="#2dd4bf" stroke-opacity="0.55" stroke-width="1.5"/>
+  <text x="137" y="138" text-anchor="middle" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="17" fill="#2dd4bf" letter-spacing="3">生活</text>
+  <rect x="96" y="248" width="6" height="58" rx="3" fill="#2dd4bf"/>
+  <text x="96" y="320" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="58" font-weight="700" fill="#f8fafc" letter-spacing="1">九大体质</text>
+  <text x="96" y="398" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="58" font-weight="700" fill="#f8fafc" letter-spacing="1">科学甩肉指南</text>
+  <text x="96" y="464" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="25" fill="#94a3b8" letter-spacing="1">管体 + 管重</text>
+  <line x1="96" y1="612" x2="196" y2="612" stroke="#2dd4bf" stroke-width="3" stroke-linecap="round"/>
+  <text x="96" y="654" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="16" fill="#64748b">eppencn.com</text>
+  <text x="1216" y="654" text-anchor="end" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="16" fill="#475569">HUALLIANG / BLOG</text>
+</g>
+</svg>

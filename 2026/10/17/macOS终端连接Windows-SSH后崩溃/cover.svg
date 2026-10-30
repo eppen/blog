@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="macOS 终端连接 Windows SSH 后崩溃封面">
+<title>macOS 终端连接 Windows SSH 后崩溃封面</title>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#0a1220"/>
+    <stop offset="1" stop-color="#101f34"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+    <stop offset="0" stop-color="#f87171" stop-opacity="0.24"/>
+    <stop offset="0.65" stop-color="#f87171" stop-opacity="0.07"/>
+    <stop offset="1" stop-color="#f87171" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#0a1220" stop-opacity="0.9"/>
+    <stop offset="1" stop-color="#0a1220" stop-opacity="0"/>
+  </linearGradient>
+  <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+    <path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity="0.045" stroke-width="1"/>
+  </pattern>
+</defs>
+<rect width="1280" height="720" fill="url(#bg)"/>
+<rect width="1280" height="720" fill="url(#grid)"/>
+<circle cx="1000" cy="330" r="430" fill="url(#glow)"/>
+<rect x="0" y="0" width="700" height="720" fill="url(#fade)"/>
+<g opacity="0.9">
+  
+  <rect x="716" y="214" width="208" height="162" rx="12" fill="#08131f" stroke="#f87171" stroke-opacity="0.45" stroke-width="2"/>
+  <rect x="716" y="214" width="208" height="34" rx="12" fill="#152437"/>
+  <text x="732" y="300" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="17" fill="#cbd5e1">macOS</text>
+  <text x="732" y="330" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="17" fill="#f87171">Terminal</text>
+  <rect x="1042" y="214" width="208" height="162" rx="12" fill="#08131f" stroke="#f87171" stroke-opacity="0.45" stroke-width="2"/>
+  <rect x="1042" y="214" width="208" height="34" rx="12" fill="#152437"/>
+  <text x="1058" y="300" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="17" fill="#cbd5e1">Windows</text>
+  <text x="1058" y="330" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="17" fill="#f87171">sshd</text>
+  <path d="M924 300 H950" stroke="#f87171" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 6"/>
+  <path d="M1010 300 H1036" stroke="#f87171" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 6"/>
+  <path d="M984 330 L966 300 L986 302 L972 268 L1004 306 L984 304 L998 330 Z" fill="#fbbf24"/>
+  <text x="980" y="410" text-anchor="middle" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="15" fill="#94a3b8">connection lost</text>
+
+</g>
+<g>
+  <rect x="96" y="112" width="82" height="38" rx="19" fill="none" stroke="#f87171" stroke-opacity="0.55" stroke-width="1.5"/>
+  <text x="137" y="138" text-anchor="middle" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="17" fill="#f87171" letter-spacing="3">技术</text>
+  <rect x="96" y="272" width="6" height="40" rx="3" fill="#f87171"/>
+  <text x="96" y="326" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="40" font-weight="700" fill="#f8fafc" letter-spacing="1">macOS 终端连接</text>
+  <text x="96" y="380" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="40" font-weight="700" fill="#f8fafc" letter-spacing="1">Windows SSH 后崩溃</text>
+  <text x="96" y="440" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="25" fill="#94a3b8" letter-spacing="1">Terminal · SSH · Crash</text>
+  <line x1="96" y1="612" x2="196" y2="612" stroke="#f87171" stroke-width="3" stroke-linecap="round"/>
+  <text x="96" y="654" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="16" fill="#64748b">eppencn.com</text>
+  <text x="1216" y="654" text-anchor="end" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="16" fill="#475569">HUALLIANG / BLOG</text>
+</g>
+</svg>

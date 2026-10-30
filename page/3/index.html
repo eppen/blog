@@ -1,2253 +1,270 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  
-  <title>Hua Liang&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Hua Liang's Blog</title><meta name="author" content="eppen"><meta name="copyright" content="eppen"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta property="og:type" content="website">
 <meta property="og:title" content="Hua Liang&#39;s Blog">
 <meta property="og:url" content="https://eppencn.com/page/3/index.html">
 <meta property="og:site_name" content="Hua Liang&#39;s Blog">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eppencn.com/img/butterfly-icon.png">
 <meta property="article:author" content="eppen">
 <meta property="article:tag" content="liuhualiang,Hua Liang,blog,hexo,github,pages">
 <meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hua Liang's Blog" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
-  
-  
-<!-- hexo injector head_end start --><meta name="google-adsense-account" content="ca-pub-2045994937692573">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2045994937692573" crossorigin="anonymous"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hua Liang&#39;s Blog</a>
-      </h1>
+<meta name="twitter:image" content="https://eppencn.com/img/butterfly-icon.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://eppencn.com/page/3/index.html"><link rel="preconnect"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="/pluginsSrc/@fortawesome/fontawesome-free/css/all.min.css?v=7.3.1"><script>
+    (() => {
       
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
         
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://eppencn.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-mes-weekly-2026-w33" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/08/15/mes-weekly-2026-w33/" class="article-date">
-  <time class="dt-published" datetime="2026-08-15T01:00:00.000Z" itemprop="datePublished">2026-08-15</time>
-</a>
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/08/15/mes-weekly-2026-w33/">MES 2026 年第 33 周工作小结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
       
-        <img src="/2026/08/15/mes-weekly-2026-w33/cover.png" class="">
-
-<p>本周（8&#x2F;8–8&#x2F;15，活跃提交 8&#x2F;11–8&#x2F;14，约 <strong>74 次提交</strong>、合并 PR <strong>#376–#381</strong>）主线在 <strong>AI 能耗分析图表能力</strong>（存储过程出图、趋势&#x2F;饼图、同比环比），同步推进看板嵌套饼图与下钻、联锁强制投用，以及 Eos 菜单拖拽与权限修复。主力模块 <code>mes-ai</code>（约 141 文件触达），次为 <code>mes-chart</code>（约 70 文件）。</p>
-<h2 id="一、AI-存储过程图表与能耗分析（-378、-379、-381）"><a href="#一、AI-存储过程图表与能耗分析（-378、-379、-381）" class="headerlink" title="一、AI 存储过程图表与能耗分析（#378、#379、#381）"></a>一、AI 存储过程图表与能耗分析（#378、#379、#381）</h2><p>把能耗类 SQL 工具从「表格结果」推进到「对话内可渲染图表」：</p>
-<ul>
-<li><strong>存储过程工具支持图表输出</strong>：<code>SqlToolChartBuilder</code> 增强 tooltip、系列类型与默认配色同步；能耗分析工具补充 chart intent 与月份处理</li>
-<li><strong>能耗趋势</strong>：多线图、单位过滤、趋势查询与标签修正；去掉不适用的 <code>exclusive_group</code></li>
-<li><strong>能耗饼图 &#x2F; 统计图</strong>：嵌套饼、RATE 展示对齐图形查询路由；柱状图顶部数值展示；图表快照导出 <code>snapshotChartsToImages</code></li>
-<li><strong>同比 &#x2F; 环比</strong>：能耗分析存储过程增强 MoM&#x2F;YoY、按消耗类型细化；<code>excludeFromUiTable</code> 与 remarks 收敛；修复同比列缺失与单位后缀（#380）</li>
-</ul>
-<h2 id="二、智能体会话与聊天体验（-377）"><a href="#二、智能体会话与聊天体验（-377）" class="headerlink" title="二、智能体会话与聊天体验（#377）"></a>二、智能体会话与聊天体验（#377）</h2><ul>
-<li>会话历史检索增强，运行日志详情内嵌图表渲染</li>
-<li>会话搜索、等待态指示、图表 resize</li>
-<li>适配 deepseek-v4-flash；SQL JSON 输出保留 NULL；列可见性策略补充空内容与行去重</li>
-<li>聊天表格 &#x2F; Agent 卡片样式与布局修复；运行日志列表性能相关合入</li>
-</ul>
-<h2 id="三、看板-chart：嵌套饼图与交互"><a href="#三、看板-chart：嵌套饼图与交互" class="headerlink" title="三、看板 chart：嵌套饼图与交互"></a>三、看板 chart：嵌套饼图与交互</h2><ul>
-<li>嵌套饼图配置、绑定与零值过滤；动态系列类型与饼图坐标轴清理</li>
-<li>能耗图表下钻、高亮；看板菜单树展开&#x2F;折叠</li>
-<li>图表包导入导出；画布高度计算修复</li>
-</ul>
-<h2 id="四、联锁强制投用与权限安全（-376）"><a href="#四、联锁强制投用与权限安全（-376）" class="headerlink" title="四、联锁强制投用与权限安全（#376）"></a>四、联锁强制投用与权限安全（#376）</h2><ul>
-<li>联锁监控纳入 <code>isForce</code>（强制投用）条件与查询方法</li>
-<li>Eos 菜单树支持拖拽重排；菜单缓存防误改</li>
-<li>权限批量删除处理重构修复</li>
-</ul>
-<h2 id="五、其它"><a href="#五、其它" class="headerlink" title="五、其它"></a>五、其它</h2><ul>
-<li>容器运行图表配色同步</li>
-<li>审批组面板样式调整</li>
-<li>清理 <code>/rtdb/pi</code> 相关废弃存储过程与函数</li>
-<li>H2 任务计划与 code review 文档更新</li>
-</ul>
-<hr>
-<p><strong>一句话</strong>：本周以 AI 能耗存储过程出图与同比环比分析落地为主，看板嵌套饼图&#x2F;下钻跟上，联锁强制投用与 Eos 菜单拖拽补齐平台侧能力。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/08/15/mes-weekly-2026-w33/" data-id="cmvuqo0r70011d8v58nu13t91" data-title="MES 2026 年第 33 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li></ul>
-
-    </footer>
-  </div>
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
   
-</article>
-
-
-
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: '/pluginsSrc/@egjs/infinitegrid/dist/infinitegrid.min.js?v=4.13.0',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Hua Liang\'s Blog',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'home'
+}</script><!-- hexo injector head_end start --><meta name="google-adsense-account" content="ca-pub-2045994937692573">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2045994937692573" crossorigin="anonymous"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">50</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">92</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Hua Liang's Blog</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><h1 class="title-seo">Hua Liang's Blog</h1></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="post_cover left"><a href="/2026/09/04/mes-weekly-2026-w36/" title="MES 2026 年第 36 周工作小结"><img class="post-bg" src="/2026/09/04/mes-weekly-2026-w36/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年第 36 周工作小结"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/09/04/mes-weekly-2026-w36/" title="MES 2026 年第 36 周工作小结">MES 2026 年第 36 周工作小结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-09-04T07:35:00.000Z" title="发表于 2026-09-04 15:35:00">2026-09-04</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/logs/">日志</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/MES/">MES</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-ai/">mes-ai</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-chart/">mes-chart</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/">工作小结</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-measure/">mes-measure</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%91%A8%E6%8A%A5/">周报</a></span></div><div class="content">  本周（8&#x2F;31–9&#x2F;4，约 74 次提交，合并 PR #384 等）主线在 计量器具台账（导入导出、附件、权限与列表体验）与 看板能力增强（书签 URL、筛选联动、透视、虚拟滚动、导出与 SQL 安全）。主力模块 mes-measure &#x2F; mes-chart，另有 mes-ai、mes-utils。 一、计量器具台账（mes-measure） 导入：已有设备编码增强、备注字段、导入进度与新增&#x2F;更新计数 导出：Excel 样式重构、状态转换、日期处理、进度条；底座导出能力同步增强 台账编辑：附件上传（sys_attach）、详情按钮、表单字段行为 字典：条目复制、批量取字典（sys-dict） 列表与权限：列宽动态调整、菜单权限与单位选择 UI、jqGrid 行数与布局细节  二、看板 &#x2F; Chart（#384） 能力：书签 URL、筛选联动、透视、虚拟滚动、DBMON 缓存 导出：看板导出与数值导出；表头渲染增强 安全：SQL 校验由 JSqlParser 切到 Druid；前导分号校验 Demo：DEMO_CAPABILI...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2026/08/31/mes-weekly-2026-w35/" title="MES 2026 年第 35 周工作小结"><img class="post-bg" src="/2026/08/31/mes-weekly-2026-w35/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年第 35 周工作小结"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/08/31/mes-weekly-2026-w35/" title="MES 2026 年第 35 周工作小结">MES 2026 年第 35 周工作小结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-08-31T07:20:00.000Z" title="发表于 2026-08-31 15:20:00">2026-08-31</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/logs/">日志</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/MES/">MES</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-ai/">mes-ai</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/">工作小结</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%91%A8%E6%8A%A5/">周报</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-web/">mes-web</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LIMS/">LIMS</a></span></div><div class="content">  本周（8&#x2F;24–8&#x2F;29，约 85 次提交，合并 PR #174、**#382** 等）主线在 壳层导航体验（全局搜索、侧栏、模块 Tab）、LIMS 数据源与位号对接、本地 bge-m3 embedding，以及工作台到期提醒与 EOS 权限移除。主力模块 mes-web &#x2F; mes-visual &#x2F; mes-factory &#x2F; mes-ai。 一、壳层导航与全局搜索（#174） 全局菜单搜索：组件布局、响应式样式与状态管理；z-index 与下拉交互 侧栏：折叠态展示、滚动行为、本地过滤；菜单加载后再初始化路由 模块 Tab &#x2F; 导航栏：Tab 布局与样式、打开方式项；页脚版权年份动态化 角色详情页布局可读性调整  二、LIMS 数据源与位号 LIMS 数据源配置：RDB SQL 数据源实现；精度保留；sys_config value 扩至 4000 结果数据：筛选排序、网格配置与菜单 SQL 位号（fm）：导入下载对接 LIMS；采集流程与样式收敛 数据源配置页 JSON 编辑器  三、AI embedding...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2026/08/25/mes-monthly-2026-08/" title="MES 2026 年 8 月工作小结"><img class="post-bg" src="/2026/08/25/mes-monthly-2026-08/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年 8 月工作小结"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/08/25/mes-monthly-2026-08/" title="MES 2026 年 8 月工作小结">MES 2026 年 8 月工作小结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-08-25T03:00:00.000Z" title="发表于 2026-08-25 11:00:00">2026-08-25</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/logs/">日志</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/MES/">MES</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-ai/">mes-ai</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-chart/">mes-chart</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/">工作小结</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%9C%88%E6%8A%A5/">月报</a></span></div><div class="content">  8 月（截至 8&#x2F;25，约 320 次提交、合并 PR #360 &#x2F; #368–#381，另有多条功能分支直接合入）主线是把 mes-ai 从「能出表&#x2F;图」推进到 配方化 SQL 查询、双区间对比与 AgentScope 子运行时，并同步加深看板下钻、工艺符号面板与 EOS 权限移除能力。改动最集中的模块是 mes-ai，其次 mes-chart &#x2F; mes-web &#x2F; mes-visual &#x2F; mes-security；月末打上 release-2026-08-25。 一、MES-AI：sql_compose、双区间图与 AgentScope sql_compose：配方化查询生成、别名&#x2F;LIKE&#x2F;单位校验、产耗默认负号、双区间对比图与 [区间1]&#x2F;[区间2] 列标签；「回溯起算」日期解析与 TOP&#x2F;CTE 安全注入。 AgentScope：新增 mes-agentscope 子模块，子 Agent 配置、权限模式、表格块与图表抽取、token usage 写入运行日志；管理...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2026/08/15/mes-weekly-2026-w33/" title="MES 2026 年第 33 周工作小结"><img class="post-bg" src="/2026/08/15/mes-weekly-2026-w33/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年第 33 周工作小结"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/08/15/mes-weekly-2026-w33/" title="MES 2026 年第 33 周工作小结">MES 2026 年第 33 周工作小结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-08-15T01:00:00.000Z" title="发表于 2026-08-15 09:00:00">2026-08-15</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/logs/">日志</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/MES/">MES</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-ai/">mes-ai</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-chart/">mes-chart</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/">工作小结</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%91%A8%E6%8A%A5/">周报</a></span></div><div class="content">  本周（8&#x2F;8–8&#x2F;15，活跃提交 8&#x2F;11–8&#x2F;14，约 74 次提交、合并 PR #376–#381）主线在 AI 能耗分析图表能力（存储过程出图、趋势&#x2F;饼图、同比环比），同步推进看板嵌套饼图与下钻、联锁强制投用，以及 Eos 菜单拖拽与权限修复。主力模块 mes-ai（约 141 文件触达），次为 mes-chart（约 70 文件）。 一、AI 存储过程图表与能耗分析（#378、#379、#381）把能耗类 SQL 工具从「表格结果」推进到「对话内可渲染图表」：  存储过程工具支持图表输出：SqlToolChartBuilder 增强 tooltip、系列类型与默认配色同步；能耗分析工具补充 chart intent 与月份处理 能耗趋势：多线图、单位过滤、趋势查询与标签修正；去掉不适用的 exclusive_group 能耗饼图 &#x2F; 统计图：嵌套饼、RATE 展示对齐图形查询路由；柱状图顶部数值展示；图表快照导出 snapshotChartsToImages 同比 &#x2F; 环比：能耗分析存储过程增强 M...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2026/08/06/mes-weekly-2026-w32/" title="MES 2026 年第 32 周工作小结"><img class="post-bg" src="/2026/08/06/mes-weekly-2026-w32/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年第 32 周工作小结"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/08/06/mes-weekly-2026-w32/" title="MES 2026 年第 32 周工作小结">MES 2026 年第 32 周工作小结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-08-06T15:00:00.000Z" title="发表于 2026-08-06 23:00:00">2026-08-06</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/logs/">日志</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/MES/">MES</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-ai/">mes-ai</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-chart/">mes-chart</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/">工作小结</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%91%A8%E6%8A%A5/">周报</a></span></div><div class="content">  本周（8&#x2F;3–8&#x2F;6，约 50 次提交、合并 PR #360、#374）主线在 AI 图表内联渲染与相对月份推理修复，同时推进运行日志可观测性和 ExternalApi 集成。主力模块 mes-ai（167 文件触达），次为 mes-chart（15 文件）。 一、AI 图表内联与看板增强（#360）在 AI 聊天中落地面向 SQL 工具的内联图表渲染，并增强看板筛选能力：  SqlToolChartPolicy：新增图表配置编辑入口，支持为 SQL 工具指定折线&#x2F;柱状&#x2F;表格等图表类型，查询结果直接在对话中渲染 看板增强：Tab 筛选与可见性管理、月份过滤支持、renderFilterBar 异步时序修复 健壮性修复：ClassCastException（图表配置为标量值时）、NumberUtil 统一替代自定义数值解析方法  二、相对月份查询修复（#985、#992）针对性修复”上个月”等相对月份提示词输出错误日历月份的问题：  RelativeMonthOverviewNormalizer：正则从 RELATIVE_MONTH_PH...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2026/08/01/mes-monthly-2026-05/" title="MES 2026 年 5 月工作小结"><img class="post-bg" src="/2026/08/01/mes-monthly-2026-05/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年 5 月工作小结"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/08/01/mes-monthly-2026-05/" title="MES 2026 年 5 月工作小结">MES 2026 年 5 月工作小结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-08-01T03:45:00.000Z" title="发表于 2026-08-01 11:45:00">2026-08-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/logs/">日志</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/MES/">MES</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/">工作小结</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%9C%88%E6%8A%A5/">月报</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/">交接班</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/">船舶作业</a></span></div><div class="content">  5 月（约 220+ 次提交、合并 PR #239–#281）主线落在业务现场能力：交接班 Docx 模型导入、液体码头&#x2F;船舶作业增强、仪表位号与报表关联，以及 RTDB&#x2F;ISYS 采集链路。改动最集中的是 mes-operation、mes-measure、mes-vessel-operation，辅以 mes-web &#x2F; mes-rtdb。 一、交接班 ShiftLog（中下旬主线） Docx 模型导入与解析预览（#263）：锚点注入、单元格模式、输入类型与公式处理。 跳过孤儿锚点（#270）、批量删除与归属校验、调度日志预览。 Docx 解析器持续增强（#278）：条目类型、标签推断、TABLE_STR_BC 批量生成等。 月末补齐 docx_code 唯一性校验（#281）。  二、船舶 &#x2F; 液体码头作业 内外贸字段、管线名称、货种筛选与泊位告警（#239&#x2F;#241&#x2F;#246&#x2F;#248）。 收发油罐按物料多选（#244）；船名模糊检索等终端体验。 船舶动态导入：到港时间格式与提示信息修复（#258&...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2026/08/01/mes-monthly-2026-06/" title="MES 2026 年 6 月工作小结"><img class="post-bg" src="/2026/08/01/mes-monthly-2026-06/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年 6 月工作小结"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/08/01/mes-monthly-2026-06/" title="MES 2026 年 6 月工作小结">MES 2026 年 6 月工作小结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-08-01T03:16:00.000Z" title="发表于 2026-08-01 11:16:00">2026-08-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/logs/">日志</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/MES/">MES</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-ai/">mes-ai</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-energy/">mes-energy</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-chart/">mes-chart</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/">工作小结</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%9C%88%E6%8A%A5/">月报</a></span></div><div class="content">  6 月（约 340+ 次提交、合并 PR #277–#310）是平台能力铺开的一个月：落地 mes-ai Agent 平台 与 mes-energy 模块，图表看板与 AI 向导增强，并同步推进 Eos 权限、OTP、在线消息与个人工作台。改动较均衡地落在 mes-core &#x2F; mes-web &#x2F; mes-ai &#x2F; mes-energy &#x2F; mes-chart。 一、MES-AI Agent 平台（下旬主线，#305） 新增 mes-ai 模块骨架：Agent 管理、聊天流式输出、thinking 步骤跟踪。 SQL 工具执行与表格流式渲染、能耗 Agent SQL&#x2F;输出格式迭代。 Schema Tool、菜单权限与助手推荐问题&#x2F;欢迎语等体验补齐。  二、能耗模块 mes-energy（中下旬） 独立 mes-energy 并接入 web 依赖；峰谷（TOU）时段配置、日统计、分页&#x2F;汇总&#x2F;导出。 电表数据源管理、手动录入、相邻时段合并、能耗看板菜单与电压等级过滤等。  三、图表看板与 AI 向导（...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2026/08/01/mes-monthly-2026-07/" title="MES 2026 年 7 月工作小结"><img class="post-bg" src="/2026/08/01/mes-monthly-2026-07/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年 7 月工作小结"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/08/01/mes-monthly-2026-07/" title="MES 2026 年 7 月工作小结">MES 2026 年 7 月工作小结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-08-01T03:07:00.000Z" title="发表于 2026-08-01 11:07:00">2026-08-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/logs/">日志</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/MES/">MES</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-ai/">mes-ai</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/">工作小结</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%9C%88%E6%8A%A5/">月报</a></span></div><div class="content">  7 月（约 400+ 次提交、合并 PR #312–#367）主线是把 mes-ai 从可用原型推进到能耗&#x2F;生产运行可落地，并顺带补齐权限、调度、图表与安全。改动最集中的模块是 mes-ai，其次 mes-web &#x2F; mes-security &#x2F; mes-chart。 一、MES-AI 平台能力（全月主线） 多 Agent &#x2F; 路由：协作 MVP、首页浮动助手接入 mes_router、窗口最大化、会话与统计增强。 工具调用（FC&#x2F;ReAct）：空工具调用恢复与 nudge、互斥意图、few-shot &#x2F; handler_config 常见错误提示、同参重复调用治理、运行日志可观测与重试。 SQL 工具链：参数槽位抽取、日期区间（含半月）、列标签&#x2F;排序、存储过程工具、结果图表与表格渲染（列组、着色、汇总行、excludeFromUiTable）。 模型与配置：thinking 模式、采样参数、工具业务分类、硬编码治理（默认模型可配置等）。 管理端：工具&#x2F;Agent 列表与编辑、级联删除、聊天停止、...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2026/08/01/mes-weekly-2026-w31/" title="MES 本周工作小结（2026-07-28 ~ 08-01）"><img class="post-bg" src="/2026/08/01/mes-weekly-2026-w31/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 本周工作小结（2026-07-28 ~ 08-01）"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/08/01/mes-weekly-2026-w31/" title="MES 本周工作小结（2026-07-28 ~ 08-01）">MES 本周工作小结（2026-07-28 ~ 08-01）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-08-01T02:56:00.000Z" title="发表于 2026-08-01 10:56:00">2026-08-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/logs/">日志</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/MES/">MES</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/mes-ai/">mes-ai</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/">工作小结</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/">能耗分析</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Eos/">Eos</a></span></div><div class="content">  本周（7&#x2F;28–8&#x2F;1）工作以 MES-AI 能耗分析与对话表格展示 为主线，并落地了 Eos 工程师日志、船舶作业校验与一批文档。约 74 次提交，合并 10 个 PR（#357–#367）。 一、MES-AI 能耗智能体（主线） SQL 工具与参数：完善能耗工具参数解析（#357）、同比环比工具、装置&#x2F;时段槽位提取；多轮按运行日志纠偏（装置识别、明细 vs 汇总、单位标注等）。 日表查询：新增 energy_nhfx_day &#x2F; Z_View_NHFX_TABLE 日表多装置查询（#363），持续修 JSON、错误处理与设计物耗字段表述。 表格与图表：复合表头&#x2F;列组（#358）、单元格着色（#359）、汇总行与派生率（#361）、双图（多日&#x2F;多装置）、excludeFromUiTable 隐藏辅助结果（#365）。 稳定性：StoredProcToolHandler 围绕 Fastjson 未闭合字符串等问题迭代，后简化控制字符预处理逻辑。 硬编码治理：默认模型可配置、Embedding base-url 清理等...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2026/07/31/eos-role-tree-nodeid-objectid/" title="EOS 菜单树 NodeID 与 ObjectID 说明"><img class="post-bg" src="/2026/07/31/eos-role-tree-nodeid-objectid/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="EOS 菜单树 NodeID 与 ObjectID 说明"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/07/31/eos-role-tree-nodeid-objectid/" title="EOS 菜单树 NodeID 与 ObjectID 说明">EOS 菜单树 NodeID 与 ObjectID 说明</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-07-31T03:41:00.000Z" title="发表于 2026-07-31 11:41:00">2026-07-31</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/tech/">技术</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/MES/">MES</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/EOS/">EOS</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%9D%83%E9%99%90/">权限</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/zTree/">zTree</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/SQL-Server/">SQL Server</a></span></div><div class="content">  本文档说明 eosrole 页面「配置 EOS 菜单权限」树节点中 NodeID（前端 zTree 的 id）与 ObjectID（前端 objectId）的含义、数据库来源、后端组装与前端使用方式。  关联文档：EOS 菜单与角色关联关系说明 2026-07-31 更新：权限树接口额外返回 menuType &#x2F; sysMenuId；保存 body 含 MES 按钮与 ERP 操作扩展字段。  结论摘要   前端字段 含义 数据库来源 主要用途    zTree id 菜单节点 ID messys.Tree.NodeID 树结构、父子关系（pId）；前端勾选态缓存键   zTree objectId EOS 权限对象 ID messys.Tree.ObjectID &#x3D; messys.ObjectRegister.ObjectID 角色菜单授权（STPermission.ObjectID，「执行」）   zTree menuType 菜单类型 EosMenuTypeHelper.resolveMenuType mes &#x2F; erp &#x2F; fo...</div></div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/2/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#content-inner">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/#content-inner">4</a><a class="page-number" href="/page/5/#content-inner">5</a><a class="extend next" rel="next" href="/page/4/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/10/30/hello-world/" title="Hello World"><img src="/2026/10/30/hello-world/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2026/10/30/hello-world/" title="Hello World">Hello World</a><time datetime="2026-10-30T08:58:24.200Z" title="发表于 2026-10-30 16:58:24">2026-10-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/30/mes-weekly-2026-w44/" title="MES 2026 年第 44 周工作小结"><img src="/2026/10/30/mes-weekly-2026-w44/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年第 44 周工作小结"/></a><div class="content"><a class="title" href="/2026/10/30/mes-weekly-2026-w44/" title="MES 2026 年第 44 周工作小结">MES 2026 年第 44 周工作小结</a><time datetime="2026-10-30T08:55:00.000Z" title="发表于 2026-10-30 16:55:00">2026-10-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/24/purchase-order-workflow-ja/" title="購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化"><img src="/2026/10/24/purchase-order-workflow-ja/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化"/></a><div class="content"><a class="title" href="/2026/10/24/purchase-order-workflow-ja/" title="購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化">購買注文書システムの業務フロー：注文書生成から入荷検収までの電子化</a><time datetime="2026-10-24T12:05:00.000Z" title="发表于 2026-10-24 20:05:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/24/purchase-order-workflow-zh/" title="采购订单（注文书）系统：从订单生成到到货验收的电子化流程"><img src="/2026/10/24/purchase-order-workflow-zh/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="采购订单（注文书）系统：从订单生成到到货验收的电子化流程"/></a><div class="content"><a class="title" href="/2026/10/24/purchase-order-workflow-zh/" title="采购订单（注文书）系统：从订单生成到到货验收的电子化流程">采购订单（注文书）系统：从订单生成到到货验收的电子化流程</a><time datetime="2026-10-24T12:00:00.000Z" title="发表于 2026-10-24 20:00:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/24/mes-weekly-2026-w43/" title="MES 2026 年第 43 周工作小结"><img src="/2026/10/24/mes-weekly-2026-w43/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年第 43 周工作小结"/></a><div class="content"><a class="title" href="/2026/10/24/mes-weekly-2026-w43/" title="MES 2026 年第 43 周工作小结">MES 2026 年第 43 周工作小结</a><time datetime="2026-10-24T07:10:00.000Z" title="发表于 2026-10-24 15:10:00">2026-10-24</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/products/"><span class="card-category-list-name">产品介绍</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/tech/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">14</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/logs/"><span class="card-category-list-name">日志</span><span class="card-category-list-count">19</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/life/"><span class="card-category-list-name">生活</span><span class="card-category-list-count">9</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/Windows/" style="font-size: 1.18em; color: #999ca1">Windows</a> <a href="/tags/mes-nwf/" style="font-size: 1.1em; color: #999">mes-nwf</a> <a href="/tags/Agent/" style="font-size: 1.1em; color: #999">Agent</a> <a href="/tags/Eclipse/" style="font-size: 1.1em; color: #999">Eclipse</a> <a href="/tags/mes-web/" style="font-size: 1.26em; color: #999fa8">mes-web</a> <a href="/tags/Automation/" style="font-size: 1.1em; color: #999">Automation</a> <a href="/tags/POI/" style="font-size: 1.1em; color: #999">POI</a> <a href="/tags/ThinkPad/" style="font-size: 1.1em; color: #999">ThinkPad</a> <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="font-size: 1.1em; color: #999">学习</a> <a href="/tags/%E5%91%A8%E6%8A%A5/" style="font-size: 1.42em; color: #99a6b7">周报</a> <a href="/tags/CLI/" style="font-size: 1.18em; color: #999ca1">CLI</a> <a href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" style="font-size: 1.1em; color: #999">慢性病</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 1.1em; color: #999">效率</a> <a href="/tags/%E5%8D%8E%E4%B8%BA%E8%B7%AF%E7%94%B1/" style="font-size: 1.1em; color: #999">华为路由</a> <a href="/tags/%E9%87%87%E8%B4%AD%E8%AE%A2%E5%8D%95/" style="font-size: 1.1em; color: #999">采购订单</a> <a href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" style="font-size: 1.1em; color: #999">船舶作业</a> <a href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" style="font-size: 1.26em; color: #999fa8">九体医学</a> <a href="/tags/EOS/" style="font-size: 1.18em; color: #999ca1">EOS</a> <a href="/tags/mes-rtdb/" style="font-size: 1.34em; color: #99a3b0">mes-rtdb</a> <a href="/tags/mes-workflow/" style="font-size: 1.18em; color: #999ca1">mes-workflow</a> <a href="/tags/DeepSeek/" style="font-size: 1.1em; color: #999">DeepSeek</a> <a href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" style="font-size: 1.1em; color: #999">中医体质</a> <a href="/tags/mes-energy/" style="font-size: 1.1em; color: #999">mes-energy</a> <a href="/tags/%E6%A5%AD%E5%8B%99%E3%83%95%E3%83%AD%E3%83%BC/" style="font-size: 1.1em; color: #999">業務フロー</a> <a href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" style="font-size: 1.1em; color: #999">交接班</a> <a href="/tags/SQL-Server/" style="font-size: 1.18em; color: #999ca1">SQL Server</a> <a href="/tags/CodingAgent/" style="font-size: 1.1em; color: #999">CodingAgent</a> <a href="/tags/mes-factory/" style="font-size: 1.1em; color: #999">mes-factory</a> <a href="/tags/OptiPlex/" style="font-size: 1.1em; color: #999">OptiPlex</a> <a href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" style="font-size: 1.1em; color: #999">体质调理</a> <a href="/tags/Maven/" style="font-size: 1.1em; color: #999">Maven</a> <a href="/tags/RTX-Spark/" style="font-size: 1.1em; color: #999">RTX Spark</a> <a href="/tags/%E8%B3%BC%E8%B2%B7%E6%B3%A8%E6%96%87%E6%9B%B8/" style="font-size: 1.1em; color: #999">購買注文書</a> <a href="/tags/%E9%9B%BB%E5%AD%90%E6%89%BF%E8%AA%8D/" style="font-size: 1.1em; color: #999">電子承認</a> <a href="/tags/Claude-Code/" style="font-size: 1.1em; color: #999">Claude Code</a> <a href="/tags/PI/" style="font-size: 1.1em; color: #999">PI</a> <a href="/tags/Tomcat/" style="font-size: 1.1em; color: #999">Tomcat</a> <a href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" style="font-size: 1.1em; color: #999">能耗分析</a> <a href="/tags/Calendar/" style="font-size: 1.1em; color: #999">Calendar</a> <a href="/tags/MES/" style="font-size: 1.5em; color: #99a9bf">MES</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline"><i class="fas fa-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/"
+            title="查看更多">
+            <i class="fas fa-angle-right"></i>
+          </a></div>
   
-    <article id="post-mes-weekly-2026-w32" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/08/06/mes-weekly-2026-w32/" class="article-date">
-  <time class="dt-published" datetime="2026-08-06T15:00:00.000Z" itemprop="datePublished">2026-08-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/08/06/mes-weekly-2026-w32/">MES 2026 年第 32 周工作小结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
+    <ul class="card-archive-list">
       
-        <img src="/2026/08/06/mes-weekly-2026-w32/cover.png" class="">
-
-<p>本周（8&#x2F;3–8&#x2F;6，约 <strong>50 次提交</strong>、合并 PR <strong>#360、#374</strong>）主线在 <strong>AI 图表内联渲染</strong>与<strong>相对月份推理修复</strong>，同时推进运行日志可观测性和 ExternalApi 集成。主力模块 <code>mes-ai</code>（167 文件触达），次为 <code>mes-chart</code>（15 文件）。</p>
-<h2 id="一、AI-图表内联与看板增强（-360）"><a href="#一、AI-图表内联与看板增强（-360）" class="headerlink" title="一、AI 图表内联与看板增强（#360）"></a>一、AI 图表内联与看板增强（#360）</h2><p>在 AI 聊天中落地面向 SQL 工具的内联图表渲染，并增强看板筛选能力：</p>
-<ul>
-<li><strong>SqlToolChartPolicy</strong>：新增图表配置编辑入口，支持为 SQL 工具指定折线&#x2F;柱状&#x2F;表格等图表类型，查询结果直接在对话中渲染</li>
-<li><strong>看板增强</strong>：Tab 筛选与可见性管理、月份过滤支持、<code>renderFilterBar</code> 异步时序修复</li>
-<li><strong>健壮性修复</strong>：<code>ClassCastException</code>（图表配置为标量值时）、<code>NumberUtil</code> 统一替代自定义数值解析方法</li>
-</ul>
-<h2 id="二、相对月份查询修复（-985、-992）"><a href="#二、相对月份查询修复（-985、-992）" class="headerlink" title="二、相对月份查询修复（#985、#992）"></a>二、相对月份查询修复（#985、#992）</h2><p>针对性修复”上个月”等相对月份提示词输出错误日历月份的问题：</p>
-<ul>
-<li><code>RelativeMonthOverviewNormalizer</code>：正则从 <code>RELATIVE_MONTH_PHRASES</code> 集中化短语列表动态构建，消除分散常量</li>
-<li><code>AgentReactExecutor</code>：注入已解析年月提示，防止 Agent 在强制结单前过早输出 JSON 导致月份错误</li>
-<li>新增单测覆盖多种相对月份表述场景</li>
-</ul>
-<h2 id="三、AI-运行日志可观测性（-374）"><a href="#三、AI-运行日志可观测性（-374）" class="headerlink" title="三、AI 运行日志可观测性（#374）"></a>三、AI 运行日志可观测性（#374）</h2><ul>
-<li>运行日志列表新增<strong>会话详情弹窗</strong>，支持按 sessionId 匹配 assistant 消息并展示</li>
-<li><code>AiChatRunLogEntity</code> 关联 <code>SysUserEntity</code>，日志列表展示用户信息（用户名&#x2F;姓名）</li>
-<li><code>AgentChatController</code> 会话管理功能增强：分页、搜索、会话切换</li>
-<li><code>AgentAnswerParser</code> 新增 <code>intentional_choices</code> JSON 解析</li>
-</ul>
-<h2 id="四、ExternalApi-工具增强"><a href="#四、ExternalApi-工具增强" class="headerlink" title="四、ExternalApi 工具增强"></a>四、ExternalApi 工具增强</h2><ul>
-<li>URI 构造与编码重构，<code>urlEncode</code> 冗余方法移除</li>
-<li>测试用例覆盖 URI 特殊字符编码场景</li>
-<li>文档补充：高德天气工具、通用 External API 接入示例</li>
-</ul>
-<h2 id="五、文档与基础设施"><a href="#五、文档与基础设施" class="headerlink" title="五、文档与基础设施"></a>五、文档与基础设施</h2><ul>
-<li>MES vs Dify &#x2F; AgentScope 对比文档大幅更新，详列成本&#x2F;标注反馈闭环等维度差距</li>
-<li>mes-ai 工具配置复杂度分析文档</li>
-<li>新增 <code>mes-count-loc</code> Skill</li>
-<li><code>.mcp.json</code> 加入 <code>.gitignore</code>，清理过期 LLM 文档和已吸收的单次 SQL 补丁</li>
-</ul>
-<h2 id="六、物料查询"><a href="#六、物料查询" class="headerlink" title="六、物料查询"></a>六、物料查询</h2><ul>
-<li>新增物料 ZZTJ 日进出 SQL 工具种子及文档索引</li>
-<li>物料单位 IO 明细查询增加含量、类别筛选参数</li>
-</ul>
-<hr>
-<p><strong>一句话</strong>：本周以 AI 图表内联和相对月份修复落地为主，运行日志可观测性明显提升，ExternalApi 和物料查询逐步补全。</p>
-
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/10/">
+            <span class="card-archive-list-date">
+              十月 2026
+            </span>
+            <span class="card-archive-list-count">11</span>
+          </a>
+        </li>
       
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/08/06/mes-weekly-2026-w32/" data-id="cmvuqo0r80014d8v502aybd67" data-title="MES 2026 年第 32 周工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/09/">
+            <span class="card-archive-list-date">
+              九月 2026
+            </span>
+            <span class="card-archive-list-count">10</span>
+          </a>
+        </li>
       
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/08/">
+            <span class="card-archive-list-date">
+              八月 2026
+            </span>
+            <span class="card-archive-list-count">8</span>
+          </a>
+        </li>
       
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/07/">
+            <span class="card-archive-list-date">
+              七月 2026
+            </span>
+            <span class="card-archive-list-count">7</span>
+          </a>
+        </li>
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-mes-monthly-2026-05" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/08/01/mes-monthly-2026-05/" class="article-date">
-  <time class="dt-published" datetime="2026-08-01T03:45:00.000Z" itemprop="datePublished">2026-08-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/08/01/mes-monthly-2026-05/">MES 2026 年 5 月工作小结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/06/">
+            <span class="card-archive-list-date">
+              六月 2026
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
       
-        <img src="/2026/08/01/mes-monthly-2026-05/cover.png" class="">
-
-<p>5 月（约 <strong>220+ 次提交</strong>、合并 PR <strong>#239–#281</strong>）主线落在业务现场能力：交接班 Docx 模型导入、液体码头&#x2F;船舶作业增强、仪表位号与报表关联，以及 RTDB&#x2F;ISYS 采集链路。改动最集中的是 <code>mes-operation</code>、<code>mes-measure</code>、<code>mes-vessel-operation</code>，辅以 <code>mes-web</code> &#x2F; <code>mes-rtdb</code>。</p>
-<h2 id="一、交接班-ShiftLog（中下旬主线）"><a href="#一、交接班-ShiftLog（中下旬主线）" class="headerlink" title="一、交接班 ShiftLog（中下旬主线）"></a>一、交接班 ShiftLog（中下旬主线）</h2><ul>
-<li>Docx 模型导入与解析预览（#263）：锚点注入、单元格模式、输入类型与公式处理。</li>
-<li>跳过孤儿锚点（#270）、批量删除与归属校验、调度日志预览。</li>
-<li>Docx 解析器持续增强（#278）：条目类型、标签推断、TABLE_STR_BC 批量生成等。</li>
-<li>月末补齐 docx_code 唯一性校验（#281）。</li>
-</ul>
-<h2 id="二、船舶-液体码头作业"><a href="#二、船舶-液体码头作业" class="headerlink" title="二、船舶 &#x2F; 液体码头作业"></a>二、船舶 &#x2F; 液体码头作业</h2><ul>
-<li>内外贸字段、管线名称、货种筛选与泊位告警（#239&#x2F;#241&#x2F;#246&#x2F;#248）。</li>
-<li>收发油罐按物料多选（#244）；船名模糊检索等终端体验。</li>
-<li>船舶动态导入：到港时间格式与提示信息修复（#258&#x2F;#276）。</li>
-<li>排船页接入真实 LLM 辅助（#275）。</li>
-</ul>
-<h2 id="三、仪表位号与报表"><a href="#三、仪表位号与报表" class="headerlink" title="三、仪表位号与报表"></a>三、仪表位号与报表</h2><ul>
-<li>手动采集按钮（#254）；位号配置、导入导出、唯一性与时间处理（#267）。</li>
-<li>关联报表模板展示与批量查询、模板维度（#252&#x2F;#265）。</li>
-<li>报表&#x2F;位号侧过滤与 jqGrid 行范围选择。</li>
-</ul>
-<h2 id="四、实时库与工程体验"><a href="#四、实时库与工程体验" class="headerlink" title="四、实时库与工程体验"></a>四、实时库与工程体验</h2><ul>
-<li>RTDB ISYS SDK RMI 回调（#271）；ISYS 配置与 HTTP 客户端增强。</li>
-<li>SpringDoc OpenAPI &#x2F; Swagger UI 接入。</li>
-<li>多 Tab 溢出箭头滚动（#273）、滚动条样式、模态间菜单切换；菜单关键词逗号 OR 搜索（#269）。</li>
-<li>反馈排程关闭&#x2F;驳回态隐藏按钮等细节（#250）。</li>
-</ul>
-<h2 id="五、月度节奏"><a href="#五、月度节奏" class="headerlink" title="五、月度节奏"></a>五、月度节奏</h2><table>
-<thead>
-<tr>
-<th>阶段</th>
-<th>重点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>上旬</td>
-<td>液体码头罐&#x2F;管线&#x2F;货种、位号手动采集、报表模板维度</td>
-</tr>
-<tr>
-<td>中旬</td>
-<td>交接班 Docx 导入起步、位号关联报表、菜单搜索与 UI 修复</td>
-</tr>
-<tr>
-<td>下旬</td>
-<td>ShiftLog 解析深化、RTDB RMI、排船 AI、到港时间导入、docx 唯一性</td>
-</tr>
-</tbody></table>
-<hr>
-<p><strong>一句话</strong>：5 月把交接班 Docx 导入做成可用链路，并加强液体码头作业与仪表采集&#x2F;报表关联；实时库回调与若干前端体验同步落地，为 6 月平台化（AI&#x2F;能耗&#x2F;图表）腾出业务底座。</p>
-
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/03/">
+            <span class="card-archive-list-date">
+              三月 2026
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
       
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/08/01/mes-monthly-2026-05/" data-id="cmvuqo0r3000od8v58jk6gpih" data-title="MES 2026 年 5 月工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/12/">
+            <span class="card-archive-list-date">
+              十二月 2025
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
       
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/07/">
+            <span class="card-archive-list-date">
+              七月 2025
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
       
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" rel="tag">交接班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" rel="tag">船舶作业</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-mes-monthly-2026-06" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/08/01/mes-monthly-2026-06/" class="article-date">
-  <time class="dt-published" datetime="2026-08-01T03:16:00.000Z" itemprop="datePublished">2026-08-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/08/01/mes-monthly-2026-06/">MES 2026 年 6 月工作小结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <img src="/2026/08/01/mes-monthly-2026-06/cover.png" class="">
-
-<p>6 月（约 <strong>340+ 次提交</strong>、合并 PR <strong>#277–#310</strong>）是平台能力铺开的一个月：落地 <strong>mes-ai Agent 平台</strong> 与 <strong>mes-energy</strong> 模块，图表看板与 AI 向导增强，并同步推进 Eos 权限、OTP、在线消息与个人工作台。改动较均衡地落在 <code>mes-core</code> &#x2F; <code>mes-web</code> &#x2F; <code>mes-ai</code> &#x2F; <code>mes-energy</code> &#x2F; <code>mes-chart</code>。</p>
-<h2 id="一、MES-AI-Agent-平台（下旬主线，-305）"><a href="#一、MES-AI-Agent-平台（下旬主线，-305）" class="headerlink" title="一、MES-AI Agent 平台（下旬主线，#305）"></a>一、MES-AI Agent 平台（下旬主线，#305）</h2><ul>
-<li>新增 mes-ai 模块骨架：Agent 管理、聊天流式输出、thinking 步骤跟踪。</li>
-<li>SQL 工具执行与表格流式渲染、能耗 Agent SQL&#x2F;输出格式迭代。</li>
-<li>Schema Tool、菜单权限与助手推荐问题&#x2F;欢迎语等体验补齐。</li>
-</ul>
-<h2 id="二、能耗模块-mes-energy（中下旬）"><a href="#二、能耗模块-mes-energy（中下旬）" class="headerlink" title="二、能耗模块 mes-energy（中下旬）"></a>二、能耗模块 mes-energy（中下旬）</h2><ul>
-<li>独立 <code>mes-energy</code> 并接入 web 依赖；峰谷（TOU）时段配置、日统计、分页&#x2F;汇总&#x2F;导出。</li>
-<li>电表数据源管理、手动录入、相邻时段合并、能耗看板菜单与电压等级过滤等。</li>
-</ul>
-<h2 id="三、图表看板与-AI-向导（-304）"><a href="#三、图表看板与-AI-向导（-304）" class="headerlink" title="三、图表看板与 AI 向导（#304）"></a>三、图表看板与 AI 向导（#304）</h2><ul>
-<li>看板设计：布局预设、槽位、组件面板、主题与最大化查看。</li>
-<li>SQL 编辑（CodeMirror）、安全校验与试跑；AI 配置&#x2F;SQL 审查、图层面板主题说明。</li>
-</ul>
-<h2 id="四、权限、认证与消息"><a href="#四、权限、认证与消息" class="headerlink" title="四、权限、认证与消息"></a>四、权限、认证与消息</h2><ul>
-<li><strong>Eos 角色管理</strong>（#299）：对象级权限配置、菜单同步、权限详情与 UI 重构。</li>
-<li><strong>OTP 二期</strong>（#289&#x2F;#294）；runas 用户切换修复（#277）；权限 token 切换（#309）。</li>
-<li>在线消息通知（#307）与列表慢查询优化（#308）；系统菜单导航慢查询（#306）。</li>
-</ul>
-<h2 id="五、其它业务与工程"><a href="#五、其它业务与工程" class="headerlink" title="五、其它业务与工程"></a>五、其它业务与工程</h2><ul>
-<li><strong>个人工作台</strong>（#310）；首页用户下拉菜单（#295）。</li>
-<li>储罐体积&#x2F;导入导出（#298）；班组装置同步（#302）；交接班 shiftlog（#286&#x2F;#287）。</li>
-<li>Flowable&#x2F;请假流程与 Docker 配置；jqGrid 多表头紧凑样式；mes-core 单测补强。</li>
-<li>SysLog 注解与敏感字段、QRTZ&#x2F;监控相关增强。</li>
-</ul>
-<h2 id="六、月度节奏"><a href="#六、月度节奏" class="headerlink" title="六、月度节奏"></a>六、月度节奏</h2><table>
-<thead>
-<tr>
-<th>阶段</th>
-<th>重点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>上旬</td>
-<td>runas&#x2F;OTP、交接班、jqGrid、mes-core 测试、反馈看板</td>
-</tr>
-<tr>
-<td>中旬</td>
-<td>Eos 角色权限、储罐体积、图表看板设计、mes-energy &#x2F; mes-ai 起步</td>
-</tr>
-<tr>
-<td>下旬</td>
-<td>AI Agent 平台合入、图表 AI 向导、能耗 TOU、消息与慢查询、个人工作台</td>
-</tr>
-</tbody></table>
-<hr>
-<p><strong>一句话</strong>：6 月搭好了 AI Agent、能耗与图表看板三块新底座，并在 Eos 权限与登录安全上完成一轮可用交付，为 7 月能耗智能体与生产运行闭环打基础。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/08/01/mes-monthly-2026-06/" data-id="cmvuqo0r3000qd8v50tdz4vgu" data-title="MES 2026 年 6 月工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-energy/" rel="tag">mes-energy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-mes-monthly-2026-07" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/08/01/mes-monthly-2026-07/" class="article-date">
-  <time class="dt-published" datetime="2026-08-01T03:07:00.000Z" itemprop="datePublished">2026-08-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/08/01/mes-monthly-2026-07/">MES 2026 年 7 月工作小结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <img src="/2026/08/01/mes-monthly-2026-07/cover.png" class="">
-
-<p>7 月（约 <strong>400+ 次提交</strong>、合并 PR <strong>#312–#367</strong>）主线是把 <strong>mes-ai</strong> 从可用原型推进到能耗&#x2F;生产运行可落地，并顺带补齐权限、调度、图表与安全。改动最集中的模块是 <code>mes-ai</code>，其次 <code>mes-web</code> &#x2F; <code>mes-security</code> &#x2F; <code>mes-chart</code>。</p>
-<h2 id="一、MES-AI-平台能力（全月主线）"><a href="#一、MES-AI-平台能力（全月主线）" class="headerlink" title="一、MES-AI 平台能力（全月主线）"></a>一、MES-AI 平台能力（全月主线）</h2><ul>
-<li><strong>多 Agent &#x2F; 路由</strong>：协作 MVP、首页浮动助手接入 <code>mes_router</code>、窗口最大化、会话与统计增强。</li>
-<li><strong>工具调用（FC&#x2F;ReAct）</strong>：空工具调用恢复与 nudge、互斥意图、few-shot &#x2F; <code>handler_config</code> 常见错误提示、同参重复调用治理、运行日志可观测与重试。</li>
-<li><strong>SQL 工具链</strong>：参数槽位抽取、日期区间（含半月）、列标签&#x2F;排序、存储过程工具、结果图表与表格渲染（列组、着色、汇总行、<code>excludeFromUiTable</code>）。</li>
-<li><strong>模型与配置</strong>：thinking 模式、采样参数、工具业务分类、硬编码治理（默认模型可配置等）。</li>
-<li><strong>管理端</strong>：工具&#x2F;Agent 列表与编辑、级联删除、聊天停止、用户改消息、反馈&#x2F;复测标记、页面规范（按钮&#x2F;<code>msg</code>）。</li>
-</ul>
-<h2 id="二、业务智能体落地"><a href="#二、业务智能体落地" class="headerlink" title="二、业务智能体落地"></a>二、业务智能体落地</h2><ul>
-<li><strong>能耗分析</strong>：同比环比、日表多装置查询、<code>Z_View_NHFX_*</code>、列显隐与意图策略、图表双轴等多轮打磨。</li>
-<li><strong>生产运行 &#x2F; 工程师日志</strong>：填报状态意图与工具互斥、工程师&#x2F;部门长问题频次与运行日志查询工具；月末落地 <strong>Eos 工程师日志</strong> 定时提交模块（#366）。</li>
-<li><strong>生产运行 FC 智能体</strong>（#324）及相关 SQL&#x2F;提示持续迭代。</li>
-</ul>
-<h2 id="三、权限与安全"><a href="#三、权限与安全" class="headerlink" title="三、权限与安全"></a>三、权限与安全</h2><ul>
-<li>Eos 角色对象权限、单权限替换模式、eosrole 一次完成 EOS+MES 用户授权。</li>
-<li>JSON 请求加密、XSS 过滤与 AI&#x2F;Chart 定点抽检。</li>
-<li>mes-chart 安全与可维护性改造。</li>
-</ul>
-<h2 id="四、基础设施与其它业务"><a href="#四、基础设施与其它业务" class="headerlink" title="四、基础设施与其它业务"></a>四、基础设施与其它业务</h2><ul>
-<li><strong>Quartz</strong>：P0&#x2F;P1&#x2F;P2 工程化、超时控制、失败告警、任务日志状态。</li>
-<li><strong>工作台</strong> P0–P2（#327）。</li>
-<li><strong>船舶</strong>：<code>vesselOperationDynamicId</code> 终端强制&#x2F;校验。</li>
-<li>Excel&#x2F;JXLS、用户导出、在线消息详情、jqGrid 全局错误处理、本地 LLM profile 等。</li>
-</ul>
-<h2 id="五、月度节奏"><a href="#五、月度节奏" class="headerlink" title="五、月度节奏"></a>五、月度节奏</h2><table>
-<thead>
-<tr>
-<th>阶段</th>
-<th>重点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>上旬</td>
-<td>Eos 权限、本地 LLM、AI 管理端基础、聊天停止、生产运行 FC</td>
-</tr>
-<tr>
-<td>中旬</td>
-<td>运行可观测、意图互斥、槽位抽取、加密&#x2F;XSS、协作与图表</td>
-</tr>
-<tr>
-<td>下旬</td>
-<td>多 Agent 路由入口、Quartz、能耗 SQL&#x2F;表格体系、工程师日志模块、硬编码治理</td>
-</tr>
-</tbody></table>
-<hr>
-<p><strong>一句话</strong>：7 月把 MES-AI 做成「能路由、能调工具、能出表&#x2F;图、能追日志」的平台，并在能耗分析与生产运行上形成可演示的业务闭环；权限、调度、图表安全同步加固。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/08/01/mes-monthly-2026-07/" data-id="cmvuqo0r4000sd8v58gs49e1y" data-title="MES 2026 年 7 月工作小结" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-mes-weekly-2026-w31" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/08/01/mes-weekly-2026-w31/" class="article-date">
-  <time class="dt-published" datetime="2026-08-01T02:56:00.000Z" itemprop="datePublished">2026-08-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/08/01/mes-weekly-2026-w31/">MES 本周工作小结（2026-07-28 ~ 08-01）</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <img src="/2026/08/01/mes-weekly-2026-w31/cover.png" class="">
-
-<p>本周（7&#x2F;28–8&#x2F;1）工作以 <strong>MES-AI 能耗分析与对话表格展示</strong> 为主线，并落地了 Eos 工程师日志、船舶作业校验与一批文档。约 74 次提交，合并 10 个 PR（#357–#367）。</p>
-<h2 id="一、MES-AI-能耗智能体（主线）"><a href="#一、MES-AI-能耗智能体（主线）" class="headerlink" title="一、MES-AI 能耗智能体（主线）"></a>一、MES-AI 能耗智能体（主线）</h2><ul>
-<li><strong>SQL 工具与参数</strong>：完善能耗工具参数解析（#357）、同比环比工具、装置&#x2F;时段槽位提取；多轮按运行日志纠偏（装置识别、明细 vs 汇总、单位标注等）。</li>
-<li><strong>日表查询</strong>：新增 <code>energy_nhfx_day</code> &#x2F; <code>Z_View_NHFX_TABLE</code> 日表多装置查询（#363），持续修 JSON、错误处理与设计物耗字段表述。</li>
-<li><strong>表格与图表</strong>：复合表头&#x2F;列组（#358）、单元格着色（#359）、汇总行与派生率（#361）、双图（多日&#x2F;多装置）、<code>excludeFromUiTable</code> 隐藏辅助结果（#365）。</li>
-<li><strong>稳定性</strong>：<code>StoredProcToolHandler</code> 围绕 Fastjson 未闭合字符串等问题迭代，后简化控制字符预处理逻辑。</li>
-<li><strong>硬编码治理</strong>：默认模型可配置、Embedding base-url 清理等 P0 项合入（#367）。</li>
-</ul>
-<h2 id="二、AI-管理端与规范"><a href="#二、AI-管理端与规范" class="headerlink" title="二、AI 管理端与规范"></a>二、AI 管理端与规范</h2><ul>
-<li>AI 列表&#x2F;编辑页统一按钮样式、导航、成功提示改用 <code>msg</code>（#364）。</li>
-<li>Cursor 规则与页面约定对齐（成功&#x2F;失败提示、按钮风格）。</li>
-</ul>
-<h2 id="三、Eos-安全任务"><a href="#三、Eos-安全任务" class="headerlink" title="三、Eos &#x2F; 安全任务"></a>三、Eos &#x2F; 安全任务</h2><ul>
-<li>新增 <strong>Eos 工程师日志</strong> 模块（OpenService 客户端、定时任务、装置配置、测试）（#366）。</li>
-<li>日常用 skill&#x2F;脚本按 token 批量生成各装置工程师日志。</li>
-<li>补充&#x2F;更新 EOS 角色-菜单、角色树 nodeId&#x2F;objectId 文档。</li>
-</ul>
-<h2 id="四、船舶作业"><a href="#四、船舶作业" class="headerlink" title="四、船舶作业"></a>四、船舶作业</h2><ul>
-<li>终端侧强制&#x2F;校验 <code>vesselOperationDynamicId</code>（#362）。</li>
-<li>完善到离港接口与 <code>mes-measure-vessel</code> ↔ <code>mes-vessel-operation</code> 调用说明文档。</li>
-</ul>
-<h2 id="五、其他"><a href="#五、其他" class="headerlink" title="五、其他"></a>五、其他</h2><ul>
-<li>mesdata 存储过程&#x2F;函数梳理、能耗模型数据核对、日志错误报告更新。</li>
-<li>README 与若干 AI&#x2F;业务 PDF 文档整理。</li>
-</ul>
-<h2 id="六、周末进行中"><a href="#六、周末进行中" class="headerlink" title="六、周末进行中"></a>六、周末进行中</h2><p>本地仍有未合入改动：<code>ai-chat-render.js</code>、若干 AI HTML，以及 <code>index.html</code> &#x2F; <code>main.css</code>（偏首页&#x2F;样式微调）。</p>
-<hr>
-<p><strong>一句话</strong>：本周把能耗 AI 从「能查」推进到「表格好看、图表可用、结果可控、配置可治理」，并完成工程师日志自动化与船舶动态 ID 校验。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/08/01/mes-weekly-2026-w31/" data-id="cmvuqo0r60010d8v58ch5fvjj" data-title="MES 本周工作小结（2026-07-28 ~ 08-01）" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Eos/" rel="tag">Eos</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" rel="tag">能耗分析</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-eos-role-tree-nodeid-objectid" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/07/31/eos-role-tree-nodeid-objectid/" class="article-date">
-  <time class="dt-published" datetime="2026-07-31T03:41:00.000Z" itemprop="datePublished">2026-07-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/31/eos-role-tree-nodeid-objectid/">EOS 菜单树 NodeID 与 ObjectID 说明</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>本文档说明 eosrole 页面「配置 EOS 菜单权限」树节点中 <strong>NodeID</strong>（前端 zTree 的 <code>id</code>）与 <strong>ObjectID</strong>（前端 <code>objectId</code>）的含义、数据库来源、后端组装与前端使用方式。</p>
-<blockquote>
-<p>关联文档：<a href="/2026/07/31/eos-role-menu-relationship/">EOS 菜单与角色关联关系说明</a></p>
-<p><strong>2026-07-31 更新</strong>：权限树接口额外返回 <code>menuType</code> &#x2F; <code>sysMenuId</code>；保存 body 含 MES 按钮与 ERP 操作扩展字段。</p>
-</blockquote>
-<h2 id="结论摘要"><a href="#结论摘要" class="headerlink" title="结论摘要"></a>结论摘要</h2><table>
-<thead>
-<tr>
-<th>前端字段</th>
-<th>含义</th>
-<th>数据库来源</th>
-<th>主要用途</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>zTree <code>id</code></td>
-<td>菜单节点 ID</td>
-<td><code>messys.Tree.NodeID</code></td>
-<td>树结构、父子关系（<code>pId</code>）；前端勾选态缓存键</td>
-</tr>
-<tr>
-<td>zTree <code>objectId</code></td>
-<td>EOS 权限对象 ID</td>
-<td><code>messys.Tree.ObjectID</code> &#x3D; <code>messys.ObjectRegister.ObjectID</code></td>
-<td>角色菜单授权（<code>STPermission.ObjectID</code>，「执行」）</td>
-</tr>
-<tr>
-<td>zTree <code>menuType</code></td>
-<td>菜单类型</td>
-<td><code>EosMenuTypeHelper.resolveMenuType</code></td>
-<td><code>mes</code> &#x2F; <code>erp</code> &#x2F; <code>folder</code>，决定右侧详情面板</td>
-</tr>
-<tr>
-<td>zTree <code>sysMenuId</code></td>
-<td>MES 菜单 ID</td>
-<td>优先 <code>sys_menu_eos_node</code>，否则 <code>NodeDesc=MES_MENU:</code></td>
-<td>MES 菜单&#x2F;按钮写入 <code>sys_role_menu</code></td>
-</tr>
-</tbody></table>
-<p><strong>NodeID 与 ObjectID 是两套独立编号体系</strong>，不可混用。角色菜单「执行」授权必须使用 <strong>ObjectID</strong>；NodeID 用于树层级与 detail 查询参数。</p>
-<hr>
-<h2 id="1-NodeID-是什么"><a href="#1-NodeID-是什么" class="headerlink" title="1. NodeID 是什么"></a>1. NodeID 是什么</h2><p><code>NodeID</code> 是 EOS 菜单树 <code>messys.dbo.Tree</code> 的主键，标识一个菜单&#x2F;目录节点在树中的位置。</p>
-<p>在 MES 前端 zTree 中，NodeID 映射为节点的 **<code>id</code>**（<code>idKey: &quot;id&quot;</code>），<code>ParentID</code> 映射为 **<code>pId</code>**，用于渲染树形结构与展开&#x2F;折叠。前端勾选态 <code>permissionCheckedNodeIds</code> 也按 NodeID 缓存。</p>
-<p><strong>NodeID 不写入 STPermission</strong>。权限表引用的是 ObjectID。detail 接口用 <code>nodeId</code> 定位节点后再解析业务 ObjectID。</p>
-<hr>
-<h2 id="2-NodeID-从哪来"><a href="#2-NodeID-从哪来" class="headerlink" title="2. NodeID 从哪来"></a>2. NodeID 从哪来</h2><h3 id="2-1-数据库表"><a href="#2-1-数据库表" class="headerlink" title="2.1 数据库表"></a>2.1 数据库表</h3><table>
-<thead>
-<tr>
-<th>表</th>
-<th>库</th>
-<th>字段</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>Tree</code></td>
-<td>messys</td>
-<td><code>NodeID</code></td>
-<td>菜单节点主键</td>
-</tr>
-<tr>
-<td><code>Tree</code></td>
-<td>messys</td>
-<td><code>ParentID</code></td>
-<td>父节点 NodeID（根为 0）</td>
-</tr>
-<tr>
-<td><code>UniqueNO</code></td>
-<td>messys</td>
-<td><code>No</code></td>
-<td>下一个可用 NodeID（<code>NName=&#39;tree&#39;</code>）</td>
-</tr>
-</tbody></table>
-<h3 id="2-2-MES-新建节点时的分配逻辑"><a href="#2-2-MES-新建节点时的分配逻辑" class="headerlink" title="2.2 MES 新建节点时的分配逻辑"></a>2.2 MES 新建节点时的分配逻辑</h3><p>MES 通过 <code>TreeServiceImpl.getNextNodeIdForTree()</code> 从 <code>UniqueNO</code> 表取号：</p>
-<ol>
-<li>悲观锁查询 <code>UniqueNO</code> 中 <code>NName=&#39;tree&#39;</code> 的记录（<code>PESSIMISTIC_WRITE</code>）</li>
-<li>取当前 <code>No</code> 作为新 NodeID</li>
-<li>将 <code>No + 1</code> 写回，占用该编号</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TreeServiceImpl.getNextNodeIdForTree()</span></span><br><span class="line"><span class="type">UniqueNOEntity</span> <span class="variable">row</span> <span class="operator">=</span> uniqueNODao.findByNnameForUpdate(UNIQUE_NO_NAME_TREE);</span><br><span class="line"><span class="type">int</span> <span class="variable">currentNo</span> <span class="operator">=</span> row.getNo();</span><br><span class="line">row.setNo(currentNo + <span class="number">1</span>);</span><br><span class="line">uniqueNODao.save(row);</span><br><span class="line"><span class="keyword">return</span> Long.valueOf(currentNo);</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-3-触发-NodeID-分配的操作"><a href="#2-3-触发-NodeID-分配的操作" class="headerlink" title="2.3 触发 NodeID 分配的操作"></a>2.3 触发 NodeID 分配的操作</h3><table>
-<thead>
-<tr>
-<th>操作</th>
-<th>方法</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>新增菜单节点</td>
-<td><code>TreeServiceImpl.addNode</code></td>
-<td>先 <code>getNextNodeIdForTree()</code>，再写 Tree</td>
-</tr>
-<tr>
-<td>sys_menu 同步</td>
-<td><code>TreeServiceImpl.syncFromSysMenu</code></td>
-<td>每个同步节点分配新 NodeID</td>
-</tr>
-<tr>
-<td>复制菜单</td>
-<td><code>TreeServiceImpl.copyMenu</code></td>
-<td>源节点及子树每个节点各分配新 NodeID</td>
-</tr>
-<tr>
-<td>交接班菜单批量创建</td>
-<td><code>createShiftLogDispatchMenus</code> → <code>addNode</code></td>
-<td>同上</td>
-</tr>
-</tbody></table>
-<h3 id="2-4-EOS-原生-历史数据"><a href="#2-4-EOS-原生-历史数据" class="headerlink" title="2.4 EOS 原生 &#x2F; 历史数据"></a>2.4 EOS 原生 &#x2F; 历史数据</h3><p>在 MES 介入之前，NodeID 可能由 EOS 客户端或其他工具写入 <code>Tree</code>，同样依赖 <code>UniqueNO</code> 序列或历史遗留编号。MES 只保证<strong>新增&#x2F;同步&#x2F;复制</strong>时走 <code>getNextNodeIdForTree()</code> 逻辑。</p>
-<h3 id="2-5-NodeID-在-Functions-中的用途"><a href="#2-5-NodeID-在-Functions-中的用途" class="headerlink" title="2.5 NodeID 在 Functions 中的用途"></a>2.5 NodeID 在 Functions 中的用途</h3><p><code>Tree.Functions</code> 字段保存菜单跳转 URL，其中 <strong><code>menuId</code> 参数值为 NodeID</strong>（不是 ObjectID）。例如同步 sys_menu 时：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;baseUrl&#125;/&#123;url&#125;?token=%Token%&amp;menuId=&#123;NodeID&#125;</span><br></pre></td></tr></table></figure>
-
-<p>复制菜单时，<code>TreeServiceImpl</code> 会将 <code>Functions</code> 里的 <code>menuId=旧NodeID</code> 替换为 <code>menuId=新NodeID</code>。</p>
-<h3 id="2-6-NodeID-生命周期"><a href="#2-6-NodeID-生命周期" class="headerlink" title="2.6 NodeID 生命周期"></a>2.6 NodeID 生命周期</h3><ul>
-<li><strong>查询</strong>：<code>treeDao.findAll(...)</code>、<code>queryObject(nodeid)</code> 等</li>
-<li><strong>删除</strong>：<code>delete</code> &#x2F; <code>deleteBatch</code> 按 NodeID 删除 Tree，并先 <code>ObjectRegisterDao.deleteByOwnerId(NodeID)</code> 清理关联对象</li>
-</ul>
-<pre class="mermaid">flowchart LR
-  A[UniqueNO&lt;br/&gt;NName=tree] --&gt;|取 No 作为 NodeID| B[Tree.NodeID]
-  B --&gt; C[listTreeForPermission&lt;br/&gt;返回 id=NodeID]
-  C --&gt; D[zTree id / pId&lt;br/&gt;树结构展示]</pre>
-
-
-<hr>
-<h2 id="3-ObjectID-是什么"><a href="#3-ObjectID-是什么" class="headerlink" title="3. ObjectID 是什么"></a>3. ObjectID 是什么</h2><p><code>ObjectID</code> 是 EOS 对象注册表 <code>messys.dbo.ObjectRegister</code> 的主键。每个可授权对象在 <code>ObjectRegister</code> 中注册一条记录；菜单&#x2F;目录节点对应 <strong>TypeID &#x3D; 7</strong>，并通过 <strong>OwnerID &#x3D; Tree.NodeID</strong> 与菜单树关联。</p>
-<p>MES 维护菜单时会将 ObjectID <strong>冗余写入</strong> <code>Tree.ObjectID</code>，便于权限树接口一次查询带出。</p>
-<p>在角色菜单授权场景下，前端勾选菜单后提交的是 <strong>objectId 列表</strong>，写入 <code>mesdata.dbo.STPermission.ObjectID</code>（配合 <code>UserID</code>&#x3D;角色 OID、<code>Oprate</code>&#x3D;「执行」、<code>Permission</code>&#x3D;1）。</p>
-<hr>
-<h2 id="4-ObjectID-从哪来"><a href="#4-ObjectID-从哪来" class="headerlink" title="4. ObjectID 从哪来"></a>4. ObjectID 从哪来</h2><h3 id="4-1-数据库表"><a href="#4-1-数据库表" class="headerlink" title="4.1 数据库表"></a>4.1 数据库表</h3><table>
-<thead>
-<tr>
-<th>层级</th>
-<th>库&#x2F;表</th>
-<th>字段</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>权威主键</td>
-<td>messys <code>ObjectRegister</code></td>
-<td><code>ObjectID</code></td>
-<td>全局对象 ID（自增：MAX+1）</td>
-</tr>
-<tr>
-<td>关联</td>
-<td>messys <code>ObjectRegister</code></td>
-<td><code>OwnerID</code></td>
-<td>&#x3D; <code>Tree.NodeID</code></td>
-</tr>
-<tr>
-<td>类型</td>
-<td>messys <code>ObjectRegister</code></td>
-<td><code>TypeID</code></td>
-<td>MES 新建菜单固定为 <strong>7</strong>（菜单&#x2F;目录）</td>
-</tr>
-<tr>
-<td>冗余</td>
-<td>messys <code>Tree</code></td>
-<td><code>ObjectID</code></td>
-<td>与 <code>ObjectRegister.ObjectID</code> 一致</td>
-</tr>
-<tr>
-<td>授权</td>
-<td>mesdata <code>STPermission</code></td>
-<td><code>ObjectID</code></td>
-<td>引用 <code>ObjectRegister.ObjectID</code></td>
-</tr>
-</tbody></table>
-<p>关系：<code>Tree.NodeID</code> ← <code>ObjectRegister.OwnerID</code>；<code>Tree.ObjectID</code> &#x3D; <code>ObjectRegister.ObjectID</code>。</p>
-<h3 id="4-2-MES-新建节点时的分配逻辑"><a href="#4-2-MES-新建节点时的分配逻辑" class="headerlink" title="4.2 MES 新建节点时的分配逻辑"></a>4.2 MES 新建节点时的分配逻辑</h3><p><code>TreeServiceImpl.saveObjectRegisterForTree()</code>：</p>
-<ol>
-<li><code>ObjectRegisterDao.findMaxObjectId()</code> 取 MAX(ObjectID) + 1</li>
-<li>插入 <code>ObjectRegister</code>（<code>TypeID=7</code>，<code>OwnerID=NodeID</code>，<code>Object</code>&#x3D;菜单名）</li>
-<li>将返回的 <code>ObjectID</code> 写入 <code>Tree.ObjectID</code></li>
-</ol>
-<p>与 NodeID 分配在同一事务内完成（如 <code>addNode</code> 先取 NodeID，再创建 ObjectRegister）。</p>
-<h3 id="4-3-触发-ObjectID-分配的操作"><a href="#4-3-触发-ObjectID-分配的操作" class="headerlink" title="4.3 触发 ObjectID 分配的操作"></a>4.3 触发 ObjectID 分配的操作</h3><p>与 NodeID 分配的操作相同（新增、同步、复制）。<strong>复制菜单时 NodeID 与 ObjectID 均重新分配</strong>，不会沿用源节点的 ObjectID。</p>
-<table>
-<thead>
-<tr>
-<th>场景</th>
-<th>ObjectID 来源</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>MES 新增 EOS 菜单节点</td>
-<td><code>saveObjectRegisterForTree</code> 新分配</td>
-</tr>
-<tr>
-<td>从 sys_menu 同步</td>
-<td>每个同步节点一条新 ObjectRegister</td>
-</tr>
-<tr>
-<td>复制菜单</td>
-<td>新 NodeID + 新 ObjectRegister + 新 ObjectID</td>
-</tr>
-<tr>
-<td>EOS 原生&#x2F;历史数据</td>
-<td>可能由 EOS 客户端写入；<code>Tree.ObjectID</code> 可能已存在</td>
-</tr>
-<tr>
-<td>失败兜底</td>
-<td><code>object == null</code> 时 <code>Tree.ObjectID = 0</code>（无有效授权对象）</td>
-</tr>
-</tbody></table>
-<pre class="mermaid">flowchart LR
-  A[分配 NodeID] --&gt; B[插入 ObjectRegister&lt;br/&gt;ObjectID=MAX+1]
-  B --&gt; C[Tree.ObjectID = ObjectID]
-  C --&gt; D[listTreeForPermission&lt;br/&gt;返回 objectId]
-  D --&gt; E[前端勾选提交 objectIds]
-  E --&gt; F[STPermission 写入]</pre>
-
-
-<hr>
-<h2 id="5-NodeID-与-ObjectID-对照"><a href="#5-NodeID-与-ObjectID-对照" class="headerlink" title="5. NodeID 与 ObjectID 对照"></a>5. NodeID 与 ObjectID 对照</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Tree.NodeID       ──►  zTree.id         （树结构、ParentID 父子关系）</span><br><span class="line">Tree.ObjectID     ──►  zTree.objectId   （STPermission「执行」授权键）</span><br><span class="line"></span><br><span class="line">ObjectRegister.OwnerID  = Tree.NodeID</span><br><span class="line">ObjectRegister.ObjectID = Tree.ObjectID</span><br><span class="line">ObjectRegister.TypeID   = 7（菜单/目录）</span><br></pre></td></tr></table></figure>
-
-<table>
-<thead>
-<tr>
-<th>对比项</th>
-<th>NodeID</th>
-<th>ObjectID</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>所属表</td>
-<td><code>messys.Tree</code> 主键</td>
-<td><code>messys.ObjectRegister</code> 主键，冗余在 <code>Tree.ObjectID</code></td>
-</tr>
-<tr>
-<td>分配方式</td>
-<td><code>UniqueNO</code>（NName&#x3D;’tree’）递增</td>
-<td><code>MAX(ObjectID)+1</code></td>
-</tr>
-<tr>
-<td>前端 zTree 字段</td>
-<td><code>id</code></td>
-<td><code>objectId</code></td>
-</tr>
-<tr>
-<td>是否用于 STPermission「执行」</td>
-<td>否</td>
-<td>是</td>
-</tr>
-<tr>
-<td>复制菜单</td>
-<td>重新分配</td>
-<td>重新分配</td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="5-1-业务-ObjectID-与-NodeID-的非-OwnerID-关联"><a href="#5-1-业务-ObjectID-与-NodeID-的非-OwnerID-关联" class="headerlink" title="5.1 业务 ObjectID 与 NodeID 的非 OwnerID 关联"></a>5.1 业务 ObjectID 与 NodeID 的非 OwnerID 关联</h2><p>菜单授权与 ERP 按钮授权使用<strong>不同的 ObjectID</strong>，且业务对象的 <code>OwnerID</code> <strong>不一定</strong>等于 <code>Tree.NodeID</code>。</p>
-<table>
-<thead>
-<tr>
-<th>场景</th>
-<th>ObjectID 示例</th>
-<th>TypeID</th>
-<th>OwnerID</th>
-<th>STPermission 用途</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>菜单对象</td>
-<td>468</td>
-<td>7</td>
-<td>430</td>
-<td><code>Oprate=执行</code>, Permission&#x3D;1</td>
-</tr>
-<tr>
-<td>业务对象</td>
-<td>965</td>
-<td>1</td>
-<td>null</td>
-<td><code>Oprate=EX61:...</code>, Permission&#x3D;0</td>
-</tr>
-</tbody></table>
-<p><strong>解析路径</strong>（<code>EosMenuObjectResolver.resolveBusinessObjects</code>）：</p>
-<ol>
-<li><code>ObjectRegister.OwnerID = NodeID</code> 且 <code>TypeID != 7</code></li>
-<li><code>Tree.Functions</code> 括号内单据名 + 菜单对象名 → <code>DjDy.DjCName</code> → <code>ObjectRegister.Object = DjCName</code> 且 <code>TypeID != 7</code></li>
-<li>回退：<code>Tree.ObjectID</code> 对应 ObjectRegister（<strong>可能含 TypeID&#x3D;7</strong>）</li>
-</ol>
-<p><strong>禁止</strong>仅用 <code>OwnerID=NodeID</code> 或 <code>Tree.ObjectID</code> 推断按钮授权 ObjectID。复合页可能返回多个业务 ObjectID；同一 ObjectID 上可有多个 <code>EXxx:</code> 按钮 Oprate。</p>
-<p><code>listAvailableOperations</code>：标准操作 + ExFunction <code>EXxx:</code> + 库中已有非「执行」Oprate。</p>
-<p>示例（NodeID&#x3D;430）：菜单树 <code>objectId=468</code> 用于勾选「执行」；按钮 <code>EX61:组织架构分发</code> 写在 ObjectID&#x3D;965。</p>
-<hr>
-<h2 id="6-后端组装与-API"><a href="#6-后端组装与-API" class="headerlink" title="6. 后端组装与 API"></a>6. 后端组装与 API</h2><h3 id="6-1-权限菜单树"><a href="#6-1-权限菜单树" class="headerlink" title="6.1 权限菜单树"></a>6.1 权限菜单树</h3><ul>
-<li><strong>接口</strong>：<code>GET /eosrole/menu/tree</code>（或 <code>@RequestMapping</code>）</li>
-<li><strong>实现</strong>：<code>EosRoleController.menuTree()</code> → <code>TreeService.listTreeForPermission()</code></li>
-<li><strong>返回字段</strong>：</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>来源</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>id</code></td>
-<td><code>Tree.NodeID</code></td>
-<td>zTree 节点 ID</td>
-</tr>
-<tr>
-<td><code>pId</code></td>
-<td><code>Tree.ParentID</code>（0 → -1）</td>
-<td>父节点</td>
-</tr>
-<tr>
-<td><code>name</code></td>
-<td><code>Tree.NodeCaption</code></td>
-<td>显示名</td>
-</tr>
-<tr>
-<td><code>objectId</code></td>
-<td><code>Tree.ObjectID</code></td>
-<td>STPermission「执行」键</td>
-</tr>
-<tr>
-<td><code>menuType</code></td>
-<td><code>EosMenuTypeHelper.resolveMenuType</code></td>
-<td><code>mes</code> &#x2F; <code>erp</code> &#x2F; <code>folder</code></td>
-</tr>
-<tr>
-<td><code>sysMenuId</code></td>
-<td><code>sys_menu_eos_node</code>，缺失时 NodeDesc fallback</td>
-<td>仅 MES 节点有值</td>
-</tr>
-</tbody></table>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TreeServiceImpl.listTreeForPermission()</span></span><br><span class="line">m.put(<span class="string">&quot;id&quot;</span>, e.getNodeid());</span><br><span class="line">m.put(<span class="string">&quot;pId&quot;</span>, e.getParentid() == <span class="literal">null</span> || e.getParentid() == <span class="number">0</span> ? -<span class="number">1</span> : e.getParentid());</span><br><span class="line">m.put(<span class="string">&quot;name&quot;</span>, e.getNodecaption() != <span class="literal">null</span> ? e.getNodecaption().trim() : <span class="string">&quot;&quot;</span>);</span><br><span class="line">m.put(<span class="string">&quot;objectId&quot;</span>, e.getObjectid());</span><br><span class="line">m.put(<span class="string">&quot;menuType&quot;</span>, EosMenuTypeHelper.resolveMenuType(e));</span><br><span class="line">m.put(<span class="string">&quot;sysMenuId&quot;</span>, sysMenuIdLookup.get(e.getNodeid()));</span><br></pre></td></tr></table></figure>
-
-<p>与 <code>listTreeForSelect()</code>（eostree 选目录）的区别：后者<strong>不含</strong> <code>objectId</code> &#x2F; <code>menuType</code> &#x2F; <code>sysMenuId</code>，仅 <code>id</code> &#x2F; <code>pId</code> &#x2F; <code>name</code>。</p>
-<h3 id="6-2-权限查询与保存"><a href="#6-2-权限查询与保存" class="headerlink" title="6.2 权限查询与保存"></a>6.2 权限查询与保存</h3><table>
-<thead>
-<tr>
-<th>接口</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>GET /eosrole/permission/&#123;roleId&#125;</code></td>
-<td>返回已授权 <strong>objectId</strong> 列表（「执行」+ Permission&#x3D;1）</td>
-</tr>
-<tr>
-<td><code>GET /eosrole/permission/detail/&#123;roleId&#125;?nodeId=</code></td>
-<td>按 NodeID 加载对象&#x2F;按钮详情（MES 或 ERP）</td>
-</tr>
-<tr>
-<td><code>GET /eosrole/permission/mes-menu-ids/&#123;roleId&#125;</code></td>
-<td>返回 MES <code>sys_role_menu</code> 全部 menuId</td>
-</tr>
-<tr>
-<td><code>POST /eosrole/permission/save</code></td>
-<td>菜单执行 + ERP 操作 + MES 按钮</td>
-</tr>
-</tbody></table>
-<p><code>EosRolePermissionServiceImpl.queryMenuObjectIds</code> 过滤条件：<code>Oprate=执行</code> 且 <code>Permission=1</code>（<strong>当前未按 TypeID&#x3D;7 过滤</strong>）。</p>
-<p>save body（<code>EosRolePermissionSaveRequest</code>）：</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>roleIds</code></td>
-<td>EOS 角色 OID</td>
-</tr>
-<tr>
-<td><code>objectIds</code></td>
-<td>勾选菜单的 Tree.ObjectID → STPermission「执行」</td>
-</tr>
-<tr>
-<td><code>mode</code></td>
-<td><code>append</code> &#x2F; <code>replace</code></td>
-</tr>
-<tr>
-<td><code>mesMenuIds</code></td>
-<td>MES 目录&#x2F;菜单 menu_id → <code>sys_role_menu</code></td>
-</tr>
-<tr>
-<td><code>mesButtonMenuIds</code></td>
-<td>MES 按钮 menu_id → <code>sys_role_menu</code></td>
-</tr>
-<tr>
-<td><code>operationPermissions</code></td>
-<td>ERP <code>&#123;objectId, oprate, granted&#125;</code></td>
-</tr>
-<tr>
-<td><code>operationReplaceObjectIds</code></td>
-<td>replace 时清理非「执行」行的业务 ObjectID</td>
-</tr>
-</tbody></table>
-<p>保存委托：先 <code>EosRolePermissionServiceImpl</code> 写「执行」，再 <code>EosRoleObjectPermissionServiceImpl.saveMesAndObjectPermissions</code> 写 ERP&#x2F;MES。</p>
-<hr>
-<h2 id="7-前端使用（eosrole-js）"><a href="#7-前端使用（eosrole-js）" class="headerlink" title="7. 前端使用（eosrole.js）"></a>7. 前端使用（eosrole.js）</h2><h3 id="7-1-zTree-配置"><a href="#7-1-zTree-配置" class="headerlink" title="7.1 zTree 配置"></a>7.1 zTree 配置</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> permissionTreeSetting = &#123;</span><br><span class="line">    <span class="attr">data</span>: &#123;</span><br><span class="line">        <span class="attr">simpleData</span>: &#123;</span><br><span class="line">            <span class="attr">enable</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">idKey</span>: <span class="string">&quot;id&quot;</span>,      <span class="comment">// = NodeID</span></span><br><span class="line">            <span class="attr">pIdKey</span>: <span class="string">&quot;pId&quot;</span>,   <span class="comment">// = ParentID</span></span><br><span class="line">            <span class="attr">rootPId</span>: -<span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">check</span>: &#123; <span class="attr">enable</span>: <span class="literal">true</span>, <span class="attr">nocheckInherit</span>: <span class="literal">true</span> &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h3 id="7-2-加载与回显"><a href="#7-2-加载与回显" class="headerlink" title="7.2 加载与回显"></a>7.2 加载与回显</h3><ol>
-<li><code>loadPermissionMenuTree</code> → 请求 <code>/eosrole/menu/tree</code>，用 <code>treeList</code> 初始化 zTree（含 <code>menuType</code> &#x2F; <code>sysMenuId</code>）</li>
-<li>单角色 + replace 模式：<ul>
-<li><code>/eosrole/permission/&#123;roleId&#125;</code> → 按 <strong>objectId</strong> 勾选菜单树（不是 <code>id</code>）</li>
-<li><code>/eosrole/permission/mes-menu-ids/&#123;roleId&#125;</code> → 拆分 MES 菜单 ID &#x2F; 按钮 ID 到 <code>permissionMesMenuIds</code> 等</li>
-</ul>
-</li>
-<li>点击节点 → <code>/eosrole/permission/detail/&#123;roleId&#125;?nodeId=</code>：<ul>
-<li><code>menuType=mes</code>：展示 MES 按钮勾选</li>
-<li><code>menuType=erp</code>：展示 ERP 操作「禁止」勾选</li>
-<li><code>menuType=folder</code>：目录摘要</li>
-</ul>
-</li>
-</ol>
-<p>勾选 MES 节点时把 <code>sysMenuId</code> 加入 <code>permissionMesMenuIds</code>；取消勾选时清理对应按钮态。</p>
-<h3 id="7-3-保存"><a href="#7-3-保存" class="headerlink" title="7.3 保存"></a>7.3 保存</h3><p><code>savePermission</code> 收集并提交：</p>
-<table>
-<thead>
-<tr>
-<th>收集方法</th>
-<th>字段</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>collectPermissionObjectIds()</code></td>
-<td><code>objectIds</code>（勾选节点的 <strong>objectId</strong>，不是 <code>id</code>）</td>
-</tr>
-<tr>
-<td><code>collectMesMenuIdsForSave()</code></td>
-<td><code>mesMenuIds</code></td>
-</tr>
-<tr>
-<td><code>collectMesButtonMenuIdsForSave()</code></td>
-<td><code>mesButtonMenuIds</code></td>
-</tr>
-<tr>
-<td><code>collectOperationPermissionsForSave()</code></td>
-<td><code>operationPermissions</code></td>
-</tr>
-<tr>
-<td><code>collectOperationReplaceObjectIdsForSave()</code></td>
-<td><code>operationReplaceObjectIds</code></td>
-</tr>
-</tbody></table>
-<p>连同 <code>roleIds</code>、<code>mode</code> 一并 POST 到 <code>/eosrole/permission/save</code>。</p>
-<hr>
-<h2 id="8-验证-SQL"><a href="#8-验证-SQL" class="headerlink" title="8. 验证 SQL"></a>8. 验证 SQL</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- NodeID 与 ObjectID 对照</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    t.NodeID,</span><br><span class="line">    RTRIM(t.NodeCaption) <span class="keyword">AS</span> MenuCaption,</span><br><span class="line">    t.ParentID,</span><br><span class="line">    t.ObjectID           <span class="keyword">AS</span> TreeObjectID,</span><br><span class="line">    o.ObjectID           <span class="keyword">AS</span> RegObjectID,</span><br><span class="line">    o.TypeID,</span><br><span class="line">    o.OwnerID</span><br><span class="line"><span class="keyword">FROM</span> messys.dbo.Tree t</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> messys.dbo.ObjectRegister o <span class="keyword">ON</span> o.OwnerID <span class="operator">=</span> t.NodeID</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> t.NodeID;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- UniqueNO 当前序列</span></span><br><span class="line"><span class="keyword">SELECT</span> NName, <span class="keyword">No</span> <span class="keyword">FROM</span> messys.dbo.UniqueNO <span class="keyword">WHERE</span> NName <span class="operator">=</span> <span class="string">&#x27;tree&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="9-相关代码路径"><a href="#9-相关代码路径" class="headerlink" title="9. 相关代码路径"></a>9. 相关代码路径</h2><table>
-<thead>
-<tr>
-<th>环节</th>
-<th>路径</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>NodeID 分配</td>
-<td><code>TreeServiceImpl.getNextNodeIdForTree()</code></td>
-</tr>
-<tr>
-<td>ObjectID 分配</td>
-<td><code>TreeServiceImpl.saveObjectRegisterForTree()</code></td>
-</tr>
-<tr>
-<td>新增&#x2F;同步&#x2F;复制</td>
-<td><code>TreeServiceImpl.addNode</code> &#x2F; <code>syncFromSysMenu</code> &#x2F; <code>copyMenu</code></td>
-</tr>
-<tr>
-<td>权限树 API</td>
-<td><code>TreeServiceImpl.listTreeForPermission()</code>、<code>EosRoleController</code></td>
-</tr>
-<tr>
-<td>菜单类型 &#x2F; sysMenuId</td>
-<td><code>EosMenuTypeHelper</code>、<code>SysMenuEosNodeService</code></td>
-</tr>
-<tr>
-<td>菜单「执行」读写</td>
-<td><code>EosRolePermissionServiceImpl</code></td>
-</tr>
-<tr>
-<td>ERP&#x2F;MES 扩展保存</td>
-<td><code>EosRoleObjectPermissionServiceImpl</code></td>
-</tr>
-<tr>
-<td>业务 ObjectID 解析</td>
-<td><code>EosMenuObjectResolver</code></td>
-</tr>
-<tr>
-<td>实体</td>
-<td><code>TreeEntity</code>、<code>ObjectRegisterEntity</code>、<code>StPermissionEntity</code></td>
-</tr>
-<tr>
-<td>前端</td>
-<td><code>static/js/modules/security/eosrole.js</code></td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="10-修订记录"><a href="#10-修订记录" class="headerlink" title="10. 修订记录"></a>10. 修订记录</h2><table>
-<thead>
-<tr>
-<th>日期</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>2026-06-16</td>
-<td>初版：梳理 Tree NodeID 与 ObjectID 从数据库到前端权限树的完整链路</td>
-</tr>
-<tr>
-<td>2026-06-16</td>
-<td>补充 NodeID 在 Tree.Functions URL 中作为 menuId 参数的说明</td>
-</tr>
-<tr>
-<td>2026-07-01</td>
-<td>补充业务 ObjectID 与 NodeID 非 OwnerID 关联及 eosrole 解析路径</td>
-</tr>
-<tr>
-<td>2026-07-31</td>
-<td>按最新实现修订：权限树补 <code>menuType</code>&#x2F;<code>sysMenuId</code>；save&#x2F;前端补 MES 与 ERP 扩展字段；代码路径补 ObjectPermission &#x2F; Resolver</td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/07/31/eos-role-tree-nodeid-objectid/" data-id="cmvuqo0qy000bd8v54bus616w" data-title="EOS 菜单树 NodeID 与 ObjectID 说明" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EOS/" rel="tag">EOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zTree/" rel="tag">zTree</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-eos-role-menu-relationship" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/07/31/eos-role-menu-relationship/" class="article-date">
-  <time class="dt-published" datetime="2026-07-31T03:40:00.000Z" itemprop="datePublished">2026-07-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/31/eos-role-menu-relationship/">EOS 菜单与角色关联关系说明</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>本文档说明 MES 项目中 EOS 原生权限体系与 MES Web RBAC 的关系，以及角色、菜单数据分别存储在哪里、如何保存关联。</p>
-<blockquote>
-<p><strong>2026-07-31 更新</strong>：按当前代码实现修订。eosrole 已映射并读写 **<code>STPermission</code>**（菜单「执行」+ ERP 对象操作）与 **<code>STUserGroup</code>**（用户-角色）；MES Web 按钮权限写入 **<code>sys_role_menu</code>**。核心授权表仍为 **<code>mesdata.dbo.STPermission</code>**。</p>
-</blockquote>
-<p>关联文档：<a href="/2026/07/31/eos-role-tree-nodeid-objectid/">EOS 菜单树 NodeID 与 ObjectID 说明</a></p>
-<h2 id="结论摘要"><a href="#结论摘要" class="headerlink" title="结论摘要"></a>结论摘要</h2><p>**在本项目（mes-parent）中，EOS 角色 ↔ 菜单授权可由 MES eosrole「配置菜单权限」写入 <code>STPermission</code>**；也可在 EOS 原生安全管理器中配置。用户 ↔ 角色由 eosrole「配置用户权限」双写 <code>STUserGroup</code> + <code>sys_user_role</code>。</p>
-<table>
-<thead>
-<tr>
-<th>能力</th>
-<th>库</th>
-<th>表</th>
-<th>MES 是否实现</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>EOS 用户&#x2F;角色</td>
-<td><strong>mesdata</strong></td>
-<td><code>STUsers</code>（<code>uGroup=0/1</code>）</td>
-<td>角色 CRUD（eosrole）</td>
-</tr>
-<tr>
-<td>用户 ↔ 角色</td>
-<td>mesdata</td>
-<td><code>STUserGroup</code></td>
-<td>已映射，由 <code>EosRoleUserServiceImpl</code> 管理（双写 <code>sys_user_role</code>）</td>
-</tr>
-<tr>
-<td><strong>角色 ↔ 菜单</strong></td>
-<td><strong>mesdata</strong></td>
-<td><strong><code>STPermission</code></strong></td>
-<td><strong>已映射</strong>，由 <code>EosRolePermissionServiceImpl</code> &#x2F; <code>EosRoleObjectPermissionServiceImpl</code> 读写</td>
-</tr>
-<tr>
-<td>EOS 菜单树</td>
-<td><strong>messys</strong></td>
-<td><code>Tree</code> + <code>ObjectRegister</code></td>
-<td>eostree 维护&#x2F;同步</td>
-</tr>
-<tr>
-<td>EOS 角色 → MES 角色</td>
-<td>mesdata</td>
-<td><code>sys_role</code>（<code>eos_role_id</code>）</td>
-<td>同步元数据；权限保存时也可自动 <code>syncRole</code></td>
-</tr>
-<tr>
-<td>MES 角色 → MES 菜单&#x2F;按钮</td>
-<td>mesdata</td>
-<td><code>sys_role_menu</code></td>
-<td>角色管理页面；eosrole 保存 MES 按钮时亦写入</td>
-</tr>
-<tr>
-<td>EOS NodeID → MES menu_id</td>
-<td>mesdata</td>
-<td><strong><code>sys_menu_eos_node</code></strong></td>
-<td>sync&#x2F;backfill&#x2F;copy 写入</td>
-</tr>
-</tbody></table>
-<p>EOS 原生权限生效链路：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">STUsers(用户,uGroup=0)</span><br><span class="line">  → STUserGroup(UserID → GroupID)</span><br><span class="line">  → STUsers(角色,uGroup=1)</span><br><span class="line">  → STPermission(UserID=角色OID, ObjectID)</span><br><span class="line">  → messys.ObjectRegister(TypeID=7)</span><br><span class="line">  → messys.Tree(OwnerID=NodeID)</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="1-EOS-侧数据模型"><a href="#1-EOS-侧数据模型" class="headerlink" title="1. EOS 侧数据模型"></a>1. EOS 侧数据模型</h2><h3 id="1-1-用户与角色：STUsers（mesdata）"><a href="#1-1-用户与角色：STUsers（mesdata）" class="headerlink" title="1.1 用户与角色：STUsers（mesdata）"></a>1.1 用户与角色：<code>STUsers</code>（mesdata）</h3><p>角色与用户共用 <code>mesdata.dbo.STUsers</code>，通过 <code>uGroup</code> 区分：</p>
-<table>
-<thead>
-<tr>
-<th>uGroup</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>0</td>
-<td>用户</td>
-</tr>
-<tr>
-<td>1</td>
-<td>角色</td>
-</tr>
-</tbody></table>
-<p>相关代码：<code>StusersEntity</code>、<code>StusersServiceImpl.saveRole</code> &#x2F; <code>updateRole</code>、<code>EosRoleController</code>（路径 <code>/eosrole</code>）。</p>
-<p>eosrole 页面「保存角色」只写角色基本信息（编码、名称、描述、分组 <code>Categories</code>、启用状态），<strong>不涉及菜单勾选</strong>。菜单与对象操作权限在「配置菜单权限」弹窗中单独保存（见 §2.3）；用户分配在「配置用户权限」中保存（见 §2.5）。</p>
-<p><code>EmpowermentRight</code>、<code>RelateUserH</code> 等字段在 MES 新增角色时仅填默认值，<strong>不用于菜单授权</strong>；菜单授权走 <code>STPermission</code>。</p>
-<h3 id="1-2-用户-角色：STUserGroup（mesdata）"><a href="#1-2-用户-角色：STUserGroup（mesdata）" class="headerlink" title="1.2 用户-角色：STUserGroup（mesdata）"></a>1.2 用户-角色：<code>STUserGroup</code>（mesdata）</h3><table>
-<thead>
-<tr>
-<th>字段</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>UserID</code></td>
-<td>用户 OID（<code>STUsers.OID</code>，<code>uGroup=0</code>）</td>
-</tr>
-<tr>
-<td><code>GroupID</code></td>
-<td>角色 OID（<code>STUsers.OID</code>，<code>uGroup=1</code>）</td>
-</tr>
-<tr>
-<td><code>Back</code></td>
-<td>备注</td>
-</tr>
-</tbody></table>
-<p>MES 已映射：<code>StUserGroupEntity</code> + <code>EosRoleUserServiceImpl</code>。eosrole「配置用户权限」保存时：</p>
-<ol>
-<li>清空该角色在 <code>STUserGroup</code> 中的旧关联，再批量插入新用户</li>
-<li>按 <code>STUsers.UserID</code> ↔ <code>sys_user.username</code> 匹配 MES 用户；有 MES 用户时先 <code>ensureMesRole</code>，再全量改写 <code>sys_user_role</code></li>
-</ol>
-<p>也可在 EOS 原生安全管理中分配角色（同样写入 <code>STUserGroup</code>）。</p>
-<h3 id="1-3-菜单：Tree-ObjectRegister（messys）"><a href="#1-3-菜单：Tree-ObjectRegister（messys）" class="headerlink" title="1.3 菜单：Tree + ObjectRegister（messys）"></a>1.3 菜单：<code>Tree</code> + <code>ObjectRegister</code>（messys）</h3><table>
-<thead>
-<tr>
-<th>表</th>
-<th>库</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>Tree</code></td>
-<td>messys</td>
-<td>EOS Web 菜单树（NodeID、ParentID、NodeCaption、Functions 等）</td>
-</tr>
-<tr>
-<td><code>ObjectRegister</code></td>
-<td>messys</td>
-<td>对象注册；<code>OwnerID</code> &#x3D; <code>Tree.NodeID</code>，<code>TypeID = 7</code> 表示菜单&#x2F;目录</td>
-</tr>
-<tr>
-<td><code>UniqueNO</code></td>
-<td>messys</td>
-<td>分配 Tree 的 NodeID（<code>NName=&#39;tree&#39;</code>）</td>
-</tr>
-</tbody></table>
-<p>新增菜单节点时（<code>TreeServiceImpl.addNode</code>）会：</p>
-<ol>
-<li>从 <code>UniqueNO</code> 分配新 <code>NodeID</code></li>
-<li>写入 <code>Tree</code></li>
-<li>写入 <code>ObjectRegister</code>，并将返回的 <code>ObjectID</code> 回填到 <code>Tree.ObjectID</code></li>
-</ol>
-<p>从 MES 同步菜单时（<code>TreeServiceImpl.syncFromSysMenu</code>），同样会为每个节点创建 <code>ObjectRegister</code> 记录。</p>
-<p>数据库 schema 配置见 <code>mes-web/src/main/resources/schema.properties</code>：</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">eossys.schema</span>=<span class="string">messys.dbo</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="1-4-角色-菜单关联：STPermission（mesdata）"><a href="#1-4-角色-菜单关联：STPermission（mesdata）" class="headerlink" title="1.4 角色-菜单关联：STPermission（mesdata）"></a>1.4 角色-菜单关联：<code>STPermission</code>（mesdata）</h3><p><strong>核心授权表</strong>。EOS 原生安全管理器与 MES eosrole「配置菜单权限」保存时均写入此表。</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>类型</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>UserID</code></td>
-<td>int</td>
-<td><code>STUsers.OID</code>；绝大多数为角色（<code>uGroup=1</code>），少量为用户直授（<code>uGroup=0</code>）</td>
-</tr>
-<tr>
-<td><code>ObjectID</code></td>
-<td>int</td>
-<td><code>messys.dbo.ObjectRegister.ObjectID</code></td>
-</tr>
-<tr>
-<td><code>Oprate</code></td>
-<td>nvarchar</td>
-<td>操作类型（见下表）</td>
-</tr>
-<tr>
-<td><code>Permission</code></td>
-<td>int</td>
-<td>权限值；<strong>含义随 Oprate 类型不同</strong>（见下表）</td>
-</tr>
-</tbody></table>
-<p><strong>ERP 模式下 <code>Permission</code> 双语义</strong>（本环境 <code>WebPermission</code> 未启用，按钮授权均走 <code>STPermission</code>）：</p>
-<table>
-<thead>
-<tr>
-<th>Oprate 类型</th>
-<th>示例</th>
-<th>Permission</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>菜单</td>
-<td><code>执行</code></td>
-<td><strong>1</strong></td>
-<td>允许可见（白名单；无记录&#x3D;不可见）</td>
-</tr>
-<tr>
-<td>按钮&#x2F;操作</td>
-<td><code>增加</code>、<code>EX61:组织架构分发</code></td>
-<td><strong>0</strong></td>
-<td>禁用（黑名单；无记录&#x3D;允许）</td>
-</tr>
-</tbody></table>
-<p>常见 <code>Oprate</code> 取值：<code>执行</code>（菜单）；标准操作（增加、修改、删除、审核…）；自定义 <code>EX&#123;ExFunction.ID&#125;:&#123;SDesc&#125;</code>（如 <code>EX61:组织架构分发</code>）。</p>
-<p><strong>菜单授权</strong>路径：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">STPermission(ObjectID, Oprate=&#x27;执行&#x27;, Permission=1)</span><br><span class="line">  → ObjectRegister (TypeID=7, OwnerID=Tree.NodeID)</span><br><span class="line">  → Tree.NodeCaption</span><br></pre></td></tr></table></figure>
-
-<p>MES 读写实现：</p>
-<table>
-<thead>
-<tr>
-<th>服务</th>
-<th>职责</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>EosRolePermissionServiceImpl</code></td>
-<td>查询&#x2F;保存菜单「执行」（<code>objectIds</code> + <code>mode</code>）</td>
-</tr>
-<tr>
-<td><code>EosRoleObjectPermissionServiceImpl</code></td>
-<td>ERP 对象操作（<code>operationPermissions</code>）+ MES 按钮（<code>sys_role_menu</code>）</td>
-</tr>
-</tbody></table>
-<p><code>queryMenuObjectIds</code> 过滤条件：<code>Oprate=执行</code> 且 <code>Permission=1</code>（<strong>当前未按 ObjectRegister.TypeID&#x3D;7 过滤</strong>）。</p>
-<h3 id="1-5-ERP-按钮权限（ExFunction-DjDy）"><a href="#1-5-ERP-按钮权限（ExFunction-DjDy）" class="headerlink" title="1.5 ERP 按钮权限（ExFunction + DjDy）"></a>1.5 ERP 按钮权限（ExFunction + DjDy）</h3><table>
-<thead>
-<tr>
-<th>层级</th>
-<th>粒度</th>
-<th>存储</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>按钮定义</td>
-<td>每个 ExFunction 一条</td>
-<td><code>messys.ExFunction</code>（<code>Note1 like &#39;button%&#39;</code>）</td>
-</tr>
-<tr>
-<td>授权 ObjectID</td>
-<td><strong>每个单据（DjDy）一个</strong></td>
-<td><code>ObjectRegister.Object = DjDy.DjCName</code> 且 <code>TypeID != 7</code>（OwnerID 可为 null）</td>
-</tr>
-<tr>
-<td>授权 Oprate</td>
-<td><strong>每个按钮一个</strong></td>
-<td><code>EX&#123;ID&#125;:&#123;SDesc&#125;</code>；同一 ObjectID 多行 &#x3D; 同单据多按钮</td>
-</tr>
-</tbody></table>
-<p>链路：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Tree.Functions（如 单据(组织架构)）</span><br><span class="line">  → DjDy（DjCName=组织架构, DjDm=303）</span><br><span class="line">  → ExFunction（SType=DJ, SID=DjDm）→ Oprate=EX61:组织架构分发</span><br><span class="line">  → ObjectRegister（Object=组织架构, ObjectID=965, TypeID=1）</span><br><span class="line">  → STPermission(UserID, ObjectID=965, Oprate, Permission=0 表示禁用)</span><br></pre></td></tr></table></figure>
-
-<p><strong>复合单据示例（Tree NodeID&#x3D;430）</strong>：</p>
-<table>
-<thead>
-<tr>
-<th>用途</th>
-<th>ObjectID</th>
-<th>TypeID</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>菜单「执行」</td>
-<td>468</td>
-<td>7</td>
-<td>OwnerID&#x3D;430，名「组织机构关系表」</td>
-</tr>
-<tr>
-<td>按钮 EX61</td>
-<td>965</td>
-<td>1</td>
-<td>OwnerID&#x3D;null，名「组织架构」，与菜单 ObjectID 不同</td>
-</tr>
-</tbody></table>
-<p>同一 DjDm 下多个 ExFunction（如 DjDm&#x3D;212 的 EX13&#x2F;EX14&#x2F;EX16&#x2F;EX17）共用<strong>同一</strong>业务 ObjectID，以不同 <code>Oprate</code> 区分。</p>
-<p>业务 ObjectID 解析见 <a href="/2026/07/31/eos-role-tree-nodeid-objectid/">EOS 菜单树 NodeID 与 ObjectID 说明</a> §5.1（<code>EosMenuObjectResolver</code>）。</p>
-<p><strong>说明</strong>：<code>WebPermission</code> 本环境未启用；<code>SType=CX</code> 且安全管理器不可见的 STPermission 记录（如 <code>EX10:查看JSON</code>）视为历史垃圾数据。</p>
-<p><strong>当前环境数据量（仅供参考）</strong>：</p>
-<table>
-<thead>
-<tr>
-<th>表</th>
-<th>记录数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>STPermission</code></td>
-<td>~1625</td>
-<td>主路径（角色 ~1595，用户直授 ~30）</td>
-</tr>
-<tr>
-<td><code>WebPermission</code></td>
-<td>0</td>
-<td>Web 对象权限（<code>RoleID</code> + <code>ObjID</code>），本环境未使用</td>
-</tr>
-<tr>
-<td><code>STDomainPermission</code></td>
-<td>0</td>
-<td>域-菜单节点（<code>DomainID</code> + <code>MenuNodeID</code>），本环境未使用</td>
-</tr>
-</tbody></table>
-<h3 id="1-6-跨库关系图"><a href="#1-6-跨库关系图" class="headerlink" title="1.6 跨库关系图"></a>1.6 跨库关系图</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">┌──────────────────────── mesdata ────────────────────────┐</span><br><span class="line">│  STUsers (uGroup=0 用户 / uGroup=1 角色)                 │</span><br><span class="line">│       ↑ UserID              ↑ GroupID                      │</span><br><span class="line">│  STUserGroup ──────────────┘                             │</span><br><span class="line">│       ↑ UserID (角色 OID)                                │</span><br><span class="line">│  STPermission (ObjectID, Oprate, Permission)               │</span><br><span class="line">│  sys_role / sys_role_menu / sys_menu_eos_node              │</span><br><span class="line">└──────────────────────────│ ObjectID ──────────────────────┘</span><br><span class="line">                           ▼</span><br><span class="line">┌──────────────────────── messys ─────────────────────────┐</span><br><span class="line">│  ObjectRegister (ObjectID, TypeID=7, OwnerID=NodeID)     │</span><br><span class="line">│       ↑ OwnerID                                          │</span><br><span class="line">│  Tree (NodeID, NodeCaption, ParentID, ObjectID)          │</span><br><span class="line">└─────────────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="2-MES-侧数据模型"><a href="#2-MES-侧数据模型" class="headerlink" title="2. MES 侧数据模型"></a>2. MES 侧数据模型</h2><h3 id="2-1-角色-菜单：sys-role-menu"><a href="#2-1-角色-菜单：sys-role-menu" class="headerlink" title="2.1 角色-菜单：sys_role_menu"></a>2.1 角色-菜单：<code>sys_role_menu</code></h3><p>MES Web「角色管理」（<code>role.html</code> + <code>role.js</code>）通过 zTree 勾选菜单，提交 <code>menuIdList</code> 到 <code>/sys/role/save</code> 或 <code>/sys/role/update</code>。</p>
-<p>保存逻辑（<code>SysRoleMenuServiceImpl.saveOrUpdate</code>）：</p>
-<ol>
-<li>按 <code>role_id</code> <strong>删除</strong>原有关联</li>
-<li><strong>批量插入</strong>新的 <code>(role_id, menu_id)</code> 记录</li>
-</ol>
-<p>权限生效链路：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sys_user → sys_user_role → sys_role → sys_role_menu → sys_menu</span><br></pre></td></tr></table></figure>
-
-<p>eosrole 保存 MES 菜单&#x2F;按钮时也会写入同一张表（见 §2.3）。</p>
-<h3 id="2-2-EOS-角色同步到-MES"><a href="#2-2-EOS-角色同步到-MES" class="headerlink" title="2.2 EOS 角色同步到 MES"></a>2.2 EOS 角色同步到 MES</h3><p><code>EosRoleSyncServiceImpl</code> &#x2F; 定时任务 <code>EosTask.sycnEosRole()</code> 调用：</p>
-<ul>
-<li><code>sysRoleService.saveWithoutMenu()</code> — 新建 MES 角色</li>
-<li><code>sysRoleService.updateWithoutMenu()</code> — 更新 MES 角色</li>
-</ul>
-<p>同步字段：角色名、描述、分组、<code>eos_role_id</code>。<strong>定时&#x2F;手动同步本身不会</strong>同步 EOS <code>STPermission</code> 或 MES <code>sys_role_menu</code>。</p>
-<p>若在 eosrole「配置菜单权限」中提交了 <code>mesMenuIds</code> &#x2F; <code>mesButtonMenuIds</code>，且尚无对应 MES 角色，会自动 <code>syncRole</code> 后再写 <code>sys_role_menu</code>。</p>
-<h3 id="2-3-eosrole「配置菜单权限」"><a href="#2-3-eosrole「配置菜单权限」" class="headerlink" title="2.3 eosrole「配置菜单权限」"></a>2.3 eosrole「配置菜单权限」</h3><p><code>eosrole</code> 弹窗支持统一配置：</p>
-<table>
-<thead>
-<tr>
-<th>菜单类型</th>
-<th>识别</th>
-<th>保存位置</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>ERP 原生</td>
-<td><code>Functions</code> 不含「函数打开网页」（<code>menuType=erp</code>）</td>
-<td>菜单 → <code>STPermission</code>（<code>Oprate=执行</code>, Permission&#x3D;1）；按钮 → <code>STPermission</code>（<code>EXxx:...</code> 等, Permission&#x3D;0&#x3D;禁用）</td>
-</tr>
-<tr>
-<td>MES Web</td>
-<td><code>Functions</code> 含「函数打开网页」（<code>menuType=mes</code>），<code>sys_menu_eos_node</code> 存 <code>menu_id</code> ↔ <code>eos_node_id</code></td>
-<td>菜单执行 → <code>STPermission</code>；按钮 → <code>sys_role_menu</code></td>
-</tr>
-<tr>
-<td>目录</td>
-<td><code>menuType=folder</code></td>
-<td>通常仅作树结构；勾选子节点时汇总子菜单 objectId</td>
-</tr>
-</tbody></table>
-<p>相关 API（<code>EosRoleController</code>，权限 <code>eosrole:permission</code>）：</p>
-<table>
-<thead>
-<tr>
-<th>方法</th>
-<th>路径</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>*</td>
-<td><code>/eosrole/menu/tree</code></td>
-<td>权限菜单树（含 <code>objectId</code> &#x2F; <code>menuType</code> &#x2F; <code>sysMenuId</code>）</td>
-</tr>
-<tr>
-<td>GET</td>
-<td><code>/eosrole/permission/&#123;roleId&#125;</code></td>
-<td>已授权菜单 objectId（执行+Permission&#x3D;1）</td>
-</tr>
-<tr>
-<td>GET</td>
-<td><code>/eosrole/permission/detail/&#123;roleId&#125;?nodeId=</code></td>
-<td>节点对象&#x2F;按钮权限详情</td>
-</tr>
-<tr>
-<td>GET</td>
-<td><code>/eosrole/permission/mes-menu-ids/&#123;roleId&#125;</code></td>
-<td>回显 MES 角色全部 <code>sys_role_menu</code> menuId</td>
-</tr>
-<tr>
-<td>POST</td>
-<td><code>/eosrole/permission/save</code></td>
-<td>保存菜单执行 + ERP 操作 + MES 按钮</td>
-</tr>
-<tr>
-<td>*</td>
-<td><code>/eosrole/menu/backfill-mes-menu-id</code></td>
-<td>历史 MES 节点回填 <code>sys_menu_eos_node</code></td>
-</tr>
-</tbody></table>
-<p><code>POST /eosrole/permission/save</code> body（<code>EosRolePermissionSaveRequest</code>）：</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>roleIds</code></td>
-<td>EOS 角色 OID 列表</td>
-</tr>
-<tr>
-<td><code>objectIds</code></td>
-<td>勾选菜单的 <code>Tree.ObjectID</code> → <code>STPermission</code>「执行」</td>
-</tr>
-<tr>
-<td><code>mode</code></td>
-<td><code>append</code> &#x2F; <code>replace</code></td>
-</tr>
-<tr>
-<td><code>mesMenuIds</code></td>
-<td>MES 目录&#x2F;菜单 <code>menu_id</code> → <code>sys_role_menu</code></td>
-</tr>
-<tr>
-<td><code>mesButtonMenuIds</code></td>
-<td>MES 按钮 <code>menu_id</code> → <code>sys_role_menu</code></td>
-</tr>
-<tr>
-<td><code>operationPermissions</code></td>
-<td><code>&#123;objectId, oprate, granted&#125;</code>；ERP 禁止列表（<code>granted=false</code> 写 Permission&#x3D;0）</td>
-</tr>
-<tr>
-<td><code>operationReplaceObjectIds</code></td>
-<td>replace 时需清理非「执行」权限的业务 ObjectID</td>
-</tr>
-</tbody></table>
-<p>保存流程：</p>
-<ol>
-<li><code>EosRolePermissionServiceImpl.savePermissions(roleIds, objectIds, mode)</code> — 写菜单「执行」</li>
-<li><code>EosRoleObjectPermissionServiceImpl.saveMesAndObjectPermissions(request)</code> — ERP 操作 + MES 按钮</li>
-</ol>
-<p><code>mode=replace</code> 时：先按该角色已有「执行」的 ObjectID 删除这些 ObjectID 下<strong>全部 Oprate 行</strong>，再插入勾选的「执行」；<code>mesMenuIds</code> 与 <code>mesButtonMenuIds</code> <strong>都为空</strong>时不改动 <code>sys_role_menu</code>。</p>
-<p><strong>说明</strong>：<code>Tree.Functions</code> 里 URL 的 <code>menuId=</code> 是 <strong>EOS NodeID</strong>（页面跳转用）；<code>sys_menu.menu_id</code> 的权威映射在 **<code>mesdata.sys_menu_eos_node</code>**（<code>eos_node_id</code> → <code>menu_id</code>），由 <code>syncFromSysMenu</code> 写入或 <code>backfillSysMenuEosNode</code> 按 URL&#x2F;NodeDesc 回填。过渡期仍双写 <code>NodeDesc=MES_MENU:&#123;sysMenuId&#125;</code> 作兼容 fallback。</p>
-<p>建表与历史迁移脚本：<code>sys_menu_eos_node.sql</code>、<code>sys_menu_eos_node.mysql.sql</code>（位于 mes-security-eos 模块 <code>doc/</code>）。</p>
-<h3 id="2-4-MES-菜单管理「设置到-EOS」"><a href="#2-4-MES-菜单管理「设置到-EOS」" class="headerlink" title="2.4 MES 菜单管理「设置到 EOS」"></a>2.4 MES 菜单管理「设置到 EOS」</h3><p>MES 菜单管理页（<code>sys/menu</code>）勾选目录&#x2F;菜单后点击「设置到 EOS」，调用 <code>POST /tree/syncFromSysMenu</code>（<code>menu.js#setToEos</code>）。</p>
-<table>
-<thead>
-<tr>
-<th>步骤</th>
-<th>行为</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>用户选择 EOS 目标目录 <code>parentNodeId</code></td>
-</tr>
-<tr>
-<td>2</td>
-<td><code>TreeServiceImpl.syncFromSysMenu</code> 为每个 type&#x3D;0&#x2F;1 的 sys_menu 新建 EOS Tree 节点</td>
-</tr>
-<tr>
-<td>3</td>
-<td><code>applySysMenuMapping</code> 写入 <code>sys_menu_eos_node</code>，并双写 <code>NodeDesc=MES_MENU:&#123;sysMenuId&#125;</code>（目录与菜单均写）</td>
-</tr>
-<tr>
-<td>4</td>
-<td>type&#x3D;1 且有 url 时，<code>Functions</code> 生成 MES Web 跳转 URL，其中 <code>menuId=</code> 为新分配的 <strong>EOS NodeID</strong></td>
-</tr>
-</tbody></table>
-<p>历史已同步但未写映射的节点，可任选以下方式处理（当前 sync 始终新建节点，不更新旧节点）：</p>
-<table>
-<thead>
-<tr>
-<th>方式</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>定时任务</td>
-<td><code>EosTask.backfillSysMenuEosNode</code>，默认每日 3:00（<code>t_qrtz_schedule_job</code>；升级见 <code>V2__Update_backfill_sys_menu_eos_node_job.sql</code>）</td>
-</tr>
-<tr>
-<td>手动接口</td>
-<td><code>/eosrole/menu/backfill-mes-menu-id</code></td>
-</tr>
-<tr>
-<td>重新同步</td>
-<td>菜单管理页「设置到 EOS」（会新建节点）</td>
-</tr>
-<tr>
-<td>SQL 迁移</td>
-<td>执行 <code>sys_menu_eos_node.sql</code> 从 NodeDesc 导入历史映射</td>
-</tr>
-</tbody></table>
-<p>定时任务与手动接口共用 <code>TreeService.backfillSysMenuEosNode()</code>。<strong>局限</strong>：仅对尚无映射记录的节点回填；URL 匹配仅适用于 <code>Functions</code> 含「函数打开网页」的 MES Web 菜单；type&#x3D;0 目录（<code>Functions</code> 为空）若 NodeDesc 也无映射，需重新「设置到 EOS」。</p>
-<h3 id="2-5-eosrole「配置用户权限」"><a href="#2-5-eosrole「配置用户权限」" class="headerlink" title="2.5 eosrole「配置用户权限」"></a>2.5 eosrole「配置用户权限」</h3><table>
-<thead>
-<tr>
-<th>方法</th>
-<th>路径</th>
-<th>权限</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>GET</td>
-<td><code>/eosrole/users/assigned/&#123;roleId&#125;</code></td>
-<td><code>eosrole:user</code></td>
-<td>已授权用户（合并 EOS + MES）</td>
-</tr>
-<tr>
-<td>GET</td>
-<td><code>/eosrole/users/unassigned/&#123;roleId&#125;</code></td>
-<td><code>eosrole:user</code></td>
-<td>待授权用户</td>
-</tr>
-<tr>
-<td>POST</td>
-<td><code>/eosrole/users/save</code></td>
-<td><code>eosrole:user</code></td>
-<td>双写 <code>STUserGroup</code> + <code>sys_user_role</code></td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="3-两套体系对照"><a href="#3-两套体系对照" class="headerlink" title="3. 两套体系对照"></a>3. 两套体系对照</h2><table>
-<thead>
-<tr>
-<th>维度</th>
-<th>EOS 原生</th>
-<th>MES Web</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>用户&#x2F;角色表</td>
-<td><code>mesdata.STUsers</code></td>
-<td><code>sys_user</code> &#x2F; <code>sys_role</code></td>
-</tr>
-<tr>
-<td>用户-角色</td>
-<td><code>mesdata.STUserGroup</code></td>
-<td><code>sys_user_role</code></td>
-</tr>
-<tr>
-<td>菜单表</td>
-<td><code>messys.Tree</code> + <code>ObjectRegister</code></td>
-<td><code>sys_menu</code></td>
-</tr>
-<tr>
-<td>角色-菜单关联</td>
-<td><strong><code>mesdata.STPermission</code></strong></td>
-<td><code>sys_role_menu</code></td>
-</tr>
-<tr>
-<td>MES 页面维护</td>
-<td>eosrole（菜单+ERP 对象操作+MES 按钮+用户）&#x2F; eostree</td>
-<td>角色管理（含菜单授权）</td>
-</tr>
-<tr>
-<td>跨系统同步</td>
-<td>EOS → MES 同步角色元数据；eosrole 保存时可统一写两侧</td>
-<td>可与 eosrole 统一配置</td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="4-查询-SQL-示例"><a href="#4-查询-SQL-示例" class="headerlink" title="4. 查询 SQL 示例"></a>4. 查询 SQL 示例</h2><p>以下 SQL 在 SQL Server 上验证可用；跨库查询需当前连接对 <code>mesdata</code>、<code>messys</code> 均有读权限。</p>
-<h3 id="4-1-查看某角色的菜单权限（含菜单名）"><a href="#4-1-查看某角色的菜单权限（含菜单名）" class="headerlink" title="4.1 查看某角色的菜单权限（含菜单名）"></a>4.1 查看某角色的菜单权限（含菜单名）</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- @RoleOID: STUsers.OID，且 uGroup = 1</span></span><br><span class="line"><span class="keyword">DECLARE</span> <span class="variable">@RoleOID</span> <span class="type">INT</span> <span class="operator">=</span> <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    r.OID           <span class="keyword">AS</span> RoleOID,</span><br><span class="line">    r.UserName      <span class="keyword">AS</span> RoleName,</span><br><span class="line">    p.ObjectID,</span><br><span class="line">    o.[Object]      <span class="keyword">AS</span> ObjectName,</span><br><span class="line">    o.TypeID,</span><br><span class="line">    t.NodeID,</span><br><span class="line">    RTRIM(t.NodeCaption) <span class="keyword">AS</span> MenuCaption,</span><br><span class="line">    p.Oprate,</span><br><span class="line">    p.Permission</span><br><span class="line"><span class="keyword">FROM</span> mesdata.dbo.STUsers r</span><br><span class="line"><span class="keyword">JOIN</span> mesdata.dbo.STPermission p <span class="keyword">ON</span> p.UserID <span class="operator">=</span> r.OID</span><br><span class="line"><span class="keyword">JOIN</span> messys.dbo.ObjectRegister o <span class="keyword">ON</span> p.ObjectID <span class="operator">=</span> o.ObjectID</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> messys.dbo.Tree t <span class="keyword">ON</span> o.OwnerID <span class="operator">=</span> t.NodeID</span><br><span class="line"><span class="keyword">WHERE</span> r.OID <span class="operator">=</span> <span class="variable">@RoleOID</span></span><br><span class="line">  <span class="keyword">AND</span> r.uGroup <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">  <span class="keyword">AND</span> o.TypeID <span class="operator">=</span> <span class="number">7</span>          <span class="comment">-- 菜单/目录</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> t.NodeID, p.Oprate;</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-2-查看某用户通过角色继承的菜单（完整链路）"><a href="#4-2-查看某用户通过角色继承的菜单（完整链路）" class="headerlink" title="4.2 查看某用户通过角色继承的菜单（完整链路）"></a>4.2 查看某用户通过角色继承的菜单（完整链路）</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- @UserOID: STUsers.OID，且 uGroup = 0</span></span><br><span class="line"><span class="keyword">DECLARE</span> <span class="variable">@UserOID</span> <span class="type">INT</span> <span class="operator">=</span> <span class="number">11</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    u.UserName      <span class="keyword">AS</span> UserName,</span><br><span class="line">    r.UserName      <span class="keyword">AS</span> RoleName,</span><br><span class="line">    RTRIM(t.NodeCaption) <span class="keyword">AS</span> MenuCaption,</span><br><span class="line">    p.Oprate,</span><br><span class="line">    p.Permission</span><br><span class="line"><span class="keyword">FROM</span> mesdata.dbo.STUsers u</span><br><span class="line"><span class="keyword">JOIN</span> mesdata.dbo.STUserGroup ug <span class="keyword">ON</span> ug.UserID <span class="operator">=</span> u.OID</span><br><span class="line"><span class="keyword">JOIN</span> mesdata.dbo.STUsers r <span class="keyword">ON</span> ug.GroupID <span class="operator">=</span> r.OID <span class="keyword">AND</span> r.uGroup <span class="operator">=</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">JOIN</span> mesdata.dbo.STPermission p <span class="keyword">ON</span> p.UserID <span class="operator">=</span> r.OID</span><br><span class="line"><span class="keyword">JOIN</span> messys.dbo.ObjectRegister o <span class="keyword">ON</span> p.ObjectID <span class="operator">=</span> o.ObjectID <span class="keyword">AND</span> o.TypeID <span class="operator">=</span> <span class="number">7</span></span><br><span class="line"><span class="keyword">JOIN</span> messys.dbo.Tree t <span class="keyword">ON</span> o.OwnerID <span class="operator">=</span> t.NodeID</span><br><span class="line"><span class="keyword">WHERE</span> u.OID <span class="operator">=</span> <span class="variable">@UserOID</span></span><br><span class="line">  <span class="keyword">AND</span> u.uGroup <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">  <span class="keyword">AND</span> p.Oprate <span class="operator">=</span> N<span class="string">&#x27;执行&#x27;</span>    <span class="comment">-- 菜单可见通常对应「执行」</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> r.UserName, t.NodeID;</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-3-统计各角色的菜单授权数量"><a href="#4-3-统计各角色的菜单授权数量" class="headerlink" title="4.3 统计各角色的菜单授权数量"></a>4.3 统计各角色的菜单授权数量</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    r.OID,</span><br><span class="line">    r.UserName <span class="keyword">AS</span> RoleName,</span><br><span class="line">    <span class="built_in">COUNT</span>(<span class="keyword">DISTINCT</span> p.ObjectID) <span class="keyword">AS</span> MenuObjectCount,</span><br><span class="line">    <span class="built_in">COUNT</span>(<span class="operator">*</span>) <span class="keyword">AS</span> PermissionRowCount</span><br><span class="line"><span class="keyword">FROM</span> mesdata.dbo.STUsers r</span><br><span class="line"><span class="keyword">JOIN</span> mesdata.dbo.STPermission p <span class="keyword">ON</span> p.UserID <span class="operator">=</span> r.OID</span><br><span class="line"><span class="keyword">JOIN</span> messys.dbo.ObjectRegister o <span class="keyword">ON</span> p.ObjectID <span class="operator">=</span> o.ObjectID <span class="keyword">AND</span> o.TypeID <span class="operator">=</span> <span class="number">7</span></span><br><span class="line"><span class="keyword">WHERE</span> r.uGroup <span class="operator">=</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> r.OID, r.UserName</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> MenuObjectCount <span class="keyword">DESC</span>;</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-4-查找拥有某菜单权限的所有角色"><a href="#4-4-查找拥有某菜单权限的所有角色" class="headerlink" title="4.4 查找拥有某菜单权限的所有角色"></a>4.4 查找拥有某菜单权限的所有角色</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- @MenuNodeID: messys.dbo.Tree.NodeID</span></span><br><span class="line"><span class="keyword">DECLARE</span> <span class="variable">@MenuNodeID</span> <span class="type">INT</span> <span class="operator">=</span> <span class="number">17</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span></span><br><span class="line">    r.OID,</span><br><span class="line">    r.UserName <span class="keyword">AS</span> RoleName,</span><br><span class="line">    RTRIM(t.NodeCaption) <span class="keyword">AS</span> MenuCaption,</span><br><span class="line">    p.Oprate</span><br><span class="line"><span class="keyword">FROM</span> messys.dbo.Tree t</span><br><span class="line"><span class="keyword">JOIN</span> messys.dbo.ObjectRegister o <span class="keyword">ON</span> o.OwnerID <span class="operator">=</span> t.NodeID <span class="keyword">AND</span> o.TypeID <span class="operator">=</span> <span class="number">7</span></span><br><span class="line"><span class="keyword">JOIN</span> mesdata.dbo.STPermission p <span class="keyword">ON</span> p.ObjectID <span class="operator">=</span> o.ObjectID</span><br><span class="line"><span class="keyword">JOIN</span> mesdata.dbo.STUsers r <span class="keyword">ON</span> p.UserID <span class="operator">=</span> r.OID <span class="keyword">AND</span> r.uGroup <span class="operator">=</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">WHERE</span> t.NodeID <span class="operator">=</span> <span class="variable">@MenuNodeID</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> r.UserName, p.Oprate;</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-5-对比-EOS-角色与-MES-角色（不含菜单）"><a href="#4-5-对比-EOS-角色与-MES-角色（不含菜单）" class="headerlink" title="4.5 对比 EOS 角色与 MES 角色（不含菜单）"></a>4.5 对比 EOS 角色与 MES 角色（不含菜单）</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    sr.role_id,</span><br><span class="line">    sr.role_name       <span class="keyword">AS</span> MesRoleName,</span><br><span class="line">    sr.eos_role_id,</span><br><span class="line">    er.UserName        <span class="keyword">AS</span> EosRoleName,</span><br><span class="line">    er.OID             <span class="keyword">AS</span> EosRoleOID</span><br><span class="line"><span class="keyword">FROM</span> mesdata.dbo.sys_role sr</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> mesdata.dbo.STUsers er</span><br><span class="line">    <span class="keyword">ON</span> sr.eos_role_id <span class="operator">=</span> er.OID <span class="keyword">AND</span> er.uGroup <span class="operator">=</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">WHERE</span> sr.eos_role_id <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> sr.role_id;</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-6-检查菜单节点是否已在-ObjectRegister-注册"><a href="#4-6-检查菜单节点是否已在-ObjectRegister-注册" class="headerlink" title="4.6 检查菜单节点是否已在 ObjectRegister 注册"></a>4.6 检查菜单节点是否已在 ObjectRegister 注册</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    t.NodeID,</span><br><span class="line">    RTRIM(t.NodeCaption) <span class="keyword">AS</span> MenuCaption,</span><br><span class="line">    t.ObjectID,</span><br><span class="line">    o.ObjectID <span class="keyword">AS</span> RegObjectID,</span><br><span class="line">    o.TypeID</span><br><span class="line"><span class="keyword">FROM</span> messys.dbo.Tree t</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> messys.dbo.ObjectRegister o <span class="keyword">ON</span> o.OwnerID <span class="operator">=</span> t.NodeID</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> t.NodeID;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="5-相关代码路径"><a href="#5-相关代码路径" class="headerlink" title="5. 相关代码路径"></a>5. 相关代码路径</h2><table>
-<thead>
-<tr>
-<th>模块</th>
-<th>路径</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>EOS 角色实体</td>
-<td><code>mes-security-eos/.../entity/StusersEntity.java</code></td>
-</tr>
-<tr>
-<td>EOS 角色服务</td>
-<td><code>mes-security-eos/.../service/impl/StusersServiceImpl.java</code></td>
-</tr>
-<tr>
-<td>EOS 角色同步</td>
-<td><code>mes-security-eos/.../service/impl/EosRoleSyncServiceImpl.java</code></td>
-</tr>
-<tr>
-<td>EOS 菜单树</td>
-<td><code>mes-security-eos/.../service/impl/TreeServiceImpl.java</code></td>
-</tr>
-<tr>
-<td>菜单「执行」权限</td>
-<td><code>mes-security-eos/.../service/impl/EosRolePermissionServiceImpl.java</code></td>
-</tr>
-<tr>
-<td>ERP&#x2F;MES 对象与按钮</td>
-<td><code>mes-security-eos/.../service/impl/EosRoleObjectPermissionServiceImpl.java</code></td>
-</tr>
-<tr>
-<td>用户-角色</td>
-<td><code>mes-security-eos/.../service/impl/EosRoleUserServiceImpl.java</code></td>
-</tr>
-<tr>
-<td>业务 ObjectID 解析</td>
-<td><code>mes-security-eos/.../support/EosMenuObjectResolver.java</code></td>
-</tr>
-<tr>
-<td>实体</td>
-<td><code>StPermissionEntity</code>、<code>StUserGroupEntity</code>、<code>TreeEntity</code>、<code>ObjectRegisterEntity</code></td>
-</tr>
-<tr>
-<td>前端</td>
-<td><code>static/js/modules/security/eosrole.js</code></td>
-</tr>
-<tr>
-<td>MES 角色-菜单</td>
-<td><code>mes-core/.../service/impl/SysRoleMenuServiceImpl.java</code></td>
-</tr>
-<tr>
-<td>NodeID ↔ menu_id</td>
-<td><code>sys_menu_eos_node</code> + <code>SysMenuEosNodeService</code></td>
-</tr>
-<tr>
-<td>sys_menu → Tree SQL</td>
-<td><code>doc/sql/sys_menu_to_eos_tree.sql</code></td>
-</tr>
-</tbody></table>
-<p><strong>本环境未使用的 EOS 权限表（可扩展）</strong>：</p>
-<table>
-<thead>
-<tr>
-<th>表</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>WebPermission</code></td>
-<td>Web 对象细粒度权限（RoleID + ObjID + Operate）</td>
-</tr>
-<tr>
-<td><code>STDomainPermission</code></td>
-<td>域 ↔ Tree.NodeID</td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="6-运维与开发建议"><a href="#6-运维与开发建议" class="headerlink" title="6. 运维与开发建议"></a>6. 运维与开发建议</h2><ol>
-<li><strong>EOS 客户端菜单权限</strong>：可在 EOS 原生安全管理中配置，也可在 MES eosrole「配置菜单权限」中配置；数据均写入 <code>mesdata.dbo.STPermission</code>。运维排查可用上文 SQL。</li>
-<li><strong>MES 页面权限</strong>：可在「系统管理 → 角色管理」勾选 <code>sys_menu</code>；也可在 eosrole 中为 MES Web 菜单勾选按钮（写入同一 <code>sys_role_menu</code>）。菜单「执行」可见性仍依赖 <code>STPermission</code>。</li>
-<li><strong>两套菜单数据源</strong>：<ul>
-<li><code>Tree</code> &#x2F; <code>ObjectRegister</code>：EOS 客户端 &#x2F; Web 壳菜单</li>
-<li><code>sys_menu</code>：MES 页面与 Shiro 权限</li>
-<li>eosrole 可在同一弹窗统一配置两侧，但<strong>没有</strong>从 <code>STPermission</code> 自动全量同步到 <code>sys_role_menu</code>（或反向）的后台任务；MES 按钮仅在 eosrole 保存时写入。</li>
-</ul>
-</li>
-<li><strong>从 EOS 同步角色后</strong>：若需在 MES Web 中使用该角色的菜单&#x2F;按钮，可在角色管理中分配，或在 eosrole 配置菜单权限时一并提交 <code>mesMenuIds</code> &#x2F; <code>mesButtonMenuIds</code>。</li>
-<li><strong>跨库注意</strong>：<code>STUsers</code>、<code>STPermission</code>、<code>STUserGroup</code>、<code>sys_*</code> 在 <strong>mesdata</strong>；<code>Tree</code>、<code>ObjectRegister</code> 在 <strong>messys</strong>，关联字段为 <code>STPermission.ObjectID</code> ↔ <code>ObjectRegister.ObjectID</code>。</li>
-</ol>
-<hr>
-<h2 id="7-修订记录"><a href="#7-修订记录" class="headerlink" title="7. 修订记录"></a>7. 修订记录</h2><table>
-<thead>
-<tr>
-<th>日期</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>2026-06-15</td>
-<td>初版：基于 mes-parent 代码梳理 EOS &#x2F; MES 角色菜单关系</td>
-</tr>
-<tr>
-<td>2026-06-16</td>
-<td>eosrole 扩展：ERP 对象操作权限 + MES 按钮权限统一配置</td>
-</tr>
-<tr>
-<td>2026-07-01</td>
-<td>补充 ERP 按钮权限：STPermission 双语义、ExFunction&#x2F;DjDy 链路、965&#x2F;468 复合单据示例；WebPermission 未启用</td>
-</tr>
-<tr>
-<td>2026-07-31</td>
-<td>按最新实现修订：STPermission&#x2F;STUserGroup 已映射；统一结论&#x2F;§5&#x2F;§6 口径；补 save body（含 operationReplaceObjectIds）、用户权限 API、相关代码路径</td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/07/31/eos-role-menu-relationship/" data-id="cmvuqo0qx000ad8v5d1tu3ckq" data-title="EOS 菜单与角色关联关系说明" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EOS/" rel="tag">EOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RBAC/" rel="tag">RBAC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-瘦身密码-肥胖八大健康地雷" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%82%A5%E8%83%96%E5%85%AB%E5%A4%A7%E5%81%A5%E5%BA%B7%E5%9C%B0%E9%9B%B7/" class="article-date">
-  <time class="dt-published" datetime="2026-07-06T08:50:00.000Z" itemprop="datePublished">2026-07-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%82%A5%E8%83%96%E5%85%AB%E5%A4%A7%E5%81%A5%E5%BA%B7%E5%9C%B0%E9%9B%B7/">瘦身密码（五）：甜蜜陷阱——肥胖引爆的八大健康地雷</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>肥胖是健康的「隐形杀手」——影响的不只是外形，而是心血管、代谢、内分泌、呼吸、骨骼、生殖乃至心理的全系统连锁反应。以下梳理书中重点阐述的<strong>八大健康地雷</strong>及应对思路。</p>
-<hr>
-<h2 id="1-糖尿病：胰岛素遇上甜甜圈"><a href="#1-糖尿病：胰岛素遇上甜甜圈" class="headerlink" title="1. 糖尿病：胰岛素遇上甜甜圈"></a>1. 糖尿病：胰岛素遇上甜甜圈</h2><p>中国 20～79 岁人群糖尿病患病率约 10.6%，患病人数约 1.41 亿。肥胖与糖尿病如影随形：</p>
-<ul>
-<li>体重每增加 1 kg，糖尿病风险至少升 5%</li>
-<li>约 50% 肥胖者将来可能患 2 型糖尿病</li>
-<li>糖尿病患者中约 2&#x2F;3 超重或肥胖</li>
-</ul>
-<p><strong>机制</strong>：内脏脂肪像「棉袄」包裹细胞，胰岛素（钥匙）难以与受体（锁）结合，葡萄糖进不了细胞 → <strong>胰岛素抵抗</strong> → 代偿性高胰岛素 → 食欲增加 → 更胖 → 最终血糖失控。</p>
-<p><strong>逆转密码</strong>：</p>
-<ul>
-<li>少吃深加工食品、奶茶炸鸡；多吃蔬菜、粗粮</li>
-<li>中低强度有氧运动，餐后 30～60 分钟，每次 ≥30 分钟，约 200～300 千卡</li>
-<li>超重人群 35～70 岁应每 3 年筛查血糖</li>
-<li>九体医学统计：气虚质、阴虚质、痰湿质最易患糖尿病</li>
-</ul>
-<hr>
-<h2 id="2-冠心病：糖脂风暴下的冠状动脉"><a href="#2-冠心病：糖脂风暴下的冠状动脉" class="headerlink" title="2. 冠心病：糖脂风暴下的冠状动脉"></a>2. 冠心病：糖脂风暴下的冠状动脉</h2><p>冠心病患者超重&#x2F;肥胖率超 50%。BMI 越高，冠心病发病率越高；肥胖者患病概率约为常人 2～3 倍，超平均体重 40% 者死亡风险翻倍。</p>
-<p><strong>机制</strong>：肥胖 → 血脂紊乱 → 动脉粥样硬化斑块 → 冠脉狭窄 → 心肌缺血。心脏如同小发动机驱动重型卡车，长期超负荷终将「罢工」。</p>
-<p><strong>逆转密码</strong>：减重 + 控脂 + 戒烟限酒 + 规律运动；编写细胞层面的「燃脂程序」，减轻心脏负担。</p>
-<hr>
-<h2 id="3-睡眠呼吸暂停：内脏脂肪的午夜叛乱"><a href="#3-睡眠呼吸暂停：内脏脂肪的午夜叛乱" class="headerlink" title="3. 睡眠呼吸暂停：内脏脂肪的午夜叛乱"></a>3. 睡眠呼吸暂停：内脏脂肪的午夜叛乱</h2><p>腹型肥胖者脂肪堆积在呼吸道周围，气道变窄，睡眠时呼吸暂停 → 缺氧 → 睡眠质量差 → 日间嗜睡 → 活动减少 → 更胖，形成<strong>死亡循环</strong>。</p>
-<p><strong>逆转密码</strong>：减重是核心；侧睡、避免睡前饮酒；严重者需呼吸机等医学干预。</p>
-<hr>
-<h2 id="4-脂肪肝：内脏的「垃圾处理厂」瘫痪"><a href="#4-脂肪肝：内脏的「垃圾处理厂」瘫痪" class="headerlink" title="4. 脂肪肝：内脏的「垃圾处理厂」瘫痪"></a>4. 脂肪肝：内脏的「垃圾处理厂」瘫痪</h2><p>超重&#x2F;肥胖者并发症中，脂肪肝最常见之一。肝脏本应将脂肪打包运出，糖尿病与肥胖使这一过程效率降低，脂肪在肝内堆积。</p>
-<p><strong>常见认知陷阱</strong>（书中强调）：</p>
-<ul>
-<li>「不胖就不会脂肪肝」——瘦人脂肪肝也不少见</li>
-<li>「无症状就不用管」——可进展为肝纤维化</li>
-<li>「只吃素就能好」——关键在于总能量与代谢</li>
-<li>「护肝片够用了」——病因不除，难以逆转</li>
-</ul>
-<p><strong>逆转密码</strong>：减重 5%～10% 常可显著改善肝脂肪变；控糖控脂 + 运动。</p>
-<hr>
-<h2 id="5-骨关节炎：关节的载荷安全阈值"><a href="#5-骨关节炎：关节的载荷安全阈值" class="headerlink" title="5. 骨关节炎：关节的载荷安全阈值"></a>5. 骨关节炎：关节的载荷安全阈值</h2><p>体重每增加 1 kg，膝关节承受压力约增加 3～4 kg。肥胖 → 慢性炎症 → 软骨磨损加速。</p>
-<p><strong>逆转密码</strong>：减重减轻关节负荷；水中运动、肌力训练增强关节稳定性。</p>
-<hr>
-<h2 id="6-多囊卵巢综合征：激素风暴"><a href="#6-多囊卵巢综合征：激素风暴" class="headerlink" title="6. 多囊卵巢综合征：激素风暴"></a>6. 多囊卵巢综合征：激素风暴</h2><p>肥胖与多囊卵巢相互加剧：脂肪组织干扰激素平衡，胰岛素抵抗推高雄激素，影响排卵与生育。</p>
-<p><strong>逆转密码</strong>：减重 5%～10% 可显著改善月经与排卵；生活方式干预是一线治疗。</p>
-<hr>
-<h2 id="7-乳腺癌：癌变风险的土壤"><a href="#7-乳腺癌：癌变风险的土壤" class="headerlink" title="7. 乳腺癌：癌变风险的土壤"></a>7. 乳腺癌：癌变风险的土壤</h2><p>肥胖改变雌激素等激素水平，脂肪组织释放炎症因子，为癌细胞生长提供「土壤」。腹型肥胖与多种妇科、消化道肿瘤风险相关。</p>
-<p><strong>逆转密码</strong>：保持健康体重、规律筛查、减少久坐。</p>
-<hr>
-<h2 id="8-心理沼泽：身材焦虑与情绪雪崩"><a href="#8-心理沼泽：身材焦虑与情绪雪崩" class="headerlink" title="8. 心理沼泽：身材焦虑与情绪雪崩"></a>8. 心理沼泽：身材焦虑与情绪雪崩</h2><p>肥胖与心理相互纠缠：</p>
-<ul>
-<li>自尊心、自我形象受损</li>
-<li>焦虑 → 暴食 → 更胖 → 更焦虑</li>
-<li>脂肪组织炎症因子可能影响大脑情绪通路</li>
-<li>社会偏见与「体型歧视」加重心理负担</li>
-<li>极端节食或暴食交替，饮食成为情绪的「翻译器」</li>
-</ul>
-<p><strong>逆转密码</strong>：接纳与改变并行；寻求心理咨询；用运动、社交替代情绪性进食；体重管理应是关爱自己，而非自我惩罚。</p>
-<hr>
-<h2 id="九体视角下的并发症预防"><a href="#九体视角下的并发症预防" class="headerlink" title="九体视角下的并发症预防"></a>九体视角下的并发症预防</h2><p>不同体质易患不同慢病，调理应有的放矢：</p>
-<table>
-<thead>
-<tr>
-<th>体质</th>
-<th>相关风险</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>痰湿质</td>
-<td>肥胖、高血压、糖尿病、高血脂</td>
-</tr>
-<tr>
-<td>气虚质</td>
-<td>感冒、内脏下垂、乏力</td>
-</tr>
-<tr>
-<td>阳虚质</td>
-<td>畏寒、腹泻、痹证</td>
-</tr>
-<tr>
-<td>阴虚质</td>
-<td>失眠、咽痛、「三高」</td>
-</tr>
-<tr>
-<td>血瘀质</td>
-<td>肿瘤、痛证、卒中</td>
-</tr>
-<tr>
-<td>气郁质</td>
-<td>甲状腺、乳腺疾病、情绪障碍</td>
-</tr>
-</tbody></table>
-<p><strong>体质可调</strong>——在并发症尚未形成前调体，是最好的「逆转密码」。</p>
-<hr>
-<h2 id="系列结语"><a href="#系列结语" class="headerlink" title="系列结语"></a>系列结语</h2><p>《瘦身密码》传递的核心信息可以概括为三句话：</p>
-<ol>
-<li><strong>中国肥胖形势严峻</strong>，腰围与 BMI 同样值得每日关注</li>
-<li><strong>科学减肥是马拉松</strong>，忌节食、代餐、极端断食</li>
-<li><strong>九体医学提供个体化路径</strong>——先识体质，再管体重，方能健康瘦身不反弹</li>
-</ol>
-<p>2024 年国家「体重管理年」已经启程。愿我们都不再以「换大码裤子」为常态，而是在读懂自己身体密码的基础上，走出属于自己的健康之路。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E8%82%A5%E8%83%96%E5%85%AB%E5%A4%A7%E5%81%A5%E5%BA%B7%E5%9C%B0%E9%9B%B7/" data-id="cmvuqo0sw009bd8v563a79mbx" data-title="瘦身密码（五）：甜蜜陷阱——肥胖引爆的八大健康地雷" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%81%A5%E5%BA%B7/" rel="tag">健康</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" rel="tag">慢性病</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%82%A5%E8%83%96/" rel="tag">肥胖</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-瘦身密码-九大体质科学甩肉指南" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E5%A4%A7%E4%BD%93%E8%B4%A8%E7%A7%91%E5%AD%A6%E7%94%A9%E8%82%89%E6%8C%87%E5%8D%97/" class="article-date">
-  <time class="dt-published" datetime="2026-07-06T08:45:00.000Z" itemprop="datePublished">2026-07-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E5%A4%A7%E4%BD%93%E8%B4%A8%E7%A7%91%E5%AD%A6%E7%94%A9%E8%82%89%E6%8C%87%E5%8D%97/">瘦身密码（四）：九大体质科学甩肉指南——管体加管重</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="核心理念：管体-管重"><a href="#核心理念：管体-管重" class="headerlink" title="核心理念：管体 + 管重"></a>核心理念：管体 + 管重</h2><ul>
-<li><strong>管体</strong>：辨识体质、纠正偏颇——体质调好了，赘肉才不容易反弹</li>
-<li><strong>管重</strong>：吃对食物比盲目少吃更重要；体重是体质的一面镜子，但不是唯一指标</li>
-</ul>
-<p>同样体重的人，体脂率、肌肉量不同，健康状况可以天差地别。短期节食难持久，<strong>结合体质的长期调理</strong>才是正道。</p>
-<hr>
-<h2 id="平和质：别把好体质作没了"><a href="#平和质：别把好体质作没了" class="headerlink" title="平和质：别把好体质作没了"></a>平和质：别把好体质作没了</h2><p><strong>特征</strong>：体形匀称，精力充沛，患病少，适应力强。</p>
-<p><strong>要点</strong>：</p>
-<ul>
-<li>膳食平衡，粗粮细粮搭配，寒温适中，七八分饱</li>
-<li>每天有氧运动约 30 分钟，或步行不少于 6000 步</li>
-<li>22:30 前入睡，春夏养阳、秋冬避风寒</li>
-<li>穴位保健：足三里、三阴交、涌泉</li>
-</ul>
-<p><strong>药膳举例</strong>：南瓜豆腐羹、芝麻山药粥</p>
-<hr>
-<h2 id="阳虚质：扶阳驱寒是关键"><a href="#阳虚质：扶阳驱寒是关键" class="headerlink" title="阳虚质：扶阳驱寒是关键"></a>阳虚质：扶阳驱寒是关键</h2><p><strong>特征</strong>：怕冷、手足凉、夜尿多、精神不振，脂肪像给身体「穿羽绒服」。</p>
-<p><strong>要点</strong>：</p>
-<ul>
-<li>避寒就温，多晒太阳，睡前 40～45℃ 泡脚 15 分钟</li>
-<li>宜羊肉、鸡肉、韭菜、核桃；少生冷、少苦寒苦瓜（可煮透减寒）</li>
-<li>运动选慢跑、太极拳、八段锦，微汗为度，忌大汗伤阳</li>
-<li>穴位：关元、命门、阳池</li>
-</ul>
-<p><strong>药膳举例</strong>：暖胃茶（红茶+桂圆+生姜+白术+红枣）、当归生姜羊肉汤</p>
-<hr>
-<h2 id="阴虚质：补水降火是核心"><a href="#阴虚质：补水降火是核心" class="headerlink" title="阴虚质：补水降火是核心"></a>阴虚质：补水降火是核心</h2><p><strong>特征</strong>：口干咽燥、手足心热、盗汗、便干，体型偏瘦但血脂易偏高。</p>
-<p><strong>要点</strong>：</p>
-<ul>
-<li>忌熬夜、桑拿、高温环境；室温 14～26℃ 为宜</li>
-<li>宜芝麻、蜂蜜、豆腐、鱼类；少辛辣燥烈、火锅</li>
-<li>运动选游泳、瑜伽、散步，避免大汗淋漓</li>
-<li>穴位：太溪、三阴交、大敦</li>
-</ul>
-<p><strong>药膳举例</strong>：三汁饮（黄精、生地、天门冬、茯苓）、冰糖五果羹</p>
-<hr>
-<h2 id="气郁质：疏肝解郁才能瘦"><a href="#气郁质：疏肝解郁才能瘦" class="headerlink" title="气郁质：疏肝解郁才能瘦"></a>气郁质：疏肝解郁才能瘦</h2><p><strong>特征</strong>：多愁善感、胸闷叹息、睡眠差；<strong>一焦虑就暴食，压力肥堆腰腹</strong>。</p>
-<p><strong>要点</strong>：</p>
-<ul>
-<li>环境宜安静，春季多户外活动舒展阳气</li>
-<li>宜萝卜、洋葱、柑橘；玫瑰花、茉莉花代茶饮</li>
-<li>少芋艿、甘薯等易胀气食物</li>
-<li>推荐：玫瑰花茶 + 敲胆经，疏解肝郁</li>
-</ul>
-<p><strong>药膳举例</strong>：萝卜丝饼、玫瑰佛手茶</p>
-<hr>
-<h2 id="血瘀质：活血化瘀加速瘦身"><a href="#血瘀质：活血化瘀加速瘦身" class="headerlink" title="血瘀质：活血化瘀加速瘦身"></a>血瘀质：活血化瘀加速瘦身</h2><p><strong>特征</strong>：面色晦暗、唇舌黯、黑眼圈，肉硬腿粗，减肥进展慢如「挤牙膏」。</p>
-<p><strong>要点</strong>：</p>
-<ul>
-<li>少食肥腻、寒凉，宜活血食物：山楂、黑豆、玫瑰花</li>
-<li>运动促进血液循环，避免久坐</li>
-<li>药浴泡脚 + 山楂茶是经典组合</li>
-<li>穴位：血海、膈俞、三阴交</li>
-</ul>
-<hr>
-<h2 id="痰湿质：祛湿排浊才是真抽脂"><a href="#痰湿质：祛湿排浊才是真抽脂" class="headerlink" title="痰湿质：祛湿排浊才是真抽脂"></a>痰湿质：祛湿排浊才是真抽脂</h2><p><strong>特征</strong>：体胖腹大、身重困倦、痰多、鼾声大，减肥易卡平台期。</p>
-<p><strong>要点</strong>：</p>
-<ul>
-<li>饮食清淡：冬瓜、白萝卜、薏米、赤小豆；少甜腻、少暴饮暴食</li>
-<li>忌潮湿环境，宜阳光下午后运动</li>
-<li>按揉丰隆、足三里、中脘；红豆薏米汤、山药冬瓜汤</li>
-<li>古籍云：「肥人多痰湿」——祛湿比单纯节食更关键</li>
-</ul>
-<hr>
-<h2 id="湿热质：清火除湿瘦成清爽"><a href="#湿热质：清火除湿瘦成清爽" class="headerlink" title="湿热质：清火除湿瘦成清爽"></a>湿热质：清火除湿瘦成清爽</h2><p><strong>特征</strong>：面油痤疮、口臭、便黏，脸油肚凸的「油胖子」。</p>
-<p><strong>要点</strong>：</p>
-<ul>
-<li>宜冬瓜、绿豆、苦瓜、芹菜；忌辛辣、油炸、甜腻</li>
-<li>运动选中长跑、游泳等耗湿清热项目</li>
-<li>冬瓜汤、刮肝经，拒绝油腻感</li>
-<li>穴位：阴陵泉、曲池、委中</li>
-</ul>
-<hr>
-<h2 id="气虚质：补气提效懒人瘦身"><a href="#气虚质：补气提效懒人瘦身" class="headerlink" title="气虚质：补气提效懒人瘦身"></a>气虚质：补气提效懒人瘦身</h2><p><strong>特征</strong>：疲乏气短、声低懒言、易感冒，肉松垮像棉花。</p>
-<p><strong>要点</strong>：</p>
-<ul>
-<li>宜山药、大枣、鸡肉、黄芪；忌过劳、过饱</li>
-<li>运动从散步、八段锦入手，循序渐进，忌大汗</li>
-<li>黄芪水 + 八段锦，提升运化效率再减重</li>
-<li>穴位：气海、脾俞、足三里</li>
-</ul>
-<hr>
-<h2 id="特禀质：温和调理避开雷区"><a href="#特禀质：温和调理避开雷区" class="headerlink" title="特禀质：温和调理避开雷区"></a>特禀质：温和调理避开雷区</h2><p><strong>特征</strong>：易过敏，减肥过激易诱发风团、喷嚏。</p>
-<p><strong>要点</strong>：</p>
-<ul>
-<li>低敏饮食，避开已知过敏原</li>
-<li>运动环境清洁，避免花粉、尘螨密集处</li>
-<li>穴位按摩宜轻柔；中药调理需严格遵医嘱</li>
-<li>减肥方案宜缓不宜猛</li>
-</ul>
-<hr>
-<h2 id="通用运动时间表（可参考）"><a href="#通用运动时间表（可参考）" class="headerlink" title="通用运动时间表（可参考）"></a>通用运动时间表（可参考）</h2><table>
-<thead>
-<tr>
-<th>时段</th>
-<th>建议</th>
-<th>热量参考</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>6～9 点</td>
-<td>慢跑、快走，微汗</td>
-<td>200～300 千卡</td>
-</tr>
-<tr>
-<td>12～14 点</td>
-<td>午休 30～45 分钟，不宜剧烈运动</td>
-<td>—</td>
-</tr>
-<tr>
-<td>16～17 点</td>
-<td>有氧操、骑行</td>
-<td>300～400 千卡</td>
-</tr>
-<tr>
-<td>20～22 点</td>
-<td>瑜伽拉伸、仙人揉腹</td>
-<td>50～100 千卡</td>
-</tr>
-</tbody></table>
-<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>九体医学告诉我们：<strong>没有放之四海而皆准的减肥法</strong>。痰湿要祛湿，阳虚要温阳，气郁要疏肝，气虚要补气——先调体，再管重，才能瘦得健康、瘦得长久。</p>
-<p>下一篇将聚焦肥胖引爆的<strong>八大健康地雷</strong>：糖尿病、冠心病、脂肪肝……早知早防。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://eppencn.com/2026/07/06/%E7%98%A6%E8%BA%AB%E5%AF%86%E7%A0%81-%E4%B9%9D%E5%A4%A7%E4%BD%93%E8%B4%A8%E7%A7%91%E5%AD%A6%E7%94%A9%E8%82%89%E6%8C%87%E5%8D%97/" data-id="cmvuqo0sx009ed8v5cef8f9bx" data-title="瘦身密码（四）：九大体质科学甩肉指南——管体加管重" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" rel="tag">九体医学</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" rel="tag">体质调理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%81%A5%E5%BA%B7/" rel="tag">健康</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-
-
-  <nav id="page-nav">
-    
-    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
-  </nav>
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/0AD/" rel="tag">0AD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Daily/" rel="tag">AI Daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AdGuard-Home/" rel="tag">AdGuard Home</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Agent/" rel="tag">Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Automation/" rel="tag">Automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CLI/" rel="tag">CLI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Calendar/" rel="tag">Calendar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Claude-Code/" rel="tag">Claude Code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CodingAgent/" rel="tag">CodingAgent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cursor/" rel="tag">Cursor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DNS/" rel="tag">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EOS/" rel="tag">EOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eclipse/" rel="tag">Eclipse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eos/" rel="tag">Eos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Excel/" rel="tag">Excel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Harness/" rel="tag">Harness</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LIMS/" rel="tag">LIMS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCP/" rel="tag">MCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MES/" rel="tag">MES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacBook/" rel="tag">MacBook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenSource/" rel="tag">OpenSource</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OptiPlex/" rel="tag">OptiPlex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PI/" rel="tag">PI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/POI/" rel="tag">POI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PowerShell/" rel="tag">PowerShell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RBAC/" rel="tag">RBAC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTS/" rel="tag">RTS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTX-Spark/" rel="tag">RTX Spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Boot/" rel="tag">Spring Boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/T480/" rel="tag">T480</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Terminal/" rel="tag">Terminal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ThinkPad/" rel="tag">ThinkPad</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tomcat/" rel="tag">Tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eos-nwf/" rel="tag">eos-nwf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/health/" rel="tag">health</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/macOS/" rel="tag">macOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-ai/" rel="tag">mes-ai</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-chart/" rel="tag">mes-chart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-energy/" rel="tag">mes-energy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-factory/" rel="tag">mes-factory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-indicator/" rel="tag">mes-indicator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-manual/" rel="tag">mes-manual</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-measure/" rel="tag">mes-measure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-nwf/" rel="tag">mes-nwf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-plan/" rel="tag">mes-plan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-quartz/" rel="tag">mes-quartz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-report/" rel="tag">mes-report</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-rtdb/" rel="tag">mes-rtdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-security/" rel="tag">mes-security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-web/" rel="tag">mes-web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mes-workflow/" rel="tag">mes-workflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zTree/" rel="tag">zTree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" rel="tag">中医体质</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" rel="tag">九体医学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" rel="tag">交接班</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" rel="tag">体质调理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" rel="tag">体重管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%81%A5%E5%BA%B7/" rel="tag">健康</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8E%E4%B8%BA%E8%B7%AF%E7%94%B1/" rel="tag">华为路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag">周报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A3%E6%8A%A5/" rel="tag">季报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="tag">工作小结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" rel="tag">慢性病</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%88%E7%8E%87/" rel="tag">效率</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%88%E6%8A%A5/" rel="tag">月报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%83%E9%99%90/" rel="tag">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" rel="tag">科学减肥</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%82%A5%E8%83%96/" rel="tag">肥胖</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" rel="tag">能耗分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" rel="tag">船舶作业</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E5%88%92%E8%8C%83%E5%9B%B4/" rel="tag">计划范围</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/0AD/" style="font-size: 10px;">0AD</a> <a href="/tags/AI/" style="font-size: 11.11px;">AI</a> <a href="/tags/AI-Daily/" style="font-size: 10px;">AI Daily</a> <a href="/tags/AdGuard-Home/" style="font-size: 10px;">AdGuard Home</a> <a href="/tags/Agent/" style="font-size: 10px;">Agent</a> <a href="/tags/Automation/" style="font-size: 10px;">Automation</a> <a href="/tags/CLI/" style="font-size: 11.11px;">CLI</a> <a href="/tags/Calendar/" style="font-size: 10px;">Calendar</a> <a href="/tags/Claude-Code/" style="font-size: 10px;">Claude Code</a> <a href="/tags/CodingAgent/" style="font-size: 10px;">CodingAgent</a> <a href="/tags/Cursor/" style="font-size: 12.22px;">Cursor</a> <a href="/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/EOS/" style="font-size: 11.11px;">EOS</a> <a href="/tags/Eclipse/" style="font-size: 10px;">Eclipse</a> <a href="/tags/Eos/" style="font-size: 10px;">Eos</a> <a href="/tags/Excel/" style="font-size: 10px;">Excel</a> <a href="/tags/Game/" style="font-size: 10px;">Game</a> <a href="/tags/Harness/" style="font-size: 10px;">Harness</a> <a href="/tags/LIMS/" style="font-size: 10px;">LIMS</a> <a href="/tags/MCP/" style="font-size: 10px;">MCP</a> <a href="/tags/MES/" style="font-size: 20px;">MES</a> <a href="/tags/MacBook/" style="font-size: 10px;">MacBook</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/OpenSource/" style="font-size: 10px;">OpenSource</a> <a href="/tags/OptiPlex/" style="font-size: 10px;">OptiPlex</a> <a href="/tags/PI/" style="font-size: 10px;">PI</a> <a href="/tags/POI/" style="font-size: 10px;">POI</a> <a href="/tags/PowerShell/" style="font-size: 10px;">PowerShell</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/RBAC/" style="font-size: 10px;">RBAC</a> <a href="/tags/RTS/" style="font-size: 10px;">RTS</a> <a href="/tags/RTX-Spark/" style="font-size: 10px;">RTX Spark</a> <a href="/tags/SQL-Server/" style="font-size: 11.11px;">SQL Server</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Spring-Boot/" style="font-size: 10px;">Spring Boot</a> <a href="/tags/T480/" style="font-size: 10px;">T480</a> <a href="/tags/Terminal/" style="font-size: 10px;">Terminal</a> <a href="/tags/ThinkPad/" style="font-size: 10px;">ThinkPad</a> <a href="/tags/Tomcat/" style="font-size: 10px;">Tomcat</a> <a href="/tags/Windows/" style="font-size: 11.11px;">Windows</a> <a href="/tags/eos-nwf/" style="font-size: 10px;">eos-nwf</a> <a href="/tags/health/" style="font-size: 10px;">health</a> <a href="/tags/macOS/" style="font-size: 10px;">macOS</a> <a href="/tags/mes-ai/" style="font-size: 16.67px;">mes-ai</a> <a href="/tags/mes-chart/" style="font-size: 15.56px;">mes-chart</a> <a href="/tags/mes-energy/" style="font-size: 10px;">mes-energy</a> <a href="/tags/mes-factory/" style="font-size: 10px;">mes-factory</a> <a href="/tags/mes-indicator/" style="font-size: 11.11px;">mes-indicator</a> <a href="/tags/mes-manual/" style="font-size: 10px;">mes-manual</a> <a href="/tags/mes-measure/" style="font-size: 13.33px;">mes-measure</a> <a href="/tags/mes-nwf/" style="font-size: 10px;">mes-nwf</a> <a href="/tags/mes-plan/" style="font-size: 10px;">mes-plan</a> <a href="/tags/mes-quartz/" style="font-size: 10px;">mes-quartz</a> <a href="/tags/mes-report/" style="font-size: 10px;">mes-report</a> <a href="/tags/mes-rtdb/" style="font-size: 13.33px;">mes-rtdb</a> <a href="/tags/mes-security/" style="font-size: 10px;">mes-security</a> <a href="/tags/mes-web/" style="font-size: 12.22px;">mes-web</a> <a href="/tags/mes-workflow/" style="font-size: 11.11px;">mes-workflow</a> <a href="/tags/zTree/" style="font-size: 10px;">zTree</a> <a href="/tags/%E4%B8%AD%E5%8C%BB%E4%BD%93%E8%B4%A8/" style="font-size: 10px;">中医体质</a> <a href="/tags/%E4%B9%9D%E4%BD%93%E5%8C%BB%E5%AD%A6/" style="font-size: 12.22px;">九体医学</a> <a href="/tags/%E4%BA%A4%E6%8E%A5%E7%8F%AD/" style="font-size: 10px;">交接班</a> <a href="/tags/%E4%BD%93%E8%B4%A8%E8%B0%83%E7%90%86/" style="font-size: 10px;">体质调理</a> <a href="/tags/%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/" style="font-size: 11.11px;">体重管理</a> <a href="/tags/%E5%81%A5%E5%BA%B7/" style="font-size: 14.44px;">健康</a> <a href="/tags/%E5%8D%8E%E4%B8%BA%E8%B7%AF%E7%94%B1/" style="font-size: 10px;">华为路由</a> <a href="/tags/%E5%91%A8%E6%8A%A5/" style="font-size: 17.78px;">周报</a> <a href="/tags/%E5%AD%A3%E6%8A%A5/" style="font-size: 10px;">季报</a> <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">学习</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" style="font-size: 18.89px;">工作小结</a> <a href="/tags/%E6%85%A2%E6%80%A7%E7%97%85/" style="font-size: 10px;">慢性病</a> <a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 10px;">效率</a> <a href="/tags/%E6%9C%88%E6%8A%A5/" style="font-size: 14.44px;">月报</a> <a href="/tags/%E6%9D%83%E9%99%90/" style="font-size: 11.11px;">权限</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E5%87%8F%E8%82%A5/" style="font-size: 10px;">科学减肥</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">网络</a> <a href="/tags/%E8%82%A5%E8%83%96/" style="font-size: 10px;">肥胖</a> <a href="/tags/%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90/" style="font-size: 10px;">能耗分析</a> <a href="/tags/%E8%88%B9%E8%88%B6%E4%BD%9C%E4%B8%9A/" style="font-size: 10px;">船舶作业</a> <a href="/tags/%E8%AE%A1%E5%88%92%E8%8C%83%E5%9B%B4/" style="font-size: 10px;">计划范围</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/10/">October 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/09/">September 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">June 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">March 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/12/">December 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">July 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">May 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/09/">September 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">August 2024</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2026/10/30/mes-weekly-2026-w44/">MES 2026 年第 44 周工作小结</a>
-          </li>
-        
-          <li>
-            <a href="/2026/10/24/mes-weekly-2026-w43/">MES 2026 年第 43 周工作小结</a>
-          </li>
-        
-          <li>
-            <a href="/2026/10/20/ai-learning-time/">有 AI 之后，人类的学习时间是否可以缩短了？</a>
-          </li>
-        
-          <li>
-            <a href="/2026/10/17/t480-48g-vs-mac-rtx-spark/">同样写着 48GB，T480 和 MacBook、RTX Spark 差多少钱</a>
-          </li>
-        
-          <li>
-            <a href="/2026/10/17/macOS%E7%BB%88%E7%AB%AF%E8%BF%9E%E6%8E%A5Windows-SSH%E5%90%8E%E5%B4%A9%E6%BA%83/">macOS 终端连接 Windows SSH 后崩溃</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2026 eppen<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.6.4.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
-<!-- hexo injector body_end start --><div class="adsense-wrap" style="margin:24px 0;text-align:center;min-height:90px;overflow:hidden;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2045994937692573" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><!-- hexo injector body_end end --></body>
-</html>
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">50</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-10-30T09:10:25.558Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By eppen</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div><!-- hexo injector body_end start --><div class="adsense-wrap" style="margin:24px 0;text-align:center;min-height:90px;overflow:hidden;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2045994937692573" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><!-- hexo injector body_end end --></body></html>
