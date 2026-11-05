@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="Luban 编码 Agent 介绍封面">
+<title>Luban：嵌在 VSCodium 侧边栏里的编码 Agent</title>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#0a1220"/>
+    <stop offset="1" stop-color="#101f34"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+    <stop offset="0" stop-color="#f59e0b" stop-opacity="0.22"/>
+    <stop offset="0.65" stop-color="#f59e0b" stop-opacity="0.06"/>
+    <stop offset="1" stop-color="#f59e0b" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#0a1220" stop-opacity="0.92"/>
+    <stop offset="1" stop-color="#0a1220" stop-opacity="0"/>
+  </linearGradient>
+  <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+    <path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity="0.045" stroke-width="1"/>
+  </pattern>
+</defs>
+<rect width="1280" height="720" fill="url(#bg)"/>
+<rect width="1280" height="720" fill="url(#grid)"/>
+<circle cx="980" cy="340" r="440" fill="url(#glow)"/>
+<rect x="0" y="0" width="720" height="720" fill="url(#fade)"/>
+
+<!-- 右侧：编辑器 + 侧边栏 agent 面板 -->
+<g opacity="0.92">
+  <!-- 编辑器窗口 -->
+  <rect x="742" y="120" width="452" height="480" rx="16" fill="#08131f" stroke="#f59e0b" stroke-opacity="0.35" stroke-width="2"/>
+  <path d="M742 136 a16 16 0 0 1 16-16 H1178 a16 16 0 0 1 16 16 V168 H742 Z" fill="#14263c"/>
+  <circle cx="772" cy="144" r="6" fill="#f87171"/>
+  <circle cx="794" cy="144" r="6" fill="#fbbf24"/>
+  <circle cx="816" cy="144" r="6" fill="#34d399"/>
+  <!-- 代码区（左侧） -->
+  <g>
+    <rect x="766" y="196" width="150" height="10" rx="5" fill="#334155"/>
+    <rect x="766" y="222" width="190" height="10" rx="5" fill="#1e3a5f"/>
+    <rect x="766" y="248" width="120" height="10" rx="5" fill="#1e3a5f"/>
+    <rect x="766" y="274" width="170" height="10" rx="5" fill="#334155"/>
+    <rect x="766" y="300" width="96" height="10" rx="5" fill="#1e3a5f"/>
+    <rect x="766" y="326" width="150" height="10" rx="5" fill="#1e3a5f"/>
+    <rect x="766" y="352" width="130" height="10" rx="5" fill="#334155"/>
+  </g>
+  <!-- 侧边栏 agent 面板（右侧窄栏） -->
+  <rect x="952" y="192" width="220" height="384" rx="10" fill="#0d1b2c" stroke="#22d3ee" stroke-opacity="0.45" stroke-width="2"/>
+  <rect x="952" y="192" width="220" height="34" rx="10" fill="#14263c"/>
+  <circle cx="976" cy="209" r="7" fill="#f59e0b"/>
+  <text x="992" y="215" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="15" fill="#7dd3fc">Luban</text>
+  <!-- 对话气泡 -->
+  <rect x="968" y="244" width="150" height="34" rx="8" fill="#14263c"/>
+  <rect x="980" y="256" width="110" height="8" rx="4" fill="#475569"/>
+  <rect x="1012" y="292" width="150" height="46" rx="8" fill="#10233a" stroke="#22d3ee" stroke-opacity="0.3"/>
+  <rect x="1024" y="304" width="100" height="8" rx="4" fill="#334155"/>
+  <rect x="1024" y="320" width="76" height="8" rx="4" fill="#334155"/>
+  <!-- 终端行 -->
+  <rect x="968" y="352" width="188" height="120" rx="8" fill="#08131f" stroke="#22d3ee" stroke-opacity="0.25"/>
+  <g font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="14">
+    <text x="982" y="380" fill="#cbd5e1"><tspan fill="#7dd3fc">$</tspan> mvn -q install</text>
+    <text x="982" y="404" fill="#34d399">BUILD SUCCESS</text>
+    <text x="982" y="428" fill="#cbd5e1"><tspan fill="#7dd3fc">$</tspan> git merge --no-ff</text>
+    <text x="982" y="452" fill="#34d399">✓ 2 files changed</text>
+  </g>
+  <!-- 进度条 -->
+  <rect x="968" y="492" width="188" height="8" rx="4" fill="#1e293b"/>
+  <rect x="968" y="492" width="120" height="8" rx="4" fill="#f59e0b"/>
+  <rect x="968" y="516" width="120" height="8" rx="4" fill="#334155"/>
+  <rect x="968" y="540" width="150" height="8" rx="4" fill="#1e3a5f"/>
+</g>
+
+<!-- 左侧：鲁班之锤（工匠隐喻） -->
+<g transform="translate(150,560) rotate(-38)" opacity="0.9">
+  <rect x="0" y="-9" width="150" height="18" rx="9" fill="#f59e0b"/>
+  <rect x="146" y="-34" width="44" height="68" rx="10" fill="#fbbf24"/>
+  <rect x="146" y="-34" width="44" height="20" rx="10" fill="#fde68a" opacity="0.7"/>
+</g>
+
+<!-- 标题区 -->
+<g>
+  <rect x="96" y="112" width="82" height="38" rx="19" fill="none" stroke="#f59e0b" stroke-opacity="0.55" stroke-width="1.5"/>
+  <text x="137" y="138" text-anchor="middle" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="17" fill="#f59e0b" letter-spacing="3">技术</text>
+  <rect x="96" y="238" width="6" height="40" rx="3" fill="#f59e0b"/>
+  <text x="96" y="296" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="52" font-weight="700" fill="#f8fafc" letter-spacing="2">认识 Luban</text>
+  <text x="96" y="360" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="34" font-weight="700" fill="#e2e8f0" letter-spacing="1">嵌在 VSCodium 侧边栏里的</text>
+  <text x="96" y="410" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="34" font-weight="700" fill="#e2e8f0" letter-spacing="1">编码 Agent</text>
+  <text x="96" y="470" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="24" fill="#94a3b8" letter-spacing="1">读写文件 · 执行命令 · MCP 数据库 · 技能文档</text>
+  <line x1="96" y1="612" x2="196" y2="612" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
+  <text x="96" y="654" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="16" fill="#64748b">eppencn.com</text>
+  <text x="1216" y="654" text-anchor="end" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="16" fill="#475569">HUALLIANG / BLOG</text>
+</g>
+</svg>
