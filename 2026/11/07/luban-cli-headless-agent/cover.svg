@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="Luban CLI 介绍封面">
+<title>Luban CLI：把编码 Agent 搬进终端</title>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#0a1220"/>
+    <stop offset="1" stop-color="#101f34"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+    <stop offset="0" stop-color="#22d3ee" stop-opacity="0.20"/>
+    <stop offset="0.65" stop-color="#22d3ee" stop-opacity="0.05"/>
+    <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#0a1220" stop-opacity="0.94"/>
+    <stop offset="1" stop-color="#0a1220" stop-opacity="0"/>
+  </linearGradient>
+  <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+    <path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity="0.045" stroke-width="1"/>
+  </pattern>
+</defs>
+<rect width="1280" height="720" fill="url(#bg)"/>
+<rect width="1280" height="720" fill="url(#grid)"/>
+<circle cx="1000" cy="360" r="440" fill="url(#glow)"/>
+<rect x="0" y="0" width="700" height="720" fill="url(#fade)"/>
+
+<!-- 右侧：终端窗口 -->
+<g opacity="0.95">
+  <rect x="688" y="96" width="510" height="528" rx="16" fill="#08131f" stroke="#22d3ee" stroke-opacity="0.38" stroke-width="2"/>
+  <path d="M688 112 a16 16 0 0 1 16-16 H1170 a16 16 0 0 1 16 16 V148 H688 Z" fill="#14263c"/>
+  <circle cx="718" cy="124" r="6" fill="#f87171"/>
+  <circle cx="740" cy="124" r="6" fill="#fbbf24"/>
+  <circle cx="762" cy="124" r="6" fill="#34d399"/>
+  <text x="800" y="130" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="15" fill="#64748b">luban — bash</text>
+
+  <g font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="16">
+    <text x="714" y="196" fill="#7dd3fc"><tspan fill="#22d3ee">$</tspan> luban --plan "调研 src/ 结构"</text>
+    <text x="714" y="226" fill="#94a3b8">◒ 思考中 · plan · 3.2k/65k</text>
+    <text x="714" y="258" fill="#34d399">◇ search_code src/ <tspan fill="#64748b">· 128ms</tspan></text>
+    <text x="714" y="286" fill="#34d399">◇ read_file package.json</text>
+    <text x="714" y="314" fill="#34d399">◇ glob **/*config*</text>
+    <text x="714" y="342" fill="#94a3b8">· 用量 请求=4 tokens=8123 缓存命中=93%</text>
+    <text x="714" y="374" fill="#cbd5e1">## 目标</text>
+    <text x="714" y="400" fill="#64748b">给出 src/ 的重构建议，只读调研</text>
+
+    <text x="714" y="444" fill="#7dd3fc"><tspan fill="#22d3ee">$</tspan> luban --agent --apply "写测试"</text>
+    <text x="714" y="474" fill="#f59e0b">◆ write_file utils.js <tspan fill="#64748b">· +42 -0</tspan></text>
+    <text x="714" y="502" fill="#f59e0b">◆ run_command node test.js <tspan fill="#64748b">· 0.8s</tspan></text>
+    <text x="714" y="530" fill="#34d399">✓ 2 passed, 0 failed</text>
+    <text x="714" y="566" fill="#94a3b8">· 完成 · agent* · 6 轮 · 9 次工具</text>
+  </g>
+
+  <!-- 光标 -->
+  <rect x="714" y="596" width="9" height="16" fill="#22d3ee"/>
+</g>
+
+<!-- 左下：鲁班之锤 + plan -> apply -->
+<g transform="translate(150,520) rotate(-32)" opacity="0.92">
+  <rect x="0" y="-10" width="130" height="20" rx="10" fill="#f59e0b"/>
+  <rect x="126" y="-34" width="42" height="68" rx="10" fill="#fbbf24"/>
+  <rect x="126" y="-34" width="42" height="20" rx="10" fill="#fde68a" opacity="0.65"/>
+</g>
+<g font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="17" fill="#94a3b8">
+  <text x="96" y="596"><tspan fill="#22d3ee">plan</tspan> 只读  →  <tspan fill="#f59e0b">--apply</tspan> 动手</text>
+</g>
+
+<!-- 标题区 -->
+<g>
+  <rect x="96" y="104" width="104" height="38" rx="19" fill="none" stroke="#22d3ee" stroke-opacity="0.55" stroke-width="1.5"/>
+  <text x="148" y="130" text-anchor="middle" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="17" fill="#22d3ee" letter-spacing="3">命令行</text>
+  <rect x="96" y="214" width="6" height="40" rx="3" fill="#f59e0b"/>
+  <text x="96" y="272" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="58" font-weight="700" fill="#f8fafc" letter-spacing="2">Luban CLI</text>
+  <text x="96" y="332" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="34" font-weight="700" fill="#e2e8f0" letter-spacing="1">把编码 Agent</text>
+  <text x="96" y="382" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="34" font-weight="700" fill="#e2e8f0" letter-spacing="1">搬进终端</text>
+  <text x="96" y="646" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="20" fill="#94a3b8" letter-spacing="1">默认只读 · stdout 只放结果 · 可脚本化</text>
+  <line x1="96" y1="672" x2="196" y2="672" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
+  <text x="96" y="702" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="15" fill="#64748b">eppencn.com</text>
+  <text x="1216" y="702" text-anchor="end" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="15" fill="#475569">HUALLIANG / BLOG</text>
+</g>
+</svg>
