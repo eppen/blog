@@ -1,0 +1,403 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>认识 Luban CLI：把编码 Agent 搬进终端 | Hua Liang's Blog</title><meta name="author" content="eppen"><meta name="copyright" content="eppen"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="上一篇聊了嵌在 VSCodium 侧边栏里的 Luban。这一篇说它的另一副面孔：**luban 命令行**。 同一个包 @luban-code&#x2F;luban-code，除了扩展，还带了一个 bin：不启动编辑器，直接把 agent 的工具循环跑在终端里。SSH 到服务器、写脚本、挂 CI、定时任务，这些场景下没有侧边栏，但「说一句话，它改文件、跑命令、自己验证」这件事照样成立。 为什么还要一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="认识 Luban CLI：把编码 Agent 搬进终端">
+<meta property="og:url" content="https://eppencn.com/2026/11/07/luban-cli-headless-agent/index.html">
+<meta property="og:site_name" content="Hua Liang&#39;s Blog">
+<meta property="og:description" content="上一篇聊了嵌在 VSCodium 侧边栏里的 Luban。这一篇说它的另一副面孔：**luban 命令行**。 同一个包 @luban-code&#x2F;luban-code，除了扩展，还带了一个 bin：不启动编辑器，直接把 agent 的工具循环跑在终端里。SSH 到服务器、写脚本、挂 CI、定时任务，这些场景下没有侧边栏，但「说一句话，它改文件、跑命令、自己验证」这件事照样成立。 为什么还要一个">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eppencn.com/2026/11/07/luban-cli-headless-agent/cover.svg">
+<meta property="article:published_time" content="2026-11-07T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-11-10T01:43:00.215Z">
+<meta property="article:author" content="eppen">
+<meta property="article:tag" content="CodingAgent">
+<meta property="article:tag" content="CLI">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="Luban">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eppencn.com/2026/11/07/luban-cli-headless-agent/cover.svg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "认识 Luban CLI：把编码 Agent 搬进终端",
+  "url": "https://eppencn.com/2026/11/07/luban-cli-headless-agent/",
+  "image": "https://eppencn.com/2026/11/07/luban-cli-headless-agent/cover.svg",
+  "datePublished": "2026-11-07T02:00:00.000Z",
+  "dateModified": "2026-11-10T01:43:00.215Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "eppen",
+      "url": "https://eppencn.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://eppencn.com/2026/11/07/luban-cli-headless-agent/index.html"><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.2"><link rel="stylesheet" href="/pluginsSrc/@fortawesome/fontawesome-free/css/all.min.css?v=7.3.1"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        try {
+          const data = { value }
+
+          if (ttl != null) {
+            data.expiry = Date.now() + ttl * 86400000
+          }
+
+          localStorage.setItem(key, JSON.stringify(data))
+        } catch (e) {
+          console.error(e)
+        }
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: '/pluginsSrc/@egjs/infinitegrid/dist/infinitegrid.min.js?v=4.13.1',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '认识 Luban CLI：把编码 Agent 搬进终端',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><!-- hexo injector head_end start --><meta name="google-adsense-account" content="ca-pub-2045994937692573">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2045994937692573" crossorigin="anonymous"></script><!-- hexo injector head_end end --><style id="article-table-style">
+/* 正文表格：补网格线、内边距、表头底色与斑马纹 */
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 1.5em 0;
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+.post-content thead th,
+.post-content tbody td {
+  border: 1px solid #dcdcdc;
+  padding: 8px 10px;
+  vertical-align: top;
+}
+.post-content thead th {
+  background: #f6f6f6;
+  text-align: left;
+  font-weight: bold;
+  white-space: nowrap;
+}
+.post-content tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+/* 代码块高亮内部的表格是行号 + 代码的双列布局，不能被正文表格样式污染 */
+.post-content .highlight table,
+.post-content .highlight thead,
+.post-content .highlight tbody {
+  border: none;
+  margin: 0;
+  width: auto;
+}
+.post-content .highlight tbody tr:nth-child(even) {
+  background: none;
+}
+.post-content .highlight td {
+  border: none;
+  padding: 0;
+  white-space: pre;
+}
+/* 窄屏：Butterfly 已经把表格包在 .table-wrap 里并给了横向滚动，
+   这里只需保证单元格文字正常换行，不再额外把 table 改成 block，
+   否则会和控制滚动的外层容器打架 */
+@media screen and (max-width: 767px) {
+  .post-content thead th {
+    white-space: normal;
+  }
+}
+</style><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">103</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Hua Liang's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">认识 Luban CLI：把编码 Agent 搬进终端</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">认识 Luban CLI：把编码 Agent 搬进终端</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-11-07T02:00:00.000Z" title="发表于 2026-11-07 10:00:00">2026-11-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-11-10T01:43:00.215Z" title="更新于 2026-11-10 09:43:00">2026-11-10</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><img src="/2026/11/07/luban-cli-headless-agent/cover.svg" class="">
+
+<p>上一篇聊了嵌在 VSCodium 侧边栏里的 Luban。这一篇说它的另一副面孔：**<code>luban</code> 命令行**。</p>
+<p>同一个包 <code>@luban-code/luban-code</code>，除了扩展，还带了一个 <code>bin</code>：不启动编辑器，直接把 agent 的工具循环跑在终端里。SSH 到服务器、写脚本、挂 CI、定时任务，这些场景下没有侧边栏，但「说一句话，它改文件、跑命令、自己验证」这件事照样成立。</p>
+<h2 id="为什么还要一个-CLI"><a href="#为什么还要一个-CLI" class="headerlink" title="为什么还要一个 CLI"></a>为什么还要一个 CLI</h2><p>侧边栏面板很好用，但它有两个前提：你得开着图形界面，而且得在编辑器里。</p>
+<p>CLI 补的正是这两块空白：</p>
+<ul>
+<li><strong>远程 &#x2F; 无 GUI</strong>：SSH 上去只有一个 shell，也能让 agent 干活；</li>
+<li><strong>可脚本化</strong>：一条命令跑完就退出，能接管道、能进 cron、能塞进 <code>Makefile</code>；</li>
+<li><strong>同一套能力</strong>：CLI 不是另写一个简化版，而是把扩展里的 <code>runAgent</code> &#x2F; <code>execTool</code> &#x2F; 工具集原样复用——工具循环、只读闸门、子代理、MCP、审计都在里面。</li>
+</ul>
+<p>实现上有点意思：它 <code>stub</code> 掉 <code>vscode</code> 模块后直接 <code>require</code> 扩展源码，等于给同一颗大脑换了个躯壳。所以你在面板里熟悉的 <code>search_code</code>、<code>apply_patch</code>、<code>run_command</code>、<code>read_spill</code>，在终端里行为一致。</p>
+<h2 id="安装与配置"><a href="#安装与配置" class="headerlink" title="安装与配置"></a>安装与配置</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm i -g @luban-code/luban-code</span><br><span class="line">luban --version</span><br><span class="line">luban --list-models</span><br></pre></td></tr></table></figure>
+
+<p>模型和 API key 仍然读 <code>~/.luban/providers.json</code>，和扩展共用一份配置：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;defaultModel&quot;</span><span class="punctuation">:</span> <span class="string">&quot;deepseek::deepseek-flash&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;providers&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;deepseek&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;DeepSeek&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;baseUrl&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://api.deepseek.com/v1&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;apiKeyEnv&quot;</span><span class="punctuation">:</span> <span class="string">&quot;DEEPSEEK_API_KEY&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;models&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;deepseek-flash&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;DeepSeek Flash&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;maxInputTokens&quot;</span><span class="punctuation">:</span> <span class="number">65536</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;maxOutputTokens&quot;</span><span class="punctuation">:</span> <span class="number">8192</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;toolCalling&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>两个和面板不同的点，值得提前知道：</p>
+<ol>
+<li><strong>key 只认文件，不认 SecretStorage</strong>。扩展把 API key 存在编辑器的 SecretStorage 里，CLI 读不到，只能用 <code>providers.json</code> 里的 <code>apiKey</code>，或者 <code>apiKeyEnv</code> 指向的环境变量；</li>
+<li><strong>改完配置不用重启</strong>。交互模式里敲 <code>/reload</code> 就会重读 <code>providers.json</code>，当前模型被删了也会当场提示回落到了哪个。</li>
+</ol>
+<p>本地回环端点（Ollama &#x2F; llama.cpp &#x2F; vLLM）不用配 key，<code>--list-models</code> 里 <code>key=yes</code> 那列只是方便你确认远端 provider 的 key 到位没有。</p>
+<h2 id="两种用法：一次性任务与交互对话"><a href="#两种用法：一次性任务与交互对话" class="headerlink" title="两种用法：一次性任务与交互对话"></a>两种用法：一次性任务与交互对话</h2><p><strong>一次性任务</strong>最常见：给一句任务描述，跑完退出。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">luban <span class="string">&quot;把 src 里的 TODO 列出来&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>交互对话</strong>更像一个常驻助手：不带任务描述、且终端是真 TTY 时进入 REPL，每行一个问题，历史按 8 轮 &#x2F; 12000 字符带进下一轮。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">luban</span><br></pre></td></tr></table></figure>
+
+<p>这里有个刻意的设计：<strong>管道 &#x2F; 重定向 &#x2F; CI 里不会进 REPL</strong>。没有「下一行提问」这回事，所以直接打印帮助并以退出码 2 结束。<code>--json</code> 同理，只属于一次性任务，交互模式不接受。</p>
+<h2 id="三档模式：默认只读"><a href="#三档模式：默认只读" class="headerlink" title="三档模式：默认只读"></a>三档模式：默认只读</h2><p>CLI 默认是 <code>plan</code>，不是 <code>agent</code>。这是个安全默认值：<strong>不写文件、不执行写命令</strong>，只调研、出计划。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>模式</th>
+<th>能做什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>默认 &#x2F; <code>--plan</code></td>
+<td>plan</td>
+<td>只读调研，产出「目标 &#x2F; 现状 &#x2F; 步骤 &#x2F; 验证方式 &#x2F; 风险」</td>
+</tr>
+<tr>
+<td><code>--explore</code></td>
+<td>explore</td>
+<td>只读调研，独立工具集与独立系统提示，跑完直接给结论，不再派子代理</td>
+</tr>
+<tr>
+<td><code>--agent</code></td>
+<td>agent</td>
+<td>完整 agent，可派子代理；必须再配 <code>--apply</code> 才真正放开写</td>
+</tr>
+</tbody></table>
+<p><code>--apply</code> 只对 agent 生效。<code>plan</code> 不会因为你加了 <code>--apply</code> 就自动变成 agent；<code>--explore</code> 本来就是只读，加了也没用。想一步到位：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">luban --agent --apply <span class="string">&quot;新建 utils.js，导出 debounce(fn, ms) 和 throttle(fn, ms)，并用 node 验证&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>只读是两道闸：写文件的工具<strong>根本没注册</strong>，模型想调也调不到；<code>run_command</code> 还会逐段检查，写入类命令、重定向、命令替换直接拒绝并回一句原因。第二道是启发式检查，不是操作系统级沙箱——这一点和扩展面板里一样。</p>
+<p>还有一个容易忽略的差异：<strong>CLI 没有审阅 &#x2F; diff UI</strong>。加了 <code>--apply</code> 之后，写操作执行完就打印结果，没有「逐 hunk 保留 &#x2F; 撤销」那套流程。所以在终端里放开写之前，最好先 <code>--plan</code> 看一眼，或者确保工作区在 git 里。</p>
+<h2 id="输出约定：stdout-是结果，stderr-是过程"><a href="#输出约定：stdout-是结果，stderr-是过程" class="headerlink" title="输出约定：stdout 是结果，stderr 是过程"></a>输出约定：stdout 是结果，stderr 是过程</h2><p>这个约定让 CLI 特别适合接管道：</p>
+<ul>
+<li><strong>stdout</strong>：只有结果正文，流式写入；</li>
+<li><strong>stderr</strong>：spinner、工具调用、用量、todo、子代理进度，全走这边。</li>
+</ul>
+<p>于是可以这样用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">luban --plan <span class="string">&quot;调研 src/ 的目录结构并给出重构建议&quot;</span> &gt; plan.md</span><br></pre></td></tr></table></figure>
+
+<p><code>plan.md</code> 里是干净的计划正文，不会被「▸ 工具调用 3 条」这种进度行污染。</p>
+<p>需要机器可读的结果时加 <code>--json</code>，stdout 会改成一段结构化 JSON：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;text&quot;</span><span class="punctuation">:</span> <span class="string">&quot;……&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;stop&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="attr">&quot;reason&quot;</span><span class="punctuation">:</span> <span class="string">&quot;final&quot;</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;usage&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="attr">&quot;totalTokens&quot;</span><span class="punctuation">:</span> <span class="number">12345</span><span class="punctuation">,</span> <span class="attr">&quot;cachedTokens&quot;</span><span class="punctuation">:</span> <span class="number">11000</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;iters&quot;</span><span class="punctuation">:</span> <span class="number">6</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;modelKey&quot;</span><span class="punctuation">:</span> <span class="string">&quot;deepseek::deepseek-flash&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;toolCalls&quot;</span><span class="punctuation">:</span> <span class="number">9</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;mode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;plan&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>退出码也分了层：模型正常收尾是 <code>0</code>；超时 &#x2F; 轮数用尽 &#x2F; 被取消 &#x2F; 报错是 <code>1</code>；参数或内部错误是 <code>2</code>。脚本里判断「这轮到底跑完没有」不用去解析文本。</p>
+<p>不想看颜色和 spinner 就加 <code>--no-tui</code>；CI &#x2F; 管道环境会自动退回纯文本，不用手动关。</p>
+<h2 id="交互模式里的斜杠命令"><a href="#交互模式里的斜杠命令" class="headerlink" title="交互模式里的斜杠命令"></a>交互模式里的斜杠命令</h2><p>REPL 里以 <code>/</code> 开头的命令不跑模型、不消耗 token：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/help</code></td>
+<td>查看帮助</td>
+</tr>
+<tr>
+<td><code>/mode &lt;plan|explore|agent&gt;</code></td>
+<td>切模式；加 <code>--apply</code> 一步打开写权限</td>
+</tr>
+<tr>
+<td><code>/apply [on|off]</code></td>
+<td>单独切写权限（agent 模式才真正放开写）</td>
+</tr>
+<tr>
+<td><code>/model [&lt;key&gt;]</code></td>
+<td>查看 &#x2F; 切换模型，没配 key 的会标 <code>key=NO</code></td>
+</tr>
+<tr>
+<td><code>/reload</code></td>
+<td>重读 <code>~/.luban/providers.json</code></td>
+</tr>
+<tr>
+<td><code>/thinking [on|off]</code></td>
+<td>思考内容实时显示还是折叠</td>
+</tr>
+<tr>
+<td><code>/clear</code></td>
+<td>清空对话记忆</td>
+</tr>
+<tr>
+<td><code>/gamepad [raw|off]</code></td>
+<td>测试手柄按键（只回显，不注入）</td>
+</tr>
+<tr>
+<td><code>/exit</code></td>
+<td>退出（<code>Ctrl-D</code> 也行）</td>
+</tr>
+</tbody></table>
+<p>提示符本身也在传递状态：<code>luban(plan)</code> 是只读，<code>luban(agent*)</code> 那个星号表示写已经放开。一眼就能看出这轮会不会落盘。</p>
+<h2 id="几个用起来才知道的细节"><a href="#几个用起来才知道的细节" class="headerlink" title="几个用起来才知道的细节"></a>几个用起来才知道的细节</h2><p><strong>Ctrl-C 的语义</strong>。一轮正在跑时按 <code>Ctrl-C</code>，取消的是<strong>当前这一轮</strong>，不是退出进程；回到提示符再按才退出（退出码 130）。交互模式下这一点很重要——取消完还能接着问下一条。</p>
+<p><strong>思考过程默认折叠</strong>。模型思考时只在 spinner 上累计字数，想看全文加 <code>--show-thinking</code>，或在 REPL 里 <code>/thinking on</code>。默认不刷屏，是因为终端里思考内容混进正文会很难读。</p>
+<p><strong>限额</strong>。<code>--max-rounds</code> 控制模型请求轮数（默认走设置 &#x2F; 100），<code>--max-minutes</code> 控制墙钟分钟（默认 15）。长任务可以放宽，脚本里则建议收紧，避免卡死。</p>
+<p><strong>工作目录</strong>。<code>--root</code> &#x2F; <code>-C</code> 指定工作目录，默认 <code>process.cwd()</code>。<code>@文件</code> 引用、<code>search_code</code> 的索引范围都跟着它走。</p>
+<p><strong>班班</strong>。CLI 内置了一个 ASCII 小木匠「班班」，脸会跟着模式变：plan 是方框（尺子），explore 带问号，agent 常态，写放开时换成眯眼使劲。<code>luban --mascot</code> 可以单独看它的表情设计稿。看起来像彩蛋，其实是状态信号——一瞥就知道当前在哪档模式。</p>
+<p><strong>手柄</strong>（仅 macOS）。<code>--gamepad</code> 在交互对话里接管手柄：十字键 &#x2F; 左摇杆选择，A 提交，B 取消，LB&#x2F;RB 切模式，LT&#x2F;RT 切模型。第一次启动会用 <code>xcrun</code> 编译一个小工具。算是「躺在椅子上让 agent 干活」的奇怪需求，但它真的能用。</p>
+<h2 id="和编辑器面板怎么分工"><a href="#和编辑器面板怎么分工" class="headerlink" title="和编辑器面板怎么分工"></a>和编辑器面板怎么分工</h2><p>我的用法是：</p>
+<ul>
+<li><strong>想清楚要做什么</strong>：用 <code>luban --plan</code>，只读、快、还能把计划重定向成文件；</li>
+<li><strong>要逐 hunk 审阅</strong>：回编辑器面板，diff 和「保留这块 &#x2F; 撤销这块」都在那边；</li>
+<li><strong>无头 &#x2F; 远程 &#x2F; 批处理</strong>：用 CLI 一次性任务 + <code>--json</code>，脚本里判断退出码；</li>
+<li><strong>长时间对话</strong>：本地用面板，SSH 用 <code>luban</code> REPL。</li>
+</ul>
+<p>也要知道它的边界：CLI 里没有语言服务器，<code>read_lints</code> 读不到真实诊断（扩展会补一句「未读到诊断」）；没有编辑器，<code>#selection</code> 这类基于选区的引用自然也不存在；写操作没有审阅队列，落地即生效。它是「同一个 agent 的无头入口」，不是面板的完全等价替代。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>Luban CLI 的价值不在于「又做了一个命令行工具」，而在于<strong>把面板里的 agent 能力原样搬到了没有编辑器的地方</strong>：</p>
+<ul>
+<li>默认 <code>plan</code> 只读，<code>--apply</code> 才动手；</li>
+<li>stdout 只放结果，stderr 放过程，天然适合管道和脚本；</li>
+<li><code>--json</code> + 分层退出码，机器可读；</li>
+<li>REPL 里 <code>/mode</code> <code>/apply</code> <code>/model</code> <code>/reload</code> 随时调整，不用重启。</li>
+</ul>
+<p>如果你已经装了 Luban 扩展，可以直接 <code>npm i -g @luban-code/luban-code</code> 试试；没装过的话，先在终端里跑一条 <code>luban --plan &quot;看看这个项目在做什么&quot;</code>，也算是对「无头 agent」最轻量的一次体验。</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CodingAgent/">CodingAgent</a><a class="post-meta__tags" href="/tags/CLI/">CLI</a><a class="post-meta__tags" href="/tags/Agent/">Agent</a><a class="post-meta__tags" href="/tags/Luban/">Luban</a></div><div class="post-share"><div class="social-share" data-image="/2026/11/07/luban-cli-headless-agent/cover.svg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="/pluginsSrc/butterfly-extsrc/sharejs/dist/css/share.min.css?v=1.1.6" media="print" onload="this.media='all'"><script src="/pluginsSrc/butterfly-extsrc/sharejs/dist/js/social-share.min.js?v=1.1.6" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/11/07/mes-weekly-2026-w45/" title="MES 2026 年第 45 周工作小结"><img class="cover" src="/2026/11/07/mes-weekly-2026-w45/cover.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">MES 2026 年第 45 周工作小结</div></div><div class="info-2"><div class="info-item-1">  本周（11&#x2F;02–11&#x2F;07，共 63 条提交：master 41 条、feature/jqgrid-fork-5.1.1 分支 22 条）触达 768 个文件、约 +6.2 万 &#x2F; -7.5 千行（含 jqGrid fork 落盘的第三方基线）。主线有三条：把商业版 jqGrid 换成自维护的 free 基线 fork、固体仓库盘点闭环到「能录入能导出」、EOS 单据格式设计器从零到能用；副线是 supOS-iSYS 实时数据库预研和在线操作说明继续按模块补齐。改动集中在 mes-warehouse、mes-core、mes-security（eos-tool）、mes-web、mes-generator-hibernate。 一、jqGrid：从 Guriddo 商业版迁到自维护 fork（周六主战场）这是本周投入最大的一块，整天都在 feature/jqgrid-fork-5.1.1 分支上推进，尚未合入 master：  基线选择：以 free-jqGrid 4.15.5 为基线，在 jqgrid-fork/src 里叠 6 层 comp...</div></div></div></a><a class="pagination-related" href="/2026/11/05/luban-vscodium-coding-agent/" title="认识 Luban：嵌在 VSCodium 侧边栏里的编码 Agent"><img class="cover" src="/2026/11/05/luban-vscodium-coding-agent/cover.svg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">认识 Luban：嵌在 VSCodium 侧边栏里的编码 Agent</div></div><div class="info-2"><div class="info-item-1">  最近在日常开发里一直在用一个嵌在 VSCodium 侧边栏里的编码 agent，名字叫 Luban（鲁班）。名字取自古代工匠，寓意很直白：一个帮你”干活”的工匠。这篇文章介绍一下它是什么、能做什么、以及我在 MES 项目里实际用它的方式。 它是什么Luban 是一个嵌在 VSCodium 侧边栏里的编码 agent：  底层模型可配置：由用户配置的 provider 决定，不绑定某一家模型； 直接读写本机文件：不是”给你一段代码你自己贴”，而是直接在工作区里增删改文件； 可以执行 shell 命令：写完代码能自己跑 mvn、node、git 验证，把真实输出作为结论依据； 支持 MCP 外部工具：通过 mcp__&lt;server&gt;__&lt;tool&gt; 形式接入外部能力，比如数据库查询。  它和”聊天式 AI 助手”最大的区别在于：它默认以完成任务为目标，而不是以回答问题为目标。你给它一个任务，它会自己拆步骤、查代码、改文件、跑验证，最后用中文汇报改了哪些文件、做了什么、验证结果如何。 核心能力1. 代码检索：先定位，再精读大仓库里直接全量扫文件是灾难。Lub...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/06/19/cursor-agent-no-version-directories-fix/" title="Cursor Agent CLI 报错 No version directories found 的排查与修复"><img class="cover" src="/2026/06/19/cursor-agent-no-version-directories-fix/cover.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-19</div><div class="info-item-2">Cursor Agent CLI 报错 No version directories found 的排查与修复</div></div><div class="info-2"><div class="info-item-1">  在 Windows 终端执行 agent 或 cursor-agent 时，可能遇到如下错误： 123456C:\Users\liuhualiang\AppData\Local\cursor-agent\agent.ps1 : No version directories found in C:\Users\liuhualiang\AppData\Local\cursor-agent所在位置 行:1 字符: 1+ agent+ ~~~~~    + CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException    + FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException,agent.ps1  本文记录该问题的现象、根因、修复方式与临时绕过方法。 现象 agent、cursor-agent 命令均无法启动 报错提示在 %LOCALAPPDATA%\cursor-agent 下找不到版本目录 但...</div></div></div></a><a class="pagination-related" href="/2026/11/05/luban-vscodium-coding-agent/" title="认识 Luban：嵌在 VSCodium 侧边栏里的编码 Agent"><img class="cover" src="/2026/11/05/luban-vscodium-coding-agent/cover.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-05</div><div class="info-item-2">认识 Luban：嵌在 VSCodium 侧边栏里的编码 Agent</div></div><div class="info-2"><div class="info-item-1">  最近在日常开发里一直在用一个嵌在 VSCodium 侧边栏里的编码 agent，名字叫 Luban（鲁班）。名字取自古代工匠，寓意很直白：一个帮你”干活”的工匠。这篇文章介绍一下它是什么、能做什么、以及我在 MES 项目里实际用它的方式。 它是什么Luban 是一个嵌在 VSCodium 侧边栏里的编码 agent：  底层模型可配置：由用户配置的 provider 决定，不绑定某一家模型； 直接读写本机文件：不是”给你一段代码你自己贴”，而是直接在工作区里增删改文件； 可以执行 shell 命令：写完代码能自己跑 mvn、node、git 验证，把真实输出作为结论依据； 支持 MCP 外部工具：通过 mcp__&lt;server&gt;__&lt;tool&gt; 形式接入外部能力，比如数据库查询。  它和”聊天式 AI 助手”最大的区别在于：它默认以完成任务为目标，而不是以回答问题为目标。你给它一个任务，它会自己拆步骤、查代码、改文件、跑验证，最后用中文汇报改了哪些文件、做了什么、验证结果如何。 核心能力1. 代码检索：先定位，再精读大仓库里直接全量扫文件是灾难。Lub...</div></div></div></a><a class="pagination-related" href="/2026/03/15/use-deepseek-as-model-in-claude-code-cli/" title="在 Claude Code CLI 中使用 DeepSeek 作为模型"><img class="cover" src="/2026/03/15/use-deepseek-as-model-in-claude-code-cli/cover.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">在 Claude Code CLI 中使用 DeepSeek 作为模型</div></div><div class="info-2"><div class="info-item-1">  Claude Code 是 Anthropic 的 AI 编程助手，默认只使用 Anthropic 的模型。通过环境变量 ANTHROPIC_BASE_URL 可以切换 API 端点，DeepSeek 官方提供了 Anthropic API 兼容 的接口，因此可以直接把 Claude Code CLI 接到 DeepSeek，无需代理或第三方路由。 本文介绍如何配置 Claude Code CLI，使其使用 DeepSeek 作为后端模型。 前置条件 已安装 Claude Code（官方安装：curl -fsSL https://claude.ai/install.sh | bash） 已注册 DeepSeek 开放平台 并获取 API Key（API Keys 页面）  方式一：官方 Anthropic 兼容 API（推荐）DeepSeek 提供与 Anthropic Messages API 兼容的端点，只需改环境变量即可让 Claude Code 走 DeepSeek。 1. 配置环境变量在终端中执行（将 YOUR_DEEPSEEK_API_KEY 换成你的 DeepS...</div></div></div></a><a class="pagination-related" href="/2026/11/10/luban-vs-deepseek-harness-benchmark/" title="Luban vs DeepSeek Harness：同一批任务跑 56 次，成本差距到底在哪"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-10</div><div class="info-item-2">Luban vs DeepSeek Harness：同一批任务跑 56 次，成本差距到底在哪</div></div><div class="info-2"><div class="info-item-1">手上有两个编码 Agent：自己写的 Luban（VS Code 侧边栏那套），和 DeepSeek 官方的 dsh（DeepSeek Harness 的命令行版）。一直想搞清楚一个很实际的问题—— 同样的模型、同样的代码库、同样的任务，到底谁更划算？ 于是拿一套真实在跑的企业系统（Java + Spring + nginx + CAS，约 1.4 万个源文件）当语料，设计了三轮递进的对比实验，一共跑了 56 次。   实验设计前提条件先把变量卡死：    项 设置    模型 两边都锁 deepseek-flash（同一把 key，计费口径一致）   代码语料 同一份源码副本，各 280MB，排除 target/node_modules/.git   工作区 每次运行前重新 clone，互不污染   上限 600~900 秒看门狗，超时即杀   并发 两个工具各一条 lane 并行，同一时段、同机器，环境对等   三轮任务从”读”到”写”再到”必须编译通过”：  第一轮：3 道只读的定位&#x2F;分析题 第二轮：扩到 10 题（4 只读 + 6 可写），每题跑 2 轮取中位数...</div></div></div></a><a class="pagination-related" href="/2026/09/10/ai-daily-mes-brief-2026-05-21/" title="AI Daily · 2026年5月21日 · MES 工作区简报"><img class="cover" src="/2026/09/10/ai-daily-mes-brief-2026-05-21/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-10</div><div class="info-item-2">AI Daily · 2026年5月21日 · MES 工作区简报</div></div><div class="info-2"><div class="info-item-1">   编码 Agent 产品层加速成熟；Harness（脚手架）仍是能力放大器；检索&#x2F;MCP 成为企业代码库 Agent 的基础设施。  核心摘要 Harness 决定上限：同一模型在不同 Harness 下表现可差近一倍（如 Gemini 3.1 Pro 17.7→31.4），说明 Cursor&#x2F;规则&#x2F;子 Agent 配置值得持续投入，而非只换模型。 编码 Agent 从 IDE 走向跨设备运维：Codex 支持手机远程操作已锁屏 Mac、Appshots 抓取应用上下文，预示「长期在线操作员」形态，与 MES 7×24 运维场景有类比价值。 Agent 架构建议先单 Agent：工具&#x2F;提示膨胀后再拆 Manager&#x2F;子 Agent；与当前 .cursor/rules + 按需 Task 子代理的模式一致。 代码库检索 + MCP 一体化：Weaviate 内置 MCP、LangChain 沙箱 Auth Proxy 与 typed streaming，指向「大单体 Java 多模块仓库」的安全 RAG 方向。 开源编码模型竞争...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%98%E8%A6%81%E4%B8%80%E4%B8%AA-CLI"><span class="toc-text">为什么还要一个 CLI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE"><span class="toc-text">安装与配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E7%94%A8%E6%B3%95%EF%BC%9A%E4%B8%80%E6%AC%A1%E6%80%A7%E4%BB%BB%E5%8A%A1%E4%B8%8E%E4%BA%A4%E4%BA%92%E5%AF%B9%E8%AF%9D"><span class="toc-text">两种用法：一次性任务与交互对话</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E6%A1%A3%E6%A8%A1%E5%BC%8F%EF%BC%9A%E9%BB%98%E8%AE%A4%E5%8F%AA%E8%AF%BB"><span class="toc-text">三档模式：默认只读</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E7%BA%A6%E5%AE%9A%EF%BC%9Astdout-%E6%98%AF%E7%BB%93%E6%9E%9C%EF%BC%8Cstderr-%E6%98%AF%E8%BF%87%E7%A8%8B"><span class="toc-text">输出约定：stdout 是结果，stderr 是过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%A4%E4%BA%92%E6%A8%A1%E5%BC%8F%E9%87%8C%E7%9A%84%E6%96%9C%E6%9D%A0%E5%91%BD%E4%BB%A4"><span class="toc-text">交互模式里的斜杠命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%A0%E4%B8%AA%E7%94%A8%E8%B5%B7%E6%9D%A5%E6%89%8D%E7%9F%A5%E9%81%93%E7%9A%84%E7%BB%86%E8%8A%82"><span class="toc-text">几个用起来才知道的细节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%92%8C%E7%BC%96%E8%BE%91%E5%99%A8%E9%9D%A2%E6%9D%BF%E6%80%8E%E4%B9%88%E5%88%86%E5%B7%A5"><span class="toc-text">和编辑器面板怎么分工</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-text">小结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/10/luban-vs-deepseek-harness-benchmark/" title="Luban vs DeepSeek Harness：同一批任务跑 56 次，成本差距到底在哪">Luban vs DeepSeek Harness：同一批任务跑 56 次，成本差距到底在哪</a><time datetime="2026-11-10T02:30:00.000Z" title="发表于 2026-11-10 10:30:00">2026-11-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/10/hello-world/" title="Hello World"><img src="/2026/11/10/hello-world/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2026/11/10/hello-world/" title="Hello World">Hello World</a><time datetime="2026-11-10T01:43:00.215Z" title="发表于 2026-11-10 09:43:00">2026-11-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/07/mes-monthly-2026-10/" title="MES 2026 年 10 月工作小结"><img src="/2026/11/07/mes-monthly-2026-10/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年 10 月工作小结"/></a><div class="content"><a class="title" href="/2026/11/07/mes-monthly-2026-10/" title="MES 2026 年 10 月工作小结">MES 2026 年 10 月工作小结</a><time datetime="2026-11-07T14:10:00.000Z" title="发表于 2026-11-07 22:10:00">2026-11-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/07/mes-weekly-2026-w45/" title="MES 2026 年第 45 周工作小结"><img src="/2026/11/07/mes-weekly-2026-w45/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年第 45 周工作小结"/></a><div class="content"><a class="title" href="/2026/11/07/mes-weekly-2026-w45/" title="MES 2026 年第 45 周工作小结">MES 2026 年第 45 周工作小结</a><time datetime="2026-11-07T09:10:00.000Z" title="发表于 2026-11-07 17:10:00">2026-11-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/07/luban-cli-headless-agent/" title="认识 Luban CLI：把编码 Agent 搬进终端"><img src="/2026/11/07/luban-cli-headless-agent/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="认识 Luban CLI：把编码 Agent 搬进终端"/></a><div class="content"><a class="title" href="/2026/11/07/luban-cli-headless-agent/" title="认识 Luban CLI：把编码 Agent 搬进终端">认识 Luban CLI：把编码 Agent 搬进终端</a><time datetime="2026-11-07T02:00:00.000Z" title="发表于 2026-11-07 10:00:00">2026-11-07</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By eppen</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.2"></script><script src="/js/main.js?v=5.7.2"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.2"></script></div></div><!-- hexo injector body_end start --><div class="adsense-wrap" style="margin:24px 0;text-align:center;min-height:90px;overflow:hidden;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2045994937692573" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><!-- hexo injector body_end end --></body></html>

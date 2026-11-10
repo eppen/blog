@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="中国式发福图鉴封面">
+<title>中国式发福图鉴封面</title>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#071310"/>
+    <stop offset="1" stop-color="#0d231c"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+    <stop offset="0" stop-color="#fb923c" stop-opacity="0.24"/>
+    <stop offset="0.65" stop-color="#fb923c" stop-opacity="0.07"/>
+    <stop offset="1" stop-color="#fb923c" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#071310" stop-opacity="0.9"/>
+    <stop offset="1" stop-color="#071310" stop-opacity="0"/>
+  </linearGradient>
+  <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+    <path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity="0.045" stroke-width="1"/>
+  </pattern>
+</defs>
+<rect width="1280" height="720" fill="url(#bg)"/>
+<rect width="1280" height="720" fill="url(#grid)"/>
+<circle cx="1000" cy="330" r="430" fill="url(#glow)"/>
+<rect x="0" y="0" width="700" height="720" fill="url(#fade)"/>
+<g opacity="0.9">
+  
+  <path d="M836 430 A 148 148 0 0 1 1132 430" fill="none" stroke="#ffffff" stroke-opacity="0.12" stroke-width="18" stroke-linecap="round"/>
+  <path d="M836 430 A 148 148 0 0 1 1064 296" fill="none" stroke="#fb923c" stroke-width="18" stroke-linecap="round" stroke-opacity="0.85"/>
+  <g stroke="#94a3b8" stroke-opacity="0.5" stroke-width="2">
+    <line x1="836" y1="430" x2="812" y2="446"/>
+    <line x1="984" y1="282" x2="984" y2="252"/>
+    <line x1="1132" y1="430" x2="1156" y2="446"/>
+  </g>
+  <line x1="984" y1="430" x2="1064" y2="330" stroke="#e2e8f0" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="984" cy="430" r="12" fill="#fb923c"/>
+  <text x="984" y="490" text-anchor="middle" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="26" fill="#e2e8f0">BMI</text>
+  <path d="M800 548 C 880 530 960 500 1040 460 C 1100 430 1140 404 1178 372" fill="none" stroke="#fb923c" stroke-opacity="0.5" stroke-width="3" stroke-dasharray="8 8"/>
+  <circle cx="1178" cy="372" r="7" fill="#fb923c"/>
+
+</g>
+<g>
+  <rect x="96" y="112" width="82" height="38" rx="19" fill="none" stroke="#fb923c" stroke-opacity="0.55" stroke-width="1.5"/>
+  <text x="137" y="138" text-anchor="middle" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="17" fill="#fb923c" letter-spacing="3">生活</text>
+  <rect x="96" y="287" width="6" height="58" rx="3" fill="#fb923c"/>
+  <text x="96" y="359" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="58" font-weight="700" fill="#f8fafc" letter-spacing="1">中国式发福图鉴</text>
+  <text x="96" y="425" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="25" fill="#94a3b8" letter-spacing="1">14 亿人的体重失控现场</text>
+  <line x1="96" y1="612" x2="196" y2="612" stroke="#fb923c" stroke-width="3" stroke-linecap="round"/>
+  <text x="96" y="654" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="16" fill="#64748b">eppencn.com</text>
+  <text x="1216" y="654" text-anchor="end" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="16" fill="#475569">HUALLIANG / BLOG</text>
+</g>
+</svg>

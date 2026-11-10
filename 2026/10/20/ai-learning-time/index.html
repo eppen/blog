@@ -1,0 +1,297 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>有 AI 之后，人类的学习时间是否可以缩短了？ | Hua Liang's Blog</title><meta name="author" content="eppen"><meta name="copyright" content="eppen"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="可以缩短，但缩短的是入门与检索时间，不是把「真正学会」压缩成捷径。 能缩短的部分 找答案、读文档、试错：以前要翻书、搜论坛、等同事，现在几分钟就能得到方向。 上手与模仿：写第一版代码、理解陌生概念、做练习题的反馈更快。 跨领域摸底：快速建立地图（有哪些概念、怎么连起来），少走冤枉路。  所以「从 0 到能干活」往往确实更快。 很难缩短的部分 长期记忆与熟练：不练、不自己做错题，知识留不住。 判">
+<meta property="og:type" content="article">
+<meta property="og:title" content="有 AI 之后，人类的学习时间是否可以缩短了？">
+<meta property="og:url" content="https://eppencn.com/2026/10/20/ai-learning-time/index.html">
+<meta property="og:site_name" content="Hua Liang&#39;s Blog">
+<meta property="og:description" content="可以缩短，但缩短的是入门与检索时间，不是把「真正学会」压缩成捷径。 能缩短的部分 找答案、读文档、试错：以前要翻书、搜论坛、等同事，现在几分钟就能得到方向。 上手与模仿：写第一版代码、理解陌生概念、做练习题的反馈更快。 跨领域摸底：快速建立地图（有哪些概念、怎么连起来），少走冤枉路。  所以「从 0 到能干活」往往确实更快。 很难缩短的部分 长期记忆与熟练：不练、不自己做错题，知识留不住。 判">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eppencn.com/2026/10/20/ai-learning-time/cover.png">
+<meta property="article:published_time" content="2026-10-20T03:25:00.000Z">
+<meta property="article:modified_time" content="2026-11-10T01:43:00.210Z">
+<meta property="article:author" content="eppen">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="学习">
+<meta property="article:tag" content="效率">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eppencn.com/2026/10/20/ai-learning-time/cover.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "有 AI 之后，人类的学习时间是否可以缩短了？",
+  "url": "https://eppencn.com/2026/10/20/ai-learning-time/",
+  "image": "https://eppencn.com/2026/10/20/ai-learning-time/cover.png",
+  "datePublished": "2026-10-20T03:25:00.000Z",
+  "dateModified": "2026-11-10T01:43:00.210Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "eppen",
+      "url": "https://eppencn.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://eppencn.com/2026/10/20/ai-learning-time/index.html"><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.2"><link rel="stylesheet" href="/pluginsSrc/@fortawesome/fontawesome-free/css/all.min.css?v=7.3.1"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        try {
+          const data = { value }
+
+          if (ttl != null) {
+            data.expiry = Date.now() + ttl * 86400000
+          }
+
+          localStorage.setItem(key, JSON.stringify(data))
+        } catch (e) {
+          console.error(e)
+        }
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: '/pluginsSrc/@egjs/infinitegrid/dist/infinitegrid.min.js?v=4.13.1',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '有 AI 之后，人类的学习时间是否可以缩短了？',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><!-- hexo injector head_end start --><meta name="google-adsense-account" content="ca-pub-2045994937692573">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2045994937692573" crossorigin="anonymous"></script><!-- hexo injector head_end end --><style id="article-table-style">
+/* 正文表格：补网格线、内边距、表头底色与斑马纹 */
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 1.5em 0;
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+.post-content thead th,
+.post-content tbody td {
+  border: 1px solid #dcdcdc;
+  padding: 8px 10px;
+  vertical-align: top;
+}
+.post-content thead th {
+  background: #f6f6f6;
+  text-align: left;
+  font-weight: bold;
+  white-space: nowrap;
+}
+.post-content tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+/* 代码块高亮内部的表格是行号 + 代码的双列布局，不能被正文表格样式污染 */
+.post-content .highlight table,
+.post-content .highlight thead,
+.post-content .highlight tbody {
+  border: none;
+  margin: 0;
+  width: auto;
+}
+.post-content .highlight tbody tr:nth-child(even) {
+  background: none;
+}
+.post-content .highlight td {
+  border: none;
+  padding: 0;
+  white-space: pre;
+}
+/* 窄屏：Butterfly 已经把表格包在 .table-wrap 里并给了横向滚动，
+   这里只需保证单元格文字正常换行，不再额外把 table 改成 block，
+   否则会和控制滚动的外层容器打架 */
+@media screen and (max-width: 767px) {
+  .post-content thead th {
+    white-space: normal;
+  }
+}
+</style><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">103</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Hua Liang's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">有 AI 之后，人类的学习时间是否可以缩短了？</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">有 AI 之后，人类的学习时间是否可以缩短了？</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-20T03:25:00.000Z" title="发表于 2026-10-20 11:25:00">2026-10-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-11-10T01:43:00.210Z" title="更新于 2026-11-10 09:43:00">2026-11-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/life/">生活</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><img src="/2026/10/20/ai-learning-time/cover.png" class="">
+
+<p>可以缩短，但缩短的是<strong>入门与检索时间</strong>，不是把「真正学会」压缩成捷径。</p>
+<h2 id="能缩短的部分"><a href="#能缩短的部分" class="headerlink" title="能缩短的部分"></a>能缩短的部分</h2><ul>
+<li><strong>找答案、读文档、试错</strong>：以前要翻书、搜论坛、等同事，现在几分钟就能得到方向。</li>
+<li><strong>上手与模仿</strong>：写第一版代码、理解陌生概念、做练习题的反馈更快。</li>
+<li><strong>跨领域摸底</strong>：快速建立地图（有哪些概念、怎么连起来），少走冤枉路。</li>
+</ul>
+<p>所以「从 0 到能干活」往往确实更快。</p>
+<h2 id="很难缩短的部分"><a href="#很难缩短的部分" class="headerlink" title="很难缩短的部分"></a>很难缩短的部分</h2><ul>
+<li><strong>长期记忆与熟练</strong>：不练、不自己做错题，知识留不住。</li>
+<li><strong>判断力</strong>：知道何时该信 AI、何时要怀疑、如何验证。</li>
+<li><strong>深度与迁移</strong>：能在新场景自己设计方案，而不是只会跟着提示改。</li>
+<li><strong>责任与品味</strong>：工程里的取舍、风格、边界，仍靠经验积累。</li>
+</ul>
+<p>AI 像加速器：你踩油门更猛，但车还是你开；不会开的人开得再快也容易撞。</p>
+<h2 id="更准确的说法"><a href="#更准确的说法" class="headerlink" title="更准确的说法"></a>更准确的说法</h2><table>
+<thead>
+<tr>
+<th>目标</th>
+<th>有 AI 后</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>「知道大概、能跑通」</td>
+<td>明显更快</td>
+</tr>
+<tr>
+<td>「考试&#x2F;认证级熟练」</td>
+<td>略快，仍靠练习</td>
+</tr>
+<tr>
+<td>「专家级直觉」</td>
+<td>几乎不缩短，甚至可能因过度依赖而变慢</td>
+</tr>
+</tbody></table>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>有 AI 后，人类的学习<strong>时间线可以缩短</strong>，尤其是入门与效率；但若把「学会」理解成形成可靠能力，核心仍是练习、反思、验证。用得好是放大器；只抄答案，学得更浅、更慢。</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI/">AI</a><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0/">学习</a><a class="post-meta__tags" href="/tags/%E6%95%88%E7%8E%87/">效率</a></div><div class="post-share"><div class="social-share" data-image="/2026/10/20/ai-learning-time/cover.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="/pluginsSrc/butterfly-extsrc/sharejs/dist/css/share.min.css?v=1.1.6" media="print" onload="this.media='all'"><script src="/pluginsSrc/butterfly-extsrc/sharejs/dist/js/social-share.min.js?v=1.1.6" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/10/24/mes-weekly-2026-w43/" title="MES 2026 年第 43 周工作小结"><img class="cover" src="/2026/10/24/mes-weekly-2026-w43/cover.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">MES 2026 年第 43 周工作小结</div></div><div class="info-2"><div class="info-item-1">  本周（10&#x2F;19–10&#x2F;24，合入 master 的非合并提交 77 条，非快进合并 1 次）主线是把 EOS 流程设计器做到「和 EOS 一致」，并让流程在上线前可模拟自测：周一到周六，mes-nwf 的设计器模型、XML 导出、表达式向导、模拟器轮番推进，周四合入 feature/eos-nwf-setup-wizard。文件改动集中在 mes-workflow（mes-nwf 311 个、eos-nwf-web 58 个），其次是 mes-security、mes-core、mes-process-interlock、mes-quartz、mes-process-card。 一、NWF XML 对齐 EOS设计器产出的流程定义要和 EOS 客户端生成的一致，本周把差异一条条收掉了：  CustomizedBtns 输出位置对齐 EOS，置于 MultiWorkItemSet 之后、InformSetting 之前 EnableTerminate=false 时不再写出 TerminateConditionC &#x2F; TerminateCondi...</div></div></div></a><a class="pagination-related" href="/2026/10/17/t480-48g-vs-mac-rtx-spark/" title="同样写着 48GB，T480 和 MacBook、RTX Spark 差多少钱"><img class="cover" src="/2026/10/17/t480-48g-vs-mac-rtx-spark/cover.svg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">同样写着 48GB，T480 和 MacBook、RTX Spark 差多少钱</div></div><div class="info-2"><div class="info-item-1">  手里这台是联想 ThinkPad T480（20L6Z3TGUS），CPU 是 i5-8250U。任务管理器里大约 48GB，拆开是两条：32GB（RMSA3330ME88HCF-3200）加 16GB（RMSA3300MH78HBF-2666），实际都跑在 2400。今天拿「同样 48GB」去对 MacBook Pro 和刚开卖的 RTX Spark 笔记本，比的是标价，不是跑分。 价格取 2026-10-17 能公开核对到的国内渠道。促销会变，下面每一行都标了出处。 三台机器    这台 T480 MacBook Pro 14（M5 Pro） Surface Laptop Ultra（RTX Spark）    内存 48GB DDR4-2400，两条可换（32+16） 48GB 统一内存，焊死 48GB LPDDR5X 统一内存，焊死   处理器 i5-8250U，4 核 8 线程，15W M5 Pro，公开在售的 48GB&#x2F;1TB 是 15 核 CPU + 16 核 GPU RTX Spark N1X 满血，20 核 CPU，GPU 6144 CUDA   ...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/07/30/ai-development-history-and-vision/" title="AI 的发展历程与最终愿景"><img class="cover" src="/2026/07/30/ai-development-history-and-vision/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-30</div><div class="info-item-2">AI 的发展历程与最终愿景</div></div><div class="info-2"><div class="info-item-1">  从 1956 年达特茅斯会议提出”人工智能”这个词，到今天大模型与智能体进入生产环境，AI 走了七十年。这篇文章按时间线梳理它的关键转折，并聊聊”最终愿景”到底意味着什么。 一、发展历程1. 萌芽与早期探索（1940s–1950s） 1943：麦卡洛克与皮茨提出”麦卡洛克-皮茨神经元”，奠定人工神经网络的数学基础。 1950：图灵发表《计算机器与智能》，提出”图灵测试”，首次系统讨论机器能否思考。 1956：达特茅斯会议正式提出”人工智能”（Artificial Intelligence）一词，AI 作为学科诞生。  2. 符号主义黄金期与第一次寒冬（1956–1980s）专家系统、逻辑推理、搜索算法盛行，”ELIZA”、”SHRDLU” 等程序展示了初步能力。1974 年前后，算力不足与期望过高导致经费削减，进入第一次 AI 寒冬。 3. 复兴与机器学习崛起（1980s–2000s）专家系统商业热潮（Prolog、MYCIN 等）后再次退潮，进入第二次寒冬。统计学习方法兴起：支持向量机、隐马尔可夫模型、决策树等成为主流。1997 年，IBM”深蓝”击败国际象棋世界冠军卡斯帕...</div></div></div></a><a class="pagination-related" href="/2026/03/15/use-deepseek-as-model-in-claude-code-cli/" title="在 Claude Code CLI 中使用 DeepSeek 作为模型"><img class="cover" src="/2026/03/15/use-deepseek-as-model-in-claude-code-cli/cover.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">在 Claude Code CLI 中使用 DeepSeek 作为模型</div></div><div class="info-2"><div class="info-item-1">  Claude Code 是 Anthropic 的 AI 编程助手，默认只使用 Anthropic 的模型。通过环境变量 ANTHROPIC_BASE_URL 可以切换 API 端点，DeepSeek 官方提供了 Anthropic API 兼容 的接口，因此可以直接把 Claude Code CLI 接到 DeepSeek，无需代理或第三方路由。 本文介绍如何配置 Claude Code CLI，使其使用 DeepSeek 作为后端模型。 前置条件 已安装 Claude Code（官方安装：curl -fsSL https://claude.ai/install.sh | bash） 已注册 DeepSeek 开放平台 并获取 API Key（API Keys 页面）  方式一：官方 Anthropic 兼容 API（推荐）DeepSeek 提供与 Anthropic Messages API 兼容的端点，只需改环境变量即可让 Claude Code 走 DeepSeek。 1. 配置环境变量在终端中执行（将 YOUR_DEEPSEEK_API_KEY 换成你的 DeepS...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%BD%E7%BC%A9%E7%9F%AD%E7%9A%84%E9%83%A8%E5%88%86"><span class="toc-text">能缩短的部分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%88%E9%9A%BE%E7%BC%A9%E7%9F%AD%E7%9A%84%E9%83%A8%E5%88%86"><span class="toc-text">很难缩短的部分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E5%87%86%E7%A1%AE%E7%9A%84%E8%AF%B4%E6%B3%95"><span class="toc-text">更准确的说法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-text">结论</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/10/luban-vs-deepseek-harness-benchmark/" title="Luban vs DeepSeek Harness：同一批任务跑 56 次，成本差距到底在哪">Luban vs DeepSeek Harness：同一批任务跑 56 次，成本差距到底在哪</a><time datetime="2026-11-10T02:30:00.000Z" title="发表于 2026-11-10 10:30:00">2026-11-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/10/hello-world/" title="Hello World"><img src="/2026/11/10/hello-world/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2026/11/10/hello-world/" title="Hello World">Hello World</a><time datetime="2026-11-10T01:43:00.215Z" title="发表于 2026-11-10 09:43:00">2026-11-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/07/mes-monthly-2026-10/" title="MES 2026 年 10 月工作小结"><img src="/2026/11/07/mes-monthly-2026-10/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年 10 月工作小结"/></a><div class="content"><a class="title" href="/2026/11/07/mes-monthly-2026-10/" title="MES 2026 年 10 月工作小结">MES 2026 年 10 月工作小结</a><time datetime="2026-11-07T14:10:00.000Z" title="发表于 2026-11-07 22:10:00">2026-11-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/07/mes-weekly-2026-w45/" title="MES 2026 年第 45 周工作小结"><img src="/2026/11/07/mes-weekly-2026-w45/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年第 45 周工作小结"/></a><div class="content"><a class="title" href="/2026/11/07/mes-weekly-2026-w45/" title="MES 2026 年第 45 周工作小结">MES 2026 年第 45 周工作小结</a><time datetime="2026-11-07T09:10:00.000Z" title="发表于 2026-11-07 17:10:00">2026-11-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/07/luban-cli-headless-agent/" title="认识 Luban CLI：把编码 Agent 搬进终端"><img src="/2026/11/07/luban-cli-headless-agent/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="认识 Luban CLI：把编码 Agent 搬进终端"/></a><div class="content"><a class="title" href="/2026/11/07/luban-cli-headless-agent/" title="认识 Luban CLI：把编码 Agent 搬进终端">认识 Luban CLI：把编码 Agent 搬进终端</a><time datetime="2026-11-07T02:00:00.000Z" title="发表于 2026-11-07 10:00:00">2026-11-07</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By eppen</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.2"></script><script src="/js/main.js?v=5.7.2"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.2"></script></div></div><!-- hexo injector body_end start --><div class="adsense-wrap" style="margin:24px 0;text-align:center;min-height:90px;overflow:hidden;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2045994937692573" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><!-- hexo injector body_end end --></body></html>

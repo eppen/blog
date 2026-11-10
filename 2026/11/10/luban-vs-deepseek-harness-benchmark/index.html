@@ -1,0 +1,708 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Luban vs DeepSeek Harness：同一批任务跑 56 次，成本差距到底在哪 | Hua Liang's Blog</title><meta name="author" content="eppen"><meta name="copyright" content="eppen"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="手上有两个编码 Agent：自己写的 Luban（VS Code 侧边栏那套），和 DeepSeek 官方的 dsh（DeepSeek Harness 的命令行版）。一直想搞清楚一个很实际的问题—— 同样的模型、同样的代码库、同样的任务，到底谁更划算？ 于是拿一套真实在跑的企业系统（Java + Spring + nginx + CAS，约 1.4 万个源文件）当语料，设计了三轮递进的对比实验，一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Luban vs DeepSeek Harness：同一批任务跑 56 次，成本差距到底在哪">
+<meta property="og:url" content="https://eppencn.com/2026/11/10/luban-vs-deepseek-harness-benchmark/index.html">
+<meta property="og:site_name" content="Hua Liang&#39;s Blog">
+<meta property="og:description" content="手上有两个编码 Agent：自己写的 Luban（VS Code 侧边栏那套），和 DeepSeek 官方的 dsh（DeepSeek Harness 的命令行版）。一直想搞清楚一个很实际的问题—— 同样的模型、同样的代码库、同样的任务，到底谁更划算？ 于是拿一套真实在跑的企业系统（Java + Spring + nginx + CAS，约 1.4 万个源文件）当语料，设计了三轮递进的对比实验，一">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eppencn.com/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-11-10T02:30:00.000Z">
+<meta property="article:modified_time" content="2026-11-10T01:43:31.577Z">
+<meta property="article:author" content="eppen">
+<meta property="article:tag" content="AI Agent">
+<meta property="article:tag" content="基准测试">
+<meta property="article:tag" content="Luban">
+<meta property="article:tag" content="DeepSeek">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eppencn.com/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Luban vs DeepSeek Harness：同一批任务跑 56 次，成本差距到底在哪",
+  "url": "https://eppencn.com/2026/11/10/luban-vs-deepseek-harness-benchmark/",
+  "image": "https://eppencn.com/img/butterfly-icon.png",
+  "datePublished": "2026-11-10T02:30:00.000Z",
+  "dateModified": "2026-11-10T01:43:31.577Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "eppen",
+      "url": "https://eppencn.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://eppencn.com/2026/11/10/luban-vs-deepseek-harness-benchmark/index.html"><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.2"><link rel="stylesheet" href="/pluginsSrc/@fortawesome/fontawesome-free/css/all.min.css?v=7.3.1"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        try {
+          const data = { value }
+
+          if (ttl != null) {
+            data.expiry = Date.now() + ttl * 86400000
+          }
+
+          localStorage.setItem(key, JSON.stringify(data))
+        } catch (e) {
+          console.error(e)
+        }
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: '/pluginsSrc/@egjs/infinitegrid/dist/infinitegrid.min.js?v=4.13.1',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Luban vs DeepSeek Harness：同一批任务跑 56 次，成本差距到底在哪',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><!-- hexo injector head_end start --><meta name="google-adsense-account" content="ca-pub-2045994937692573">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2045994937692573" crossorigin="anonymous"></script><!-- hexo injector head_end end --><style id="article-table-style">
+/* 正文表格：补网格线、内边距、表头底色与斑马纹 */
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 1.5em 0;
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+.post-content thead th,
+.post-content tbody td {
+  border: 1px solid #dcdcdc;
+  padding: 8px 10px;
+  vertical-align: top;
+}
+.post-content thead th {
+  background: #f6f6f6;
+  text-align: left;
+  font-weight: bold;
+  white-space: nowrap;
+}
+.post-content tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+/* 代码块高亮内部的表格是行号 + 代码的双列布局，不能被正文表格样式污染 */
+.post-content .highlight table,
+.post-content .highlight thead,
+.post-content .highlight tbody {
+  border: none;
+  margin: 0;
+  width: auto;
+}
+.post-content .highlight tbody tr:nth-child(even) {
+  background: none;
+}
+.post-content .highlight td {
+  border: none;
+  padding: 0;
+  white-space: pre;
+}
+/* 窄屏：Butterfly 已经把表格包在 .table-wrap 里并给了横向滚动，
+   这里只需保证单元格文字正常换行，不再额外把 table 改成 block，
+   否则会和控制滚动的外层容器打架 */
+@media screen and (max-width: 767px) {
+  .post-content thead th {
+    white-space: normal;
+  }
+}
+</style><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">103</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Hua Liang's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">Luban vs DeepSeek Harness：同一批任务跑 56 次，成本差距到底在哪</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Luban vs DeepSeek Harness：同一批任务跑 56 次，成本差距到底在哪</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-11-10T02:30:00.000Z" title="发表于 2026-11-10 10:30:00">2026-11-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-11-10T01:43:31.577Z" title="更新于 2026-11-10 09:43:31">2026-11-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><p>手上有两个编码 Agent：自己写的 <strong>Luban</strong>（VS Code 侧边栏那套），和 DeepSeek 官方的 <strong>dsh</strong>（DeepSeek Harness 的命令行版）。一直想搞清楚一个很实际的问题——</p>
+<p><strong>同样的模型、同样的代码库、同样的任务，到底谁更划算？</strong></p>
+<p>于是拿一套真实在跑的企业系统（Java + Spring + nginx + CAS，约 1.4 万个源文件）当语料，设计了三轮递进的对比实验，一共跑了 <strong>56 次</strong>。</p>
+<span id="more"></span>
+
+<h2 id="实验设计"><a href="#实验设计" class="headerlink" title="实验设计"></a>实验设计</h2><p>前提条件先把变量卡死：</p>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>设置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>模型</td>
+<td>两边都锁 <code>deepseek-flash</code>（同一把 key，计费口径一致）</td>
+</tr>
+<tr>
+<td>代码语料</td>
+<td>同一份源码副本，各 280MB，排除 <code>target/node_modules/.git</code></td>
+</tr>
+<tr>
+<td>工作区</td>
+<td>每次运行前重新 clone，互不污染</td>
+</tr>
+<tr>
+<td>上限</td>
+<td>600~900 秒看门狗，超时即杀</td>
+</tr>
+<tr>
+<td>并发</td>
+<td>两个工具各一条 lane 并行，同一时段、同机器，环境对等</td>
+</tr>
+</tbody></table>
+<p>三轮任务从”读”到”写”再到”必须编译通过”：</p>
+<ol>
+<li><strong>第一轮</strong>：3 道只读的定位&#x2F;分析题</li>
+<li><strong>第二轮</strong>：扩到 10 题（4 只读 + 6 可写），每题跑 2 轮取中位数</li>
+<li><strong>第三轮</strong>：5 道硬题，必须 <code>mvn compile</code> 通过才算过</li>
+</ol>
+<p>计费用”等效单位”换算，因为两个工具的 token 上报口径不一样：</p>
+<blockquote>
+<p>等效计费 &#x3D; 新输入 × 1 + 缓存读 × 0.1 + 输出 × 1</p>
+</blockquote>
+<p>（DeepSeek 缓存命中的价格约为新输入的 1&#x2F;10，这个折算能反映真实账单量级。）</p>
+<h2 id="第一轮：3-道只读题，两个-Agent-都纠正了我的错误"><a href="#第一轮：3-道只读题，两个-Agent-都纠正了我的错误" class="headerlink" title="第一轮：3 道只读题，两个 Agent 都纠正了我的错误"></a>第一轮：3 道只读题，两个 Agent 都纠正了我的错误</h2><p>第一轮里我埋了个”坑”——其中一道题的前提是错的。</p>
+<p>题面是：”<code>MES_CAS_ENABLED=true</code> 时，请求 <code>/mes-web/sys/user/list</code> 带一个随手编造的 token 也可能返回 200，为什么？”</p>
+<p>我当时的判断是”EOS 集成兜底放行了任意 token”。<strong>两个 Agent 都没顺着我说，而是直接推翻了这个前提</strong>：</p>
+<ul>
+<li>真正的 200 不是鉴权被绕过，而是 <code>OAuth2Filter</code> 的两个失败分支只往 body 里写 <code>&#123;&quot;code&quot;:401&#125;</code>，<strong>整类里没有一处 <code>setStatus</code></strong> —— Servlet 默认状态码就是 200</li>
+<li>另外还有一处 fail-open：<code>getRequestToken</code> 只认 header <code>token</code>、query、Cookie <code>mes_token</code> 四个位置，**不认 <code>Authorization: Bearer</code>**；伪造 token 放错位置就被当成”没带 token”，直接沿用已有 Shiro 会话放行</li>
+</ul>
+<p>我事后实测验证：<code>-H &quot;token: invalid123&quot;</code> 返回 <code>HTTP 200</code> + <code>&#123;&quot;code&quot;:401,...&#125;</code>，且 <code>OAuth2Filter</code> 里 <code>setStatus|sendError</code> 出现次数为 <strong>0</strong>。两个 Agent 的诊断都对。</p>
+<h3 id="指标"><a href="#指标" class="headerlink" title="指标"></a>指标</h3><table>
+<thead>
+<tr>
+<th>运行</th>
+<th>耗时</th>
+<th>工具调用</th>
+<th>新输入</th>
+<th>输出</th>
+<th>缓存读</th>
+<th>等效计费</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Luban t1</td>
+<td>13s</td>
+<td>8</td>
+<td>12,086</td>
+<td>856</td>
+<td>60,544</td>
+<td>18,996</td>
+</tr>
+<tr>
+<td>dsh t1</td>
+<td>11s</td>
+<td>12</td>
+<td>9,279</td>
+<td>809</td>
+<td>67,200</td>
+<td>16,808</td>
+</tr>
+<tr>
+<td>Luban t2</td>
+<td><strong>242s</strong></td>
+<td>79</td>
+<td>78,113</td>
+<td>29,349</td>
+<td>3.07M</td>
+<td><strong>414,624</strong></td>
+</tr>
+<tr>
+<td>dsh t2</td>
+<td><strong>340s</strong></td>
+<td><strong>258</strong></td>
+<td>143,126</td>
+<td>47,534</td>
+<td>6.20M</td>
+<td><strong>810,270</strong></td>
+</tr>
+<tr>
+<td>Luban t3</td>
+<td>37s</td>
+<td>15</td>
+<td>7,736</td>
+<td>3,782</td>
+<td>131,328</td>
+<td>24,651</td>
+</tr>
+<tr>
+<td>dsh t3</td>
+<td>44s</td>
+<td>24</td>
+<td>12,111</td>
+<td>5,449</td>
+<td>86,784</td>
+<td>26,238</td>
+</tr>
+<tr>
+<td><strong>Luban 合计</strong></td>
+<td><strong>292s</strong></td>
+<td>102</td>
+<td>97,935</td>
+<td>33,987</td>
+<td>3.26M</td>
+<td><strong>458,271</strong></td>
+</tr>
+<tr>
+<td><strong>dsh 合计</strong></td>
+<td>395s</td>
+<td>294</td>
+<td>164,516</td>
+<td>53,792</td>
+<td>6.35M</td>
+<td>853,316</td>
+</tr>
+</tbody></table>
+<p>正确性：15&#x2F;15 打平。差距全在成本——**Luban 约为 dsh 的 54%**，而且几乎全集中在最难的那道 t2 上（414k vs 810k，258 次工具调用 vs 79 次）。</p>
+<h2 id="第二轮：扩到-10-题，规律反过来了"><a href="#第二轮：扩到-10-题，规律反过来了" class="headerlink" title="第二轮：扩到 10 题，规律反过来了"></a>第二轮：扩到 10 题，规律反过来了</h2><p>第一轮的结论是”Luban 更省”，但样本太小。于是扩到 10 题：4 道只读（定位、配置汇总、枚举全部注册过滤器、token 生命周期），6 道可写（抽常量、加接口、改 nginx 负载、WebSocket 走 upstream、加 gzip、补 401 状态码），每题各跑两轮取中位数。</p>
+<table>
+<thead>
+<tr>
+<th>任务</th>
+<th>Luban 计费</th>
+<th>dsh 计费</th>
+<th>dsh&#x2F;Luban</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>r1 定位过滤器注册</td>
+<td>23,218</td>
+<td>14,200</td>
+<td>0.61</td>
+</tr>
+<tr>
+<td>r2 nginx 配置汇总</td>
+<td>19,352</td>
+<td>15,263</td>
+<td>0.79</td>
+</tr>
+<tr>
+<td>r3 枚举全部 Filter</td>
+<td>21,476</td>
+<td>26,732</td>
+<td>1.24</td>
+</tr>
+<tr>
+<td>r4 token 生命周期</td>
+<td>81,803</td>
+<td><strong>224,080</strong></td>
+<td><strong>2.74</strong></td>
+</tr>
+<tr>
+<td>w1 抽 order 常量</td>
+<td>53,685</td>
+<td>19,886</td>
+<td>0.37</td>
+</tr>
+<tr>
+<td>w2 新增 GET 接口</td>
+<td>45,853</td>
+<td>30,239</td>
+<td>0.66</td>
+</tr>
+<tr>
+<td>w3 加 &#x2F;mes-report&#x2F; 负载</td>
+<td>49,780</td>
+<td>31,177</td>
+<td>0.63</td>
+</tr>
+<tr>
+<td>w4 ws 走 upstream</td>
+<td>30,066</td>
+<td>28,421</td>
+<td>0.95</td>
+</tr>
+<tr>
+<td>w5 加 gzip</td>
+<td>48,440</td>
+<td>40,292</td>
+<td>0.83</td>
+</tr>
+<tr>
+<td>w6 补 401 状态码</td>
+<td>26,450</td>
+<td>11,829</td>
+<td>0.45</td>
+</tr>
+<tr>
+<td><strong>合计</strong></td>
+<td><strong>400,123</strong></td>
+<td>442,118</td>
+<td>1.10</td>
+</tr>
+</tbody></table>
+<p>总分看是 1.10 倍基本持平，但<strong>拆开看规律就清晰了</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>谁更省</th>
+<th>倍数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>只读 4 题（读代码、跨文件分析）</td>
+<td><strong>Luban</strong></td>
+<td>dsh 是它的 <strong>1.92 倍</strong></td>
+</tr>
+<tr>
+<td>可写 6 题（定点改文件）</td>
+<td><strong>dsh</strong></td>
+<td>只要它的 <strong>0.64 倍</strong></td>
+</tr>
+</tbody></table>
+<p>最典型的是 r4：dsh 翻了 112 次工具、22.4 万计费；Luban 26 次调用、8.2 万就收敛了。反过来 w6（补个状态码）dsh 9 秒 1.2 万，Luban 18 秒 2.6 万。</p>
+<p><strong>两家策略不同</strong>：Luban 先建索引再精读，dsh 倾向大范围 grep&#x2F;read 地毯式扫。所以”读懂”的活 Luban 划算，”动手”的活 dsh 划算。</p>
+<h3 id="意外发现：单次结果不可信"><a href="#意外发现：单次结果不可信" class="headerlink" title="意外发现：单次结果不可信"></a>意外发现：单次结果不可信</h3><p>同一题跑两次，耗时能差三倍：</p>
+<ul>
+<li>w3 的 Luban：32s ↔ 97s</li>
+<li>w5 的 dsh：21s ↔ 86s</li>
+</ul>
+<p>只看一次很容易得出相反结论。这也是为什么每题必须跑两轮取中位数。</p>
+<h2 id="第三轮：5-道硬题，加编译门禁"><a href="#第三轮：5-道硬题，加编译门禁" class="headerlink" title="第三轮：5 道硬题，加编译门禁"></a>第三轮：5 道硬题，加编译门禁</h2><p>前两轮的题都只要”写出正确内容”。第三轮换成必须真改代码的题，判分加了硬门禁：**<code>mvn -o -pl &lt;模块&gt; -am compile</code> 必须通过**，再叠加 4~6 项结构&#x2F;语义检查。</p>
+<table>
+<thead>
+<tr>
+<th>任务</th>
+<th>工具</th>
+<th>编译</th>
+<th>得分</th>
+<th>耗时</th>
+<th>等效计费</th>
+<th>工具调用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>h1 抽 CasStatusService 并装配</td>
+<td>Luban</td>
+<td>✅</td>
+<td>7&#x2F;7</td>
+<td>30s</td>
+<td>31,521</td>
+<td>13</td>
+</tr>
+<tr>
+<td>h1</td>
+<td>dsh</td>
+<td>✅</td>
+<td>7&#x2F;7</td>
+<td>79s</td>
+<td>67,888</td>
+<td>60</td>
+</tr>
+<tr>
+<td>h2 queryByToken 加前置校验</td>
+<td>Luban</td>
+<td>✅</td>
+<td>6&#x2F;6</td>
+<td>30s</td>
+<td>60,947</td>
+<td>10</td>
+</tr>
+<tr>
+<td>h2</td>
+<td>dsh</td>
+<td>✅</td>
+<td>6&#x2F;6</td>
+<td>18s</td>
+<td>15,259</td>
+<td>10</td>
+</tr>
+<tr>
+<td>h3 Redis key 前缀常量化</td>
+<td>Luban</td>
+<td>✅</td>
+<td>5&#x2F;5</td>
+<td>26s</td>
+<td>21,916</td>
+<td>9</td>
+</tr>
+<tr>
+<td>h3</td>
+<td>dsh</td>
+<td>✅</td>
+<td>5&#x2F;5</td>
+<td>23s</td>
+<td>16,582</td>
+<td>22</td>
+</tr>
+<tr>
+<td>h4 Shiro 注册开关化</td>
+<td>Luban</td>
+<td>✅</td>
+<td>6&#x2F;6</td>
+<td><strong>32s</strong></td>
+<td><strong>31,658</strong></td>
+<td>15</td>
+</tr>
+<tr>
+<td>h4</td>
+<td>dsh</td>
+<td>✅</td>
+<td>6&#x2F;6</td>
+<td><strong>385s</strong></td>
+<td><strong>326,987</strong></td>
+<td><strong>136</strong></td>
+</tr>
+<tr>
+<td>h5 ignorePattern 配置化</td>
+<td>Luban</td>
+<td>✅</td>
+<td>5&#x2F;5</td>
+<td>95s</td>
+<td>70,359</td>
+<td>26</td>
+</tr>
+<tr>
+<td>h5</td>
+<td>dsh</td>
+<td>✅</td>
+<td>5&#x2F;5</td>
+<td>94s</td>
+<td>51,307</td>
+<td>44</td>
+</tr>
+<tr>
+<td><strong>合计</strong></td>
+<td>Luban</td>
+<td>5&#x2F;5</td>
+<td><strong>100%</strong></td>
+<td>213s</td>
+<td><strong>216,401</strong></td>
+<td>73</td>
+</tr>
+<tr>
+<td><strong>合计</strong></td>
+<td>dsh</td>
+<td>5&#x2F;5</td>
+<td><strong>100%</strong></td>
+<td>599s</td>
+<td>478,023</td>
+<td>272</td>
+</tr>
+</tbody></table>
+<p>结果：<strong>加了编译门禁，两边依然全过</strong>。差异只剩成本——dsh 是 Luban 的 2.2 倍计费、2.8 倍耗时。</p>
+<p>极端个案是 h4（给 Shiro 注册加个开关）：dsh 花了 385 秒、32.7 万、136 次工具调用；Luban 32 秒、3.2 万。<strong>同一道题差 10 倍</strong>。</p>
+<h3 id="语义抽查：不只看关键词"><a href="#语义抽查：不只看关键词" class="headerlink" title="语义抽查：不只看关键词"></a>语义抽查：不只看关键词</h3><p>判分脚本容易被”结构像”糊弄，所以我人工比对了真实 diff：</p>
+<ul>
+<li><strong>h2 Luban</strong>：<code>if (StringUtils.isBlank(token) || token.trim().length() &lt; 8) return null;</code>，并且查询仍用原值 token，注释还解释了为什么用 trim 长度判断——比我要求的更严谨</li>
+<li><strong>h2 dsh</strong>：<code>token.length() &lt; 8</code>，逻辑等价，同样正确</li>
+<li><strong>h1 dsh</strong>：确实删掉了 <code>CasController</code> 里的 <code>@Value(&quot;$&#123;spring.cas.enabled:false&#125;&quot;) private boolean casEnabled</code>，改为注入新组件</li>
+</ul>
+<h2 id="三轮汇总"><a href="#三轮汇总" class="headerlink" title="三轮汇总"></a>三轮汇总</h2><table>
+<thead>
+<tr>
+<th>轮次</th>
+<th>运行次数</th>
+<th>正确性</th>
+<th>成本结论</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>只读 3 题</td>
+<td>6</td>
+<td>15&#x2F;15 &#x3D; 15&#x2F;15</td>
+<td>Luban 省 46%</td>
+</tr>
+<tr>
+<td>扩样本 10 题 ×2</td>
+<td>40</td>
+<td>40&#x2F;40 全满分</td>
+<td>只读 Luban 省一半；可写 dsh 省 36%</td>
+</tr>
+<tr>
+<td>硬题 5 题</td>
+<td>10</td>
+<td>编译 10&#x2F;10、检查全过</td>
+<td>dsh 贵 2.2 倍</td>
+</tr>
+</tbody></table>
+<p>合计 56 次运行，<strong>0 失败、0 超时</strong>。</p>
+<h2 id="方法论反思：判分脚本坑了自己三次"><a href="#方法论反思：判分脚本坑了自己三次" class="headerlink" title="方法论反思：判分脚本坑了自己三次"></a>方法论反思：判分脚本坑了自己三次</h2><p>这轮最值得记的不是”谁更强”，而是<strong>评测本身的坑</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>后果</th>
+<th>处理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>h3 题面写”改 <code>SysUserTokenRedis</code>“，字面量其实在 <code>RedisKeys</code></td>
+<td>两个 Agent 都改错目标文件</td>
+<td>改题面后重跑</td>
+</tr>
+<tr>
+<td>h4 判分只认 <code>:true</code> 写法，不认 <code>@ConditionalOnProperty(matchIfMissing=true)</code></td>
+<td>误杀正确答案</td>
+<td>修正判分，用保留的工作区重判</td>
+</tr>
+<tr>
+<td>h5 比对片段写成 <code>jpg|png|js|css</code>（原串是 <code>js|css|png|jpg</code>）</td>
+<td>误杀</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>h3 判分等式 <code>raw == consts</code> 不可能成立</td>
+<td>误杀</td>
+<td>同上</td>
+</tr>
+</tbody></table>
+<p>四条里有三条是<strong>判分器错</strong>、不是 Agent 错。所以结论是：**自动化评分必须能”用保留现场重判”**——我这次每次运行都留下完整工作区，才做到改完判分规则直接把历史结果重算，不用重跑 Agent（只有题面错误的那一次真的重跑了）。</p>
+<h2 id="天花板效应"><a href="#天花板效应" class="headerlink" title="天花板效应"></a>天花板效应</h2><p>必须承认一个局限：<strong>三轮下来，两边都是满分</strong>。</p>
+<p>这说明 <code>deepseek-flash</code> 这个档位对两个 harness 都不是瓶颈——题目再”硬”，也只是在吃 token，测不出能力上限。要真正拉开差距，得换维度：</p>
+<ol>
+<li><strong>必须跑起来验证</strong>：写单测、起服务打接口、改完 nginx 跑 <code>nginx -t</code> 加真实转发</li>
+<li><strong>换更强的模型</strong>（比如 <code>deepseek-v4-pro</code>），现在两边都被 flash 的能力压平了</li>
+</ol>
+<h2 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span> <span class="string">&#x27;%s&#x27;</span> <span class="string">&#x27;sk-...&#x27;</span> &gt; ~/.bench_deepseek_key</span><br><span class="line">bash /tmp/bench/run.sh luban t2      <span class="comment"># 单跑一组</span></span><br><span class="line">bash /tmp/bench/run_all.sh           <span class="comment"># 全量</span></span><br><span class="line">python3 /tmp/bench/extract.py        <span class="comment"># 汇总指标</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>如果只记一句话：</p>
+<blockquote>
+<p><strong>在同一个模型下，harness 的差异不在”能不能做对”，而在”用什么代价做对”。</strong><br>读代码找答案，Luban 便宜一半；对着明确目标改一处代码，dsh 更干脆；任务一复杂，dsh 的探索成本会成倍放大（h4 那道题 10 倍差距就是例子）。</p>
+</blockquote>
+<p>下一轮打算加”必须跑起来验证”的题——那才是真正能分出高下的地方。</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI-Agent/">AI Agent</a><a class="post-meta__tags" href="/tags/%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95/">基准测试</a><a class="post-meta__tags" href="/tags/Luban/">Luban</a><a class="post-meta__tags" href="/tags/DeepSeek/">DeepSeek</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="/pluginsSrc/butterfly-extsrc/sharejs/dist/css/share.min.css?v=1.1.6" media="print" onload="this.media='all'"><script src="/pluginsSrc/butterfly-extsrc/sharejs/dist/js/social-share.min.js?v=1.1.6" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/11/10/hello-world/" title="Hello World"><img class="cover" src="/2026/11/10/hello-world/cover.svg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Hello World</div></div><div class="info-2"><div class="info-item-1">  Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick Start  Create a new post1$ hexo new &quot;My New Post&quot;  More info: Writing Run server1$ hexo server  More info: Server Generate static files1$ hexo generate  More info: Generating Deploy to remote sites1$ hexo deploy  More info: Deployment </div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/15/use-deepseek-as-model-in-claude-code-cli/" title="在 Claude Code CLI 中使用 DeepSeek 作为模型"><img class="cover" src="/2026/03/15/use-deepseek-as-model-in-claude-code-cli/cover.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">在 Claude Code CLI 中使用 DeepSeek 作为模型</div></div><div class="info-2"><div class="info-item-1">  Claude Code 是 Anthropic 的 AI 编程助手，默认只使用 Anthropic 的模型。通过环境变量 ANTHROPIC_BASE_URL 可以切换 API 端点，DeepSeek 官方提供了 Anthropic API 兼容 的接口，因此可以直接把 Claude Code CLI 接到 DeepSeek，无需代理或第三方路由。 本文介绍如何配置 Claude Code CLI，使其使用 DeepSeek 作为后端模型。 前置条件 已安装 Claude Code（官方安装：curl -fsSL https://claude.ai/install.sh | bash） 已注册 DeepSeek 开放平台 并获取 API Key（API Keys 页面）  方式一：官方 Anthropic 兼容 API（推荐）DeepSeek 提供与 Anthropic Messages API 兼容的端点，只需改环境变量即可让 Claude Code 走 DeepSeek。 1. 配置环境变量在终端中执行（将 YOUR_DEEPSEEK_API_KEY 换成你的 DeepS...</div></div></div></a><a class="pagination-related" href="/2026/11/07/luban-cli-headless-agent/" title="认识 Luban CLI：把编码 Agent 搬进终端"><img class="cover" src="/2026/11/07/luban-cli-headless-agent/cover.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-07</div><div class="info-item-2">认识 Luban CLI：把编码 Agent 搬进终端</div></div><div class="info-2"><div class="info-item-1">  上一篇聊了嵌在 VSCodium 侧边栏里的 Luban。这一篇说它的另一副面孔：**luban 命令行**。 同一个包 @luban-code/luban-code，除了扩展，还带了一个 bin：不启动编辑器，直接把 agent 的工具循环跑在终端里。SSH 到服务器、写脚本、挂 CI、定时任务，这些场景下没有侧边栏，但「说一句话，它改文件、跑命令、自己验证」这件事照样成立。 为什么还要一个 CLI侧边栏面板很好用，但它有两个前提：你得开着图形界面，而且得在编辑器里。 CLI 补的正是这两块空白：  远程 &#x2F; 无 GUI：SSH 上去只有一个 shell，也能让 agent 干活； 可脚本化：一条命令跑完就退出，能接管道、能进 cron、能塞进 Makefile； 同一套能力：CLI 不是另写一个简化版，而是把扩展里的 runAgent &#x2F; execTool &#x2F; 工具集原样复用——工具循环、只读闸门、子代理、MCP、审计都在里面。  实现上有点意思：它 stub 掉 vscode 模块后直接 require 扩展源码，等于给同一颗大脑换了个躯壳...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E8%AE%BE%E8%AE%A1"><span class="toc-text">实验设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E8%BD%AE%EF%BC%9A3-%E9%81%93%E5%8F%AA%E8%AF%BB%E9%A2%98%EF%BC%8C%E4%B8%A4%E4%B8%AA-Agent-%E9%83%BD%E7%BA%A0%E6%AD%A3%E4%BA%86%E6%88%91%E7%9A%84%E9%94%99%E8%AF%AF"><span class="toc-text">第一轮：3 道只读题，两个 Agent 都纠正了我的错误</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E6%A0%87"><span class="toc-text">指标</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E8%BD%AE%EF%BC%9A%E6%89%A9%E5%88%B0-10-%E9%A2%98%EF%BC%8C%E8%A7%84%E5%BE%8B%E5%8F%8D%E8%BF%87%E6%9D%A5%E4%BA%86"><span class="toc-text">第二轮：扩到 10 题，规律反过来了</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%84%8F%E5%A4%96%E5%8F%91%E7%8E%B0%EF%BC%9A%E5%8D%95%E6%AC%A1%E7%BB%93%E6%9E%9C%E4%B8%8D%E5%8F%AF%E4%BF%A1"><span class="toc-text">意外发现：单次结果不可信</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E8%BD%AE%EF%BC%9A5-%E9%81%93%E7%A1%AC%E9%A2%98%EF%BC%8C%E5%8A%A0%E7%BC%96%E8%AF%91%E9%97%A8%E7%A6%81"><span class="toc-text">第三轮：5 道硬题，加编译门禁</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E4%B9%89%E6%8A%BD%E6%9F%A5%EF%BC%9A%E4%B8%8D%E5%8F%AA%E7%9C%8B%E5%85%B3%E9%94%AE%E8%AF%8D"><span class="toc-text">语义抽查：不只看关键词</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E8%BD%AE%E6%B1%87%E6%80%BB"><span class="toc-text">三轮汇总</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E8%AE%BA%E5%8F%8D%E6%80%9D%EF%BC%9A%E5%88%A4%E5%88%86%E8%84%9A%E6%9C%AC%E5%9D%91%E4%BA%86%E8%87%AA%E5%B7%B1%E4%B8%89%E6%AC%A1"><span class="toc-text">方法论反思：判分脚本坑了自己三次</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A9%E8%8A%B1%E6%9D%BF%E6%95%88%E5%BA%94"><span class="toc-text">天花板效应</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E7%8E%B0"><span class="toc-text">复现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-text">最后</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/10/luban-vs-deepseek-harness-benchmark/" title="Luban vs DeepSeek Harness：同一批任务跑 56 次，成本差距到底在哪">Luban vs DeepSeek Harness：同一批任务跑 56 次，成本差距到底在哪</a><time datetime="2026-11-10T02:30:00.000Z" title="发表于 2026-11-10 10:30:00">2026-11-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/10/hello-world/" title="Hello World"><img src="/2026/11/10/hello-world/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2026/11/10/hello-world/" title="Hello World">Hello World</a><time datetime="2026-11-10T01:43:00.215Z" title="发表于 2026-11-10 09:43:00">2026-11-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/07/mes-monthly-2026-10/" title="MES 2026 年 10 月工作小结"><img src="/2026/11/07/mes-monthly-2026-10/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年 10 月工作小结"/></a><div class="content"><a class="title" href="/2026/11/07/mes-monthly-2026-10/" title="MES 2026 年 10 月工作小结">MES 2026 年 10 月工作小结</a><time datetime="2026-11-07T14:10:00.000Z" title="发表于 2026-11-07 22:10:00">2026-11-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/07/mes-weekly-2026-w45/" title="MES 2026 年第 45 周工作小结"><img src="/2026/11/07/mes-weekly-2026-w45/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年第 45 周工作小结"/></a><div class="content"><a class="title" href="/2026/11/07/mes-weekly-2026-w45/" title="MES 2026 年第 45 周工作小结">MES 2026 年第 45 周工作小结</a><time datetime="2026-11-07T09:10:00.000Z" title="发表于 2026-11-07 17:10:00">2026-11-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/07/luban-cli-headless-agent/" title="认识 Luban CLI：把编码 Agent 搬进终端"><img src="/2026/11/07/luban-cli-headless-agent/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="认识 Luban CLI：把编码 Agent 搬进终端"/></a><div class="content"><a class="title" href="/2026/11/07/luban-cli-headless-agent/" title="认识 Luban CLI：把编码 Agent 搬进终端">认识 Luban CLI：把编码 Agent 搬进终端</a><time datetime="2026-11-07T02:00:00.000Z" title="发表于 2026-11-07 10:00:00">2026-11-07</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By eppen</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.2"></script><script src="/js/main.js?v=5.7.2"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.2"></script></div></div><!-- hexo injector body_end start --><div class="adsense-wrap" style="margin:24px 0;text-align:center;min-height:90px;overflow:hidden;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2045994937692573" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><!-- hexo injector body_end end --></body></html>

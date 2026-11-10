@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="MES 2026 年 10 月工作总结封面">
+<title>MES 2026 年 10 月工作总结</title>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#0a1220"/>
+    <stop offset="1" stop-color="#101f34"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+    <stop offset="0" stop-color="#38bdf8" stop-opacity="0.18"/>
+    <stop offset="0.65" stop-color="#38bdf8" stop-opacity="0.05"/>
+    <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#0a1220" stop-opacity="0.95"/>
+    <stop offset="1" stop-color="#0a1220" stop-opacity="0"/>
+  </linearGradient>
+  <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+    <path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1"/>
+  </pattern>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+    <path d="M0 0 L10 5 L0 10 z" fill="#38bdf8" fill-opacity="0.75"/>
+  </marker>
+</defs>
+
+<rect width="1280" height="720" fill="url(#bg)"/>
+<rect width="1280" height="720" fill="url(#grid)"/>
+<circle cx="1010" cy="330" r="430" fill="url(#glow)"/>
+<rect x="0" y="0" width="660" height="720" fill="url(#fade)"/>
+
+<g opacity="0.96" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif">
+  <g>
+    <rect x="712" y="86" width="474" height="132" rx="14" fill="#08131f" stroke="#1e3a5f" stroke-width="1.5"/>
+    <text x="736" y="120" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="15" fill="#64748b">2026 / 10</text>
+    <g fill="#0f2338">
+      <rect x="736" y="136" width="80" height="30" rx="6"/>
+      <rect x="826" y="136" width="80" height="30" rx="6"/>
+      <rect x="916" y="136" width="80" height="30" rx="6"/>
+      <rect x="1006" y="136" width="80" height="30" rx="6"/>
+      <rect x="1096" y="136" width="66" height="30" rx="6"/>
+      <rect x="736" y="172" width="80" height="30" rx="6"/>
+      <rect x="826" y="172" width="80" height="30" rx="6"/>
+      <rect x="916" y="172" width="80" height="30" rx="6"/>
+      <rect x="1006" y="172" width="80" height="30" rx="6"/>
+      <rect x="1096" y="172" width="66" height="30" rx="6"/>
+    </g>
+    <g fill="#38bdf8" fill-opacity="0.20">
+      <rect x="736" y="136" width="80" height="30" rx="6"/>
+      <rect x="826" y="136" width="80" height="30" rx="6"/>
+      <rect x="916" y="136" width="80" height="30" rx="6"/>
+      <rect x="1006" y="136" width="80" height="30" rx="6"/>
+      <rect x="1096" y="136" width="66" height="30" rx="6"/>
+      <rect x="736" y="172" width="80" height="30" rx="6"/>
+      <rect x="826" y="172" width="80" height="30" rx="6"/>
+      <rect x="1006" y="172" width="80" height="30" rx="6"/>
+      <rect x="1096" y="172" width="66" height="30" rx="6"/>
+    </g>
+    <g fill="#38bdf8" fill-opacity="0.45">
+      <rect x="916" y="172" width="80" height="30" rx="6"/>
+    </g>
+    <text x="1172" y="205" text-anchor="end" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="13" fill="#475569">266 commits</text>
+  </g>
+
+  <g>
+    <rect x="712" y="250" width="474" height="356" rx="14" fill="#08131f" stroke="#22d3ee" stroke-opacity="0.30" stroke-width="1.5"/>
+    <text x="736" y="284" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="15" fill="#64748b">nwf_processdefine</text>
+
+    <circle cx="768" cy="336" r="15" fill="none" stroke="#22d3ee" stroke-width="2.5"/>
+    <circle cx="768" cy="336" r="5" fill="#22d3ee"/>
+    <text x="796" y="341" font-size="16" fill="#7dd3fc">开始</text>
+
+    <rect x="862" y="314" width="120" height="44" rx="8" fill="#0d2036" stroke="#38bdf8" stroke-opacity="0.55" stroke-width="1.5"/>
+    <text x="922" y="341" text-anchor="middle" font-size="16" fill="#e2e8f0">会签审批</text>
+
+    <rect x="1014" y="314" width="120" height="44" rx="8" fill="#0d2036" stroke="#38bdf8" stroke-opacity="0.40" stroke-width="1.5"/>
+    <text x="1074" y="341" text-anchor="middle" font-size="16" fill="#cbd5e1">条件分支</text>
+
+    <line x1="784" y1="336" x2="856" y2="336" stroke="#38bdf8" stroke-opacity="0.6" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <line x1="982" y1="336" x2="1008" y2="336" stroke="#38bdf8" stroke-opacity="0.6" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+    <path d="M1074 358 V392 H952" fill="none" stroke="#38bdf8" stroke-opacity="0.5" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <path d="M1074 358 V392 H1152" fill="none" stroke="#64748b" stroke-opacity="0.6" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+    <rect x="894" y="370" width="112" height="40" rx="8" fill="#12233a" stroke="#f59e0b" stroke-opacity="0.55" stroke-width="1.5"/>
+    <text x="950" y="395" text-anchor="middle" font-size="15" fill="#fcd34d">iif / runsql</text>
+
+    <rect x="1152" y="370" width="18" height="40" rx="4" fill="#12233a" stroke="#64748b" stroke-opacity="0.5" stroke-width="1.2"/>
+
+    <path d="M950 410 V462 H768 V352" fill="none" stroke="#f59e0b" stroke-opacity="0.45" stroke-width="1.5" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+    <text x="806" y="452" font-size="14" fill="#f59e0b" fill-opacity="0.85">回退 / 终止其它待办</text>
+
+    <text x="736" y="500" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="14" fill="#64748b">versionsign</text>
+    <g font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="14">
+      <rect x="736" y="514" width="82" height="30" rx="15" fill="#1b2c1f" stroke="#34d399" stroke-opacity="0.5"/>
+      <text x="777" y="534" text-anchor="middle" fill="#34d399">1.0</text>
+      <rect x="828" y="514" width="82" height="30" rx="15" fill="#1c2333" stroke="#64748b" stroke-opacity="0.5"/>
+      <text x="869" y="534" text-anchor="middle" fill="#94a3b8">1.1</text>
+      <rect x="920" y="514" width="92" height="30" rx="15" fill="#2a1f14" stroke="#f59e0b" stroke-opacity="0.5"/>
+      <text x="966" y="534" text-anchor="middle" fill="#f59e0b">1.2_edit</text>
+      <text x="1032" y="534" fill="#475569">CurrentRelease</text>
+    </g>
+
+    <text x="736" y="582" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="13" fill="#334155">EOS XML / 模拟测试 / AI 草稿</text>
+  </g>
+</g>
+
+<g font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif">
+  <rect x="88" y="96" width="112" height="38" rx="19" fill="none" stroke="#38bdf8" stroke-opacity="0.55" stroke-width="1.5"/>
+  <text x="144" y="122" text-anchor="middle" font-size="17" fill="#38bdf8" letter-spacing="3">月报</text>
+
+  <rect x="88" y="206" width="6" height="44" rx="3" fill="#f59e0b"/>
+  <text x="88" y="268" font-size="54" font-weight="700" fill="#f8fafc" letter-spacing="2">MES / 2026 年 10 月</text>
+
+  <text x="88" y="334" font-size="36" font-weight="700" fill="#e2e8f0" letter-spacing="1">工作总结</text>
+
+  <text x="88" y="392" font-size="19" fill="#94a3b8" letter-spacing="0.5">EOS 流程定义 / 电厂小指标 / 在线操作说明</text>
+
+  <g font-family="ui-monospace,Consolas,'Courier New',monospace">
+    <text x="88" y="500" font-size="42" font-weight="700" fill="#38bdf8">266</text>
+    <text x="88" y="528" font-size="15" fill="#64748b">commits</text>
+
+    <text x="248" y="500" font-size="42" font-weight="700" fill="#f59e0b">16</text>
+    <text x="248" y="528" font-size="15" fill="#64748b">merges</text>
+
+    <text x="408" y="500" font-size="42" font-weight="700" fill="#34d399">867</text>
+    <text x="408" y="528" font-size="15" fill="#64748b">files</text>
+  </g>
+  <line x1="88" y1="556" x2="188" y2="556" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
+
+  <text x="88" y="676" font-size="18" fill="#94a3b8" letter-spacing="1">流程定义 / 小指标 / 手册 / 实时库</text>
+  <text x="88" y="704" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="15" fill="#64748b">eppencn.com</text>
+  <text x="1192" y="704" text-anchor="end" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="15" fill="#475569">HUALLIANG / BLOG</text>
+</g>
+</svg>

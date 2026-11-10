@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="文言文现代翻译助手内容说明封面">
+<title>文言文现代翻译助手内容说明封面</title>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#120f1f"/>
+    <stop offset="1" stop-color="#1d1836"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+    <stop offset="0" stop-color="#e0a94a" stop-opacity="0.24"/>
+    <stop offset="0.65" stop-color="#e0a94a" stop-opacity="0.07"/>
+    <stop offset="1" stop-color="#e0a94a" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#120f1f" stop-opacity="0.9"/>
+    <stop offset="1" stop-color="#120f1f" stop-opacity="0"/>
+  </linearGradient>
+  <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+    <path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity="0.045" stroke-width="1"/>
+  </pattern>
+</defs>
+<rect width="1280" height="720" fill="url(#bg)"/>
+<rect width="1280" height="720" fill="url(#grid)"/>
+<circle cx="1000" cy="330" r="430" fill="url(#glow)"/>
+<rect x="0" y="0" width="700" height="720" fill="url(#fade)"/>
+<g opacity="0.9">
+  
+  <rect x="812" y="162" width="26" height="396" rx="13" fill="#2b1c10" stroke="#e0a94a" stroke-opacity="0.5"/>
+  <rect x="1162" y="162" width="26" height="396" rx="13" fill="#2b1c10" stroke="#e0a94a" stroke-opacity="0.5"/>
+  <rect x="832" y="186" width="336" height="348" rx="8" fill="#f7ecd6"/>
+  <g stroke="#4a3520" stroke-width="8" stroke-linecap="round" opacity="0.6">
+    <line x1="884" y1="246" x2="1116" y2="246"/>
+    <line x1="884" y1="290" x2="1116" y2="290"/>
+    <line x1="884" y1="334" x2="1058" y2="334"/>
+    <line x1="884" y1="378" x2="1116" y2="378"/>
+    <line x1="884" y1="422" x2="1002" y2="422"/>
+  </g>
+  <rect x="1062" y="446" width="66" height="66" rx="8" fill="#b93b2f"/>
+  <text x="1095" y="494" text-anchor="middle" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="42" fill="#fff4e3">文</text>
+
+</g>
+<g>
+  <rect x="96" y="112" width="120" height="38" rx="19" fill="none" stroke="#e0a94a" stroke-opacity="0.55" stroke-width="1.5"/>
+  <text x="156" y="138" text-anchor="middle" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="17" fill="#e0a94a" letter-spacing="3">产品介绍</text>
+  <rect x="96" y="248" width="6" height="58" rx="3" fill="#e0a94a"/>
+  <text x="96" y="320" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="58" font-weight="700" fill="#f8fafc" letter-spacing="1">文言文现代翻译</text>
+  <text x="96" y="398" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="58" font-weight="700" fill="#f8fafc" letter-spacing="1">助手 · 内容说明</text>
+  <text x="96" y="464" font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif" font-size="25" fill="#94a3b8" letter-spacing="1">Classical Chinese Translation</text>
+  <line x1="96" y1="612" x2="196" y2="612" stroke="#e0a94a" stroke-width="3" stroke-linecap="round"/>
+  <text x="96" y="654" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="16" fill="#64748b">eppencn.com</text>
+  <text x="1216" y="654" text-anchor="end" font-family="ui-monospace,Consolas,'Courier New',monospace" font-size="16" fill="#475569">HUALLIANG / BLOG</text>
+</g>
+</svg>
