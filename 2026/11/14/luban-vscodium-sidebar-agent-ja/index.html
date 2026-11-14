@@ -1,0 +1,266 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>AI コーディングエージェントを VSCodium のサイドバーに組み込んで、テストまで自分で走らせさせた | Hua Liang's Blog</title><meta name="author" content="eppen"><meta name="copyright" content="eppen"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="エディタのサイドバーで動くコーディングエージェント。ローカルモデルへの直接接続、3 つのモード、diff レビュー、browser と computer の二本の手、3 種類のプラグイン。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI コーディングエージェントを VSCodium のサイドバーに組み込んで、テストまで自分で走らせさせた">
+<meta property="og:url" content="https://eppencn.com/2026/11/14/luban-vscodium-sidebar-agent-ja/index.html">
+<meta property="og:site_name" content="Hua Liang&#39;s Blog">
+<meta property="og:description" content="エディタのサイドバーで動くコーディングエージェント。ローカルモデルへの直接接続、3 つのモード、diff レビュー、browser と computer の二本の手、3 種類のプラグイン。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eppencn.com/2026/11/14/luban-vscodium-sidebar-agent-ja/cover.jpg">
+<meta property="article:published_time" content="2026-11-14T09:35:00.000Z">
+<meta property="article:modified_time" content="2026-11-14T09:32:17.991Z">
+<meta property="article:author" content="eppen">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="Luban">
+<meta property="article:tag" content="VSCodium">
+<meta property="article:tag" content="コーディング支援">
+<meta property="article:tag" content="ローカルモデル">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eppencn.com/2026/11/14/luban-vscodium-sidebar-agent-ja/cover.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AI コーディングエージェントを VSCodium のサイドバーに組み込んで、テストまで自分で走らせさせた",
+  "url": "https://eppencn.com/2026/11/14/luban-vscodium-sidebar-agent-ja/",
+  "image": "https://eppencn.com/2026/11/14/luban-vscodium-sidebar-agent-ja/cover.jpg",
+  "datePublished": "2026-11-14T09:35:00.000Z",
+  "dateModified": "2026-11-14T09:32:17.991Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "eppen",
+      "url": "https://eppencn.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://eppencn.com/2026/11/14/luban-vscodium-sidebar-agent-ja/index.html"><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.2"><link rel="stylesheet" href="/pluginsSrc/@fortawesome/fontawesome-free/css/all.min.css?v=7.3.1"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        try {
+          const data = { value }
+
+          if (ttl != null) {
+            data.expiry = Date.now() + ttl * 86400000
+          }
+
+          localStorage.setItem(key, JSON.stringify(data))
+        } catch (e) {
+          console.error(e)
+        }
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: '/pluginsSrc/@egjs/infinitegrid/dist/infinitegrid.min.js?v=4.13.1',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'AI コーディングエージェントを VSCodium のサイドバーに組み込んで、テストまで自分で走らせさせた',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><!-- hexo injector head_end start --><meta name="google-adsense-account" content="ca-pub-2045994937692573">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2045994937692573" crossorigin="anonymous"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">61</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">117</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Hua Liang's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">AI コーディングエージェントを VSCodium のサイドバーに組み込んで、テストまで自分で走らせさせた</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">AI コーディングエージェントを VSCodium のサイドバーに組み込んで、テストまで自分で走らせさせた</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-11-14T09:35:00.000Z" title="发表于 2026-11-14 17:35:00">2026-11-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-11-14T09:32:17.991Z" title="更新于 2026-11-14 17:32:17">2026-11-14</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Tech/">Tech</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container">
+
+<p>Luban は VS Code &#x2F; VSCodium の拡張機能で、コーディングエージェントをサイドバーに置きます。ワークスペースのファイルを読み書きし、コマンドを実行し、<code>browser</code> でページを見て <code>computer</code> でデスクトップを操作して自分の仕事を検証し、最後に結果をまとめて報告します。</p>
+<p>これは「<a href="/2026/11/05/luban-vscodium-coding-agent/">Luban を知る：VSCodium のサイドバーに組み込まれたコーディングエージェント</a>」の更新版です。前回はそれが何か、MES プロジェクトでどう使ったかを書きました。それ以降、3 つのモード、<code>browser</code> &#x2F; <code>computer</code> の 2 つのツール、プラグインシステムが入ったので、改めて独立した記事にします。コマンドラインの顔には別の記事「<a href="/2026/11/07/luban-cli-headless-agent/">Luban CLI を知る：コーディングエージェントをターミナルへ</a>」があります。</p>
+<span id="more"></span>
+
+<h2 id="1-ローカルモデルを先に考える"><a href="#1-ローカルモデルを先に考える" class="headerlink" title="1. ローカルモデルを先に考える"></a>1. ローカルモデルを先に考える</h2><p>ほとんどの AI コーディングツールはサードパーティの API キーを使い、リクエストはベンダーのサーバーを経由します。これはローカルモデルに対して 2 つの別々の問題を起こします。1 つ目はネットワーク経路が通らないこと。<code>localhost</code> の Ollama &#x2F; llama.cpp &#x2F; vLLM にはそもそも届かないので、トンネルでサービスを公開ネットに晒すことになり、コードは結局外に出ます。2 つ目はトークン予算が足りないこと。小さいコンテキストウィンドウのモデル（4k &#x2F; 8k）は接続できてもエージェントを動かせません。固定コストが先にウィンドウを食い尽くします。システムプロンプトとツール定義だけで 3k+ トークンになるので、最初のターンにコードを置く場所が残りません。</p>
+<p>Luban はこの 2 点についてローカルモデル前提で設計しています。</p>
+<p><strong>つながる。</strong> リクエストは拡張機能のプロセスから直接出ます。中継サービスもテレメトリもありません。設定に <code>http://127.0.0.1:11434/v1</code> と書けばよく、ループバックアドレスならキーすら不要です。モデルを変えるのは JSON の一か所を書き換えるだけ。OpenAI 互換のエンドポイントなら何でも受け付けます。クラウドの DeepSeek、ローカルの Ollama、llama.cpp、vLLM。API キーはエディタの SecretStorage に保存され、ディスクには書かれません。</p>
+<p><strong>動く。</strong> 固定コストを抑えるために具体的にいくつかやっています。</p>
+<ul>
+<li>ツール層はコンテキストウィンドウで段階分け。16k 未満だと「小ウィンドウ段」に入り、ツールは 20 個から 17 個に減り、固定コストは 3.8k から約 2.2k トークンに下がります。</li>
+<li>メッセージの並びはプレフィックスキャッシュに合わせてあり、2 ターン目以降は通常 95%+ のキャッシュヒットが得られます。</li>
+<li>毎ターンの回答の下に、入力 &#x2F; 出力 &#x2F; キャッシュヒット &#x2F; コンテキスト使用量 &#x2F; リクエスト数をそのまま表示します。</li>
+<li>ツールループの本当の制約はコンテキストウィンドウと経過時間で、無限ループ検出を追加しました。ターン数上限は安全弁にすぎません（デフォルト 200、設定可）。40 項目以上の設定が変更でき、ローカルの台帳と使用量ダッシュボードもあります。</li>
+</ul>
+<h2 id="2-3-つのモード：Plan-Agent-Chat"><a href="#2-3-つのモード：Plan-Agent-Chat" class="headerlink" title="2. 3 つのモード：Plan &#x2F; Agent &#x2F; Chat"></a>2. 3 つのモード：Plan &#x2F; Agent &#x2F; Chat</h2><p>パネル下部のドロップダウンで 3 つのモードを切り替えます。<code>Shift+Tab</code> で 3 つを順に循環します。</p>
+<ul>
+<li><strong>Plan</strong>：ファイルを書くツールが<strong>そもそも登録されていません</strong>。プロンプトで書くなと説得するのではなく、呼び出せないのです。<code>run_command</code> はさらに一段ずつの読み取り専用チェックを通ります。調査結果は Markdown の計画（目標 &#x2F; 現状 &#x2F; 手順 &#x2F; 検証方法 &#x2F; リスク）になり、自動で開きます。編集して「この計画を実行」を押すと、編集後の版に沿って進みます。</li>
+<li><strong>Agent</strong>：ツール一式。ファイルの読み書き、自分で検証するためのコマンド実行、長いテストは start &#x2F; poll でループを塞がない、複数ステップのタスクは <code>todo_write</code> で追跡、本当に人間の判断が要る分岐では <code>ask_question</code> で選択肢を出します。</li>
+<li><strong>Chat</strong>：ツールを 1 つも渡しません。純粋な質疑応答で、ツール呼び出しは 1 回も出しません。「このコードは何をしているか」「このエラーはなぜ起きるか」に使います。メッセージに <code>@web</code> があれば先に検索してから答えます。</li>
+</ul>
+<h2 id="3-レビューはエディタの中で"><a href="#3-レビューはエディタの中で" class="headerlink" title="3. レビューはエディタの中で"></a>3. レビューはエディタの中で</h2><p>ファイルを書き終えると、Luban はエディタでネイティブの diff を開きます。タイトルバーに「すべて保持 &#x2F; すべて取り消し」、両側に hunk ごとの CodeLens があって一つずつ決められ、チャット欄には要約が 1 行残るだけです。変更は「原文を読む → 正確な部分置換」で行います。</p>
+<h2 id="4-1-つのカーネル、複数の入り口"><a href="#4-1-つのカーネル、複数の入り口" class="headerlink" title="4. 1 つのカーネル、複数の入り口"></a>4. 1 つのカーネル、複数の入り口</h2><p>同じツールループは別の場所からも駆動できます。</p>
+<ul>
+<li><strong>CLI</strong>：<code>npm i -g @luban-code/luban-code</code>、<code>luban --plan &quot;src/ の構成を調査&quot;</code>、<code>luban --agent --apply &quot;utils.js を作ってテストを書く&quot;</code>。ディスクに書く前に毎回 unified diff で確認します。</li>
+<li><strong>ACP</strong>：Zed &#x2F; JetBrains で Luban をそのままエージェントとして使えます。本文、思考、ツールカードがすべてネイティブに描画されます。</li>
+<li><strong>MCP &#x2F; プラグイン &#x2F; スキル</strong>：ローカルの stdio MCP サーバーのツールは同じツールループに合流します（<code>mcp__&lt;server&gt;__&lt;tool&gt;</code>）。ローカルプラグインは <code>pl__</code> 接頭辞で同じループに入り、<code>~/.claude/skills</code> や <code>~/.cursor/skills</code> の SKILL.md も読めます。</li>
+</ul>
+<p>他にも小さな機能がいくつか。自作の Markdown プレビュー（コードハイライト、相対パスのローカル画像、エディタに合わせたスクロール）と、ステータスバーの <code>(o.o) run_command npm test</code> という 1 行。小さな大工「バンバン」の顔と現在の状態で、放置が長くなると勝手に <code>-_-</code> になります。</p>
+<h2 id="5-二本の手：browser-use、computer-use"><a href="#5-二本の手：browser-use、computer-use" class="headerlink" title="5. 二本の手：browser use、computer use"></a>5. 二本の手：browser use、computer use</h2><p>2 つのツールはどちらもデフォルトでオフなので、インストールしただけでは気づかない人が多いです。</p>
+<ul>
+<li><strong><code>browser</code>（ページを見る）</strong>：ローカルの Chrome &#x2F; Edge でヘッドレスインスタンスを起動し、<code>open</code> → <code>snapshot</code>（アクセシビリティツリーの概要で、生の HTML よりかなりトークンを節約できます）→ <code>screenshot</code> &#x2F; <code>console</code> &#x2F; <code>network</code>。Agent モードなら <code>click</code> &#x2F; <code>type</code> &#x2F; <code>scroll</code> で実際に操作もできます。Playwright は使わず、CDP は手書きの最小限の WebSocket で、依存関係はゼロ増です。一時プロファイルなのでログイン状態は持ちません。「任意の JS を実行」する入口もなく、3 つの操作は固定の経路を通ります。プレビューパネルを開けば、エージェントが操作中のページのスクリーンショットを毎秒 1 枚見られます。同じインスタンスで、別に起動するわけではありません。</li>
+<li><strong><code>computer</code>（デスクトップを動かす）</strong>：スクリーンショット、画面の文字の読み取り、ウィンドウの一覧、さらにクリック &#x2F; ダブルクリック &#x2F; ドラッグ &#x2F; スクロール &#x2F; 入力 &#x2F; キー組み合わせ。macOS は <code>screencapture</code> + <code>CGEvent</code> + Vision、Windows は内蔵の C# helper で、どちらもサードパーティ依存なし。Linux もあり、システムの <code>xdotool</code> と <code>ffmpeg</code> を使い、OCR は <code>tesseract-ocr</code> です。Wayland セッションでは XWayland アプリしか操作できません。座標は「画面の論理点」で、画像が縮小されていれば倍率を報告し、<code>imageCoords</code> を渡せば換算してくれます。初めてマウスとキーボードを動かす前に 1 回だけ確認します。</li>
+</ul>
+<p>2 つの境界はプロンプトではなくコードに書いてあります。<code>computer</code> は Plan モードでは丸ごと渡しません。<code>browser</code> は読み取り専用の操作は使えて、操作を伴うものは渡しません。クリックと入力は外部の状態を変えるので、一部が読み取り専用だからといって丸ごと許可するわけにはいきません。コストにも節度が要ります。全画面のデスクトップスクリーンショットは約 3000 トークンです。<code>run_command</code> と <code>browser</code> で済むならデスクトップには触れない。</p>
+<p>ファイルの読み書き、コマンド実行、ページを見る、デスクトップを動かす。これらはすべて拡張機能が自分でやっています。もう一層外に広げたものがプラグインです。</p>
+<h2 id="6-プラグイン"><a href="#6-プラグイン" class="headerlink" title="6. プラグイン"></a>6. プラグイン</h2><p>3 種類に対応しています。</p>
+<ul>
+<li><strong>ツールプラグイン</strong>：サンプルの <code>demo</code> プラグインの機能。<code>now</code> はローカルの時刻とタイムゾーン、<code>disk_free</code> はディスクの空き容量を報告します。</li>
+<li><strong>テーマプラグイン</strong>：インストールするとパネルで配色を選べます。<code>theme-midnight</code> と <code>theme-sakura</code> が用意されています。</li>
+<li><strong>スキル</strong>：<code>SKILL.md</code> の説明書で、モデルが読んでそれに従います。</li>
+</ul>
+<p><strong>プラグインリポジトリ：<a target="_blank" rel="noopener" href="https://github.com/eppen/luban-plugins">eppen&#x2F;luban-plugins</a>。</strong> 既存のプラグインやテーマを参考に、自分のプラグインやテーマを作れます。</p>
+<p>インストール場所：グローバルは <code>~/.luban/plugins/</code>、ワークスペース単位は <code>&lt;workspace&gt;/.luban/plugins/</code>（同名ならプロジェクト側がグローバルを上書き）。<code>luban plugin add &lt;名前&gt;</code> でインデックスから入れることもできます。</p>
+<p>注意：ツールプラグインはコードを実行するので、デフォルトではオフです（<code>luban.plugins.enabled</code>）。初回読み込み時とディレクトリ内容の変化時にそれぞれ 1 回確認します。テーマプラグインは何も実行しないので、このスイッチの影響を受けません。</p>
+<h2 id="インストール"><a href="#インストール" class="headerlink" title="インストール"></a>インストール</h2><ul>
+<li>VS Code Marketplace &#x2F; Open VSX の拡張パネルで <code>Luban</code> を検索</li>
+<li>または GitHub Releases から VSIX をダウンロードし、拡張パネルの <code>⋯</code> → Install from VSIX</li>
+</ul>
+<p>前提条件：VS Code &#x2F; VSCodium 1.104+、および <code>~/.luban/providers.json</code> にプロバイダを設定済みであること。</p>
+<p>試すなら、最初のタスクとしてこのプロンプトをおすすめします。<br><code>utils.js を作り、debounce(fn, ms) と throttle(fn, ms) をエクスポートし、node で両者の挙動をテストする</code>。</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI/">AI</a><a class="post-meta__tags" href="/tags/Agent/">Agent</a><a class="post-meta__tags" href="/tags/Luban/">Luban</a><a class="post-meta__tags" href="/tags/VSCodium/">VSCodium</a><a class="post-meta__tags" href="/tags/%E3%82%B3%E3%83%BC%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E6%94%AF%E6%8F%B4/">コーディング支援</a><a class="post-meta__tags" href="/tags/%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%83%A2%E3%83%87%E3%83%AB/">ローカルモデル</a></div><div class="post-share"><div class="social-share" data-image="/2026/11/14/luban-vscodium-sidebar-agent-ja/cover.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="/pluginsSrc/butterfly-extsrc/sharejs/dist/css/share.min.css?v=1.1.6" media="print" onload="this.media='all'"><script src="/pluginsSrc/butterfly-extsrc/sharejs/dist/js/social-share.min.js?v=1.1.6" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/11/28/2026-11-28-luban-acp-support/" title="Luban 现在能在 Zed 和 JetBrains 里用了：聊聊 ACP 支持"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Luban 现在能在 Zed 和 JetBrains 里用了：聊聊 ACP 支持</div></div><div class="info-2"><div class="info-item-1">Luban 加了 ACP 支持，同一个内核现在能被 Zed、JetBrains 当成自己的编码 agent 来驱动。这篇讲讲为什么做、怎么接、以及哪些是它做不到的。</div></div></div></a><a class="pagination-related" href="/2026/11/14/luban-vscodium-sidebar-agent-en/" title="I Put an AI Coding Agent in the VSCodium Sidebar and Let It Run the Tests Itself"><img class="cover" src="/2026/11/14/luban-vscodium-sidebar-agent-en/cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">I Put an AI Coding Agent in the VSCodium Sidebar and Let It Run the Tests Itself</div></div><div class="info-2"><div class="info-item-1">A coding agent living in the editor sidebar: direct local-model connection, three modes, diff review, browser and computer as two hands, three kinds of plugins.</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/11/14/luban-vscodium-sidebar-agent-en/" title="I Put an AI Coding Agent in the VSCodium Sidebar and Let It Run the Tests Itself"><img class="cover" src="/2026/11/14/luban-vscodium-sidebar-agent-en/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-14</div><div class="info-item-2">I Put an AI Coding Agent in the VSCodium Sidebar and Let It Run the Tests Itself</div></div><div class="info-2"><div class="info-item-1">A coding agent living in the editor sidebar: direct local-model connection, three modes, diff review, browser and computer as two hands, three kinds of plugins.</div></div></div></a><a class="pagination-related" href="/2026/11/14/luban-vscodium-sidebar-agent/" title="我把 AI 编码助手塞进了 VSCodium 侧边栏，还让它自己跑测试"><img class="cover" src="/2026/11/14/luban-vscodium-sidebar-agent/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-14</div><div class="info-item-2">我把 AI 编码助手塞进了 VSCodium 侧边栏，还让它自己跑测试</div></div><div class="info-2"><div class="info-item-1">一个跑在编辑器侧边栏里的编码 agent：直连本地模型、三档模式、diff 审阅、browser 与 computer 两只手、三类插件。</div></div></div></a><a class="pagination-related" href="/2026/11/07/luban-cli-headless-agent/" title="认识 Luban CLI：把编码 Agent 搬进终端"><img class="cover" src="/2026/11/07/luban-cli-headless-agent/cover.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-07</div><div class="info-item-2">认识 Luban CLI：把编码 Agent 搬进终端</div></div><div class="info-2"><div class="info-item-1">  上一篇聊了嵌在 VSCodium 侧边栏里的 Luban。这一篇说它的另一副面孔：**luban 命令行**。 同一个包 @luban-code/luban-code，除了扩展，还带了一个 bin：不启动编辑器，直接把 agent 的工具循环跑在终端里。SSH 到服务器、写脚本、挂 CI、定时任务，这些场景下没有侧边栏，但「说一句话，它改文件、跑命令、自己验证」这件事照样成立。 为什么还要一个 CLI侧边栏面板很好用，但它有两个前提：你得开着图形界面，而且得在编辑器里。 CLI 补的正是这两块空白：  远程 &#x2F; 无 GUI：SSH 上去只有一个 shell，也能让 agent 干活； 可脚本化：一条命令跑完就退出，能接管道、能进 cron、能塞进 Makefile； 同一套能力：CLI 不是另写一个简化版，而是把扩展里的 runAgent &#x2F; execTool &#x2F; 工具集原样复用——工具循环、只读闸门、子代理、MCP、审计都在里面。  实现上有点意思：它 stub 掉 vscode 模块后直接 require 扩展源码，等于给同一颗大脑换了个躯壳...</div></div></div></a><a class="pagination-related" href="/2026/11/05/luban-vscodium-coding-agent/" title="认识 Luban：嵌在 VSCodium 侧边栏里的编码 Agent"><img class="cover" src="/2026/11/05/luban-vscodium-coding-agent/cover.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-05</div><div class="info-item-2">认识 Luban：嵌在 VSCodium 侧边栏里的编码 Agent</div></div><div class="info-2"><div class="info-item-1">  最近在日常开发里一直在用一个嵌在 VSCodium 侧边栏里的编码 agent，名字叫 Luban（鲁班）。名字取自古代工匠，寓意很直白：一个帮你”干活”的工匠。这篇文章介绍一下它是什么、能做什么、以及我在 MES 项目里实际用它的方式。 它是什么Luban 是一个嵌在 VSCodium 侧边栏里的编码 agent：  底层模型可配置：由用户配置的 provider 决定，不绑定某一家模型； 直接读写本机文件：不是”给你一段代码你自己贴”，而是直接在工作区里增删改文件； 可以执行 shell 命令：写完代码能自己跑 mvn、node、git 验证，把真实输出作为结论依据； 支持 MCP 外部工具：通过 mcp__&lt;server&gt;__&lt;tool&gt; 形式接入外部能力，比如数据库查询。  它和”聊天式 AI 助手”最大的区别在于：它默认以完成任务为目标，而不是以回答问题为目标。你给它一个任务，它会自己拆步骤、查代码、改文件、跑验证，最后用中文汇报改了哪些文件、做了什么、验证结果如何。 核心能力1. 代码检索：先定位，再精读大仓库里直接全量扫文件是灾难。Lub...</div></div></div></a><a class="pagination-related" href="/2026/07/30/ai-development-history-and-vision/" title="AI 的发展历程与最终愿景"><img class="cover" src="/2026/07/30/ai-development-history-and-vision/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-30</div><div class="info-item-2">AI 的发展历程与最终愿景</div></div><div class="info-2"><div class="info-item-1">  从 1956 年达特茅斯会议提出”人工智能”这个词，到今天大模型与智能体进入生产环境，AI 走了七十年。这篇文章按时间线梳理它的关键转折，并聊聊”最终愿景”到底意味着什么。 一、发展历程1. 萌芽与早期探索（1940s–1950s） 1943：麦卡洛克与皮茨提出”麦卡洛克-皮茨神经元”，奠定人工神经网络的数学基础。 1950：图灵发表《计算机器与智能》，提出”图灵测试”，首次系统讨论机器能否思考。 1956：达特茅斯会议正式提出”人工智能”（Artificial Intelligence）一词，AI 作为学科诞生。  2. 符号主义黄金期与第一次寒冬（1956–1980s）专家系统、逻辑推理、搜索算法盛行，”ELIZA”、”SHRDLU” 等程序展示了初步能力。1974 年前后，算力不足与期望过高导致经费削减，进入第一次 AI 寒冬。 3. 复兴与机器学习崛起（1980s–2000s）专家系统商业热潮（Prolog、MYCIN 等）后再次退潮，进入第二次寒冬。统计学习方法兴起：支持向量机、隐马尔可夫模型、决策树等成为主流。1997 年，IBM”深蓝”击败国际象棋世界冠军卡斯帕...</div></div></div></a><a class="pagination-related" href="/2026/10/20/ai-learning-time/" title="有 AI 之后，人类的学习时间是否可以缩短了？"><img class="cover" src="/2026/10/20/ai-learning-time/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-20</div><div class="info-item-2">有 AI 之后，人类的学习时间是否可以缩短了？</div></div><div class="info-2"><div class="info-item-1">  可以缩短，但缩短的是入门与检索时间，不是把「真正学会」压缩成捷径。 能缩短的部分 找答案、读文档、试错：以前要翻书、搜论坛、等同事，现在几分钟就能得到方向。 上手与模仿：写第一版代码、理解陌生概念、做练习题的反馈更快。 跨领域摸底：快速建立地图（有哪些概念、怎么连起来），少走冤枉路。  所以「从 0 到能干活」往往确实更快。 很难缩短的部分 长期记忆与熟练：不练、不自己做错题，知识留不住。 判断力：知道何时该信 AI、何时要怀疑、如何验证。 深度与迁移：能在新场景自己设计方案，而不是只会跟着提示改。 责任与品味：工程里的取舍、风格、边界，仍靠经验积累。  AI 像加速器：你踩油门更猛，但车还是你开；不会开的人开得再快也容易撞。 更准确的说法   目标 有 AI 后    「知道大概、能跑通」 明显更快   「考试&#x2F;认证级熟练」 略快，仍靠练习   「专家级直觉」 几乎不缩短，甚至可能因过度依赖而变慢   结论有 AI 后，人类的学习时间线可以缩短，尤其是入门与效率；但若把「学会」理解成形成可靠能力，核心仍是练习、反思、验证。用得好是放大器；只抄答案，学得更浅、更慢。 </div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%83%A2%E3%83%87%E3%83%AB%E3%82%92%E5%85%88%E3%81%AB%E8%80%83%E3%81%88%E3%82%8B"><span class="toc-text">1. ローカルモデルを先に考える</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E3%81%A4%E3%81%AE%E3%83%A2%E3%83%BC%E3%83%89%EF%BC%9APlan-Agent-Chat"><span class="toc-text">2. 3 つのモード：Plan &#x2F; Agent &#x2F; Chat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC%E3%81%AF%E3%82%A8%E3%83%87%E3%82%A3%E3%82%BF%E3%81%AE%E4%B8%AD%E3%81%A7"><span class="toc-text">3. レビューはエディタの中で</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E3%81%A4%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%8D%E3%83%AB%E3%80%81%E8%A4%87%E6%95%B0%E3%81%AE%E5%85%A5%E3%82%8A%E5%8F%A3"><span class="toc-text">4. 1 つのカーネル、複数の入り口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E4%BA%8C%E6%9C%AC%E3%81%AE%E6%89%8B%EF%BC%9Abrowser-use%E3%80%81computer-use"><span class="toc-text">5. 二本の手：browser use、computer use</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E3%83%97%E3%83%A9%E3%82%B0%E3%82%A4%E3%83%B3"><span class="toc-text">6. プラグイン</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="toc-text">インストール</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/28/2026-11-28-luban-acp-support/" title="Luban 现在能在 Zed 和 JetBrains 里用了：聊聊 ACP 支持">Luban 现在能在 Zed 和 JetBrains 里用了：聊聊 ACP 支持</a><time datetime="2026-11-28T12:00:00.000Z" title="发表于 2026-11-28 20:00:00">2026-11-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/14/luban-vscodium-sidebar-agent-ja/" title="AI コーディングエージェントを VSCodium のサイドバーに組み込んで、テストまで自分で走らせさせた"><img src="/2026/11/14/luban-vscodium-sidebar-agent-ja/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI コーディングエージェントを VSCodium のサイドバーに組み込んで、テストまで自分で走らせさせた"/></a><div class="content"><a class="title" href="/2026/11/14/luban-vscodium-sidebar-agent-ja/" title="AI コーディングエージェントを VSCodium のサイドバーに組み込んで、テストまで自分で走らせさせた">AI コーディングエージェントを VSCodium のサイドバーに組み込んで、テストまで自分で走らせさせた</a><time datetime="2026-11-14T09:35:00.000Z" title="发表于 2026-11-14 17:35:00">2026-11-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/14/luban-vscodium-sidebar-agent-en/" title="I Put an AI Coding Agent in the VSCodium Sidebar and Let It Run the Tests Itself"><img src="/2026/11/14/luban-vscodium-sidebar-agent-en/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="I Put an AI Coding Agent in the VSCodium Sidebar and Let It Run the Tests Itself"/></a><div class="content"><a class="title" href="/2026/11/14/luban-vscodium-sidebar-agent-en/" title="I Put an AI Coding Agent in the VSCodium Sidebar and Let It Run the Tests Itself">I Put an AI Coding Agent in the VSCodium Sidebar and Let It Run the Tests Itself</a><time datetime="2026-11-14T09:30:00.000Z" title="发表于 2026-11-14 17:30:00">2026-11-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/14/luban-vscodium-sidebar-agent/" title="我把 AI 编码助手塞进了 VSCodium 侧边栏，还让它自己跑测试"><img src="/2026/11/14/luban-vscodium-sidebar-agent/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="我把 AI 编码助手塞进了 VSCodium 侧边栏，还让它自己跑测试"/></a><div class="content"><a class="title" href="/2026/11/14/luban-vscodium-sidebar-agent/" title="我把 AI 编码助手塞进了 VSCodium 侧边栏，还让它自己跑测试">我把 AI 编码助手塞进了 VSCodium 侧边栏，还让它自己跑测试</a><time datetime="2026-11-14T08:48:00.000Z" title="发表于 2026-11-14 16:48:00">2026-11-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/11/flash-model-showdown-deepseek-minimax-mimo/" title="Flash 三国杀：DeepSeek / MiniMax / 小米 MiMo 轻量旗舰对比">Flash 三国杀：DeepSeek / MiniMax / 小米 MiMo 轻量旗舰对比</a><time datetime="2026-11-11T01:30:00.000Z" title="发表于 2026-11-11 09:30:00">2026-11-11</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By eppen</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.2"></script><script src="/js/main.js?v=5.7.2"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.2"></script></div></div><!-- hexo injector body_end start --><div class="adsense-wrap" style="margin:24px 0;text-align:center;min-height:90px;overflow:hidden;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2045994937692573" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><!-- hexo injector body_end end --></body></html>

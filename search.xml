@@ -6669,4 +6669,140 @@
         <category>生活</category>
       </categories>
   </entry>
+  <entry>
+    <title>AI コーディングエージェントを VSCodium のサイドバーに組み込んで、テストまで自分で走らせさせた</title>
+    <url>/2026/11/14/luban-vscodium-sidebar-agent-ja/</url>
+    <content><![CDATA[
+
+<p>Luban は VS Code &#x2F; VSCodium の拡張機能で、コーディングエージェントをサイドバーに置きます。ワークスペースのファイルを読み書きし、コマンドを実行し、<code>browser</code> でページを見て <code>computer</code> でデスクトップを操作して自分の仕事を検証し、最後に結果をまとめて報告します。</p>
+<p>これは「<a href="/2026/11/05/luban-vscodium-coding-agent/">Luban を知る：VSCodium のサイドバーに組み込まれたコーディングエージェント</a>」の更新版です。前回はそれが何か、MES プロジェクトでどう使ったかを書きました。それ以降、3 つのモード、<code>browser</code> &#x2F; <code>computer</code> の 2 つのツール、プラグインシステムが入ったので、改めて独立した記事にします。コマンドラインの顔には別の記事「<a href="/2026/11/07/luban-cli-headless-agent/">Luban CLI を知る：コーディングエージェントをターミナルへ</a>」があります。</p>
+<span id="more"></span>
+
+<h2 id="1-ローカルモデルを先に考える"><a href="#1-ローカルモデルを先に考える" class="headerlink" title="1. ローカルモデルを先に考える"></a>1. ローカルモデルを先に考える</h2><p>ほとんどの AI コーディングツールはサードパーティの API キーを使い、リクエストはベンダーのサーバーを経由します。これはローカルモデルに対して 2 つの別々の問題を起こします。1 つ目はネットワーク経路が通らないこと。<code>localhost</code> の Ollama &#x2F; llama.cpp &#x2F; vLLM にはそもそも届かないので、トンネルでサービスを公開ネットに晒すことになり、コードは結局外に出ます。2 つ目はトークン予算が足りないこと。小さいコンテキストウィンドウのモデル（4k &#x2F; 8k）は接続できてもエージェントを動かせません。固定コストが先にウィンドウを食い尽くします。システムプロンプトとツール定義だけで 3k+ トークンになるので、最初のターンにコードを置く場所が残りません。</p>
+<p>Luban はこの 2 点についてローカルモデル前提で設計しています。</p>
+<p><strong>つながる。</strong> リクエストは拡張機能のプロセスから直接出ます。中継サービスもテレメトリもありません。設定に <code>http://127.0.0.1:11434/v1</code> と書けばよく、ループバックアドレスならキーすら不要です。モデルを変えるのは JSON の一か所を書き換えるだけ。OpenAI 互換のエンドポイントなら何でも受け付けます。クラウドの DeepSeek、ローカルの Ollama、llama.cpp、vLLM。API キーはエディタの SecretStorage に保存され、ディスクには書かれません。</p>
+<p><strong>動く。</strong> 固定コストを抑えるために具体的にいくつかやっています。</p>
+<ul>
+<li>ツール層はコンテキストウィンドウで段階分け。16k 未満だと「小ウィンドウ段」に入り、ツールは 20 個から 17 個に減り、固定コストは 3.8k から約 2.2k トークンに下がります。</li>
+<li>メッセージの並びはプレフィックスキャッシュに合わせてあり、2 ターン目以降は通常 95%+ のキャッシュヒットが得られます。</li>
+<li>毎ターンの回答の下に、入力 &#x2F; 出力 &#x2F; キャッシュヒット &#x2F; コンテキスト使用量 &#x2F; リクエスト数をそのまま表示します。</li>
+<li>ツールループの本当の制約はコンテキストウィンドウと経過時間で、無限ループ検出を追加しました。ターン数上限は安全弁にすぎません（デフォルト 200、設定可）。40 項目以上の設定が変更でき、ローカルの台帳と使用量ダッシュボードもあります。</li>
+</ul>
+<h2 id="2-3-つのモード：Plan-Agent-Chat"><a href="#2-3-つのモード：Plan-Agent-Chat" class="headerlink" title="2. 3 つのモード：Plan &#x2F; Agent &#x2F; Chat"></a>2. 3 つのモード：Plan &#x2F; Agent &#x2F; Chat</h2><p>パネル下部のドロップダウンで 3 つのモードを切り替えます。<code>Shift+Tab</code> で 3 つを順に循環します。</p>
+<ul>
+<li><strong>Plan</strong>：ファイルを書くツールが<strong>そもそも登録されていません</strong>。プロンプトで書くなと説得するのではなく、呼び出せないのです。<code>run_command</code> はさらに一段ずつの読み取り専用チェックを通ります。調査結果は Markdown の計画（目標 &#x2F; 現状 &#x2F; 手順 &#x2F; 検証方法 &#x2F; リスク）になり、自動で開きます。編集して「この計画を実行」を押すと、編集後の版に沿って進みます。</li>
+<li><strong>Agent</strong>：ツール一式。ファイルの読み書き、自分で検証するためのコマンド実行、長いテストは start &#x2F; poll でループを塞がない、複数ステップのタスクは <code>todo_write</code> で追跡、本当に人間の判断が要る分岐では <code>ask_question</code> で選択肢を出します。</li>
+<li><strong>Chat</strong>：ツールを 1 つも渡しません。純粋な質疑応答で、ツール呼び出しは 1 回も出しません。「このコードは何をしているか」「このエラーはなぜ起きるか」に使います。メッセージに <code>@web</code> があれば先に検索してから答えます。</li>
+</ul>
+<h2 id="3-レビューはエディタの中で"><a href="#3-レビューはエディタの中で" class="headerlink" title="3. レビューはエディタの中で"></a>3. レビューはエディタの中で</h2><p>ファイルを書き終えると、Luban はエディタでネイティブの diff を開きます。タイトルバーに「すべて保持 &#x2F; すべて取り消し」、両側に hunk ごとの CodeLens があって一つずつ決められ、チャット欄には要約が 1 行残るだけです。変更は「原文を読む → 正確な部分置換」で行います。</p>
+<h2 id="4-1-つのカーネル、複数の入り口"><a href="#4-1-つのカーネル、複数の入り口" class="headerlink" title="4. 1 つのカーネル、複数の入り口"></a>4. 1 つのカーネル、複数の入り口</h2><p>同じツールループは別の場所からも駆動できます。</p>
+<ul>
+<li><strong>CLI</strong>：<code>npm i -g @luban-code/luban-code</code>、<code>luban --plan &quot;src/ の構成を調査&quot;</code>、<code>luban --agent --apply &quot;utils.js を作ってテストを書く&quot;</code>。ディスクに書く前に毎回 unified diff で確認します。</li>
+<li><strong>ACP</strong>：Zed &#x2F; JetBrains で Luban をそのままエージェントとして使えます。本文、思考、ツールカードがすべてネイティブに描画されます。</li>
+<li><strong>MCP &#x2F; プラグイン &#x2F; スキル</strong>：ローカルの stdio MCP サーバーのツールは同じツールループに合流します（<code>mcp__&lt;server&gt;__&lt;tool&gt;</code>）。ローカルプラグインは <code>pl__</code> 接頭辞で同じループに入り、<code>~/.claude/skills</code> や <code>~/.cursor/skills</code> の SKILL.md も読めます。</li>
+</ul>
+<p>他にも小さな機能がいくつか。自作の Markdown プレビュー（コードハイライト、相対パスのローカル画像、エディタに合わせたスクロール）と、ステータスバーの <code>(o.o) run_command npm test</code> という 1 行。小さな大工「バンバン」の顔と現在の状態で、放置が長くなると勝手に <code>-_-</code> になります。</p>
+<h2 id="5-二本の手：browser-use、computer-use"><a href="#5-二本の手：browser-use、computer-use" class="headerlink" title="5. 二本の手：browser use、computer use"></a>5. 二本の手：browser use、computer use</h2><p>2 つのツールはどちらもデフォルトでオフなので、インストールしただけでは気づかない人が多いです。</p>
+<ul>
+<li><strong><code>browser</code>（ページを見る）</strong>：ローカルの Chrome &#x2F; Edge でヘッドレスインスタンスを起動し、<code>open</code> → <code>snapshot</code>（アクセシビリティツリーの概要で、生の HTML よりかなりトークンを節約できます）→ <code>screenshot</code> &#x2F; <code>console</code> &#x2F; <code>network</code>。Agent モードなら <code>click</code> &#x2F; <code>type</code> &#x2F; <code>scroll</code> で実際に操作もできます。Playwright は使わず、CDP は手書きの最小限の WebSocket で、依存関係はゼロ増です。一時プロファイルなのでログイン状態は持ちません。「任意の JS を実行」する入口もなく、3 つの操作は固定の経路を通ります。プレビューパネルを開けば、エージェントが操作中のページのスクリーンショットを毎秒 1 枚見られます。同じインスタンスで、別に起動するわけではありません。</li>
+<li><strong><code>computer</code>（デスクトップを動かす）</strong>：スクリーンショット、画面の文字の読み取り、ウィンドウの一覧、さらにクリック &#x2F; ダブルクリック &#x2F; ドラッグ &#x2F; スクロール &#x2F; 入力 &#x2F; キー組み合わせ。macOS は <code>screencapture</code> + <code>CGEvent</code> + Vision、Windows は内蔵の C# helper で、どちらもサードパーティ依存なし。Linux もあり、システムの <code>xdotool</code> と <code>ffmpeg</code> を使い、OCR は <code>tesseract-ocr</code> です。Wayland セッションでは XWayland アプリしか操作できません。座標は「画面の論理点」で、画像が縮小されていれば倍率を報告し、<code>imageCoords</code> を渡せば換算してくれます。初めてマウスとキーボードを動かす前に 1 回だけ確認します。</li>
+</ul>
+<p>2 つの境界はプロンプトではなくコードに書いてあります。<code>computer</code> は Plan モードでは丸ごと渡しません。<code>browser</code> は読み取り専用の操作は使えて、操作を伴うものは渡しません。クリックと入力は外部の状態を変えるので、一部が読み取り専用だからといって丸ごと許可するわけにはいきません。コストにも節度が要ります。全画面のデスクトップスクリーンショットは約 3000 トークンです。<code>run_command</code> と <code>browser</code> で済むならデスクトップには触れない。</p>
+<p>ファイルの読み書き、コマンド実行、ページを見る、デスクトップを動かす。これらはすべて拡張機能が自分でやっています。もう一層外に広げたものがプラグインです。</p>
+<h2 id="6-プラグイン"><a href="#6-プラグイン" class="headerlink" title="6. プラグイン"></a>6. プラグイン</h2><p>3 種類に対応しています。</p>
+<ul>
+<li><strong>ツールプラグイン</strong>：サンプルの <code>demo</code> プラグインの機能。<code>now</code> はローカルの時刻とタイムゾーン、<code>disk_free</code> はディスクの空き容量を報告します。</li>
+<li><strong>テーマプラグイン</strong>：インストールするとパネルで配色を選べます。<code>theme-midnight</code> と <code>theme-sakura</code> が用意されています。</li>
+<li><strong>スキル</strong>：<code>SKILL.md</code> の説明書で、モデルが読んでそれに従います。</li>
+</ul>
+<p><strong>プラグインリポジトリ：<a href="https://github.com/eppen/luban-plugins">eppen&#x2F;luban-plugins</a>。</strong> 既存のプラグインやテーマを参考に、自分のプラグインやテーマを作れます。</p>
+<p>インストール場所：グローバルは <code>~/.luban/plugins/</code>、ワークスペース単位は <code>&lt;workspace&gt;/.luban/plugins/</code>（同名ならプロジェクト側がグローバルを上書き）。<code>luban plugin add &lt;名前&gt;</code> でインデックスから入れることもできます。</p>
+<p>注意：ツールプラグインはコードを実行するので、デフォルトではオフです（<code>luban.plugins.enabled</code>）。初回読み込み時とディレクトリ内容の変化時にそれぞれ 1 回確認します。テーマプラグインは何も実行しないので、このスイッチの影響を受けません。</p>
+<h2 id="インストール"><a href="#インストール" class="headerlink" title="インストール"></a>インストール</h2><ul>
+<li>VS Code Marketplace &#x2F; Open VSX の拡張パネルで <code>Luban</code> を検索</li>
+<li>または GitHub Releases から VSIX をダウンロードし、拡張パネルの <code>⋯</code> → Install from VSIX</li>
+</ul>
+<p>前提条件：VS Code &#x2F; VSCodium 1.104+、および <code>~/.luban/providers.json</code> にプロバイダを設定済みであること。</p>
+<p>試すなら、最初のタスクとしてこのプロンプトをおすすめします。<br><code>utils.js を作り、debounce(fn, ms) と throttle(fn, ms) をエクスポートし、node で両者の挙動をテストする</code>。</p>
+]]></content>
+      <categories>
+        <category>Tech</category>
+      </categories>
+      <tags>
+        <tag>AI</tag>
+        <tag>Agent</tag>
+        <tag>Luban</tag>
+        <tag>VSCodium</tag>
+        <tag>コーディング支援</tag>
+        <tag>ローカルモデル</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>I Put an AI Coding Agent in the VSCodium Sidebar and Let It Run the Tests Itself</title>
+    <url>/2026/11/14/luban-vscodium-sidebar-agent-en/</url>
+    <content><![CDATA[
+
+<p>Luban is a VS Code &#x2F; VSCodium extension that puts a coding agent in the sidebar: it reads and writes files in your workspace, runs commands, uses <code>browser</code> to look at pages and <code>computer</code> to drive the desktop to verify its own work, then reports back to you.</p>
+<p>This is an updated take on “<a href="/2026/11/05/luban-vscodium-coding-agent/">Meet Luban: a Coding Agent in the VSCodium Sidebar</a>“ — that post covered what it is and how I used it on an MES project. Since then three modes, the <code>browser</code> &#x2F; <code>computer</code> tools and the plugin system have landed, and they deserve a post of their own. The command-line face of the same thing has its own post, “<a href="/2026/11/07/luban-cli-headless-agent/">Meet Luban CLI: a Coding Agent in the Terminal</a>“.</p>
+<span id="more"></span>
+
+<h2 id="1-Local-models-first"><a href="#1-Local-models-first" class="headerlink" title="1. Local models first"></a>1. Local models first</h2><p>Most AI coding tools go through a third-party API key, so requests are relayed through the vendor’s servers. That breaks local models in two different ways. First, the network path doesn’t work: Ollama &#x2F; llama.cpp &#x2F; vLLM on <code>localhost</code> simply can’t be reached, so you end up tunneling the service onto the public internet — your code still leaves the machine. Second, the token budget isn’t there: a small-window model (4k &#x2F; 8k) may connect but can’t actually run an agent, because the fixed overhead eats the window first — system prompt plus tool definitions alone run 3k+ tokens, leaving no room for code on the first turn.</p>
+<p>Luban is designed around local models on both counts.</p>
+<p><strong>It connects.</strong> Requests go out from the extension process directly, with no intermediary service and no telemetry. Point the config at <code>http://127.0.0.1:11434/v1</code> and you’re done — a loopback address doesn’t even need a key. Switching models means editing a JSON block; any OpenAI-compatible endpoint works: DeepSeek in the cloud, Ollama, llama.cpp or vLLM locally. API keys live in the editor’s SecretStorage and are never written to disk.</p>
+<p><strong>It runs.</strong> Several concrete things keep the fixed overhead down:</p>
+<ul>
+<li>The tool layer is tiered by context window. Below 16k you get the “small-window tier”: tools drop from 20 to 17 and the fixed cost falls from 3.8k to about 2.2k tokens.</li>
+<li>Message layout is aligned for prefix caching; from the second turn you typically see 95%+ cache hits.</li>
+<li>Every turn shows input &#x2F; output &#x2F; cache hits &#x2F; context usage &#x2F; request count right under the answer.</li>
+<li>The tool loop’s real constraints are the context window and wall-clock time, with a loop detector added; the turn cap is only a safety valve (200 by default, configurable). Forty-odd settings are editable, and there’s a local ledger plus a usage dashboard.</li>
+</ul>
+<h2 id="2-Three-modes-Plan-Agent-Chat"><a href="#2-Three-modes-Plan-Agent-Chat" class="headerlink" title="2. Three modes: Plan &#x2F; Agent &#x2F; Chat"></a>2. Three modes: Plan &#x2F; Agent &#x2F; Chat</h2><p>A dropdown at the bottom of the panel switches between three modes; <code>Shift+Tab</code> cycles through them.</p>
+<ul>
+<li><strong>Plan</strong>: the file-writing tools are <strong>not registered at all</strong> — it isn’t talked out of writing via a prompt, it literally can’t call them; <code>run_command</code> additionally goes through a per-segment read-only check. Research results land in a Markdown plan (goal &#x2F; current state &#x2F; steps &#x2F; how to verify &#x2F; risks) that opens automatically; edit it, click “execute this plan”, and it follows your edited version.</li>
+<li><strong>Agent</strong>: the full toolset. Read and write files, run commands to verify itself, long tests via start &#x2F; poll so the loop isn’t blocked, multi-step tasks tracked with <code>todo_write</code>, and <code>ask_question</code> with clickable options when a real decision needs a human.</li>
+<li><strong>Chat</strong>: not a single tool, pure Q&amp;A, not one tool call issued. Use it for “what does this code do” or “why this error”; a message containing <code>@web</code> searches first, then answers.</li>
+</ul>
+<h2 id="3-Review-happens-in-the-editor"><a href="#3-Review-happens-in-the-editor" class="headerlink" title="3. Review happens in the editor"></a>3. Review happens in the editor</h2><p>After writing a file, Luban opens a native diff right in the editor: the title bar has “keep all &#x2F; revert all”, CodeLens on both sides lets you decide each hunk separately, and the chat area keeps only a one-line summary. Edits go through “read the original → precise local replacement”.</p>
+<h2 id="4-One-kernel-several-ways-in"><a href="#4-One-kernel-several-ways-in" class="headerlink" title="4. One kernel, several ways in"></a>4. One kernel, several ways in</h2><p>The same tool loop can be driven from elsewhere:</p>
+<ul>
+<li><strong>CLI</strong>: <code>npm i -g @luban-code/luban-code</code>, then <code>luban --plan &quot;survey the src/ directory&quot;</code>, <code>luban --agent --apply &quot;create utils.js and write tests&quot;</code>, with a unified diff to confirm before each write to disk;</li>
+<li><strong>ACP</strong>: in Zed &#x2F; JetBrains, use Luban as the agent itself — body text, thinking and tool cards all render natively;</li>
+<li><strong>MCP &#x2F; plugins &#x2F; skills</strong>: tools from a local stdio MCP server join the same tool loop (<code>mcp__&lt;server&gt;__&lt;tool&gt;</code>), local plugins join it with a <code>pl__</code> prefix, and SKILL.md files under <code>~/.claude/skills</code> and <code>~/.cursor/skills</code> can be read too.</li>
+</ul>
+<p>A few smaller things along the way: a hand-written Markdown preview (code highlighting, local images by relative path, scrolling with the editor), and a status-bar line like <code>(o.o) run_command npm test</code> — the little carpenter “Banban”‘s face plus the current state, turning into <code>-_-</code> on its own after idling too long.</p>
+<h2 id="5-Two-hands-browser-use-computer-use"><a href="#5-Two-hands-browser-use-computer-use" class="headerlink" title="5. Two hands: browser use, computer use"></a>5. Two hands: browser use, computer use</h2><p>Both tools are off by default, which is why many people install it and never notice them.</p>
+<ul>
+<li><strong><code>browser</code> (looking at pages)</strong>: starts a headless instance of your local Chrome &#x2F; Edge, then <code>open</code> → <code>snapshot</code> (an accessibility-tree outline, far cheaper in tokens than raw HTML) → <code>screenshot</code> &#x2F; <code>console</code> &#x2F; <code>network</code>. In Agent mode it can also <code>click</code> &#x2F; <code>type</code> &#x2F; <code>scroll</code> for real. No Playwright — the CDP layer is a hand-written minimal WebSocket, zero new dependencies; a temporary profile, so it never carries your login state; and there is no “run arbitrary JS” entry point, the three interaction actions go through fixed channels. You can open a preview panel that shows a screenshot of the page the agent is working on once a second — same instance, not a second one.</li>
+<li><strong><code>computer</code> (driving the desktop)</strong>: screenshot, read text off the screen, list windows, plus click &#x2F; double-click &#x2F; drag &#x2F; scroll &#x2F; type &#x2F; key combos. On macOS it uses <code>screencapture</code> + <code>CGEvent</code> + Vision; on Windows an embedded C# helper — likewise no third-party dependencies. Linux has a path too, via the system’s <code>xdotool</code> and <code>ffmpeg</code>, with OCR through <code>tesseract-ocr</code>; under a Wayland session only XWayland apps can be driven. Coordinates are logical screen points; if the image was downscaled the tool reports the ratio, and you can pass <code>imageCoords</code> to have it converted. It asks once before touching your mouse and keyboard for the first time.</li>
+</ul>
+<p>Two boundaries are written in code, not in a prompt: <code>computer</code> is withheld entirely in Plan mode, and <code>browser</code> allows its read-only actions but not its interactive ones — clicking and typing change external state, so you can’t open the whole tool just because some of its actions are read-only. Cost needs restraint too: a full-screen desktop screenshot is about 3000 tokens, so if <code>run_command</code> and <code>browser</code> can do the job, leave the desktop alone.</p>
+<p>Reading and writing files, running commands, looking at pages, driving the desktop — the extension does all of these itself. One layer further out are plugins.</p>
+<h2 id="6-Plugins"><a href="#6-Plugins" class="headerlink" title="6. Plugins"></a>6. Plugins</h2><p>Three kinds are supported:</p>
+<ul>
+<li><strong>Tool plugins</strong>: the sample <code>demo</code> plugin provides <code>now</code> (local time and timezone) and <code>disk_free</code> (free disk space).</li>
+<li><strong>Theme plugins</strong>: once installed, pick the color scheme in the panel. <code>theme-midnight</code> and <code>theme-sakura</code> ship ready-made.</li>
+<li><strong>Skills</strong>: a <code>SKILL.md</code> instruction sheet the model reads and follows.</li>
+</ul>
+<p><strong>Plugin repository: <a href="https://github.com/eppen/luban-plugins">eppen&#x2F;luban-plugins</a>.</strong> You can use the existing plugins and themes as references to build your own.</p>
+<p>Install location: globally at <code>~/.luban/plugins/</code> or per-workspace at <code>&lt;workspace&gt;/.luban/plugins/</code> (a same-named project-level one overrides the global), or <code>luban plugin add &lt;name&gt;</code> to install from the index.</p>
+<p>A note: tool plugins run code, so they’re off by default (<code>luban.plugins.enabled</code>), with one prompt on first load and one on directory content changes; theme plugins execute nothing and aren’t affected by that switch.</p>
+<h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><ul>
+<li>Search <code>Luban</code> in the VS Code Marketplace &#x2F; Open VSX extension panel</li>
+<li>Or grab the VSIX from GitHub Releases, then in the extension panel <code>⋯</code> → Install from VSIX</li>
+</ul>
+<p>Prerequisites: VS Code &#x2F; VSCodium 1.104+, and a provider configured in <code>~/.luban/providers.json</code>.</p>
+<p>If you want to try it, a good first task is this prompt:<br><code>Create utils.js exporting debounce(fn, ms) and throttle(fn, ms), then test both behaviors with node</code>.</p>
+]]></content>
+      <categories>
+        <category>Tech</category>
+      </categories>
+      <tags>
+        <tag>AI</tag>
+        <tag>Agent</tag>
+        <tag>Luban</tag>
+        <tag>VSCodium</tag>
+        <tag>Coding Assistant</tag>
+        <tag>Local Models</tag>
+      </tags>
+  </entry>
 </search>
