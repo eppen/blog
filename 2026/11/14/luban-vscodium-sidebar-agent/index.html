@@ -1,0 +1,266 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>我把 AI 编码助手塞进了 VSCodium 侧边栏，还让它自己跑测试 | Hua Liang's Blog</title><meta name="author" content="eppen"><meta name="copyright" content="eppen"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一个跑在编辑器侧边栏里的编码 agent：直连本地模型、三档模式、diff 审阅、browser 与 computer 两只手、三类插件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我把 AI 编码助手塞进了 VSCodium 侧边栏，还让它自己跑测试">
+<meta property="og:url" content="https://eppencn.com/2026/11/14/luban-vscodium-sidebar-agent/index.html">
+<meta property="og:site_name" content="Hua Liang&#39;s Blog">
+<meta property="og:description" content="一个跑在编辑器侧边栏里的编码 agent：直连本地模型、三档模式、diff 审阅、browser 与 computer 两只手、三类插件。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eppencn.com/2026/11/14/luban-vscodium-sidebar-agent/cover.jpg">
+<meta property="article:published_time" content="2026-11-14T08:48:00.000Z">
+<meta property="article:modified_time" content="2026-11-14T08:49:09.533Z">
+<meta property="article:author" content="eppen">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="编码助手">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="Luban">
+<meta property="article:tag" content="VSCodium">
+<meta property="article:tag" content="本地模型">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eppencn.com/2026/11/14/luban-vscodium-sidebar-agent/cover.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "我把 AI 编码助手塞进了 VSCodium 侧边栏，还让它自己跑测试",
+  "url": "https://eppencn.com/2026/11/14/luban-vscodium-sidebar-agent/",
+  "image": "https://eppencn.com/2026/11/14/luban-vscodium-sidebar-agent/cover.jpg",
+  "datePublished": "2026-11-14T08:48:00.000Z",
+  "dateModified": "2026-11-14T08:49:09.533Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "eppen",
+      "url": "https://eppencn.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://eppencn.com/2026/11/14/luban-vscodium-sidebar-agent/index.html"><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.2"><link rel="stylesheet" href="/pluginsSrc/@fortawesome/fontawesome-free/css/all.min.css?v=7.3.1"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        try {
+          const data = { value }
+
+          if (ttl != null) {
+            data.expiry = Date.now() + ttl * 86400000
+          }
+
+          localStorage.setItem(key, JSON.stringify(data))
+        } catch (e) {
+          console.error(e)
+        }
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: '/pluginsSrc/@egjs/infinitegrid/dist/infinitegrid.min.js?v=4.13.1',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '我把 AI 编码助手塞进了 VSCodium 侧边栏，还让它自己跑测试',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><!-- hexo injector head_end start --><meta name="google-adsense-account" content="ca-pub-2045994937692573">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2045994937692573" crossorigin="anonymous"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">113</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Hua Liang's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">我把 AI 编码助手塞进了 VSCodium 侧边栏，还让它自己跑测试</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">我把 AI 编码助手塞进了 VSCodium 侧边栏，还让它自己跑测试</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-11-14T08:48:00.000Z" title="发表于 2026-11-14 16:48:00">2026-11-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-11-14T08:49:09.533Z" title="更新于 2026-11-14 16:49:09">2026-11-14</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><img src="/2026/11/14/luban-vscodium-sidebar-agent/cover.jpg" class="">
+
+<p>Luban 是 VS Code &#x2F; VSCodium 的一个扩展，把编码 agent 放在侧边栏里：它读写工作区里的文件、跑命令，会用 <code>browser</code> 看页面、<code>computer</code> 动桌面自己验证，最后汇总给你。</p>
+<p>这篇是《<a href="/2026/11/05/luban-vscodium-coding-agent/">认识 Luban：嵌在 VSCodium 侧边栏里的编码 Agent</a>》的更新版——那篇写了它是什么、我在 MES 项目里怎么用它；这段时间补上来的三档模式、<code>browser</code> &#x2F; <code>computer</code> 两个工具、插件系统，值得单独讲一遍。命令行那副面孔另有一篇《<a href="/2026/11/07/luban-cli-headless-agent/">认识 Luban CLI：把编码 Agent 搬进终端</a>》。</p>
+<span id="more"></span>
+
+<h2 id="一、支持本地模型"><a href="#一、支持本地模型" class="headerlink" title="一、支持本地模型"></a>一、支持本地模型</h2><p>大多数 AI 编码工具走第三方 API key，请求要在厂商服务器中转。这对本地模型有两个不同的问题：一是网络路径不通，<code>localhost</code> 上的 Ollama &#x2F; llama.cpp &#x2F; vLLM 根本打不通，只能靠隧道把服务暴露成公网——代码照样出网；二是 token 预算不够，小窗口模型（4k &#x2F; 8k）即使连上了也跑不动 agent，固定开销先把窗口吃完了——系统提示加工具定义动辄 3k+ token，第一轮就没地方放代码。</p>
+<p>Luban 在这两件事上都按本地模型来设计。</p>
+<p><strong>连得上。</strong> 请求由扩展进程直接发出，不经过任何中间服务，也不带遥测。配置里写 <code>http://127.0.0.1:11434/v1</code> 就行，回环地址连 key 都不用填。要换模型就换一段 JSON，任何 OpenAI 兼容端点都能接：云端的 DeepSeek，本地的 Ollama、llama.cpp、vLLM。API key 存在编辑器的 SecretStorage 里，不落盘。</p>
+<p><strong>跑得动。</strong> 为省固定开销做了几件具体的事：</p>
+<ul>
+<li>工具层按窗口分档，窗口小于 16k 时进入「小窗口档」，工具从 20 个收到 17 个，固定开销从 3.8k 降到约 2.2k token；</li>
+<li>消息排布对齐前缀缓存，第二轮起通常能拿到 95%+ 的缓存命中；</li>
+<li>每轮回答下面直接显示输入 &#x2F; 输出 &#x2F; 缓存命中 &#x2F; 上下文占用 &#x2F; 请求数；</li>
+<li>工具循环的主约束是上下文窗口和墙钟，加了死循环检测，轮数上限只当安全阀（默认 200，可配）；四十多项配置都能改，另有一份本地账本和用量看板。</li>
+</ul>
+<h2 id="二、三种模式：Plan-Agent-Chat"><a href="#二、三种模式：Plan-Agent-Chat" class="headerlink" title="二、三种模式：Plan &#x2F; Agent &#x2F; Chat"></a>二、三种模式：Plan &#x2F; Agent &#x2F; Chat</h2><p>面板底部的下拉框切三个模式，快捷键 <code>Shift+Tab</code> 在三个模式间循环切换。</p>
+<ul>
+<li><strong>Plan（制定计划）</strong>：写文件的工具<strong>根本没有注册</strong>——不是靠提示词劝它别写，是它调不到；<code>run_command</code> 还要再过一道逐段只读校验。调研结果落成一份 Markdown 计划（目标 &#x2F; 现状 &#x2F; 步骤 &#x2F; 验证方式 &#x2F; 风险）并自动打开，你改完点「执行这个计划」，它就按你改后的版本走。</li>
+<li><strong>Agent（修改文件）</strong>：全套工具。读写文件、跑命令自己验证、长测用 start &#x2F; poll 不堵住循环、多步任务用 <code>todo_write</code> 跟踪、遇到真正需要人拍板的分叉就用 <code>ask_question</code> 给你几个可点选项。</li>
+<li><strong>Chat（只是聊天）</strong>：一个工具都不给，纯问答，不发出一条工具调用。「这段代码什么意思」「这个报错什么原因」用它，消息里带 <code>@web</code> 会先搜再答。</li>
+</ul>
+<h2 id="三、审阅在编辑器里"><a href="#三、审阅在编辑器里" class="headerlink" title="三、审阅在编辑器里"></a>三、审阅在编辑器里</h2><p>写完一个文件，Luban 直接在编辑器里开原生 diff，标题栏是「全部保留 &#x2F; 全部撤销」，两侧有逐块 CodeLens 让你对每个 hunk 单独决定，聊天区只留一行摘要。修改走「读原文 → 精确局部替换」。</p>
+<h2 id="四、一个内核，多访问入口"><a href="#四、一个内核，多访问入口" class="headerlink" title="四、一个内核，多访问入口"></a>四、一个内核，多访问入口</h2><p>同一套工具循环还能被别处驱动：</p>
+<ul>
+<li><strong>CLI</strong>：<code>npm i -g @luban-code/luban-code</code>，<code>luban --plan &quot;调研 src/ 目录结构&quot;</code>，<code>luban --agent --apply &quot;新建 utils.js 并写测试&quot;</code>，落盘前逐次给 unified diff 确认；</li>
+<li><strong>ACP</strong>：Zed &#x2F; JetBrains 里把 Luban 当自己的 agent 用，正文、思考、工具卡片都是原生渲染；</li>
+<li><strong>MCP &#x2F; 插件 &#x2F; 技能</strong>：本地 stdio MCP server 的工具并进同一个工具循环（<code>mcp__&lt;server&gt;__&lt;tool&gt;</code>），本地插件用 <code>pl__</code> 前缀进同一个循环，<code>~/.claude/skills</code>、<code>~/.cursor/skills</code> 里的 SKILL.md 也能被读。</li>
+</ul>
+<p>顺带还有几个小功能：自己写的 Markdown 预览（代码高亮、本地图片按相对路径显示、跟着编辑器滚动），以及状态栏一行 <code>(o.o) run_command npm test</code> —— 小木匠「班班」的脸加当前状态，挂机久了它自己变成 <code>-_-</code>。</p>
+<h2 id="五、两只手：browser-use，computer-use"><a href="#五、两只手：browser-use，computer-use" class="headerlink" title="五、两只手：browser use，computer use"></a>五、两只手：browser use，computer use</h2><p>两个工具默认都关着，所以很多人装完没发现有这两个工具。</p>
+<ul>
+<li><strong><code>browser</code>（看页面）</strong>：用本机 Chrome &#x2F; Edge 起无头实例，<code>open</code> → <code>snapshot</code>（取可访问性树大纲，比裸 HTML 省一大截 token）→ <code>screenshot</code> &#x2F; <code>console</code> &#x2F; <code>network</code>。Agent 模式下还能 <code>click</code> &#x2F; <code>type</code> &#x2F; <code>scroll</code> 真去点。没引 Playwright，CDP 是手写的极简 WebSocket，零新增依赖；临时 profile，不带你的登录态；也没有「执行任意 JS」的入口，三个交互动作走固定通道。可以开个预览面板，每秒看一张 agent 正在操作的页面截图——同一个实例，不是另开一个。</li>
+<li><strong><code>computer</code>（动桌面）</strong>：截屏、读屏上文字、列窗口，以及点击 &#x2F; 双击 &#x2F; 拖动 &#x2F; 滚动 &#x2F; 输入 &#x2F; 组合键。macOS 走 <code>screencapture</code> + <code>CGEvent</code> + Vision，Windows 走内嵌的 C# helper，一样没有第三方依赖；Linux 也有一套，靠系统的 <code>xdotool</code> 与 <code>ffmpeg</code>，OCR 用 <code>tesseract-ocr</code>，Wayland 会话下只能操作 XWayland 应用。坐标是「屏幕逻辑点」，图被压过会回报倍率，也可以传 <code>imageCoords</code> 让工具换算。第一次动鼠标键盘前问你一次。</li>
+</ul>
+<p>两条边界写在代码里，不在提示词里：<code>computer</code> 在 Plan 模式下整支不给，<code>browser</code> 的只读动作能用、交互动作不给——点击和输入会改外部状态，不能因为其中几个动作只读就整支放行。成本上也得克制：一张全屏桌面截图约 3000 token，能用 <code>run_command</code> 和 <code>browser</code> 解决的就别动桌面。</p>
+<p>读写文件、跑命令、看页面、动桌面，这些都是扩展自己在做。再往外扩一层，才是插件。</p>
+<h2 id="六、插件"><a href="#六、插件" class="headerlink" title="六、插件"></a>六、插件</h2><p>现在支持三类：</p>
+<ul>
+<li><strong>工具插件</strong>：示例插件 <code>demo</code> 的功能：<code>now</code> 报本机时间和时区，<code>disk_free</code> 报磁盘剩余空间。</li>
+<li><strong>主题插件</strong>：装完在面板里选配色。现成有 <code>theme-midnight</code>、<code>theme-sakura</code>。</li>
+<li><strong>技能</strong>：一份 <code>SKILL.md</code> 说明书，模型读了照着做。</li>
+</ul>
+<p><strong>插件仓库：<a target="_blank" rel="noopener" href="https://github.com/eppen/luban-plugins">eppen&#x2F;luban-plugins</a>。</strong> 可以参考已有插件、主题制作自己的插件、主题。</p>
+<p>安装位置：全局 <code>~/.luban/plugins/</code> 或 <code>&lt;工作区&gt;/.luban/plugins/</code>（同名时项目级覆盖全局），也可以 <code>luban plugin add &lt;名字&gt;</code> 从索引里装。</p>
+<p>提醒：工具插件跑的是代码，所以默认关着（<code>luban.plugins.enabled</code>），首次加载和目录内容变化各问一次；主题插件不执行任何东西，不受这个开关影响。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
+<li>VS Code 市场 &#x2F; Open VSX 扩展面板搜 <code>Luban</code></li>
+<li>VSIX 从 GitHub Releases 下载，扩展面板 <code>⋯</code> → Install from VSIX</li>
+</ul>
+<p>前置条件：VS Code &#x2F; VSCodium 1.104+，并在 <code>~/.luban/providers.json</code> 里配好一个 provider。</p>
+<p>想试的话建议第一个任务，提示词：<br><code>新建 utils.js，导出 debounce(fn, ms) 和 throttle(fn, ms)，然后用 node 测一下两者行为</code>。</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI/">AI</a><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A0%81%E5%8A%A9%E6%89%8B/">编码助手</a><a class="post-meta__tags" href="/tags/Agent/">Agent</a><a class="post-meta__tags" href="/tags/Luban/">Luban</a><a class="post-meta__tags" href="/tags/VSCodium/">VSCodium</a><a class="post-meta__tags" href="/tags/%E6%9C%AC%E5%9C%B0%E6%A8%A1%E5%9E%8B/">本地模型</a></div><div class="post-share"><div class="social-share" data-image="/2026/11/14/luban-vscodium-sidebar-agent/cover.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="/pluginsSrc/butterfly-extsrc/sharejs/dist/css/share.min.css?v=1.1.6" media="print" onload="this.media='all'"><script src="/pluginsSrc/butterfly-extsrc/sharejs/dist/js/social-share.min.js?v=1.1.6" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/11/28/2026-11-28-luban-acp-support/" title="Luban 现在能在 Zed 和 JetBrains 里用了：聊聊 ACP 支持"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Luban 现在能在 Zed 和 JetBrains 里用了：聊聊 ACP 支持</div></div><div class="info-2"><div class="info-item-1">一句话Luban 加了 ACP（Agent Client Protocol）支持。同一个内核，现在除了跑在 VS Code &#x2F; VSCodium 侧边栏和终端 CLI 里，也能被 Zed、JetBrains 这类编辑器当成自己的编码 agent 来驱动 —— 正文、思考、工具卡片、计划都是客户端原生渲染，写文件前会把 diff 交给客户端的权限弹窗确认。 内核一行没改。   ACP 是什么，以及它不是什么先说清楚一件事：ACP 是一层传输协议，不是新能力。 它解决的问题是「编辑器怎么跟一个外部编码 agent 说话」。以前每家编辑器都得为每个 agent 写一套私有集成；有了 ACP，agent 只要实现一遍协议，就能进所有支持它的客户端的安装列表。Zed 和 JetBrains 现在共用的就是这套接口。 所以给 Luban 加 ACP，没有增加任何编码能力 —— 工具循环、预算闸门、审阅、多 provider 这些都是原来就有的。它增加的是一个分发入口：注册一次，就同时进了 Zed 和 JetBrains 的 agent 列表。 为什么实现起来几乎不费力这事儿能这么快...</div></div></div></a><a class="pagination-related" href="/2026/11/11/flash-model-showdown-deepseek-minimax-mimo/" title="Flash 三国杀：DeepSeek / MiniMax / 小米 MiMo 轻量旗舰对比"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Flash 三国杀：DeepSeek / MiniMax / 小米 MiMo 轻量旗舰对比</div></div><div class="info-2"><div class="info-item-1">2026 年底，三家国产厂商几乎同时把「Flash」档推到台前：DeepSeek 的 V4.1-Flash、MiniMax 的 M3.1 Flash、小米的 MiMo-V2.6-Flash。它们都主打「快 + 便宜」，但定位并不重合——一个押注极致成本，一个押注 Agent 能力，一个押注多模态。本文把三家的官方规格、benchmark、价格和速度摆在一起，帮你按场景选。 一句话定位   模型 一句话定位    DeepSeek V4.1-Flash 极致成本 + 高并发，缓存命中近乎免费   MiniMax M3.1 Flash Agent &#x2F; 编程 &#x2F; 电脑操作，速度最快   小米 MiMo-V2.6-Flash 多模态（含音频），输出价最低   规格对比   维度 DeepSeek V4.1-Flash MiniMax M3.1 Flash MiMo-V2.6-Flash    上下文窗口 256K 200K 256K   最大输出 384K 128K 128K   思考模式 可开关 常开（不可关） 可开关   多模态输入 文本 文本 文本 + 图像 +...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/11/05/luban-vscodium-coding-agent/" title="认识 Luban：嵌在 VSCodium 侧边栏里的编码 Agent"><img class="cover" src="/2026/11/05/luban-vscodium-coding-agent/cover.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-05</div><div class="info-item-2">认识 Luban：嵌在 VSCodium 侧边栏里的编码 Agent</div></div><div class="info-2"><div class="info-item-1">  最近在日常开发里一直在用一个嵌在 VSCodium 侧边栏里的编码 agent，名字叫 Luban（鲁班）。名字取自古代工匠，寓意很直白：一个帮你”干活”的工匠。这篇文章介绍一下它是什么、能做什么、以及我在 MES 项目里实际用它的方式。 它是什么Luban 是一个嵌在 VSCodium 侧边栏里的编码 agent：  底层模型可配置：由用户配置的 provider 决定，不绑定某一家模型； 直接读写本机文件：不是”给你一段代码你自己贴”，而是直接在工作区里增删改文件； 可以执行 shell 命令：写完代码能自己跑 mvn、node、git 验证，把真实输出作为结论依据； 支持 MCP 外部工具：通过 mcp__&lt;server&gt;__&lt;tool&gt; 形式接入外部能力，比如数据库查询。  它和”聊天式 AI 助手”最大的区别在于：它默认以完成任务为目标，而不是以回答问题为目标。你给它一个任务，它会自己拆步骤、查代码、改文件、跑验证，最后用中文汇报改了哪些文件、做了什么、验证结果如何。 核心能力1. 代码检索：先定位，再精读大仓库里直接全量扫文件是灾难。Lub...</div></div></div></a><a class="pagination-related" href="/2026/11/28/2026-11-28-luban-acp-support/" title="Luban 现在能在 Zed 和 JetBrains 里用了：聊聊 ACP 支持"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-28</div><div class="info-item-2">Luban 现在能在 Zed 和 JetBrains 里用了：聊聊 ACP 支持</div></div><div class="info-2"><div class="info-item-1">一句话Luban 加了 ACP（Agent Client Protocol）支持。同一个内核，现在除了跑在 VS Code &#x2F; VSCodium 侧边栏和终端 CLI 里，也能被 Zed、JetBrains 这类编辑器当成自己的编码 agent 来驱动 —— 正文、思考、工具卡片、计划都是客户端原生渲染，写文件前会把 diff 交给客户端的权限弹窗确认。 内核一行没改。   ACP 是什么，以及它不是什么先说清楚一件事：ACP 是一层传输协议，不是新能力。 它解决的问题是「编辑器怎么跟一个外部编码 agent 说话」。以前每家编辑器都得为每个 agent 写一套私有集成；有了 ACP，agent 只要实现一遍协议，就能进所有支持它的客户端的安装列表。Zed 和 JetBrains 现在共用的就是这套接口。 所以给 Luban 加 ACP，没有增加任何编码能力 —— 工具循环、预算闸门、审阅、多 provider 这些都是原来就有的。它增加的是一个分发入口：注册一次，就同时进了 Zed 和 JetBrains 的 agent 列表。 为什么实现起来几乎不费力这事儿能这么快...</div></div></div></a><a class="pagination-related" href="/2026/11/07/luban-cli-headless-agent/" title="认识 Luban CLI：把编码 Agent 搬进终端"><img class="cover" src="/2026/11/07/luban-cli-headless-agent/cover.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-07</div><div class="info-item-2">认识 Luban CLI：把编码 Agent 搬进终端</div></div><div class="info-2"><div class="info-item-1">  上一篇聊了嵌在 VSCodium 侧边栏里的 Luban。这一篇说它的另一副面孔：**luban 命令行**。 同一个包 @luban-code/luban-code，除了扩展，还带了一个 bin：不启动编辑器，直接把 agent 的工具循环跑在终端里。SSH 到服务器、写脚本、挂 CI、定时任务，这些场景下没有侧边栏，但「说一句话，它改文件、跑命令、自己验证」这件事照样成立。 为什么还要一个 CLI侧边栏面板很好用，但它有两个前提：你得开着图形界面，而且得在编辑器里。 CLI 补的正是这两块空白：  远程 &#x2F; 无 GUI：SSH 上去只有一个 shell，也能让 agent 干活； 可脚本化：一条命令跑完就退出，能接管道、能进 cron、能塞进 Makefile； 同一套能力：CLI 不是另写一个简化版，而是把扩展里的 runAgent &#x2F; execTool &#x2F; 工具集原样复用——工具循环、只读闸门、子代理、MCP、审计都在里面。  实现上有点意思：它 stub 掉 vscode 模块后直接 require 扩展源码，等于给同一颗大脑换了个躯壳...</div></div></div></a><a class="pagination-related" href="/2026/11/10/luban-vs-deepseek-harness-benchmark/" title="Luban vs DeepSeek Harness：同一批任务跑 56 次，成本差距到底在哪"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-10</div><div class="info-item-2">Luban vs DeepSeek Harness：同一批任务跑 56 次，成本差距到底在哪</div></div><div class="info-2"><div class="info-item-1">手上有两个编码 Agent：自己写的 Luban（VS Code 侧边栏那套），和 DeepSeek 官方的 dsh（DeepSeek Harness 的命令行版）。一直想搞清楚一个很实际的问题—— 同样的模型、同样的代码库、同样的任务，到底谁更划算？ 于是拿一套真实在跑的企业系统（Java + Spring + nginx + CAS，约 1.4 万个源文件）当语料，设计了三轮递进的对比实验，一共跑了 56 次。   实验设计前提条件先把变量卡死：    项 设置    模型 两边都锁 deepseek-flash（同一把 key，计费口径一致）   代码语料 同一份源码副本，各 280MB，排除 target/node_modules/.git   工作区 每次运行前重新 clone，互不污染   上限 600~900 秒看门狗，超时即杀   并发 两个工具各一条 lane 并行，同一时段、同机器，环境对等   三轮任务从”读”到”写”再到”必须编译通过”：  第一轮：3 道只读的定位&#x2F;分析题 第二轮：扩到 10 题（4 只读 + 6 可写），每题跑 2 轮取中位数...</div></div></div></a><a class="pagination-related" href="/2026/06/19/cursor-agent-no-version-directories-fix/" title="Cursor Agent CLI 报错 No version directories found 的排查与修复"><img class="cover" src="/2026/06/19/cursor-agent-no-version-directories-fix/cover.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-19</div><div class="info-item-2">Cursor Agent CLI 报错 No version directories found 的排查与修复</div></div><div class="info-2"><div class="info-item-1">  在 Windows 终端执行 agent 或 cursor-agent 时，可能遇到如下错误： 123456C:\Users\liuhualiang\AppData\Local\cursor-agent\agent.ps1 : No version directories found in C:\Users\liuhualiang\AppData\Local\cursor-agent所在位置 行:1 字符: 1+ agent+ ~~~~~    + CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException    + FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException,agent.ps1  本文记录该问题的现象、根因、修复方式与临时绕过方法。 现象 agent、cursor-agent 命令均无法启动 报错提示在 %LOCALAPPDATA%\cursor-agent 下找不到版本目录 但...</div></div></div></a><a class="pagination-related" href="/2026/07/30/ai-development-history-and-vision/" title="AI 的发展历程与最终愿景"><img class="cover" src="/2026/07/30/ai-development-history-and-vision/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-30</div><div class="info-item-2">AI 的发展历程与最终愿景</div></div><div class="info-2"><div class="info-item-1">  从 1956 年达特茅斯会议提出”人工智能”这个词，到今天大模型与智能体进入生产环境，AI 走了七十年。这篇文章按时间线梳理它的关键转折，并聊聊”最终愿景”到底意味着什么。 一、发展历程1. 萌芽与早期探索（1940s–1950s） 1943：麦卡洛克与皮茨提出”麦卡洛克-皮茨神经元”，奠定人工神经网络的数学基础。 1950：图灵发表《计算机器与智能》，提出”图灵测试”，首次系统讨论机器能否思考。 1956：达特茅斯会议正式提出”人工智能”（Artificial Intelligence）一词，AI 作为学科诞生。  2. 符号主义黄金期与第一次寒冬（1956–1980s）专家系统、逻辑推理、搜索算法盛行，”ELIZA”、”SHRDLU” 等程序展示了初步能力。1974 年前后，算力不足与期望过高导致经费削减，进入第一次 AI 寒冬。 3. 复兴与机器学习崛起（1980s–2000s）专家系统商业热潮（Prolog、MYCIN 等）后再次退潮，进入第二次寒冬。统计学习方法兴起：支持向量机、隐马尔可夫模型、决策树等成为主流。1997 年，IBM”深蓝”击败国际象棋世界冠军卡斯帕...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%94%AF%E6%8C%81%E6%9C%AC%E5%9C%B0%E6%A8%A1%E5%9E%8B"><span class="toc-text">一、支持本地模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%B8%89%E7%A7%8D%E6%A8%A1%E5%BC%8F%EF%BC%9APlan-Agent-Chat"><span class="toc-text">二、三种模式：Plan &#x2F; Agent &#x2F; Chat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%AE%A1%E9%98%85%E5%9C%A8%E7%BC%96%E8%BE%91%E5%99%A8%E9%87%8C"><span class="toc-text">三、审阅在编辑器里</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E4%B8%80%E4%B8%AA%E5%86%85%E6%A0%B8%EF%BC%8C%E5%A4%9A%E8%AE%BF%E9%97%AE%E5%85%A5%E5%8F%A3"><span class="toc-text">四、一个内核，多访问入口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E4%B8%A4%E5%8F%AA%E6%89%8B%EF%BC%9Abrowser-use%EF%BC%8Ccomputer-use"><span class="toc-text">五、两只手：browser use，computer use</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%8F%92%E4%BB%B6"><span class="toc-text">六、插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/28/2026-11-28-luban-acp-support/" title="Luban 现在能在 Zed 和 JetBrains 里用了：聊聊 ACP 支持">Luban 现在能在 Zed 和 JetBrains 里用了：聊聊 ACP 支持</a><time datetime="2026-11-28T12:00:00.000Z" title="发表于 2026-11-28 20:00:00">2026-11-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/14/luban-vscodium-sidebar-agent/" title="我把 AI 编码助手塞进了 VSCodium 侧边栏，还让它自己跑测试"><img src="/2026/11/14/luban-vscodium-sidebar-agent/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="我把 AI 编码助手塞进了 VSCodium 侧边栏，还让它自己跑测试"/></a><div class="content"><a class="title" href="/2026/11/14/luban-vscodium-sidebar-agent/" title="我把 AI 编码助手塞进了 VSCodium 侧边栏，还让它自己跑测试">我把 AI 编码助手塞进了 VSCodium 侧边栏，还让它自己跑测试</a><time datetime="2026-11-14T08:48:00.000Z" title="发表于 2026-11-14 16:48:00">2026-11-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/11/flash-model-showdown-deepseek-minimax-mimo/" title="Flash 三国杀：DeepSeek / MiniMax / 小米 MiMo 轻量旗舰对比">Flash 三国杀：DeepSeek / MiniMax / 小米 MiMo 轻量旗舰对比</a><time datetime="2026-11-11T01:30:00.000Z" title="发表于 2026-11-11 09:30:00">2026-11-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/10/luban-vs-deepseek-harness-benchmark/" title="Luban vs DeepSeek Harness：同一批任务跑 56 次，成本差距到底在哪">Luban vs DeepSeek Harness：同一批任务跑 56 次，成本差距到底在哪</a><time datetime="2026-11-10T02:30:00.000Z" title="发表于 2026-11-10 10:30:00">2026-11-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/10/hello-world/" title="Hello World"><img src="/2026/11/10/hello-world/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2026/11/10/hello-world/" title="Hello World">Hello World</a><time datetime="2026-11-10T01:43:00.215Z" title="发表于 2026-11-10 09:43:00">2026-11-10</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By eppen</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.2"></script><script src="/js/main.js?v=5.7.2"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.2"></script></div></div><!-- hexo injector body_end start --><div class="adsense-wrap" style="margin:24px 0;text-align:center;min-height:90px;overflow:hidden;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2045994937692573" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><!-- hexo injector body_end end --></body></html>
