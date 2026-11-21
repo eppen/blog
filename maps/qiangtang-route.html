@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>杨柳松 2010 羌塘无人区穿越路线</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
+  #map { position: absolute; inset: 0; }
+  .panel {
+    position: absolute; z-index: 1000; top: 12px; left: 12px; width: 300px;
+    background: rgba(255,255,255,.94); border-radius: 10px; padding: 14px 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.25); font-size: 13px; line-height: 1.7;
+  }
+  .panel h1 { margin: 0 0 6px; font-size: 16px; }
+  .panel .meta { color: #444; }
+  .panel .meta b { color: #c0392b; }
+  .panel .legend { margin-top: 8px; border-top: 1px solid #ddd; padding-top: 8px; color: #666; }
+  .dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px; vertical-align:-1px; }
+  .pt-label {
+    background: rgba(255,255,255,.92); border: 1px solid #d8d2c8;
+    border-radius: 4px; padding: 1px 5px; box-shadow: none;
+    color: #2c2c2c; font-size: 12px; white-space: nowrap;
+  }
+  .pt-label::before { display: none; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div class="panel">
+  <h1>杨柳松 · 羌塘无人区穿越（2010）</h1>
+  <div class="meta">
+    2010-04-20 从新藏线 <b>界山达坂</b>（K718，日土县）进入羌塘，
+    一人一单车（后期徒步）自西向东横穿大羌塘，
+    历时 <b>77 天</b>，行程约 <b>1400 公里</b>，7 月 5 日于
+    <b>阿其克库勒湖</b>附近获救。
+  </div>
+  <div class="legend">
+    <span class="dot" style="background:#c0392b"></span>起点 / 终点　
+    <span class="dot" style="background:#2980b9"></span>途经点<br />
+    红线为按途经点绘制的概略路线，非精确轨迹；中途点位据公开资料整理。
+  </div>
+</div>
+<script>
+  const map = L.map('map', { zoomControl: true }).setView([35.6, 85.5], 6);
+  // 高德栅格瓦片（本机可访问；OSM 官方瓦片在此网络不可达）
+  L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+    maxZoom: 12, subdomains: ['1', '2', '3', '4'],
+    attribution: '&copy; 高德地图 / 阿里云'
+  }).addTo(map);
+
+  // WGS-84 → GCJ-02 纠偏（高德底图为火星坐标系）
+  const PI = 3.14159265358979324, A = 6378245.0, EE = 0.00669342162296594323;
+  function tLat(x, y) { let r = -100 + 2*x + 3*y + 0.2*y*y + 0.1*x*y + 0.2*Math.sqrt(Math.abs(x)); r += (20*Math.sin(6*x*PI) + 20*Math.sin(2*x*PI))*2/3; r += (20*Math.sin(y*PI) + 40*Math.sin(y/3*PI))*2/3; r += (160*Math.sin(y/12*PI) + 320*Math.sin(y*PI/30))*2/3; return r; }
+  function tLng(x, y) { let r = 300 + x + 2*y + 0.1*x*x + 0.1*x*y + 0.1*Math.sqrt(Math.abs(x)); r += (20*Math.sin(6*x*PI) + 20*Math.sin(2*x*PI))*2/3; r += (20*Math.sin(x*PI) + 40*Math.sin(x/3*PI))*2/3; r += (150*Math.sin(x/12*PI) + 300*Math.sin(x/30*PI))*2/3; return r; }
+  function wgs2gcj(lng, lat) {
+    let dLat = tLat(lng - 105, lat - 35), dLng = tLng(lng - 105, lat - 35);
+    const rad = lat / 180 * PI; let m = Math.sin(rad); m = 1 - EE*m*m; const sm = Math.sqrt(m);
+    dLat = dLat * 180 / ((A * (1 - EE)) / (m * sm) * PI);
+    dLng = dLng * 180 / (A / sm * Math.cos(rad) * PI);
+    return [lng + dLng, lat + dLat];
+  }
+
+  // [经度, 纬度, 名称, 说明, 是否端点]
+  const points = [
+    [80.2778, 34.6863, '界山达坂（起点）', '新藏线 G219 K718 附近，海拔约 5290 m，2010-04-20 进入羌塘', true],
+    [81.5598, 34.9226, '邦达错', '阿里日土县，进羌塘初期途经湖泊', false],
+    [82.7605, 35.5602, '黑石北湖', '改则县一带，羌塘腹地北缘', false],
+    [88.4458, 35.4511, '若拉错', '双湖县，羌塘东部大湖群', false],
+    [91.0093, 35.3410, '可可西里山', '治多县索加乡，穿越可可西里山脉南缘', false],
+    [89.4133, 36.3394, '鲸鱼湖（阴阳湖）', '若羌县东南、昆仑山腹地，新藏青三省区交界', false],
+    [88.4078, 37.0676, '阿其克库勒湖（终点）', '阿尔金山保护区，若羌县东南、昆仑山北麓；因洪水弃车后徒步至此遇车获救，2010-07-05', true]
+  ];
+
+  const line = points.map(p => { const [gcjLng, gcjLat] = wgs2gcj(p[0], p[1]); return [gcjLat, gcjLng]; });
+  L.polyline(line, { color: '#c0392b', weight: 3.5, opacity: .9 }).addTo(map);
+
+  points.forEach((p, i) => {
+    const isEnd = p[4];
+    L.circleMarker(line[i], {
+      radius: isEnd ? 8 : 6,
+      color: '#fff', weight: 1.5,
+      fillColor: isEnd ? '#c0392b' : '#2980b9',
+      fillOpacity: 1
+    }).addTo(map)
+      .bindPopup('<b>' + p[2] + '</b><br>' + p[3])
+      .bindTooltip(p[2], {
+        permanent: true, direction: 'top', offset: [0, -6],
+        className: 'pt-label'
+      });
+  });
+
+  map.fitBounds(L.latLngBounds(line), { padding: [40, 40] });
+</script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="肝癌病因链条示意图">
+<title>肝癌病因链条示意图</title>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#0a1410"/>
+    <stop offset="1" stop-color="#0c1f19"/>
+  </linearGradient>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1"/>
+  </pattern>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0 0 L10 5 L0 10 z" fill="#4b7f6a"/>
+  </marker>
+</defs>
+
+<rect width="1200" height="560" fill="url(#bg)"/>
+<rect width="1200" height="560" fill="url(#grid)"/>
+
+<g font-family="'Noto Sans SC','Source Han Sans SC','Microsoft YaHei','PingFang SC',sans-serif">
+  <text x="40" y="54" font-size="21" fill="#94a3b8" letter-spacing="2">病因叠加</text>
+  <text x="1160" y="54" text-anchor="end" font-size="15" fill="#475569" font-family="ui-monospace,Consolas,monospace">EPPENCN.COM</text>
+
+  <!-- 病因层 -->
+  <g>
+    <rect x="32" y="86" width="250" height="80" rx="12" fill="#34d399" fill-opacity="0.07" stroke="#34d399" stroke-opacity="0.45" stroke-width="1.5"/>
+    <text x="157" y="122" text-anchor="middle" font-size="20" fill="#e2e8f0">乙肝 / 丙肝</text>
+    <text x="157" y="148" text-anchor="middle" font-size="13" fill="#7f9f92">慢性炎症 + DNA 整合</text>
+
+    <rect x="327" y="86" width="250" height="80" rx="12" fill="#34d399" fill-opacity="0.07" stroke="#34d399" stroke-opacity="0.45" stroke-width="1.5"/>
+    <text x="452" y="122" text-anchor="middle" font-size="20" fill="#e2e8f0">黄曲霉毒素</text>
+    <text x="452" y="148" text-anchor="middle" font-size="13" fill="#7f9f92">TP53 249 位点突变</text>
+
+    <rect x="622" y="86" width="250" height="80" rx="12" fill="#34d399" fill-opacity="0.07" stroke="#34d399" stroke-opacity="0.45" stroke-width="1.5"/>
+    <text x="747" y="122" text-anchor="middle" font-size="20" fill="#e2e8f0">酒精</text>
+    <text x="747" y="148" text-anchor="middle" font-size="13" fill="#7f9f92">乙醛 · 氧化应激</text>
+
+    <rect x="917" y="86" width="250" height="80" rx="12" fill="#34d399" fill-opacity="0.07" stroke="#34d399" stroke-opacity="0.45" stroke-width="1.5"/>
+    <text x="1042" y="122" text-anchor="middle" font-size="20" fill="#e2e8f0">脂肪肝 / 代谢</text>
+    <text x="1042" y="148" text-anchor="middle" font-size="13" fill="#7f9f92">肥胖 · 糖尿病</text>
+  </g>
+
+  <!-- 汇聚线 -->
+  <g stroke="#4b7f6a" stroke-width="2" fill="none" marker-end="url(#arrow)">
+    <path d="M157 166 V 206 H 600"/>
+    <path d="M452 166 V 206 H 600"/>
+    <path d="M747 166 V 206 H 600"/>
+    <path d="M1042 166 V 206 H 600"/>
+    <path d="M600 206 V 236"/>
+  </g>
+
+  <!-- 演进链 -->
+  <g>
+    <rect x="40" y="248" width="200" height="74" rx="12" fill="#0f2a22" stroke="#34d399" stroke-opacity="0.55" stroke-width="1.5"/>
+    <text x="140" y="292" text-anchor="middle" font-size="20" fill="#e2e8f0">慢性肝损伤</text>
+
+    <rect x="270" y="248" width="200" height="74" rx="12" fill="#0f2a22" stroke="#34d399" stroke-opacity="0.55" stroke-width="1.5"/>
+    <text x="370" y="292" text-anchor="middle" font-size="20" fill="#e2e8f0">肝纤维化</text>
+
+    <rect x="500" y="248" width="200" height="74" rx="12" fill="#183026" stroke="#6ee7b7" stroke-opacity="0.7" stroke-width="2"/>
+    <text x="600" y="292" text-anchor="middle" font-size="20" fill="#f8fafc">肝硬化</text>
+
+    <rect x="730" y="248" width="200" height="74" rx="12" fill="#2a2418" stroke="#a7d8a0" stroke-opacity="0.7" stroke-width="1.5"/>
+    <text x="830" y="292" text-anchor="middle" font-size="20" fill="#e2e8f0">突变累积</text>
+
+    <rect x="960" y="248" width="200" height="74" rx="12" fill="#3a2a10" stroke="#f59e0b" stroke-opacity="0.8" stroke-width="2"/>
+    <text x="1060" y="292" text-anchor="middle" font-size="20" fill="#fbbf24">肝细胞癌</text>
+  </g>
+  <g stroke="#4b7f6a" stroke-width="2" marker-end="url(#arrow)">
+    <path d="M240 285 H 264"/>
+    <path d="M470 285 H 494"/>
+    <path d="M700 285 H 724"/>
+    <path d="M930 285 H 954"/>
+  </g>
+
+  <text x="600" y="366" text-anchor="middle" font-size="15" fill="#7f9f92">约 70–90% 的肝细胞癌发生在肝硬化背景下；脂肪肝可绕过肝硬化直接癌变</text>
+
+  <!-- 底部说明 -->
+  <line x1="40" y1="416" x2="1160" y2="416" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+  <g font-size="15" fill="#94a3b8">
+    <text x="40" y="456">基因事件：TERT 启动子 / TP53 / CTNNB1</text>
+    <text x="40" y="492">筛查窗口：肝硬化与慢性乙肝携带者，每 6 个月超声 + AFP</text>
+    <text x="1160" y="456" text-anchor="end" fill="#64748b">病因层叠加 → 同一条终点</text>
+    <text x="1160" y="492" text-anchor="end" fill="#64748b">早筛可根治，晚期预后差</text>
+  </g>
+</g>
+</svg>

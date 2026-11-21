@@ -1,0 +1,346 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>MES 2026 年第 47 周工作小结 | Hua Liang's Blog</title><meta name="author" content="eppen"><meta name="copyright" content="eppen"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本周（11&#x2F;16–11&#x2F;21，共 44 条提交：master 24 条、feature&#x2F;dispatching-eos-workflow 分支 20 条尚未合入）触达 240 个文件、约 +1.46 万 &#x2F; -1.2 千行。主线只有一条——把调度指令真正接进 EOS 原生工作流，围绕它铺开的是审批人表达式、审批进度组件、审批组独立模块；其余是 EOS 工作流设计器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MES 2026 年第 47 周工作小结">
+<meta property="og:url" content="https://eppencn.com/2026/11/21/mes-weekly-2026-w47/index.html">
+<meta property="og:site_name" content="Hua Liang&#39;s Blog">
+<meta property="og:description" content="本周（11&#x2F;16–11&#x2F;21，共 44 条提交：master 24 条、feature&#x2F;dispatching-eos-workflow 分支 20 条尚未合入）触达 240 个文件、约 +1.46 万 &#x2F; -1.2 千行。主线只有一条——把调度指令真正接进 EOS 原生工作流，围绕它铺开的是审批人表达式、审批进度组件、审批组独立模块；其余是 EOS 工作流设计器">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eppencn.com/2026/11/21/mes-weekly-2026-w47/cover.png">
+<meta property="article:published_time" content="2026-11-21T09:00:00.000Z">
+<meta property="article:modified_time" content="2026-11-21T10:59:55.399Z">
+<meta property="article:author" content="eppen">
+<meta property="article:tag" content="工作小结">
+<meta property="article:tag" content="MES">
+<meta property="article:tag" content="eos-nwf">
+<meta property="article:tag" content="周报">
+<meta property="article:tag" content="mes-dispatching">
+<meta property="article:tag" content="mes-workflow-approval">
+<meta property="article:tag" content="poi-5">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eppencn.com/2026/11/21/mes-weekly-2026-w47/cover.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "MES 2026 年第 47 周工作小结",
+  "url": "https://eppencn.com/2026/11/21/mes-weekly-2026-w47/",
+  "image": "https://eppencn.com/2026/11/21/mes-weekly-2026-w47/cover.png",
+  "datePublished": "2026-11-21T09:00:00.000Z",
+  "dateModified": "2026-11-21T10:59:55.399Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "eppen",
+      "url": "https://eppencn.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://eppencn.com/2026/11/21/mes-weekly-2026-w47/index.html"><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.2"><link rel="stylesheet" href="/pluginsSrc/@fortawesome/fontawesome-free/css/all.min.css?v=7.3.1"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        try {
+          const data = { value }
+
+          if (ttl != null) {
+            data.expiry = Date.now() + ttl * 86400000
+          }
+
+          localStorage.setItem(key, JSON.stringify(data))
+        } catch (e) {
+          console.error(e)
+        }
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: '/pluginsSrc/@egjs/infinitegrid/dist/infinitegrid.min.js?v=4.13.1',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'MES 2026 年第 47 周工作小结',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><!-- hexo injector head_end start --><meta name="google-adsense-account" content="ca-pub-2045994937692573">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2045994937692573" crossorigin="anonymous"></script><!-- hexo injector head_end end --><style id="article-table-style">
+/* 正文表格：补网格线、内边距、表头底色与斑马纹 */
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 1.5em 0;
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+.post-content thead th,
+.post-content tbody td {
+  border: 1px solid #dcdcdc;
+  padding: 8px 10px;
+  vertical-align: top;
+}
+.post-content thead th {
+  background: #f6f6f6;
+  text-align: left;
+  font-weight: bold;
+  white-space: nowrap;
+}
+.post-content tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+/* 代码块高亮内部的表格是行号 + 代码的双列布局，不能被正文表格样式污染 */
+.post-content .highlight table,
+.post-content .highlight thead,
+.post-content .highlight tbody {
+  border: none;
+  margin: 0;
+  width: auto;
+}
+.post-content .highlight tbody tr:nth-child(even) {
+  background: none;
+}
+.post-content .highlight td {
+  border: none;
+  padding: 0;
+  white-space: pre;
+}
+/* 窄屏：Butterfly 已经把表格包在 .table-wrap 里并给了横向滚动，
+   这里只需保证单元格文字正常换行，不再额外把 table 改成 block，
+   否则会和控制滚动的外层容器打架 */
+@media screen and (max-width: 767px) {
+  .post-content thead th {
+    white-space: normal;
+  }
+}
+</style><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">138</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Hua Liang's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">MES 2026 年第 47 周工作小结</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">MES 2026 年第 47 周工作小结</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-11-21T09:00:00.000Z" title="发表于 2026-11-21 17:00:00">2026-11-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-11-21T10:59:55.399Z" title="更新于 2026-11-21 18:59:55">2026-11-21</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><img src="/2026/11/21/mes-weekly-2026-w47/cover.png" class="">
+
+<p>本周（11&#x2F;16–11&#x2F;21，共 <strong>44</strong> 条提交：<code>master</code> 24 条、<code>feature/dispatching-eos-workflow</code> 分支 20 条尚未合入）触达 240 个文件、约 +1.46 万 &#x2F; -1.2 千行。主线只有一条——<strong>把调度指令真正接进 EOS 原生工作流</strong>，围绕它铺开的是审批人表达式、审批进度组件、审批组独立模块；其余是 EOS 工作流设计器合入 master、跨应用错误汇总、交接班 Word 导出细修和 POI 5 升级。改动集中在 <code>mes-dispatching</code>（78 个文件）、<code>mes-workflow</code>（57）、<code>mes-operation</code>（22）、<code>mes-security</code>（17）。</p>
+<h2 id="一、调度指令接入-EOS-原生工作流（主线，仍在分支）"><a href="#一、调度指令接入-EOS-原生工作流（主线，仍在分支）" class="headerlink" title="一、调度指令接入 EOS 原生工作流（主线，仍在分支）"></a>一、调度指令接入 EOS 原生工作流（主线，仍在分支）</h2><p>这一块占了本周近一半工作量，从「单据怎么拆」一路做到「审批进度怎么显示」：</p>
+<ul>
+<li><strong>单据拆分</strong>：事业部指令 &#x2F; 计划调度部指令拆成两个 EOS 单据，MES 侧实体回退到原来的旧三表；配套脚本一并入库——<code>eos_dispatching_instruction_split_views.sql</code>、<code>split_djdy</code> &#x2F; <code>split_xmdy</code> 视图、<code>add_eos_columns</code>，外加 <code>no_ddl_plan.md</code> 与 <code>view_gate_check.md</code> 两份方案&#x2F;核验说明，先保证「不动 DDL 也能切」</li>
+<li><strong>引擎切换</strong>：调度工作流改用 EOS nwf，开关置为 <code>enabled: true</code>；旧版 Flowable 定义同时留档作对照，方便回退</li>
+<li><strong>审批人表达式</strong>：<code>runsql</code> + <code>uf_get_wf_spyh</code> 两级取人落地，SQL 放在 <code>mes-nwf/doc/nwf_uf_wf_spyh.sql</code>、<code>nwf_uf_wf_spyh_expr_func.sql</code>；两份 BPMN（事业部指令审批、计划调度部指令审批）与 <code>nwf_processtype_dispatching.sql</code> 注册脚本入库</li>
+<li><strong>审批进度组件</strong>：新增 <code>NwfFlowProgressService</code> &#x2F; <code>Impl</code> 与通用前端组件 <code>nwf-flow-progress.js</code>（337 行）&#x2F; <code>.css</code>（141 行），六个调度单据页面（事业部&#x2F;计划调度部 × 编辑、待审批、已完成）统一接入，顺手删掉原来各页面重复的 132 行状态拼装逻辑</li>
+<li><strong>列表体验</strong>：待审批状态下拉补「提交中」，状态筛选真正生效；待审批 &#x2F; 已完成列表默认按 ID 倒序，新数据不再被挤到末页</li>
+</ul>
+<h2 id="二、EOS-工作流设计器增强并合入-master"><a href="#二、EOS-工作流设计器增强并合入-master" class="headerlink" title="二、EOS 工作流设计器增强并合入 master"></a>二、EOS 工作流设计器增强并合入 master</h2><p><code>feature/eos-nwf-graph-design</code> 周五合入 master（+1300 行量级）：</p>
+<ul>
+<li><strong>AI 增量改图协议</strong>：设计器与 AI 之间改成按 ops 增量提交，不再整图覆盖，落盘走新写的 <code>NwfGraphOpsApplier</code>，配单测兜底</li>
+<li><strong>拓扑编辑增强</strong>：拓扑变化后自动清理失效诊断（stale diagnostics pruning），画布不会残留已经对不上的提示</li>
+<li>打包 xml 同步修正，避免新增类没进包</li>
+</ul>
+<h2 id="三、审批组独立成模块（mes-workflow-approval）"><a href="#三、审批组独立成模块（mes-workflow-approval）" class="headerlink" title="三、审批组独立成模块（mes-workflow-approval）"></a>三、审批组独立成模块（mes-workflow-approval）</h2><p>从流程节点里的零散配置，抽成独立模块，39 个文件 +4000 行量级：</p>
+<ul>
+<li><strong>三层结构</strong>：审批组类型 &#x2F; 审批组 &#x2F; 审批组成员，controller–dao–entity–service 齐套，配 4 个页面与对应 JS（含类型选择弹层）</li>
+<li><strong>唯一键调整</strong>：审批组编码从全局唯一改为「部门 + 编码」，并给出 <code>wf_approval_group_uk_migrate.sql</code> 迁移脚本</li>
+<li><strong>脚本齐备</strong>：表结构、菜单、种子数据三份 SQL（<code>wf_approval_group_tables</code> &#x2F; <code>_menu</code> &#x2F; <code>_seed</code>）与 README 一并入库</li>
+<li><strong>顺手一处体验修正</strong>：角色&#x2F;用户分组树改为同层按拼音排序、未分组置顶（<code>CategoryTreeSortUtils</code> + 单测）</li>
+</ul>
+<h2 id="四、EOS-菜单树节点详情（mes-security-eos）"><a href="#四、EOS-菜单树节点详情（mes-security-eos）" class="headerlink" title="四、EOS 菜单树节点详情（mes-security-eos）"></a>四、EOS 菜单树节点详情（mes-security-eos）</h2><ul>
+<li>树节点选中后可看详情：EOS 侧角色、用户授权（含授权来源）+ 该节点关联的 MES 菜单授权</li>
+<li>新增 <code>EosTreeNodeDetailService</code> &#x2F; <code>Impl</code> 与三个 DTO，11 个文件 +1418 行，含单测</li>
+<li><code>eostree.js</code> 同时补了「打开方式」选项，节点可以按不同入口打开</li>
+</ul>
+<h2 id="五、日志管理：跨应用错误汇总（errorSummary）"><a href="#五、日志管理：跨应用错误汇总（errorSummary）" class="headerlink" title="五、日志管理：跨应用错误汇总（errorSummary）"></a>五、日志管理：跨应用错误汇总（errorSummary）</h2><ul>
+<li><code>mes-core</code> 定义 SPI <code>JobFailureLogProvider</code>，<code>mes-quartz</code> 侧用 <code>QuartzJobFailureLogProvider</code> 实现，定时任务失败能被统一收集</li>
+<li>日志管理页新增跨应用错误汇总视图，<code>SysLogFileServiceImpl</code> 主体 +543 行，前后端与使用说明同步补齐</li>
+<li>两侧都带单测（206 行 &#x2F; 118 行），后续其它应用接新 provider 即可扩展</li>
+</ul>
+<h2 id="六、交接班与-Word-导出（mes-operation）"><a href="#六、交接班与-Word-导出（mes-operation）" class="headerlink" title="六、交接班与 Word 导出（mes-operation）"></a>六、交接班与 Word 导出（mes-operation）</h2><ul>
+<li><strong>班次时间</strong>：Word 导出按班次计算班次时间起止时段，展示格式统一为 <code>yyyy年MM月dd日HH:mm — yyyy年MM月dd日HH:mm</code>，占位符一并补齐</li>
+<li><strong>单元格边距</strong>：新增 <code>DocxTableCellMarginUtil</code>（含单测），给导出表格补最小上下边距，多行内容不再贴着上下边框；页面上下边距统一 112 dxa</li>
+<li><strong>填报列表</strong>：新增日志模版树，默认按「日志日期 + id」倒排</li>
+<li><strong>页面</strong>：编辑页限制最大宽度，宽屏下不再拉满</li>
+</ul>
+<h2 id="七、报表与基础设施"><a href="#七、报表与基础设施" class="headerlink" title="七、报表与基础设施"></a>七、报表与基础设施</h2><ul>
+<li><strong>报表定时</strong>：新增「下载模版」动作，配权限 SQL <code>rptschedule_download_perm.sql</code> 与菜单项；模板处理与日期选择一并增强</li>
+<li><strong>POI 升级</strong>：4.1.2 → 5.2.5（<code>feature/poi-5-upgrade</code> 合入 master，19 个文件），父 POM 统一版本，<code>mes-core</code> &#x2F; <code>mes-plan</code> &#x2F; <code>mes-report</code> 三处适配，实施方案另存 <code>doc/POI-5.2.5升级实施方案.md</code></li>
+<li><strong>构建与仓库</strong>：修正打包 xml；<code>.gitignore</code> 忽略本地临时 SQL 导出、SQL 方言脚本与 <code>jqgrid-fork</code> 产物目录</li>
+</ul>
+<h2 id="八、事业部指令区域选择弹层"><a href="#八、事业部指令区域选择弹层" class="headerlink" title="八、事业部指令区域选择弹层"></a>八、事业部指令区域选择弹层</h2><ul>
+<li><code>areaselect</code> 页面从 <code>mes-web</code> 移到 <code>mes-factory</code>，修掉弹层 404，并修复双击选行</li>
+<li>事业部下拉列表无数据：在 <code>mes-factory</code> 侧新增本模块事业部接口，不再跨模块取数</li>
+</ul>
+<h2 id="节奏"><a href="#节奏" class="headerlink" title="节奏"></a>节奏</h2><table>
+<thead>
+<tr>
+<th>日期</th>
+<th>11&#x2F;16 一</th>
+<th>11&#x2F;17 二</th>
+<th>11&#x2F;18 三</th>
+<th>11&#x2F;19 四</th>
+<th>11&#x2F;20 五</th>
+<th>11&#x2F;21 六</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>提交</td>
+<td>1</td>
+<td>8</td>
+<td>6</td>
+<td>5</td>
+<td>8</td>
+<td>16</td>
+</tr>
+<tr>
+<td>侧重</td>
+<td>指令单据拆分 EOS 化、MES 实体回退旧三表</td>
+<td>调度工作流切 nwf、审批人表达式、审批组模块落地</td>
+<td>交接班 Word 班次时段、报表定时下载模版</td>
+<td>POI 5 升级合入、分组树拼音排序、EOS 节点详情</td>
+<td>交接班模版树、错误汇总 errorSummary、Word 边距</td>
+<td>设计器增量改图合入 master、审批进度组件、弹层 404 收尾</td>
+</tr>
+</tbody></table>
+<p>一句话：本周把「调度指令走 EOS 工作流」从单据拆分一路推到审批进度可视化，设计器侧完成 AI 增量改图协议并合入；大量工作花在脚本、方案文档和组件复用上，而不是页面本身。</p>
+<p>下周待办：<code>feature/dispatching-eos-workflow</code> 合入 master 并在现场跑一轮完整审批；审批进度组件推广到其余单据类型；POI 5 升级后交接班 &#x2F; 计划导出模板现场核对；错误汇总按应用继续接 provider。</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/">工作小结</a><a class="post-meta__tags" href="/tags/MES/">MES</a><a class="post-meta__tags" href="/tags/eos-nwf/">eos-nwf</a><a class="post-meta__tags" href="/tags/%E5%91%A8%E6%8A%A5/">周报</a><a class="post-meta__tags" href="/tags/mes-dispatching/">mes-dispatching</a><a class="post-meta__tags" href="/tags/mes-workflow-approval/">mes-workflow-approval</a><a class="post-meta__tags" href="/tags/poi-5/">poi-5</a></div><div class="post-share"><div class="social-share" data-image="/2026/11/21/mes-weekly-2026-w47/cover.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="/pluginsSrc/butterfly-extsrc/sharejs/dist/css/share.min.css?v=1.1.6" media="print" onload="this.media='all'"><script src="/pluginsSrc/butterfly-extsrc/sharejs/dist/js/social-share.min.js?v=1.1.6" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/11/21/2010-qiangtang-solo-crossing/" title="杨柳松 2010 年横穿羌塘，到底走的是哪条线？我把它画成了一张图"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">杨柳松 2010 年横穿羌塘，到底走的是哪条线？我把它画成了一张图</div></div><div class="info-2"><div class="info-item-1">2010 年 4 月 20 日从界山达坂进入羌塘，77 天、约 1400 公里，一人一车自西向东横穿大羌塘，7 月 5 日在阿其克库勒湖附近获救。把途经点和走向画成了一张图，也标清了哪些是确切事实、哪些只是概略复原。</div></div></div></a><a class="pagination-related" href="/2026/11/21/liver-cancer-causes/" title="肝癌是怎么造成的？乙肝、黄曲霉毒素和酒，怎么一条链走到癌"><img class="cover" src="/2026/11/21/liver-cancer-causes/cover.svg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">肝癌是怎么造成的？乙肝、黄曲霉毒素和酒，怎么一条链走到癌</div></div><div class="info-2"><div class="info-item-1">肝癌不是单一原因造成的，而是「慢性肝损伤 → 纤维化 → 肝硬化 → 基因突变累积 → 癌变」这条链上的多因素叠加。在中国主要是乙肝 + 黄曲霉毒素 + 酒；在欧美更多是丙肝 + 酒精 + 脂肪肝。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/10/30/mes-weekly-2026-w44/" title="MES 2026 年第 44 周工作小结"><img class="cover" src="/2026/10/30/mes-weekly-2026-w44/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-30</div><div class="info-item-2">MES 2026 年第 44 周工作小结</div></div><div class="info-2"><div class="info-item-1">  本周（10&#x2F;26–10&#x2F;30，约 37 条提交）主线从「流程设计器」切到「小指标公式能力」和「在线操作说明」铺开：周一重构类别树，周二把班组&#x2F;日&#x2F;月取数与公式编辑器一口气补齐，周三到周五把手册机制接到计划&#x2F;报表&#x2F;小指标&#x2F;计量多个模块，周五同时推进 eos-nwf 安装向导与联锁 AI 图表。文件改动触达面仍以 mes-workflow、mes-core、mes-measure、mes-web、mes-ai 等为主。 一、小指标公式编辑器（本周主战场）电厂小指标本周把「能配什么公式」往前推了一大截，编辑器与后端解析一起改：  支持班组 &#x2F; 日 &#x2F; 月取数公式，复用既有 DB 解析链路 公式编辑器补齐班组、仪表、条件值类型与级联选择；日&#x2F;月口径展示完整仪表取值类型 W 条件支持班次口径；仪表页增加计算符号列并补齐比较符 修正表元数据加载为空、编辑表单布局与初始化报错；条件值级联的侧线取值与响应式预置 文档与样例同步：按口径显示说明，明确统一入口对 DD &#x2F; if 的支持边...</div></div></div></a><a class="pagination-related" href="/2026/09/30/mes-weekly-2026-w40/" title="MES 2026 年第 40 周工作小结"><img class="cover" src="/2026/09/30/mes-weekly-2026-w40/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">MES 2026 年第 40 周工作小结</div></div><div class="info-2"><div class="info-item-1">  本周（9&#x2F;28–9&#x2F;30，约 17 次提交）主线是 多应用拆分落地 与 RTDB &#x2F; ISYS SDK，并修正 LIMS 位号、EOS 菜单 URL。合入分支主要包括：wip/tsdb-sdk-decompiled、feature/lims-tag-optional-sample-name、feat/mes-app。主力模块 mes-web、mes-factory、mes-rtdb、mes-security、mes-report。 一、实时库 &#x2F; ISYS SDK（mes-rtdb） 合入 wip/tsdb-sdk-decompiled，沉淀 TSDB SDK 反编译参考 新增 ISYS SDK 接入：独立端口与上下文、Nginx 代理、监控相关配置与文档 完善 ISYS SDK 与多应用说明文档  二、多应用拆分与基础设施（mes-web &#x2F; scripts） 应用拆分后 日志文件按应用拆分；补充 mes-utils &#x2F; mes-chart &#x2F; mes-message-eos 等依赖 Nginx 兼容历史...</div></div></div></a><a class="pagination-related" href="/2026/11/07/mes-monthly-2026-10/" title="MES 2026 年 10 月工作小结"><img class="cover" src="/2026/11/07/mes-monthly-2026-10/cover.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-07</div><div class="info-item-2">MES 2026 年 10 月工作小结</div></div><div class="info-2"><div class="info-item-1">  10 月（10&#x2F;08–10&#x2F;30，国庆后复工起算）共 266 条提交、16 次分支合并，触达 867 个文件、约 +8.4 万 &#x2F; -7.2 千行。这个月的主线很集中：EOS NWF 流程定义维护从零做成可交付模块，围绕它把流程图形编辑、模拟测试、表达式向导、安装向导一路补齐；第二条线是电厂小指标新模块与公式引擎；第三条是把在线操作说明从试点铺成多模块标配；同时把 PI 实时数据库 C API 的 Java 封装和计划范围 JHFW 的装置口径收口。 月度数据   指标 数值    提交数 266（10&#x2F;08 复工，20 天有提交）   分支合并 16 次（含 PR #284 手册、PR #386 计划范围布局导入）   变更文件 867   代码行 +84,261 &#x2F; -7,183（含新增模块、文档与 PPT 资源）   提交峰值 10&#x2F;14，40 条（流程设计器图形化编辑 + ELK 布局）   改动最密集模块 mes-workflow 853 文件、mes-indicator 243、mes-core 170、...</div></div></div></a><a class="pagination-related" href="/2026/08/06/mes-weekly-2026-w32/" title="MES 2026 年第 32 周工作小结"><img class="cover" src="/2026/08/06/mes-weekly-2026-w32/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-06</div><div class="info-item-2">MES 2026 年第 32 周工作小结</div></div><div class="info-2"><div class="info-item-1">  本周（8&#x2F;3–8&#x2F;6，约 50 次提交、合并 PR #360、#374）主线在 AI 图表内联渲染与相对月份推理修复，同时推进运行日志可观测性和 ExternalApi 集成。主力模块 mes-ai（167 文件触达），次为 mes-chart（15 文件）。 一、AI 图表内联与看板增强（#360）在 AI 聊天中落地面向 SQL 工具的内联图表渲染，并增强看板筛选能力：  SqlToolChartPolicy：新增图表配置编辑入口，支持为 SQL 工具指定折线&#x2F;柱状&#x2F;表格等图表类型，查询结果直接在对话中渲染 看板增强：Tab 筛选与可见性管理、月份过滤支持、renderFilterBar 异步时序修复 健壮性修复：ClassCastException（图表配置为标量值时）、NumberUtil 统一替代自定义数值解析方法  二、相对月份查询修复（#985、#992）针对性修复”上个月”等相对月份提示词输出错误日历月份的问题：  RelativeMonthOverviewNormalizer：正则从 RELATIVE_MONTH_PH...</div></div></div></a><a class="pagination-related" href="/2026/09/04/mes-weekly-2026-w36/" title="MES 2026 年第 36 周工作小结"><img class="cover" src="/2026/09/04/mes-weekly-2026-w36/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-04</div><div class="info-item-2">MES 2026 年第 36 周工作小结</div></div><div class="info-2"><div class="info-item-1">  本周（8&#x2F;31–9&#x2F;4，约 74 次提交，合并 PR #384 等）主线在 计量器具台账（导入导出、附件、权限与列表体验）与 看板能力增强（书签 URL、筛选联动、透视、虚拟滚动、导出与 SQL 安全）。主力模块 mes-measure &#x2F; mes-chart，另有 mes-ai、mes-utils。 一、计量器具台账（mes-measure） 导入：已有设备编码增强、备注字段、导入进度与新增&#x2F;更新计数 导出：Excel 样式重构、状态转换、日期处理、进度条；底座导出能力同步增强 台账编辑：附件上传（sys_attach）、详情按钮、表单字段行为 字典：条目复制、批量取字典（sys-dict） 列表与权限：列宽动态调整、菜单权限与单位选择 UI、jqGrid 行数与布局细节  二、看板 &#x2F; Chart（#384） 能力：书签 URL、筛选联动、透视、虚拟滚动、DBMON 缓存 导出：看板导出与数值导出；表头渲染增强 安全：SQL 校验由 JSqlParser 切到 Druid；前导分号校验 Demo：DEMO_CAPABILI...</div></div></div></a><a class="pagination-related" href="/2026/08/15/mes-weekly-2026-w33/" title="MES 2026 年第 33 周工作小结"><img class="cover" src="/2026/08/15/mes-weekly-2026-w33/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-15</div><div class="info-item-2">MES 2026 年第 33 周工作小结</div></div><div class="info-2"><div class="info-item-1">  本周（8&#x2F;8–8&#x2F;15，活跃提交 8&#x2F;11–8&#x2F;14，约 74 次提交、合并 PR #376–#381）主线在 AI 能耗分析图表能力（存储过程出图、趋势&#x2F;饼图、同比环比），同步推进看板嵌套饼图与下钻、联锁强制投用，以及 Eos 菜单拖拽与权限修复。主力模块 mes-ai（约 141 文件触达），次为 mes-chart（约 70 文件）。 一、AI 存储过程图表与能耗分析（#378、#379、#381）把能耗类 SQL 工具从「表格结果」推进到「对话内可渲染图表」：  存储过程工具支持图表输出：SqlToolChartBuilder 增强 tooltip、系列类型与默认配色同步；能耗分析工具补充 chart intent 与月份处理 能耗趋势：多线图、单位过滤、趋势查询与标签修正；去掉不适用的 exclusive_group 能耗饼图 &#x2F; 统计图：嵌套饼、RATE 展示对齐图形查询路由；柱状图顶部数值展示；图表快照导出 snapshotChartsToImages 同比 &#x2F; 环比：能耗分析存储过程增强 M...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%B0%83%E5%BA%A6%E6%8C%87%E4%BB%A4%E6%8E%A5%E5%85%A5-EOS-%E5%8E%9F%E7%94%9F%E5%B7%A5%E4%BD%9C%E6%B5%81%EF%BC%88%E4%B8%BB%E7%BA%BF%EF%BC%8C%E4%BB%8D%E5%9C%A8%E5%88%86%E6%94%AF%EF%BC%89"><span class="toc-text">一、调度指令接入 EOS 原生工作流（主线，仍在分支）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81EOS-%E5%B7%A5%E4%BD%9C%E6%B5%81%E8%AE%BE%E8%AE%A1%E5%99%A8%E5%A2%9E%E5%BC%BA%E5%B9%B6%E5%90%88%E5%85%A5-master"><span class="toc-text">二、EOS 工作流设计器增强并合入 master</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%AE%A1%E6%89%B9%E7%BB%84%E7%8B%AC%E7%AB%8B%E6%88%90%E6%A8%A1%E5%9D%97%EF%BC%88mes-workflow-approval%EF%BC%89"><span class="toc-text">三、审批组独立成模块（mes-workflow-approval）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81EOS-%E8%8F%9C%E5%8D%95%E6%A0%91%E8%8A%82%E7%82%B9%E8%AF%A6%E6%83%85%EF%BC%88mes-security-eos%EF%BC%89"><span class="toc-text">四、EOS 菜单树节点详情（mes-security-eos）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86%EF%BC%9A%E8%B7%A8%E5%BA%94%E7%94%A8%E9%94%99%E8%AF%AF%E6%B1%87%E6%80%BB%EF%BC%88errorSummary%EF%BC%89"><span class="toc-text">五、日志管理：跨应用错误汇总（errorSummary）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E4%BA%A4%E6%8E%A5%E7%8F%AD%E4%B8%8E-Word-%E5%AF%BC%E5%87%BA%EF%BC%88mes-operation%EF%BC%89"><span class="toc-text">六、交接班与 Word 导出（mes-operation）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%8A%A5%E8%A1%A8%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD"><span class="toc-text">七、报表与基础设施</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E4%BA%8B%E4%B8%9A%E9%83%A8%E6%8C%87%E4%BB%A4%E5%8C%BA%E5%9F%9F%E9%80%89%E6%8B%A9%E5%BC%B9%E5%B1%82"><span class="toc-text">八、事业部指令区域选择弹层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8A%82%E5%A5%8F"><span class="toc-text">节奏</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/28/2026-11-28-luban-acp-support/" title="Luban 现在能在 Zed 和 JetBrains 里用了：聊聊 ACP 支持">Luban 现在能在 Zed 和 JetBrains 里用了：聊聊 ACP 支持</a><time datetime="2026-11-28T12:00:00.000Z" title="发表于 2026-11-28 20:00:00">2026-11-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/21/2010-qiangtang-solo-crossing/" title="杨柳松 2010 年横穿羌塘，到底走的是哪条线？我把它画成了一张图">杨柳松 2010 年横穿羌塘，到底走的是哪条线？我把它画成了一张图</a><time datetime="2026-11-21T11:30:00.000Z" title="发表于 2026-11-21 19:30:00">2026-11-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/21/mes-weekly-2026-w47/" title="MES 2026 年第 47 周工作小结"><img src="/2026/11/21/mes-weekly-2026-w47/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MES 2026 年第 47 周工作小结"/></a><div class="content"><a class="title" href="/2026/11/21/mes-weekly-2026-w47/" title="MES 2026 年第 47 周工作小结">MES 2026 年第 47 周工作小结</a><time datetime="2026-11-21T09:00:00.000Z" title="发表于 2026-11-21 17:00:00">2026-11-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/21/liver-cancer-causes/" title="肝癌是怎么造成的？乙肝、黄曲霉毒素和酒，怎么一条链走到癌"><img src="/2026/11/21/liver-cancer-causes/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="肝癌是怎么造成的？乙肝、黄曲霉毒素和酒，怎么一条链走到癌"/></a><div class="content"><a class="title" href="/2026/11/21/liver-cancer-causes/" title="肝癌是怎么造成的？乙肝、黄曲霉毒素和酒，怎么一条链走到癌">肝癌是怎么造成的？乙肝、黄曲霉毒素和酒，怎么一条链走到癌</a><time datetime="2026-11-21T08:05:00.000Z" title="发表于 2026-11-21 16:05:00">2026-11-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/19/lvxing-season3-route-map/" title="《侣行》第三季到底走的哪条线？我把张昕宇、梁红那段路画成了一张图">《侣行》第三季到底走的哪条线？我把张昕宇、梁红那段路画成了一张图</a><time datetime="2026-11-19T03:20:00.000Z" title="发表于 2026-11-19 11:20:00">2026-11-19</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By eppen</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.2"></script><script src="/js/main.js?v=5.7.2"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.2"></script></div></div><!-- hexo injector body_end start --><div class="adsense-wrap" style="margin:24px 0;text-align:center;min-height:90px;overflow:hidden;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2045994937692573" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><!-- hexo injector body_end end --></body></html>
