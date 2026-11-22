@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>免费娱乐面板 · 8 类 40 个入口</title>
+<style>
+:root{
+  --bg:#0f1115; --panel:#171a21; --panel2:#1c2029; --line:#2a2f3a;
+  --text:#e8ebf1; --dim:#98a2b3; --dim2:#6b7686; --radius:12px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font:15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+h1,h2,h3{margin:0;line-height:1.3}
+
+/* ---------- header ---------- */
+header{padding:26px 24px 20px;border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,#1a1e28 0%,#12151b 100%)}
+.hrow{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;justify-content:space-between}
+h1{font-size:22px;letter-spacing:.5px}
+h1 span{color:#7bd88f}
+.sub{margin:6px 0 0;color:var(--dim);font-size:13px}
+.search{position:relative;flex:0 0 320px}
+.search input{
+  width:100%;padding:9px 34px 9px 12px;border-radius:9px;border:1px solid var(--line);
+  background:#0d1014;color:var(--text);font-size:13.5px;outline:none;
+}
+.search input:focus{border-color:#4b7bec;box-shadow:0 0 0 3px rgba(75,123,236,.18)}
+.search kbd{
+  position:absolute;right:9px;top:50%;transform:translateY(-50%);
+  font:11px/1 ui-monospace,monospace;color:var(--dim2);border:1px solid var(--line);
+  padding:2px 5px;border-radius:4px;background:#151920;
+}
+.search input:focus + kbd{opacity:0}
+
+/* ---------- nav ---------- */
+nav{position:sticky;top:0;z-index:20;background:rgba(15,17,21,.94);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.navin{max-width:1180px;margin:0 auto;display:flex;gap:6px;padding:9px 24px;overflow-x:auto;scrollbar-width:none}
+.navin::-webkit-scrollbar{display:none}
+.navin a{
+  flex:0 0 auto;text-decoration:none;font-size:13px;color:var(--dim);
+  padding:5px 11px;border-radius:999px;border:1px solid transparent;white-space:nowrap;
+}
+.navin a:hover{color:var(--text);border-color:var(--line);background:var(--panel)}
+.navin a .n{color:var(--dim2);font-size:11px;margin-left:4px}
+
+/* ---------- levers ---------- */
+.levers{max-width:1180px;margin:26px auto 0;padding:0 24px}
+.levers h2{font-size:16px;color:#ffd479;margin-bottom:4px}
+.levers p.hint{color:var(--dim2);font-size:12.5px;margin:4px 0 14px}
+.levers ol{margin:0;padding:0;list-style:none;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.levers li{
+  background:var(--panel);border:1px solid var(--line);border-left:3px solid #ffd479;
+  border-radius:10px;padding:11px 14px;font-size:13.5px;color:#cfd6e2;
+}
+.levers li b{color:#fff}
+
+/* ---------- category ---------- */
+main{max-width:1180px;margin:0 auto;padding:8px 24px 40px}
+section.cat{padding-top:34px}
+section.cat > h2{
+  display:flex;align-items:center;gap:10px;font-size:17px;
+  padding-bottom:10px;border-bottom:1px solid var(--line);
+}
+section.cat > h2 .bar{width:4px;height:18px;border-radius:2px;background:var(--ac,#7bd88f)}
+section.cat > h2 .count{
+  margin-left:auto;font:12px/1 ui-monospace,monospace;color:var(--dim2);
+  border:1px solid var(--line);padding:3px 7px;border-radius:6px
+}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px;margin-top:14px}
+
+/* ---------- card ---------- */
+article.card{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px 15px 12px;display:flex;flex-direction:column;gap:9px;
+  transition:border-color .15s,transform .15s,background .15s;
+}
+article.card:hover{border-color:#3a4150;background:var(--panel2);transform:translateY(-1px)}
+.chead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.chead h3{font-size:15px;font-weight:600}
+.badge{
+  font-size:10.5px;line-height:1;padding:4px 7px;border-radius:5px;
+  border:1px solid;white-space:nowrap;font-weight:500;
+}
+.b-ads{color:#ffb454;border-color:#5a4526;background:#2a2115}
+.b-lib{color:#7bd8d8;border-color:#265257;background:#14262a}
+.b-pd{color:#b7a0ff;border-color:#3d3263;background:#1d1830}
+.b-open{color:#8fdc8f;border-color:#2d5230;background:#16261a}
+.b-free{color:#7fb3ff;border-color:#2b4370;background:#151d2e}
+
+.fit{margin:0;font-size:13px;color:#c8d0dc}
+.fit b{color:var(--ac,#7bd88f);font-weight:600}
+ul.tips{margin:0;padding-left:16px;font-size:12.8px;color:var(--dim);display:flex;flex-direction:column;gap:4px}
+ul.tips li::marker{color:var(--ac,#7bd88f)}
+.cardfoot{margin-top:auto;padding-top:8px;border-top:1px dashed #262b35}
+.go{
+  display:inline-block;font:12.5px/1 ui-monospace,monospace;text-decoration:none;
+  color:var(--ac,#7bd88f);padding:5px 0;
+}
+.go:hover{text-decoration:underline}
+
+/* ---------- empty / footer ---------- */
+#empty{display:none;text-align:center;color:var(--dim2);padding:60px 20px;font-size:14px}
+footer{max-width:1180px;margin:0 auto;padding:0 24px 50px;color:var(--dim2);font-size:12px;line-height:1.8}
+footer strong{color:var(--dim)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hrow">
+    <div>
+      <h1>免费娱乐<span>面板</span></h1>
+      <p class="sub">8 个分类 · 40 个入口 · 全部免费层 / 广告支持 / 图书馆授权 / 公有领域</p>
+    </div>
+    <div class="search">
+      <input id="q" type="search" placeholder="过滤：平台名、用途、关键词…" autocomplete="off" spellcheck="false">
+      <kbd>/</kbd>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="navin" id="nav"></div>
+</nav>
+
+<section class="levers">
+  <h2>6 条通用杠杆：怎么用出付费会员的感觉</h2>
+  <p class="hint">免费渠道的差距不在「有没有」，而在「有没有建好索引」。</p>
+  <ol>
+    <li><b>一张图书馆电子卡 = 三个付费服务。</b>本地图书馆通常同时提供 Kanopy（影视）、Hoopla（书/漫画/有声书）、Libby（电子书/有声书），办卡免费，线上就能办。</li>
+    <li><b>固定每周补给，比囤片单有用。</b>Epic 每周四送游戏、Tubi/Viki 有「即将下架」区，每周花 10 分钟扫一遍，比临时找片爽。</li>
+    <li><b>用设置而不是充值来提升体验。</b>画质、字幕、倍速、睡眠定时、离线缓存——这些「会员功能」在免费层大多能找到对应的开关。</li>
+    <li><b>用收藏行为调教推荐。</b>主动标记「喜欢 / 不感兴趣」，一两周后首页就会从垃圾堆变成你的私人片单。</li>
+    <li><b>合法的离线下载 = 真·会员感。</b>Archive、Gutenberg、Standard Ebooks、Bandcamp 都允许下载，攒成自己的本地库，断网也能用。</li>
+    <li><b>用时间换免费，别用风险换免费。</b>广告、周更、额度都是在付时间；盗版站点付的是设备和隐私——后者永远不划算。</li>
+  </ol>
+</section>
+
+<main id="main">
+
+<section class="cat" id="movie" data-cat="电影" style="--ac:#7bd88f">
+  <h2><i class="bar"></i>电影<span class="count">5</span></h2>
+  <div class="grid">
+
+    <article class="card">
+      <div class="chead"><h3>Tubi</h3><span class="badge b-ads">广告支持</span></div>
+      <p class="fit"><b>最适合</b>—— 想随手翻片、不注册也能立刻看，片库比想象中大得多。</p>
+      <ul class="tips">
+        <li>注册免费账号后把想看的丢进 My List，推荐流两周内就会变得像样。</li>
+        <li>先逛「Leaving Soon」，快下架的片最值得优先看。</li>
+        <li>装 TV / 平板 App 看，广告插入比网页版克制，还支持断点续播。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://tubitv.com" target="_blank" rel="noopener">tubitv.com →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>Pluto TV</h3><span class="badge b-ads">广告支持</span></div>
+      <p class="fit"><b>最适合</b>—— 不想做选择，想「打开就有东西在放」的电视式体验。</p>
+      <ul class="tips">
+        <li>直接进 Movies 分类的轮播频道，当有线电视用，零决策成本。</li>
+        <li>漏了片头就用 on-demand 区补，同一个片两种入口。</li>
+        <li>桌面端可开画中画小窗，边做饭边放着。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://pluto.tv" target="_blank" rel="noopener">pluto.tv →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>Kanopy / Hoopla</h3><span class="badge b-lib">图书馆授权</span></div>
+      <p class="fit"><b>最适合</b>—— 想看影史经典、艺术片、Criterion 片单，又不想为此订一个会员。</p>
+      <ul class="tips">
+        <li>用本地图书馆卡在线注册，常见额度是每月 8–15 张「票」。</li>
+        <li>额度优先刷 Criterion、A24、纪录片专区——这些在别处最贵。</li>
+        <li>别浪费在院线大片上，那类片子免费渠道到处都有。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://www.kanopy.com" target="_blank" rel="noopener">kanopy.com →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>Internet Archive</h3><span class="badge b-pd">公有领域</span></div>
+      <p class="fit"><b>最适合</b>—— 默片、老片、B 级片、公共领域经典，顺便能下载存档。</p>
+      <ul class="tips">
+        <li>从 Feature Films 集合按年代筛，比全站搜索准得多。</li>
+        <li>下载 MP4 存本地，做成自己的离线片库，断网也能放。</li>
+        <li>优先挑有出品方署名的条目，画质和完整性更可信。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://archive.org/details/movies" target="_blank" rel="noopener">archive.org/details/movies →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>Plex Watch Free</h3><span class="badge b-ads">广告支持</span></div>
+      <p class="fit"><b>最适合</b>—— 家里有 NAS 或闲置硬盘，想把自己的片和免费片放同一个界面。</p>
+      <ul class="tips">
+        <li>免费版就能用 Watch Free 频道，不需要买 Plex Pass。</li>
+        <li>把本地合法影片建库，海报墙、字幕、多端进度自动同步。</li>
+        <li>用 Watch Together 跟朋友同步看同一部，免费且无限制。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://www.plex.tv/watch-free/" target="_blank" rel="noopener">plex.tv/watch-free →</a></div>
+    </article>
+
+  </div>
+</section>
+
+<section class="cat" id="tv" data-cat="电视剧" style="--ac:#7fb3ff">
+  <h2><i class="bar"></i>电视剧<span class="count">5</span></h2>
+  <div class="grid">
+
+    <article class="card">
+      <div class="chead"><h3>Tubi 剧集区</h3><span class="badge b-ads">广告支持</span></div>
+      <p class="fit"><b>最适合</b>—— 想一口气刷老剧整季，不想被「试看两集」卡住。</p>
+      <ul class="tips">
+        <li>按 TV Shows 分类进，整季连播不会中途要你付费。</li>
+        <li>用「继续观看」当待办清单，每周固定时间刷一集。</li>
+        <li>老剧的广告位固定，习惯后可以用广告时间做点小事。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://tubitv.com/series" target="_blank" rel="noopener">tubitv.com/series →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>Rakuten Viki</h3><span class="badge b-ads">广告支持</span></div>
+      <p class="fit"><b>最适合</b>—— 亚洲剧（韩/日/中/泰）和粉丝字幕，免费层能看相当一部分。</p>
+      <ul class="tips">
+        <li>优先看标 Free 的剧，标 Plus 的等它轮换到免费再追。</li>
+        <li>开「Learn Mode」双语字幕，顺手练语言，这是付费墙外最好用的功能。</li>
+        <li>关注剧集的更新时间表，按周追比一次性刷完更有会员感。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://www.viki.com" target="_blank" rel="noopener">viki.com →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>Pluto TV 剧集频道</h3><span class="badge b-ads">广告支持</span></div>
+      <p class="fit"><b>最适合</b>—— 经典美剧 marathon，按频道 24 小时循环放。</p>
+      <ul class="tips">
+        <li>找单部剧的专属频道，全天连播，随时插进来看。</li>
+        <li>用手机 App 的「提醒」功能，剧集开播时推送。</li>
+        <li>和 Tubi 交替用，同一部剧的集数覆盖常常互补。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://pluto.tv" target="_blank" rel="noopener">pluto.tv →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>The Roku Channel</h3><span class="badge b-ads">广告支持</span></div>
+      <p class="fit"><b>最适合</b>—— 想找「有点年头的整季剧」和 Roku 自制内容，网页就能看。</p>
+      <ul class="tips">
+        <li>不需要 Roku 设备，网页版直接能播，注册一个免费账号即可。</li>
+        <li>看 Roku Originals 专区，这批自制剧质量不输小平台会员内容。</li>
+        <li>把常看的剧加进 Watchlist，首页会按你的口味重排。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://therokuchannel.roku.com" target="_blank" rel="noopener">therokuchannel.roku.com →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>YouTube 官方整季频道</h3><span class="badge b-free">官方免费</span></div>
+      <p class="fit"><b>最适合</b>—— 版权方自己上传的整季老剧，画质和字幕往往比搬运号靠谱。</p>
+      <ul class="tips">
+        <li>认准频道名带官方认证标识，避开「全集搬运」号。</li>
+        <li>用播放列表功能自动连播，把整季当成一个队列。</li>
+        <li>0.9–1.25 倍速 + 自动字幕，老剧的节奏感刚好。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://www.youtube.com" target="_blank" rel="noopener">youtube.com →</a></div>
+    </article>
+
+  </div>
+</section>
+
+<section class="cat" id="music" data-cat="音乐" style="--ac:#ff8dbb">
+  <h2><i class="bar"></i>音乐<span class="count">5</span></h2>
+  <div class="grid">
+
+    <article class="card">
+      <div class="chead"><h3>Spotify Free（桌面 / 网页）</h3><span class="badge b-free">免费层</span></div>
+      <p class="fit"><b>最适合</b>—— 主听歌入口，桌面版免费层可以任意选歌，只插广告。</p>
+      <ul class="tips">
+        <li>用桌面或网页版，手机版免费是随机播放，桌面版才是「会员手感」。</li>
+        <li>建自己的 Playlist 而不是只点「喜欢」，歌单是免费层最值钱的资产。</li>
+        <li>开「Crossfade」和「Normalize volume」，免费层也能做无缝衔接。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://open.spotify.com" target="_blank" rel="noopener">open.spotify.com →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>YouTube Music</h3><span class="badge b-free">免费层</span></div>
+      <p class="fit"><b>最适合</b>—— 找翻唱、现场、稀有版本、冷门地区音乐，曲库覆盖最广。</p>
+      <ul class="tips">
+        <li>用「歌曲 / 视频」切换，视频版常有录音室版本没有的现场。</li>
+        <li>把想循环的歌做成播放列表，后台播放免费可用。</li>
+        <li>善用「相关推荐」往下挖，冷门曲的发现效率高于任何榜单。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://music.youtube.com" target="_blank" rel="noopener">music.youtube.com →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>Bandcamp</h3><span class="badge b-free">免费试听 / 部分免费下载</span></div>
+      <p class="fit"><b>最适合</b>—— 独立音乐、电子、实验，试听全曲，很多作品可直接免费下载。</p>
+      <ul class="tips">
+        <li>按 tag 逛（ambient / lo-fi / jazz…），比算法推荐挖得更深。</li>
+        <li>收藏进 Wishlist，等 Bandcamp Friday 再支持喜欢的音乐人。</li>
+        <li>免费下载的曲目存本地，配合自己的播放器就是私人曲库。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://bandcamp.com" target="_blank" rel="noopener">bandcamp.com →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>SoundCloud</h3><span class="badge b-free">免费层</span></div>
+      <p class="fit"><b>最适合</b>—— DJ set、mixtape、未发行 demo，找现场感和非正式版本。</p>
+      <ul class="tips">
+        <li>搜「DJ set」「live」+ 流派，长混音最适合当工作背景。</li>
+        <li>关注音乐人而不是只收藏单曲，新作会出现在你的 Stream 里。</li>
+        <li>用播放列表串起 1 小时以上的连续播放，免去切歌打断。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://soundcloud.com" target="_blank" rel="noopener">soundcloud.com →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>Internet Archive 现场音乐库</h3><span class="badge b-pd">开放存档</span></div>
+      <p class="fit"><b>最适合</b>—— 上万场乐队现场录音，可合法下载，适合收藏癖。</p>
+      <ul class="tips">
+        <li>按乐队名 + 年份找整场 concert，音质标注清晰的优先。</li>
+        <li>下载 FLAC / MP3 存本地，做成「现场专辑」系列。</li>
+        <li>用它的直播音乐频道当背景电台，零广告。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://archive.org/details/etree" target="_blank" rel="noopener">archive.org/details/etree →</a></div>
+    </article>
+
+  </div>
+</section>
+
+<section class="cat" id="podcast" data-cat="播客" style="--ac:#c9a6ff">
+  <h2><i class="bar"></i>播客<span class="count">5</span></h2>
+  <div class="grid">
+
+    <article class="card">
+      <div class="chead"><h3>Pocket Casts</h3><span class="badge b-free">免费层</span></div>
+      <p class="fit"><b>最适合</b>—— 想要一个「像会员版一样好用」的通用播客客户端。</p>
+      <ul class="tips">
+        <li>免费版就支持变速、跳过片头、睡眠定时，这三个是最实用的。</li>
+        <li>用「Up Next」队列而不是依赖自动更新，按通勤时长排节目。</li>
+        <li>按播放速度 1.2–1.5x 固定下来，一周能多听三四个节目。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://pocketcasts.com" target="_blank" rel="noopener">pocketcasts.com →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>Spotify 播客</h3><span class="badge b-free">免费层</span></div>
+      <p class="fit"><b>最适合</b>—— 独家播客和视频播客，和你的音乐在同一个 App 里。</p>
+      <ul class="tips">
+        <li>把播客和歌单分到不同「库」标签，音频和音乐互不打扰。</li>
+        <li>视频播客可以后台播放，省流量时切纯音频。</li>
+        <li>用「节目章节」跳到你真正想听的那段。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://open.spotify.com" target="_blank" rel="noopener">open.spotify.com →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>YouTube（自动字幕 + 倍速）</h3><span class="badge b-free">官方免费</span></div>
+      <p class="fit"><b>最适合</b>—— 访谈、讲座、长对话类内容，靠字幕和跳转效率最高。</p>
+      <ul class="tips">
+        <li>开自动字幕 + 1.5x，长访谈的信息密度立刻翻倍。</li>
+        <li>用章节跳转和「稍后观看」当自己的剪辑版。</li>
+        <li>把想听完的放进一个私有播放列表，代替订阅洪流。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://www.youtube.com" target="_blank" rel="noopener">youtube.com →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>Apple Podcasts 网页版</h3><span class="badge b-free">免费</span></div>
+      <p class="fit"><b>最适合</b>—— 不装客户端、在浏览器里直接听，顺便看节目的完整目录。</p>
+      <ul class="tips">
+        <li>网页版直接搜节目，无需 Apple 设备或订阅。</li>
+        <li>用「单集描述 + 时间戳」快速判断值不值得听。</li>
+        <li>把 RSS 链接拿到 Pocket Casts 里听，两边的目录互补。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://podcasts.apple.com" target="_blank" rel="noopener">podcasts.apple.com →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>Snipd</h3><span class="badge b-free">免费层</span></div>
+      <p class="fit"><b>最适合</b>—— 听完就想记笔记、想做「播客书签」的人。</p>
+      <ul class="tips">
+        <li>听到金句按一下，自动生成带时间戳的片段卡。</li>
+        <li>把片段导出到笔记软件，播客就变成可检索的知识库。</li>
+        <li>用它的 AI 摘要挑节目，先用 5 分钟判断要不要听完整集。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://www.snipd.com" target="_blank" rel="noopener">snipd.com →</a></div>
+    </article>
+
+  </div>
+</section>
+
+<section class="cat" id="book" data-cat="电子书" style="--ac:#ffd479">
+  <h2><i class="bar"></i>电子书<span class="count">5</span></h2>
+  <div class="grid">
+
+    <article class="card">
+      <div class="chead"><h3>Libby</h3><span class="badge b-lib">图书馆授权</span></div>
+      <p class="fit"><b>最适合</b>—— 想读当季新书、畅销书，又不想买——图书馆电子书的正规入口。</p>
+      <ul class="tips">
+        <li>用图书馆卡登录，借阅期通常 21 天，到期自动归还不会逾期。</li>
+        <li>热门书排不上就点「Holds」，同时挂 3–5 本，到货顺序反而更快。</li>
+        <li>支持 Kindle 推送和 App 内阅读，跨设备进度同步。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://libbyapp.com" target="_blank" rel="noopener">libbyapp.com →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>Hoopla</h3><span class="badge b-lib">图书馆授权</span></div>
+      <p class="fit"><b>最适合</b>—— 漫画、有声书、图像小说，一次借全套不用等。</p>
+      <ul class="tips">
+        <li>用同一张图书馆卡注册，额度按天/月刷新，漫画一套一次借完。</li>
+        <li>有声书和电子书共享额度，长篇优先借有声书更划算。</li>
+        <li>有「Binge Pass」区，7 天畅看一批内容，适合周末突击。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://www.hoopladigital.com" target="_blank" rel="noopener">hoopladigital.com →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>Project Gutenberg</h3><span class="badge b-pd">公有领域</span></div>
+      <p class="fit"><b>最适合</b>—— 经典文学原文，5 万多本，随便下、随便转格式。</p>
+      <ul class="tips">
+        <li>优先下 EPUB（带目录和排版），比 TXT 好读太多。</li>
+        <li>搜作者名而不是书名，能顺带发现同一作者的其他作品。</li>
+        <li>下载后丢进阅读器统一管理，等于永久免费的经典书架。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://www.gutenberg.org" target="_blank" rel="noopener">gutenberg.org →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>Standard Ebooks</h3><span class="badge b-pd">公有领域</span></div>
+      <p class="fit"><b>最适合</b>—— 同样读经典，但排版、封面、校对达到商业出版水准。</p>
+      <ul class="tips">
+        <li>书少但本本精校，优先在这里找，找不到再去 Gutenberg。</li>
+        <li>下载 AZW3 / EPUB，字体和断行都比原始文本舒服。</li>
+        <li>关注它的「新上架」，每周都有新精校版。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://standardebooks.org" target="_blank" rel="noopener">standardebooks.org →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>Open Library</h3><span class="badge b-pd">开放借阅</span></div>
+      <p class="fit"><b>最适合</b>—— 找绝版书、旧版书，以及「这本书到底有没有电子版」的答案。</p>
+      <ul class="tips">
+        <li>用「Read」按钮的 1 小时借阅，滚动续借就能一直读。</li>
+        <li>把它当元数据目录用：先在愿望单里查，再决定去哪借或买。</li>
+        <li>用「Want to Read」建自己的待读清单，比商业平台干净。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://openlibrary.org" target="_blank" rel="noopener">openlibrary.org →</a></div>
+    </article>
+
+  </div>
+</section>
+
+<section class="cat" id="game" data-cat="游戏" style="--ac:#8fdc8f">
+  <h2><i class="bar"></i>游戏<span class="count">5</span></h2>
+  <div class="grid">
+
+    <article class="card">
+      <div class="chead"><h3>Epic 每周免费</h3><span class="badge b-free">每周免费</span></div>
+      <p class="fit"><b>最适合</b>—— 白嫖正版 3A/独立游戏，一年下来能攒出几十款。</p>
+      <ul class="tips">
+        <li>每周四更新，领取后永久入库，不用下载也不会过期。</li>
+        <li>设个手机每周提醒，错过就是真错过，没有补领。</li>
+        <li>只领不玩也没关系，先占库，等哪天想玩就有。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://store.epicgames.com/free-games" target="_blank" rel="noopener">store.epicgames.com/free-games →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>itch.io</h3><span class="badge b-open">免费 / 开源</span></div>
+      <p class="fit"><b>最适合</b>—— 独立游戏、实验性小作品、game jam 产物，浏览器里直接玩。</p>
+      <ul class="tips">
+        <li>按 tag 和「Free」筛，很多作品网页版即开即玩。</li>
+        <li>关注 game jam 合集，几百个 48 小时做出来的怪东西。</li>
+        <li>喜欢的可以给开发者打小费，价格自定，比订阅更直接。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://itch.io" target="_blank" rel="noopener">itch.io →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>Steam 免费游戏 / Next Fest</h3><span class="badge b-free">免费层</span></div>
+      <p class="fit"><b>最适合</b>—— 试玩新品、玩免费网游，以及每年几轮的大规模 demo 节。</p>
+      <ul class="tips">
+        <li>Next Fest 期间上百款新作 demo 免费下，一周内集中试。</li>
+        <li>用「Free to Play」分类筛，避开收费的 DLC 陷阱。</li>
+        <li>把 demo 加进愿望单，正式发售后会提醒你，也常打折。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://store.steampowered.com/genre/Free%20to%20Play/" target="_blank" rel="noopener">store.steampowered.com →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>GOG 免费游戏</h3><span class="badge b-free">免费 / 无 DRM</span></div>
+      <p class="fit"><b>最适合</b>—— 老游戏和免费赠品，全部 DRM-free，下载即永久拥有。</p>
+      <ul class="tips">
+        <li>用价格排序筛 0 元，能看到常驻免费和限时赠送。</li>
+        <li>下载离线安装包存着，断网、换机都能装。</li>
+        <li>关注它的「Giveaway」，经典老游戏经常限时送。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://www.gog.com/games?priceRange=0,0" target="_blank" rel="noopener">gog.com/games →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>GeForce NOW 免费层</h3><span class="badge b-free">免费层</span></div>
+      <p class="fit"><b>最适合</b>—— 笔记本显卡不行，但想玩已购买（或免费）的大作。</p>
+      <ul class="tips">
+        <li>免费层每次 1 小时、有排队，适合短时段试玩。</li>
+        <li>只串流你已在 Steam/Epic 拥有的游戏，不用重复买。</li>
+        <li>排队时先开好游戏库，进去就能直接点开始。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://www.nvidia.com/en-us/geforce-now/" target="_blank" rel="noopener">nvidia.com/geforce-now →</a></div>
+    </article>
+
+  </div>
+</section>
+
+<section class="cat" id="doc" data-cat="纪录片" style="--ac:#7bd8d8">
+  <h2><i class="bar"></i>纪录片<span class="count">5</span></h2>
+  <div class="grid">
+
+    <article class="card">
+      <div class="chead"><h3>Kanopy 纪录片区</h3><span class="badge b-lib">图书馆授权</span></div>
+      <p class="fit"><b>最适合</b>—— 严肃纪录片、社会议题、影展获奖作品，质量远超免费流媒体。</p>
+      <ul class="tips">
+        <li>用图书馆卡注册，每月额度优先留给纪录片而非剧情片。</li>
+        <li>逛「Documentaries」下的专题策展，比自己搜索好看。</li>
+        <li>带教研/公播许可的片子，做分享或课堂放映也合规。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://www.kanopy.com" target="_blank" rel="noopener">kanopy.com →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>YouTube 官方纪录片频道</h3><span class="badge b-free">官方免费</span></div>
+      <p class="fit"><b>最适合</b>—— BBC、DW、Nat Geo 等机构自营频道的完整纪录片。</p>
+      <ul class="tips">
+        <li>认准认证频道，机构自营的整片往往免费且带多语字幕。</li>
+        <li>用播放列表按主题追（自然 / 历史 / 科技），一次看一整套。</li>
+        <li>开字幕看，专业术语靠字幕比靠耳朵稳。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://www.youtube.com" target="_blank" rel="noopener">youtube.com →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>PBS Frontline</h3><span class="badge b-free">官方免费</span></div>
+      <p class="fit"><b>最适合</b>—— 深度调查报道型纪录片，几十年片库全部免费在线。</p>
+      <ul class="tips">
+        <li>整片官网免费，带完整文字稿，适合边看边查证。</li>
+        <li>按年份倒着刷，近十年的议题几乎都能对上当下新闻。</li>
+        <li>配合它的 transcript 做笔记，比纯看记得牢。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://www.pbs.org/wgbh/frontline/" target="_blank" rel="noopener">pbs.org/wgbh/frontline →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>ARTE.tv</h3><span class="badge b-free">官方免费</span></div>
+      <p class="fit"><b>最适合</b>—— 欧洲视角的文化、历史、社会纪录片，制作水准极高。</p>
+      <ul class="tips">
+        <li>切到英文界面，大部分纪录片有英文字幕，部分有中文。</li>
+        <li>按「Documentary」专题逛，欧洲公共广播的选题比算法大胆。</li>
+        <li>留意限时上架的片子，错过会下架，当周看完。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://www.arte.tv/en/" target="_blank" rel="noopener">arte.tv/en →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>Prelinger Archives</h3><span class="badge b-pd">公有领域</span></div>
+      <p class="fit"><b>最适合</b>—— 20 世纪的老广告片、教育片、工业片，时代感拉满。</p>
+      <ul class="tips">
+        <li>按年代和主题筛，1950s 的「科普片」今天看别有味道。</li>
+        <li>全部可下载，适合做视频素材或复古放映。</li>
+        <li>当「时代切片」看：广告和宣传片比正史更诚实。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://archive.org/details/prelinger" target="_blank" rel="noopener">archive.org/details/prelinger →</a></div>
+    </article>
+
+  </div>
+</section>
+
+<section class="cat" id="course" data-cat="学习课程" style="--ac:#ffa07a">
+  <h2><i class="bar"></i>学习课程<span class="count">5</span></h2>
+  <div class="grid">
+
+    <article class="card">
+      <div class="chead"><h3>MIT OpenCourseWare</h3><span class="badge b-open">开放课程</span></div>
+      <p class="fit"><b>最适合</b>—— 想按 MIT 的课程体系自学理工科，讲义作业一整套。</p>
+      <ul class="tips">
+        <li>从「课程列表 → 按系」进，直接看 syllabus 和 lecture notes。</li>
+        <li>先做 Problem Set 再听讲，比顺序看完视频有效得多。</li>
+        <li>配合 YouTube 上的同名课程录像，讲义 + 授课一起用。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://ocw.mit.edu" target="_blank" rel="noopener">ocw.mit.edu →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>Coursera / edX 旁听</h3><span class="badge b-free">旁听免费</span></div>
+      <p class="fit"><b>最适合</b>—— 名校系统课，不买证书就能看全部视频和阅读材料。</p>
+      <ul class="tips">
+        <li>选「Audit（旁听）」而非付费，视频和测验通常都能看。</li>
+        <li>每次只注册 1–2 门，按周计划跟，别一次性囤课。</li>
+        <li>作业自己做，测验当自检，证书不是重点。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://www.coursera.org" target="_blank" rel="noopener">coursera.org →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>freeCodeCamp / The Odin Project</h3><span class="badge b-open">开源免费</span></div>
+      <p class="fit"><b>最适合</b>—— 零基础转码，从 HTML 到全栈，项目驱动、完全免费。</p>
+      <ul class="tips">
+        <li>选一条路径（前端 / 后端 / 数据）走到底，别来回横跳。</li>
+        <li>每个章节结尾的小项目必须动手做，跳过去等于没学。</li>
+        <li>用它的社区论坛求助，比自己卡两天快得多。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://www.freecodecamp.org" target="_blank" rel="noopener">freecodecamp.org →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>Khan Academy</h3><span class="badge b-open">开源免费</span></div>
+      <p class="fit"><b>最适合</b>—— 数学、物理、经济的基础补课，从最底层把洞补上。</p>
+      <ul class="tips">
+        <li>用「Mastery」模式刷练习，直到进度条变绿，比看视频有用。</li>
+        <li>先做一次诊断测试，直接定位你缺的那个知识点。</li>
+        <li>把课程当参考书用，需要时再回去查，不必从头看。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://www.khanacademy.org" target="_blank" rel="noopener">khanacademy.org →</a></div>
+    </article>
+
+    <article class="card">
+      <div class="chead"><h3>YouTube 大学官方频道</h3><span class="badge b-free">官方免费</span></div>
+      <p class="fit"><b>最适合</b>—— 名校公开课录像，同一门课能在不同讲法之间挑最合拍的。</p>
+      <ul class="tips">
+        <li>搜「course name + lecture 1」，按播放列表整门跟。</li>
+        <li>1.25–1.5x 看讲授、原速看推导，节省但不丢细节。</li>
+        <li>用视频下方的完整目录跳到具体章节，代替从头看。</li>
+      </ul>
+      <div class="cardfoot"><a class="go" href="https://www.youtube.com" target="_blank" rel="noopener">youtube.com →</a></div>
+    </article>
+
+  </div>
+</section>
+
+</main>
+
+<div id="empty">没有匹配的平台。按 <b>Esc</b> 清空过滤条件。</div>
+
+<footer>
+  <p><strong>关于这份面板：</strong>收录的入口只有四类——广告支持的免费层、图书馆授权（Kanopy / Hoopla / Libby，需本地图书馆卡）、公有领域与开放存档（Gutenberg / Internet Archive / Standard Ebooks）、以及官方免费或开源内容。没有破解、镜像站、绕过地区限制的条目；若某个平台日后调整了免费政策，以官网为准。</p>
+  <p><strong>使用建议：</strong>先办一张本地图书馆电子卡（覆盖影视 + 电子书 + 有声书），再用 Epic 的周更免费和 Steam Next Fest 补游戏，剩下的用 Tubi / Pluto / YouTube 官方频道兜底。这样 8 个分类基本都能覆盖，且长期零成本。</p>
+  <p>单文件离线可用 · 无外部依赖 · 按 <kbd>/</kbd> 过滤</p>
+</footer>
+
+<script>
+(function () {
+  var q = document.getElementById('q');
+  var nav = document.getElementById('nav');
+  var main = document.getElementById('main');
+  var empty = document.getElementById('empty');
+  var sections = Array.prototype.slice.call(main.querySelectorAll('section.cat'));
+
+  // 生成导航
+  sections.forEach(function (sec) {
+    var a = document.createElement('a');
+    a.href = '#' + sec.id;
+    a.innerHTML = sec.dataset.cat + '<span class="n">' + sec.querySelectorAll('article.card').length + '</span>';
+    nav.appendChild(a);
+  });
+
+  // 缓存每张卡的检索文本
+  var cards = Array.prototype.slice.call(main.querySelectorAll('article.card'));
+  cards.forEach(function (c) {
+    c._hay = (c.textContent || '').toLowerCase().replace(/\s+/g, ' ');
+  });
+
+  function apply() {
+    var term = q.value.trim().toLowerCase();
+    var totalVisible = 0;
+
+    sections.forEach(function (sec) {
+      var visible = 0;
+      var list = sec.querySelectorAll('article.card');
+      Array.prototype.forEach.call(list, function (c) {
+        var hit = !term || c._hay.indexOf(term) !== -1;
+        c.style.display = hit ? '' : 'none';
+        if (hit) visible++;
+      });
+      sec.style.display = visible ? '' : 'none';
+      var badge = sec.querySelector('.count');
+      if (badge) badge.textContent = term ? (visible + '/' + list.length) : list.length;
+      totalVisible += visible;
+    });
+
+    empty.style.display = totalVisible ? 'none' : 'block';
+    // 导航项跟着过滤结果显隐
+    Array.prototype.forEach.call(nav.children, function (a, i) {
+      a.style.display = sections[i].style.display === 'none' ? 'none' : '';
+    });
+  }
+
+  q.addEventListener('input', apply);
+
+  document.addEventListener('keydown', function (e) {
+    var typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+    if (e.key === '/' && !typing) {
+      e.preventDefault();
+      q.focus();
+      q.select();
+    } else if (e.key === 'Escape') {
+      if (q.value) {
+        q.value = '';
+        apply();
+      }
+      q.blur();
+    }
+  });
+
+  apply();
+})();
+</script>
+</body>
+</html>
