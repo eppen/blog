@@ -1,0 +1,385 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>海康威视薪酬研究（二）：年终奖才是真正的战场 | Hua Liang's Blog</title><meta name="author" content="eppen"><meta name="copyright" content="eppen"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="海康年终奖名义 2–6 个月，员工口径普遍 3 个月，且连续两年打折。「15 薪」怎么悄悄变成 14 薪，以及该问 HR 的那一句话：去年实际发了几薪。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="海康威视薪酬研究（二）：年终奖才是真正的战场">
+<meta property="og:url" content="https://eppencn.com/2026/11/28/hikvision-bonus-performance/index.html">
+<meta property="og:site_name" content="Hua Liang&#39;s Blog">
+<meta property="og:description" content="海康年终奖名义 2–6 个月，员工口径普遍 3 个月，且连续两年打折。「15 薪」怎么悄悄变成 14 薪，以及该问 HR 的那一句话：去年实际发了几薪。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eppencn.com/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-11-28T13:20:00.000Z">
+<meta property="article:modified_time" content="2026-11-28T09:38:46.262Z">
+<meta property="article:author" content="eppen">
+<meta property="article:tag" content="薪酬">
+<meta property="article:tag" content="海康威视">
+<meta property="article:tag" content="年终奖">
+<meta property="article:tag" content="绩效">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eppencn.com/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "海康威视薪酬研究（二）：年终奖才是真正的战场",
+  "url": "https://eppencn.com/2026/11/28/hikvision-bonus-performance/",
+  "image": "https://eppencn.com/img/butterfly-icon.png",
+  "datePublished": "2026-11-28T13:20:00.000Z",
+  "dateModified": "2026-11-28T09:38:46.262Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "eppen",
+      "url": "https://eppencn.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://eppencn.com/2026/11/28/hikvision-bonus-performance/index.html"><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.2"><link rel="stylesheet" href="/pluginsSrc/@fortawesome/fontawesome-free/css/all.min.css?v=7.3.1"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        try {
+          const data = { value }
+
+          if (ttl != null) {
+            data.expiry = Date.now() + ttl * 86400000
+          }
+
+          localStorage.setItem(key, JSON.stringify(data))
+        } catch (e) {
+          console.error(e)
+        }
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: '/pluginsSrc/@egjs/infinitegrid/dist/infinitegrid.min.js?v=4.13.1',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '海康威视薪酬研究（二）：年终奖才是真正的战场',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><!-- hexo injector head_end start --><meta name="google-adsense-account" content="ca-pub-2045994937692573">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2045994937692573" crossorigin="anonymous"></script><!-- hexo injector head_end end --><style id="article-table-style">
+/* 正文表格：补网格线、内边距、表头底色与斑马纹 */
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 1.5em 0;
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+.post-content thead th,
+.post-content tbody td {
+  border: 1px solid #dcdcdc;
+  padding: 8px 10px;
+  vertical-align: top;
+}
+.post-content thead th {
+  background: #f6f6f6;
+  text-align: left;
+  font-weight: bold;
+  white-space: nowrap;
+}
+.post-content tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+/* 代码块高亮内部的表格是行号 + 代码的双列布局，不能被正文表格样式污染 */
+.post-content .highlight table,
+.post-content .highlight thead,
+.post-content .highlight tbody {
+  border: none;
+  margin: 0;
+  width: auto;
+}
+.post-content .highlight tbody tr:nth-child(even) {
+  background: none;
+}
+.post-content .highlight td {
+  border: none;
+  padding: 0;
+  white-space: pre;
+}
+/* 窄屏：Butterfly 已经把表格包在 .table-wrap 里并给了横向滚动，
+   这里只需保证单元格文字正常换行，不再额外把 table 改成 block，
+   否则会和控制滚动的外层容器打架 */
+@media screen and (max-width: 767px) {
+  .post-content thead th {
+    white-space: normal;
+  }
+}
+</style><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">74</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">153</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Hua Liang's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">海康威视薪酬研究（二）：年终奖才是真正的战场</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">海康威视薪酬研究（二）：年终奖才是真正的战场</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-11-28T13:20:00.000Z" title="发表于 2026-11-28 21:20:00">2026-11-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-11-28T09:38:46.262Z" title="更新于 2026-11-28 17:38:46">2026-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/salary/">薪酬研究</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><blockquote>
+<p>本系列：<a href="/2026/11/28/hikvision-compensation-series/">索引</a> · <a href="/2026/11/28/hikvision-salary-structure/">一、总包拆解</a> · <a href="/2026/11/28/hikvision-bonus-performance/">二、年终奖</a> · <a href="/2026/11/28/hikvision-schedule-subsidy/">三、870 元</a></p>
+</blockquote>
+<blockquote>
+<p>数据性质同前：海康无官方薪酬披露，本文数字来自员工爆料与求职社区，标 [C]&#x2F;[D] 者仅作区间参考。详见第一篇开头的可信度分级说明。</p>
+</blockquote>
+<span id="more"></span>
+
+<hr>
+<h2 id="一、一句话概括"><a href="#一、一句话概括" class="headerlink" title="一、一句话概括"></a>一、一句话概括</h2><p><strong>月薪不是海康的短板，年终奖才是。</strong></p>
+<p>校招 15–25k、硕士总包 22–38 万，在杭州制造业属中上水平。但总包里那 3–6 个月是浮动的、可考核的、且正在连年缩水。员工最直白的一句总结是：</p>
+<blockquote>
+<p>「以前聊年终奖能拿几个月，现在聊的是打了几折。」</p>
+</blockquote>
+<p>而领导的话术从「一起拿个大的」变成了「<strong>保住年终奖</strong>」。</p>
+<hr>
+<h2 id="二、名义区间：2–6-个月"><a href="#二、名义区间：2–6-个月" class="headerlink" title="二、名义区间：2–6 个月"></a>二、名义区间：2–6 个月</h2><table>
+<thead>
+<tr>
+<th>业务线 &#x2F; 绩效</th>
+<th>年终奖月数</th>
+<th>可信度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>传统业务</td>
+<td>2–3 个月</td>
+<td>[D]</td>
+</tr>
+<tr>
+<td>多数人</td>
+<td>约 3 个月</td>
+<td>[C]</td>
+</tr>
+<tr>
+<td>高绩效 &#x2F; 新业务</td>
+<td>4–6 个月</td>
+<td>[D]</td>
+</tr>
+</tbody></table>
+<p>名义上上限 6 个月。但这个「上限」已经很久没人摸到了。</p>
+<hr>
+<h2 id="三、实际走势：连续两年打折"><a href="#三、实际走势：连续两年打折" class="headerlink" title="三、实际走势：连续两年打折"></a>三、实际走势：连续两年打折</h2><p>这是本篇最核心的信息：</p>
+<ul>
+<li>早年间优秀员工能拿 6–8 个月；</li>
+<li>现在<strong>普遍 3 个月</strong>；</li>
+<li>且<strong>已连续两年「打折」</strong>。</li>
+</ul>
+<p>具体案例（[C]，均为员工自述）：</p>
+<table>
+<thead>
+<tr>
+<th>情形</th>
+<th>年终奖</th>
+<th>折算</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2-9 职级，10 年软件开发</td>
+<td>9 万（打折后）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>IT 技术支持</td>
+<td>1.6 万 × 5 &#x3D; 8 万</td>
+<td>—</td>
+</tr>
+<tr>
+<td>CAD 结构</td>
+<td>2 万 × 3 &#x3D; 6 万</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<p>注意第一个案例的「打折后」三个字 —— 这是海康内部的通用说法，指年终奖计算出来后按系数削减发放。<strong>打折是常态性操作，不是异常</strong>。</p>
+<hr>
+<h2 id="四、为什么年终奖会缩水：绩效机制"><a href="#四、为什么年终奖会缩水：绩效机制" class="headerlink" title="四、为什么年终奖会缩水：绩效机制"></a>四、为什么年终奖会缩水：绩效机制</h2><p>年终奖不是按公司业绩自动分配的，它挂在一套高频考核上：</p>
+<ul>
+<li><strong>一年考五次</strong>：四个季度 + 一次年度。</li>
+<li><strong>每季度强制 5%–10% 比例</strong>背「待提升」（内部对低绩效的说法）。</li>
+<li><strong>普调已取消</strong>，一年一调的惯例终止。</li>
+<li><strong>个调只给约 20% 优秀员工</strong>。</li>
+</ul>
+<p>这套机制的结构性后果是：<strong>在一个强制比例的排名体系里，必然有一部分人拿不到好档位，也必然有人因为一次季度评级而影响年终系数。</strong> 而「强制比例」意味着低绩效不是能力问题，而是名额问题。</p>
+<p>再叠加一个因素：绩效工资本身占月薪的 20%。所以一次不理想的考核会<strong>同时打击月度收入（绩效工资部分）和年终奖（档位）</strong>，双向放大。</p>
+<hr>
+<h2 id="五、算一下你的真实兑现率"><a href="#五、算一下你的真实兑现率" class="headerlink" title="五、算一下你的真实兑现率"></a>五、算一下你的真实兑现率</h2><p>不要接受「我们年终奖一般 3 个月」这种表述。用下面这个三步法自己算：</p>
+<p><strong>第一步：确认薪数口径</strong></p>
+<p>问：「15 薪里的第 13–15 个月，是固定发放还是浮动？」如果 HR 答「浮动」，那 15 薪就只是一个上限表述。</p>
+<p><strong>第二步：要历史的实际值</strong></p>
+<p>问：「<strong>去年</strong>全公司 &#x2F; 我这个部门，实际平均发了几薪？」注意问「去年」而不是「一般」，一般 &#x3D; 好年份。</p>
+<p><strong>第三步：要档位表</strong></p>
+<p>问：「2 个月、3 个月、4 个月分别对应什么绩效等级？」</p>
+<p>把三个答案代进去：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">真实年现金 ≈ 月薪 × (12 + 实际年终月数 × 预期打折系数)</span><br></pre></td></tr></table></figure>
+
+<p>举例：月薪 20k，HR 说「15 薪」，去年实际平均 2.5 个月、打折 0.8：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">20k × (12 + 2.5 × 0.8) = 20k × 14 = 28 万</span><br></pre></td></tr></table></figure>
+
+<p>而不是 20k × 15 &#x3D; 30 万。<strong>差 2 万，一个月工资。</strong></p>
+<hr>
+<h2 id="六、这一层的行业普遍性"><a href="#六、这一层的行业普遍性" class="headerlink" title="六、这一层的行业普遍性"></a>六、这一层的行业普遍性</h2><p>需要公道地说一句：<strong>年终奖打折、绩效强制分布，在 2024–2026 这个周期里不是海康独有的。</strong></p>
+<p>互联网、地产、制造业普遍在收缩浮动薪酬。海康的特殊之处不在于「打折」本身，而在于：</p>
+<ol>
+<li>它的浮动部分占比高（年终奖 + 20% 绩效工资），所以打折的绝对影响大；</li>
+<li>它在同期<strong>利润大幅增长</strong>（见第三篇的三季报数据），这让「打折」的解释变得难以接受 —— 不是没钱，为什么还打折？</li>
+<li>2026 年 8 月还有过一轮全员普调涨薪的报道，与 11 月的降本动作形成反差。</li>
+</ol>
+<p>第 2、3 点留给第三篇展开。</p>
+<hr>
+<h2 id="七、小结"><a href="#七、小结" class="headerlink" title="七、小结"></a>七、小结</h2><ul>
+<li>年终奖名义 2–6 个月，<strong>实际普遍 3 个月，且已连续两年打折</strong>。</li>
+<li>打折是常态化操作，不是偶发。讨论时要问「打了几折」，不是「几个月」。</li>
+<li>绩效一年五考、季度强制 5%–10% 背低绩效、普调取消、个调仅覆盖 20% —— 这套机制决定了年终奖的结构性不确定。</li>
+<li><strong>谈 offer 时唯一有用的问法是「去年实际发了几薪」</strong>，而不是「一般几个月」。</li>
+</ul>
+<p>下一篇回到 2026 年 11 月这场舆论风暴本身：新作息、取消餐补、以及那个被反复算错的 870 元。</p>
+<hr>
+<h3 id="本系列"><a href="#本系列" class="headerlink" title="本系列"></a>本系列</h3><ol>
+<li>一个「总包」能差出十万块</li>
+<li><strong>年终奖与绩效：总包里最不确定的那部分</strong> ← 你在读这篇</li>
+<li>新作息与餐补取消：利润涨 39% 的公司为什么在省这 870 元</li>
+</ol>
+<hr>
+<p><em>本文为个人研究整理，不构成任何求职建议。薪酬数据均非官方口径，请以书面 offer 为准。</em></p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%96%AA%E9%85%AC/">薪酬</a><a class="post-meta__tags" href="/tags/%E6%B5%B7%E5%BA%B7%E5%A8%81%E8%A7%86/">海康威视</a><a class="post-meta__tags" href="/tags/%E5%B9%B4%E7%BB%88%E5%A5%96/">年终奖</a><a class="post-meta__tags" href="/tags/%E7%BB%A9%E6%95%88/">绩效</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="/pluginsSrc/butterfly-extsrc/sharejs/dist/css/share.min.css?v=1.1.6" media="print" onload="this.media='all'"><script src="/pluginsSrc/butterfly-extsrc/sharejs/dist/js/social-share.min.js?v=1.1.6" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/11/28/hikvision-salary-structure/" title="海康威视薪酬研究（一）：一个「总包」能差出十万块"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">海康威视薪酬研究（一）：一个「总包」能差出十万块</div></div><div class="info-2"><div class="info-item-1">海康的「总包」没有统一定义：15 薪里的 3 个月就是年终奖且是上限；公积金 12% 但基数只算基本工资。把总包拆成四层，附谈 offer 的逐条清单，每处数据标可信度等级。</div></div></div></a><a class="pagination-related" href="/2026/11/28/hikvision-schedule-subsidy/" title="海康威视薪酬研究（三）：利润涨 39% 的公司，为什么在省这 870 元"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">海康威视薪酬研究（三）：利润涨 39% 的公司，为什么在省这 870 元</div></div><div class="info-2"><div class="info-item-1">员工说「每月少近 3000 元」，其中 870 元是餐补实发减少，另外 1200–2000 元是按个人时薪折算的时间成本。公司同期净利 +38.55%，这个反差才是舆论焦点。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/11/28/hikvision-compensation-series/" title="海康威视薪酬研究：系列索引"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-28</div><div class="info-item-2">海康威视薪酬研究：系列索引</div></div><div class="info-2"><div class="info-item-1">一套三篇的海康威视薪酬拆解：总包怎么读、年终奖怎么打折、这次 870 元与新增 1 小时到底怎么算。全部数据标注 A/B/C/D 可信度，未解的矛盾如实列在文末。</div></div></div></a><a class="pagination-related" href="/2026/11/28/hikvision-salary-structure/" title="海康威视薪酬研究（一）：一个「总包」能差出十万块"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-28</div><div class="info-item-2">海康威视薪酬研究（一）：一个「总包」能差出十万块</div></div><div class="info-2"><div class="info-item-1">海康的「总包」没有统一定义：15 薪里的 3 个月就是年终奖且是上限；公积金 12% 但基数只算基本工资。把总包拆成四层，附谈 offer 的逐条清单，每处数据标可信度等级。</div></div></div></a><a class="pagination-related" href="/2026/11/28/hikvision-schedule-subsidy/" title="海康威视薪酬研究（三）：利润涨 39% 的公司，为什么在省这 870 元"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-28</div><div class="info-item-2">海康威视薪酬研究（三）：利润涨 39% 的公司，为什么在省这 870 元</div></div><div class="info-2"><div class="info-item-1">员工说「每月少近 3000 元」，其中 870 元是餐补实发减少，另外 1200–2000 元是按个人时薪折算的时间成本。公司同期净利 +38.55%，这个反差才是舆论焦点。</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%A6%82%E6%8B%AC"><span class="toc-text">一、一句话概括</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%90%8D%E4%B9%89%E5%8C%BA%E9%97%B4%EF%BC%9A2%E2%80%936-%E4%B8%AA%E6%9C%88"><span class="toc-text">二、名义区间：2–6 个月</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%AE%9E%E9%99%85%E8%B5%B0%E5%8A%BF%EF%BC%9A%E8%BF%9E%E7%BB%AD%E4%B8%A4%E5%B9%B4%E6%89%93%E6%8A%98"><span class="toc-text">三、实际走势：连续两年打折</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E5%B9%B4%E7%BB%88%E5%A5%96%E4%BC%9A%E7%BC%A9%E6%B0%B4%EF%BC%9A%E7%BB%A9%E6%95%88%E6%9C%BA%E5%88%B6"><span class="toc-text">四、为什么年终奖会缩水：绩效机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E7%AE%97%E4%B8%80%E4%B8%8B%E4%BD%A0%E7%9A%84%E7%9C%9F%E5%AE%9E%E5%85%91%E7%8E%B0%E7%8E%87"><span class="toc-text">五、算一下你的真实兑现率</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E8%BF%99%E4%B8%80%E5%B1%82%E7%9A%84%E8%A1%8C%E4%B8%9A%E6%99%AE%E9%81%8D%E6%80%A7"><span class="toc-text">六、这一层的行业普遍性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%B0%8F%E7%BB%93"><span class="toc-text">七、小结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E7%B3%BB%E5%88%97"><span class="toc-text">本系列</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/28/hikvision-compensation-series/" title="海康威视薪酬研究：系列索引">海康威视薪酬研究：系列索引</a><time datetime="2026-11-28T13:40:00.000Z" title="发表于 2026-11-28 21:40:00">2026-11-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/28/hikvision-salary-structure/" title="海康威视薪酬研究（一）：一个「总包」能差出十万块">海康威视薪酬研究（一）：一个「总包」能差出十万块</a><time datetime="2026-11-28T13:30:00.000Z" title="发表于 2026-11-28 21:30:00">2026-11-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/28/hikvision-bonus-performance/" title="海康威视薪酬研究（二）：年终奖才是真正的战场">海康威视薪酬研究（二）：年终奖才是真正的战场</a><time datetime="2026-11-28T13:20:00.000Z" title="发表于 2026-11-28 21:20:00">2026-11-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/28/hikvision-schedule-subsidy/" title="海康威视薪酬研究（三）：利润涨 39% 的公司，为什么在省这 870 元">海康威视薪酬研究（三）：利润涨 39% 的公司，为什么在省这 870 元</a><time datetime="2026-11-28T13:10:00.000Z" title="发表于 2026-11-28 21:10:00">2026-11-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/28/2026-11-28-luban-acp-support/" title="Luban 现在能在 Zed 和 JetBrains 里用了：聊聊 ACP 支持">Luban 现在能在 Zed 和 JetBrains 里用了：聊聊 ACP 支持</a><time datetime="2026-11-28T12:00:00.000Z" title="发表于 2026-11-28 20:00:00">2026-11-28</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By eppen</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.2"></script><script src="/js/main.js?v=5.7.2"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.2"></script></div></div><!-- hexo injector body_end start --><div class="adsense-wrap" style="margin:24px 0;text-align:center;min-height:90px;overflow:hidden;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2045994937692573" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div><!-- hexo injector body_end end --></body></html>
